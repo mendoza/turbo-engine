@@ -1,0 +1,8 @@
+{
+  "extends": ["google", "prettier"],
+  "rules": {
+    "parserOptions": {
+      "es6": true
+    }
+  }
+}
