@@ -56,7 +56,7 @@ To contribute to turbo-engine, follow these steps:
 
 3. Make your changes and commit them: `git commit -m '<commit_message>'
 
-4) Push to the original branch: `git push origin turbo-engine/Development`
+4) Push to the original branch: `git push origin turbo-engine/develop`
 
 5. Create the pull request.
 
