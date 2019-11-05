@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import Links from "../api/links";
 import { withTracker } from "meteor/react-meteor-data";
-
+import Button from "@material-ui/core/Button";
 class App extends PureComponent {
   constructor(props) {
     super(props);
@@ -14,7 +14,9 @@ class App extends PureComponent {
         Agregar John Doe
         <br />
         <br />
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => {
             Links.insert({
               nombre: "john",
@@ -23,7 +25,7 @@ class App extends PureComponent {
             console.log("John doe agregado");
           }}>
           Guardar John Doe
-        </button>
+        </Button>
         <br />
         <br />
         Listar
@@ -39,17 +41,21 @@ class App extends PureComponent {
         <br />
         Eliminar uno
         <br />
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => {
             Links.remove({ _id: "m9WR99rAM3GjnD8AJ" });
             console.log("John doe eliminado");
           }}>
           Eliminar John Doe
-        </button>
+        </Button>
         <br />
         <br />
         Update Does
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => {
             Links.update(
               { _id: "Nc8GrXyM3EjMKEgue" },
@@ -60,11 +66,13 @@ class App extends PureComponent {
             console.log("John doe eliminado");
           }}>
           Actualizar John Doe
-        </button>
+        </Button>
         <br />
         <br />
         User methods
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => {
             Meteor.call(
               "insertJohnDoe",
@@ -79,7 +87,7 @@ class App extends PureComponent {
             );
           }}>
           Agregar John Doe
-        </button>
+        </Button>
       </div>
     );
   }
