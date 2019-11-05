@@ -17,3 +17,16 @@ Meteor.startup(() => {
     insertLink("Discussions", "https://forums.meteor.com");
   }
 });
+
+Meteor.publish('links.all', () => (
+  Links.find()
+));
+
+Meteor.methods({
+  insertJohnDoe (objectFromClient) {
+    console.log(objectFromClient);
+    if (2+2===4) {
+      Links.insert(objectFromClient);
+    }
+  }
+});
