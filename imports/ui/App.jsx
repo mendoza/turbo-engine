@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import Links from "../api/links";
+import Autos from "../api/Autos";
 import { withTracker } from "meteor/react-meteor-data";
 import Button from "@material-ui/core/Button";
 class App extends PureComponent {
@@ -95,6 +96,7 @@ class App extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("links.all");
+  Meteor.subscribe("Autos.all");
   return {
     links: Links.find().fetch(),
   };
