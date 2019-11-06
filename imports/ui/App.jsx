@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
-import Links from "../api/links";
+import Links from "../api/collections/links";
+import Autos from "../api/collections/Autos";
 import { withTracker } from "meteor/react-meteor-data";
 import Button from "@material-ui/core/Button";
 class App extends PureComponent {
@@ -30,12 +31,8 @@ class App extends PureComponent {
         <br />
         Listar
         <br />
-        {this.props.links.map(link => {
-          return (
-            <div>
-              {link._id},{link.title},{link.apellido},{link.nombre}
-            </div>
-          );
+        {this.props.Links.map(link => {
+          return <div>{JSON.stringify(link)}</div>;
         })}
         <br />
         <br />
@@ -95,7 +92,8 @@ class App extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("links.all");
+  Meteor.subscribe("Autos.all");
   return {
-    links: Links.find().fetch(),
+    Links: Links.find().fetch(),
   };
 })(App);
