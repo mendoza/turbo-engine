@@ -12,6 +12,8 @@ Autos.schema = new SimpleSchema({
   placa: { type: String },
   traccion: { type: String },
   year: { type: SimpleSchema.Integer },
+  piezas: { type: Array },
+  estado: { type: SimpleSchema.Integer },
 });
 
 export default Autos;
