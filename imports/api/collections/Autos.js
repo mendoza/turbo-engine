@@ -4,9 +4,14 @@ import SimpleSchema from "simpl-schema";
 Autos = new Mongo.Collection("Autos");
 
 Autos.schema = new SimpleSchema({
-  name: { type: String },
-  incompleteCount: { type: Number, defaultValue: 0 },
-  userId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+  marca: { type: String },
+  modelo: { type: String },
+  tipo: { type: String },
+  transmision: { type: String },
+  color: { type: String },
+  placa: { type: String },
+  traccion: { type: String },
+  year: { type: SimpleSchema.Integer },
 });
 
-export default Autos
+export default Autos;
