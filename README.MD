@@ -72,7 +72,7 @@ Thanks to the following people who have contributed to this project:
 
 - @Dmendoza99 💻 👨‍💻
 
-- @kalvarez1994💻 👨‍💻
+- @jalvarez1994💻 👨‍💻
 
 - @Leonard1on💻 👨‍💻
 
