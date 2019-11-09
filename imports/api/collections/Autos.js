@@ -13,6 +13,7 @@ Autos.schema = new SimpleSchema({
   traccion: { type: String },
   year: { type: SimpleSchema.Integer },
   piezas: { type: Array },
+  "piezas.$": { type: String },
   estado: { type: SimpleSchema.Integer },
 });
 
