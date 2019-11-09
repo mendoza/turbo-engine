@@ -7,7 +7,7 @@ Cliente.schema = new SimpleSchema({
     nombre: {type: String},
     apellido: {type: String},
     rtn: {type: Number},
-    fechaDeNacimienti: {type: Date},
+    fechaDeNacimiento: {type: Date},
     telefono: {type: Number}
 });
 
