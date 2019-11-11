@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import EmptyLayout from '../layouts/EmptyLayout';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { Paper, Container } from "@material-ui/core";
 
 export default class Users extends Component {
   render() {
     return (
-      <EmptyLayout>
-        fdsa <br />
-        asdjfklajsd;f
-        <Link to="/about"> go to about</Link>
-      </EmptyLayout>
-    )
+      <Container>
+        <Paper style={{ height: "100vh" }}>
+          wenas este es el home :v
+          <Link to="/about"> go to about</Link>
+        </Paper>
+      </Container>
+    );
   }
 }
