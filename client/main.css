@@ -10,12 +10,6 @@ body {
   background-color: #e9ebee;
 }
 
-.prueba {
-  height: 100vh;
-  margin-right: 25vw;
-  margin-left: 25vw;
-}
-
 .MuiDrawer-paper{
   width: 10vw;
 }

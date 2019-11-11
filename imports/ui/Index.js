@@ -11,16 +11,16 @@ class Index extends PureComponent {
 
   render() {
     return (
-      <AppBar>
-        <BrowserRouter >
+      <BrowserRouter>
+        <AppBar Routes={Routes}>
           <Switch>
             {Routes.map(route => {
               return <Route exact path={route.path} component={route.component} />;
             })}
             {/* <Route component={Error404} /> */}
           </Switch>
-        </BrowserRouter>
-      </AppBar>
+        </AppBar>
+      </BrowserRouter>
     );
   }
 }
