@@ -1,5 +1,5 @@
 /* eslint-disable no-script-url */
-/*import React from 'react';*/
+import React from 'react';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 export default function Orders() {
   const classes = useStyles();
   return (
-    <React.Fragment>
+    <>
       <Title>Recent Orders</Title>
       <Table size="small">
         <TableHead>
@@ -60,6 +60,6 @@ export default function Orders() {
           See more orders
         </Link>
       </div>
-    </React.Fragment>
+    </>
   );
 }
