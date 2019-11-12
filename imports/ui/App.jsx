@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { PureComponent } from "react";
 import Links from "../api/collections/links";
 import Autos from "../api/collections/Autos";
@@ -97,3 +98,18 @@ export default withTracker(() => {
     Links: Links.find().fetch(),
   };
 })(App);
+=======
+import React from "react";
+import Hello from "./Hello.jsx";
+import Info from "./Info.jsx";
+
+const App = () => (
+  <div>
+    <h1>Welcome to Meteor!</h1>
+    <Hello />
+    <Info />
+  </div>
+);
+
+export default App;
+>>>>>>> 3d59a6eefd097fda771684d9cf4bb2ecf2b873af

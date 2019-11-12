@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
+<<<<<<< HEAD
     "@material-ui/core": "^4.5.2",
     "@material-ui/icons": "^4.5.1",
     "meteor-node-stubs": "^0.4.1",
@@ -20,10 +21,15 @@
     "redux": "^4.0.4",
     "redux-form": "^8.2.6",
     "simpl-schema": "^1.5.6"
+=======
+    "meteor-node-stubs": "^0.4.1",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0"
+>>>>>>> 3d59a6eefd097fda771684d9cf4bb2ecf2b873af
   },
   "meteor": {
     "mainModule": {
-      "client": "client/main.js",
+      "client": "client/main.jsx",
       "server": "server/main.js"
     },
     "testModule": "tests/main.js"
