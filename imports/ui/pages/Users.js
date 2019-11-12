@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import ChartistGraph from "react-chartist";
+
 class Users extends PureComponent {
   constructor(props) {
     super(props);
