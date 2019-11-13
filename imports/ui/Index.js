@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
-import AppBar from "./layouts/AppBarLayout";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import DashboardLayout from "./layouts/DashboardLayout";
 import Routes from "./Routes";
 import Error404 from "./pages/Error404";
 class Index extends PureComponent {
@@ -13,14 +13,14 @@ class Index extends PureComponent {
   render() {
     return (
       <BrowserRouter>
-        <AppBar Routes={Routes}>
+        <DashboardLayout Routes={Routes}>
           <Switch>
             {Routes.map(route => {
               return <Route exact path={route.path} component={route.component} />;
             })}
             <Route component={Error404} />
           </Switch>
-        </AppBar>
+        </DashboardLayout>
       </BrowserRouter>
     );
   }

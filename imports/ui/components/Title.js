@@ -1,0 +1,21 @@
+import React, { PureComponent } from "react";
+import Typography from "@material-ui/core/Typography";
+
+class Title extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  render() {
+    const { children } = this.props;
+    return (
+      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        {children}
+      </Typography>
+    );
+  }
+}
+
+export default Title;
