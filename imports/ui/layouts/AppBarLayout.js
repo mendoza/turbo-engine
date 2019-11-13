@@ -2,18 +2,17 @@ import React, { PureComponent } from "react";
 import {
   AppBar,
   Drawer,
-  MenuItem,
   Toolbar,
   Typography,
   IconButton,
   List,
   ListItem,
   ListItemText,
-  Link,
 } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+
 class AppBarLayout extends PureComponent {
   constructor(props) {
     super(props);
