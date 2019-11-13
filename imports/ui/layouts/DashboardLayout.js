@@ -26,7 +26,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       Copyright ©
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="https://github.com/Dmendoza99/turbo-engine">
         Turbo Engine
       </Link>{" "}
       {new Date().getFullYear()}
@@ -42,7 +42,7 @@ const useStyles = theme => ({
     display: "flex",
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24, 
   },
   toolbarIcon: {
     display: "flex",
