@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
-import { Container, Typography } from "@material-ui/core";
+import { Container, Typography, Box } from "@material-ui/core";
 import ChartistGraph from "react-chartist";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,12 +18,6 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
-  letter:{
-    width: '300px',
-    border: '15px solid green',
-    padding: '50px',
-    margin: '20px'
-  }
 });
 
 class Users extends PureComponent {
@@ -65,41 +59,45 @@ class Users extends PureComponent {
     ];
 
     return (
-      <Container>
-        <Typography variant="body2"  variant="h4" component="h2">
-          Gráfico
-        </Typography>
-        <Paper>
-          <ChartistGraph data={data} options={options} type={type} />
-        </Paper>
+      <Container padding ="30px">
+        <div>
+          <Typography variant="body2"  variant="h4" component="h2" margin="30px">
+            Gráfico
+          </Typography>
+          <Paper>
+            <ChartistGraph data={data} options={options} type={type} />
+          </Paper>
+        </div>
 
-        <Typography variant="h4" component="h2">
-          Reportes
-        </Typography>
-        <Paper>
-          <Table  aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Tipo de reporte</TableCell>
-                <TableCell align="right">Producto</TableCell>
-                <TableCell align="right">Fecha</TableCell>
-                <TableCell align="right">Estado</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-              <TableRow key={row.type}>
-                <TableCell component="th" scope="row">
-                  {row.type}
-                </TableCell>
-                <TableCell align="right">{row.product}</TableCell>
-                <TableCell align="right">{row.date}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
-              </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
+        <div>
+          <Typography variant="h4" component="h2">
+            Reportes
+          </Typography>
+          <Paper>
+            <Table  aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Tipo de reporte</TableCell>
+                  <TableCell align="right">Producto</TableCell>
+                  <TableCell align="right">Fecha</TableCell>
+                  <TableCell align="right">Estado</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map(row => (
+                <TableRow key={row.type}>
+                  <TableCell component="th" scope="row">
+                    {row.type}
+                  </TableCell>
+                  <TableCell align="right">{row.product}</TableCell>
+                  <TableCell align="right">{row.date}</TableCell>
+                  <TableCell align="right">{row.status}</TableCell>
+                </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </div>
       </Container>
     );
   }
