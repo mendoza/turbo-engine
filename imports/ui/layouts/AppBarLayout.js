@@ -21,10 +21,14 @@ class AppBarLayout extends PureComponent {
   }
 
   toggleDrawer = () => {
-    this.setState({ open: !this.state.open });
+    this.setState(state => ({
+      open: !state.open,
+    }));
   };
 
   render() {
+    const { open } = this.state;
+    const { Routes, children } = this.props;
     return (
       <div className="RealBody">
         <AppBar position="static">
@@ -40,22 +44,22 @@ class AppBarLayout extends PureComponent {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Drawer open={this.state.open} onBackdropClick={this.toggleDrawer}>
+        <Drawer open={open} onBackdropClick={this.toggleDrawer}>
           <List>
-            {this.props.Routes.map(route => (
+            {Routes.map(route => (
               <ListItem button key={route.name}>
                 <ListItemText
-                  primary={
+                  primary={(
                     <NavLink className="MuiLink-root" to={route.path}>
                       {route.name}
                     </NavLink>
-                  }
+                    )}
                 />
               </ListItem>
             ))}
           </List>
         </Drawer>
-        {this.props.children}
+        {children}
       </div>
     );
   }

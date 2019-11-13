@@ -18,9 +18,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { mainListItems, secondaryListItems } from "../components/listItems";
-import Chart from "../components/Chart";
-import Deposits from "../components/Deposits";
-import Orders from "../components/Orders";
 
 function Copyright() {
   return (
@@ -42,7 +39,7 @@ const useStyles = theme => ({
     display: "flex",
   },
   toolbar: {
-    paddingRight: 24, 
+    paddingRight: 24,
   },
   toolbarIcon: {
     display: "flex",
@@ -102,9 +99,9 @@ const useStyles = theme => ({
     overflow: "auto",
   },
   container: {
-    //paddingTop: theme.spacing(4),
+    // paddingTop: theme.spacing(4),
     padding: 0,
-    //paddingBottom: theme.spacing(4),
+    // paddingBottom: theme.spacing(4),
     paddingBottom: 0,
   },
   paper: {
