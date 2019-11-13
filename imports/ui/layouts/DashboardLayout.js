@@ -102,8 +102,10 @@ const useStyles = theme => ({
     overflow: "auto",
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    //paddingTop: theme.spacing(4),
+    padding: 0,
+    //paddingBottom: theme.spacing(4),
+    paddingBottom: 0,
   },
   paper: {
     padding: theme.spacing(2),
