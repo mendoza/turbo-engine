@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
-import { Container, Typography } from "@material-ui/core";
+import { Container, Typography, Box } from "@material-ui/core";
 import ChartistGraph from "react-chartist";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,11 +18,6 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
-  letter:{
-    width: '300px',
-    padding: '50px',
-    margin: '20px'
-  }
 });
 
 class Users extends PureComponent {
@@ -66,7 +61,7 @@ class Users extends PureComponent {
     return (
       <Container padding ="30px">
         <div>
-          <Typography variant="body2"  variant="h4" component="h2">
+          <Typography variant="body2"  variant="h4" component="h2" margin="30px">
             Gráfico
           </Typography>
           <Paper>
@@ -74,7 +69,7 @@ class Users extends PureComponent {
           </Paper>
         </div>
 
-        <div padding>
+        <div>
           <Typography variant="h4" component="h2">
             Reportes
           </Typography>
