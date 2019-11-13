@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { PureComponent } from "react";
 
-export default ({ children, history }) => (
-  <div>
-    Navbar <br />
-    {children}
-  </div>
-);
+class EmptyLayout extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  render() {
+    const { children } = this.props;
+    return (
+      <div>
+        Navbar
+        <br />
+        {children}
+      </div>
+    );
+  }
+}
+
+export default EmptyLayout;

@@ -1,24 +1,12 @@
 import React, { PureComponent } from "react";
-import { Link } from "react-router-dom";
-import { Container, Typography, Box } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import ChartistGraph from "react-chartist";
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 650,
-  },
-});
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 class Users extends PureComponent {
   constructor(props) {
@@ -27,9 +15,8 @@ class Users extends PureComponent {
     this.state = {};
   }
 
-  
   render() {
-    /*Para el gráfico*/
+    // Para el gráfico
     const data = {
       labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"],
       series: [[1, 2, 4, 8, 6, -2, -1, -4, -6, -2]],
@@ -47,21 +34,21 @@ class Users extends PureComponent {
 
     const type = "Bar";
 
-    /*Datos de ejemplo*/
-    function createData(type, product, date, status) {
-      return { type, product, date, status };
+    // Datos de ejemplo
+    function createData(typef, product, date, status) {
+      return { typef, product, date, status };
     }
     const rows = [
-      createData('Compra de repuesto', "Carburador", "10/12/2019", true),
-      createData('Reparación de automovil', "Toyota corolla", "10/12/2019", false),
-      createData('Venta de automovil', "Honda CRV", "10/12/2019", true),
-      createData('Compra de repuesto', "Amortiguador", "10/12/2019", true),
+      createData("Compra de repuesto", "Carburador", "10/12/2019", true),
+      createData("Reparación de automovil", "Toyota corolla", "10/12/2019", false),
+      createData("Venta de automovil", "Honda CRV", "10/12/2019", true),
+      createData("Compra de repuesto", "Amortiguador", "10/12/2019", true),
     ];
 
     return (
-      <Container padding ="30px">
+      <Container padding="30px">
         <div>
-          <Typography variant="body2"  variant="h4" component="h2" margin="30px">
+          <Typography variant="h4" component="h2" margin="30px">
             Gráfico
           </Typography>
           <Paper>
@@ -74,7 +61,7 @@ class Users extends PureComponent {
             Reportes
           </Typography>
           <Paper>
-            <Table  aria-label="simple table">
+            <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Tipo de reporte</TableCell>
@@ -85,14 +72,14 @@ class Users extends PureComponent {
               </TableHead>
               <TableBody>
                 {rows.map(row => (
-                <TableRow key={row.type}>
-                  <TableCell component="th" scope="row">
-                    {row.type}
-                  </TableCell>
-                  <TableCell align="right">{row.product}</TableCell>
-                  <TableCell align="right">{row.date}</TableCell>
-                  <TableCell align="right">{row.status}</TableCell>
-                </TableRow>
+                  <TableRow key={row.type}>
+                    <TableCell component="th" scope="row">
+                      {row.type}
+                    </TableCell>
+                    <TableCell align="right">{row.product}</TableCell>
+                    <TableCell align="right">{row.date}</TableCell>
+                    <TableCell align="right">{row.status}</TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>
