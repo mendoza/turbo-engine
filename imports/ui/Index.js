@@ -3,10 +3,10 @@ import AppBar from "./layouts/AppBarLayout";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Routes from "./Routes";
 import Error404 from "./pages/Error404";
+
 class Index extends PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
