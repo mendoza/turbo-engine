@@ -22,12 +22,11 @@ import { mainListItems, secondaryListItems } from "../components/listItems";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      Copyright ©
+      {`Copyright © `}
       <Link color="inherit" href="https://github.com/Dmendoza99/turbo-engine">
         Turbo Engine
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+      </Link>
+      {` ${new Date().getFullYear()}.`}
     </Typography>
   );
 }
