@@ -8,7 +8,9 @@ Meteor.methods({
   listUsuario(payload) {
     return Meteor.users.find({}).fetch();
   },
-  updateUsers(payload) {},
+  updateUsers(payload) {
+    return Meteor.users.update(payload);
+  },
   deleteUsers(payload) {
     return Meteor.users.remove({ _id: payload.id });
   },
