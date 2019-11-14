@@ -1,13 +1,19 @@
 import { Meteor } from "meteor/meteor";
 
-Meteor.startup(() => {});
+// Para los usuarios
+import '../imports/api/collections/Usuarios/methods';
 
-// Meteor.publish("links.all", () => Links.find());
-
-Meteor.methods({
-  insertJohnDoe: function(objectFromClient) {
-    console.log(objectFromClient);
-    // Links.schema.validate(objectFromClient);
-    // Links.insert(objectFromClient);
-  },
+Meteor.startup(() => {
+  if (Meteor.users.find().fetch().length === 0) {
+    const superAdmin = {
+      email: 'ingenieria@ingenieria.com',
+      password: 'Hola1234',
+      profile: {
+        firstName: 'Usuario',
+        lastName: 'Administrador',
+        role: 'superAdmin'
+      }
+    };
+    Meteor.call('createUsers', superAdmin);
+  }
 });

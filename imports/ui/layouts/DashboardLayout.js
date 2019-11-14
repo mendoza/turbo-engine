@@ -161,6 +161,9 @@ class DashboardLayout extends PureComponent {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <IconButton color="inherit" onClick={() => Meteor.logout()}>
+              <i className="fas fa-sign-out-alt" />
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer
