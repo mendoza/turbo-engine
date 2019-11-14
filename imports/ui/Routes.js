@@ -3,6 +3,7 @@ import About from "./pages/About";
 import CreateUsers from "./pages/CreateUsers";
 import ListUsers from "./pages/ListUsers";
 import DeleteUsers from "./pages/DeleteUsers";
+import UpdateUsers from "./pages/UpdateUsers";
 const Routes = [
   {
     path: "/",
@@ -28,6 +29,11 @@ const Routes = [
     path: "/delete",
     name: "Eliminar",
     component: DeleteUsers,
+  },
+  {
+    path: "/update",
+    name: "Actualizar",
+    component: UpdateUsers,
   },
 ];
 export default Routes;

@@ -9,9 +9,13 @@ Meteor.methods({
     return Meteor.users.find({}).fetch();
   },
   updateUsers(payload) {
-    return Meteor.users.update(payload);
+    const selector = { _id: payload._id };
+    delete payload._id;
+    const modifier = { ...payload };
+    return Meteor.users.update(selector, modifier);
   },
   deleteUsers(payload) {
-    return Meteor.users.remove({ _id: payload.id });
+    const selector = { _id: payload._id };
+    return Meteor.users.remove(selector);
   },
 });
