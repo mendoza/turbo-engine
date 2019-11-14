@@ -58,7 +58,7 @@ class CreateUsers extends React.Component {
     const { username, nombre, apellido, correo, password } = this.state;
     Meteor.call(
       "createUsuario",
-      { username, name: nombre, lastName: apellido, email: correo, password },
+      { username, email: correo, password, profile: { name: nombre, lastName: apellido } },
       err => {
         if (err) {
           alert("Error al crear usuario");
