@@ -1,8 +1,8 @@
 import Users from "./pages/Users";
 import About from "./pages/About";
 import CreateUsers from "./pages/CreateUsers";
-import EditUsers from "./pages/EditUsers";
-
+import ListUsers from "./pages/ListUsers";
+import DeleteUsers from "./pages/DeleteUsers";
 const Routes = [
   {
     path: "/",
@@ -20,9 +20,14 @@ const Routes = [
     component: CreateUsers,
   },
   {
-    path: "/editar",
-    name: "Editar",
-    component: EditUsers,
+    path: "/list",
+    name: "Listar",
+    component: ListUsers,
+  },
+  {
+    path: "/delete",
+    name: "Eliminar",
+    component: DeleteUsers,
   },
 ];
 export default Routes;

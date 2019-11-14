@@ -7,7 +7,7 @@
   },
   "extends": ["airbnb", "prettier"],
   "plugins": ["react", "prettier"],
-  "env": { "browser": true, "jest": true },
+  "env": { "browser": true, "jest": true, "meteor": true },
   "rules": {
     "max-len": ["error", { "code": 100 }],
     "prefer-promise-reject-errors": ["off"],

@@ -3,30 +3,15 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Meteor } from "meteor/meteor";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Kike's Autos
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const useStyles = makeStyles(theme => ({
+const Styles = theme => ({
   "@global": {
     body: {
       backgroundColor: theme.palette.common.white,
@@ -49,40 +34,43 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}));
+});
 
 class CreateUsers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: "",
       nombre: "",
       apellido: "",
       correo: "",
       password: "",
     };
-    this.handleTextChange = this.handleTextChange.bind(this);
-    this.handleCreate = this.handleCreate.bind(this);
   }
 
-  handleTextChange(event, stateVariable) {
+  handleTextChange = (event, stateVariable) => {
     this.setState({
       [stateVariable]: event.target.value,
     });
-  }
+  };
 
-  handleCreate() {
-    const { nombre, apellido, correo, password } = this.state;
-    Meteor.call("createUser", { nombre, apellido, correo, password }, err => {
-      if (err) {
-        alert("Error al crear usuario");
-      } else {
-        alert("Usuario creado exitosamente");
+  handleCreate = () => {
+    const { username, nombre, apellido, correo, password } = this.state;
+    Meteor.call(
+      "createUsuario",
+      { username, name: nombre, lastName: apellido, email: correo, password },
+      err => {
+        if (err) {
+          alert("Error al crear usuario");
+        } else {
+          alert("Usuario creado exitosamente");
+        }
       }
-    });
-  }
+    );
+  };
 
   render() {
-    // const classes = useStyles();
+    const { username, nombre, apellido, correo, password } = this.state;
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -105,7 +93,7 @@ class CreateUsers extends React.Component {
                   id="firstName"
                   label="Nombre"
                   autoFocus
-                  value={this.state.nombre}
+                  value={nombre}
                   onInput={event => this.handleTextChange(event, "nombre")}
                 />
               </Grid>
@@ -118,8 +106,21 @@ class CreateUsers extends React.Component {
                   label="Apellido"
                   name="lastName"
                   autoComplete="lname"
-                  value={this.state.apellido}
+                  value={apellido}
                   onInput={event => this.handleTextChange(event, "apellido")}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="usuario"
+                  label="Usuario"
+                  name="usuario"
+                  autoComplete="usuario"
+                  value={username}
+                  onInput={event => this.handleTextChange(event, "username")}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -131,7 +132,7 @@ class CreateUsers extends React.Component {
                   label="Correo Electrónico"
                   name="email"
                   autoComplete="email"
-                  value={this.state.correo}
+                  value={correo}
                   onInput={event => this.handleTextChange(event, "correo")}
                 />
               </Grid>
@@ -145,22 +146,17 @@ class CreateUsers extends React.Component {
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  value={this.state.passwrod}
+                  value={password}
                   onInput={event => this.handleTextChange(event, "password")}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
             </Grid>
             <Button fullWidth variant="contained" color="primary" onClick={this.handleCreate}>
               Crear
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <Link href="#" variant="body2">
                   ¿Ya está registrado? Ingrese
                 </Link>
