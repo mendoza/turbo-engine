@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 
 Meteor.methods({
-  createUsers(payload){
+  createUsers(payload) {
     Accounts.createUser(payload);
-  }
-})
+  },
+});
