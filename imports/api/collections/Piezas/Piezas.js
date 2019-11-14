@@ -1,7 +1,7 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 
-Piezas = new Mongo.Collection("Piezas");
+const Piezas = new Mongo.Collection("Piezas");
 
 Piezas.schema = new SimpleSchema({
   vendedor: { type: String },
