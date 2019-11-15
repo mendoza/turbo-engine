@@ -13,6 +13,5 @@ Meteor.methods({
   },
   deleteUsers(payload) {
     const selector = { _id: payload._id };
-    return Meteor.users.remove(selector);
   },
 });

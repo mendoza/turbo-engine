@@ -1,6 +1,7 @@
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
 import CreateUsers from "./pages/CreateUsers";
+import Empresa from "./pages/Empresa";
 import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
@@ -39,5 +40,16 @@ const Routes = [
     component: UpdateUsers,
     permission: 'superAdmin',
   },
+  {
+    path: "/empresa",
+    name: "Empresa",
+    component: Empresa,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
 ];
+
 export default Routes;

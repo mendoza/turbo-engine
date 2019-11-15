@@ -6,7 +6,6 @@ import Error404 from "./pages/Error404";
 import RedirectLogin from "./components/RedirectLogin";
 import RedirectDashboard from "./components/RedirectDashboard";
 
-
 class Index extends PureComponent {
   constructor(props) {
     super(props);
@@ -16,13 +15,13 @@ class Index extends PureComponent {
   render() {
     const { loggedIn, currentUser } = this.props;
     const isLoggedIn = route => {
-      if (route.path === '/login' && loggedIn) {
+      if (route.path === "/login" && loggedIn) {
         return <Route exact key={route.name} path={route.path} component={RedirectDashboard} />;
       }
       if (loggedIn) {
         return <Route exact key={route.name} path={route.path} component={route.component} />;
       }
-      if (route.path === '/login') {
+      if (route.path === "/login") {
         return <Route exact key={route.name} path={route.path} component={route.component} />;
       }
       return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
@@ -43,8 +42,8 @@ class Index extends PureComponent {
       if(currentUser === null) {
         return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
       }
-      return <></>;
     }
+    };
     return (
       <BrowserRouter>
         <Switch>
