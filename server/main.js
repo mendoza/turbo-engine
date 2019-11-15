@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import "../imports/api/methods/users";
+import "../imports/api/collections/Usuarios/methods";
 
 // Para los usuarios
 import '../imports/api/collections/Usuarios/methods';

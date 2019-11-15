@@ -1,8 +1,10 @@
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
 import CreateUsers from "./pages/CreateUsers";
-import EditUsers from "./pages/EditUsers";
 import Login from "./pages/Login";
+import ListUsers from "./pages/ListUsers";
+import DeleteUsers from "./pages/DeleteUsers";
+import UpdateUsers from "./pages/UpdateUsers";
 
 const Routes = [
   {
@@ -21,14 +23,24 @@ const Routes = [
     component: CreateUsers,
   },
   {
-    path: "/editar",
-    name: "Editar",
-    component: EditUsers
-  },
-  {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: Login
+  },
+  {
+    path: "/list",
+    name: "Listar",
+    component: ListUsers,
+  },
+  {
+    path: "/delete",
+    name: "Eliminar",
+    component: DeleteUsers,
+  },
+  {
+    path: "/update",
+    name: "Actualizar",
+    component: UpdateUsers,
   },
 ];
 export default Routes;
