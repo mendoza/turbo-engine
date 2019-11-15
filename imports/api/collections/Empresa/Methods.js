@@ -6,17 +6,15 @@ Meteor.methods({
     Empresa.insert(payload);
   },
   getEmpresa() {
-    console.log("wenas")
-    console.log(Empresa.find({}).fetch())
-    // return ;
+    return Empresa.find({}).fetch()[0];
   },
   getEmpresaName() {
-    return Empresa.find({}).fetch().name;
+    return Empresa.find({}).fetch()[0].name;
   },
   getEmpresaRTN() {
-    return Empresa.find({}).fetch().RTN;
+    return Empresa.find({}).fetch()[0].RTN;
   },
   getEmpresaCAI() {
-    return Empresa.find({}).fetch().CAI;
+    return Empresa.find({}).fetch()[0].CAI;
   },
 });
