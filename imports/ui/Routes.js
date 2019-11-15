@@ -1,13 +1,14 @@
-import Users from "./pages/Users";
+import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
 import CreateUsers from "./pages/CreateUsers";
 import EditUsers from "./pages/EditUsers";
+import Login from "./pages/Login";
 
 const Routes = [
   {
     path: "/",
     name: "Inicio",
-    component: Users,
+    component: Dashboard,
   },
   {
     path: "/about",
@@ -22,7 +23,12 @@ const Routes = [
   {
     path: "/editar",
     name: "Editar",
-    component: EditUsers,
+    component: EditUsers
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
   },
 ];
 export default Routes;

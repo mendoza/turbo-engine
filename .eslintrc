@@ -7,11 +7,12 @@
   },
   "extends": ["airbnb", "prettier"],
   "plugins": ["react", "prettier"],
-  "env": { "browser": true, "jest": true },
+  "env": { "browser": true, "jest": true, "mongo": true },
   "rules": {
     "max-len": ["error", { "code": 100 }],
     "prefer-promise-reject-errors": ["off"],
     "react/jsx-filename-extension": ["off"],
+    "react/jsx-closing-bracket-location": [1, "props-aligned"],
     "react/prop-types": ["off"],
     "no-return-assign": ["off"]
   }

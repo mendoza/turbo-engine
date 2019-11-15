@@ -2,18 +2,17 @@ import React, { PureComponent } from "react";
 import {
   AppBar,
   Drawer,
-  MenuItem,
   Toolbar,
   Typography,
   IconButton,
   List,
   ListItem,
   ListItemText,
-  Link,
 } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+
 class AppBarLayout extends PureComponent {
   constructor(props) {
     super(props);
@@ -22,10 +21,14 @@ class AppBarLayout extends PureComponent {
   }
 
   toggleDrawer = () => {
-    this.setState({ open: !this.state.open });
+    this.setState(state => ({
+      open: !state.open,
+    }));
   };
 
   render() {
+    const { open } = this.state;
+    const { Routes, children } = this.props;
     return (
       <div className="RealBody">
         <AppBar position="static">
@@ -41,22 +44,22 @@ class AppBarLayout extends PureComponent {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Drawer open={this.state.open} onBackdropClick={this.toggleDrawer}>
+        <Drawer open={open} onBackdropClick={this.toggleDrawer}>
           <List>
-            {this.props.Routes.map(route => (
+            {Routes.map(route => (
               <ListItem button key={route.name}>
                 <ListItemText
-                  primary={
+                  primary={(
                     <NavLink className="MuiLink-root" to={route.path}>
                       {route.name}
                     </NavLink>
-                  }
+                    )}
                 />
               </ListItem>
             ))}
           </List>
         </Drawer>
-        {this.props.children}
+        {children}
       </div>
     );
   }
