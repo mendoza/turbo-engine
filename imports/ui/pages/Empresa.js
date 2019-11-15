@@ -18,7 +18,7 @@ class Empresa extends PureComponent {
   render() {
     const { empresa } = this.state;
     return (
-      <Grid container spacing={5}>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper>
             <Typography variant="h1">Datos de la empresa</Typography>
