@@ -18,7 +18,8 @@ const Routes = [
     path: "/empresa",
     name: "Empresa",
     component: Empresa,
-  },{
+  },
+  {
     path: "/login",
     name: "Login",
     component: Login,
