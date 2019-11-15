@@ -25,30 +25,29 @@ class Index extends PureComponent {
         return <Route exact key={route.name} path={route.path} component={route.component} />;
       }
       return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
-    }
+    };
     const isSuperAdmin = route => {
-      if (route.path === '/login' && loggedIn) {
+      if (route.path === "/login" && loggedIn) {
         return <Route exact key={route.name} path={route.path} component={RedirectDashboard} />;
       }
-      if (loggedIn && currentUser && currentUser.profile.role === 'superAdmin') {
+      if (loggedIn && currentUser && currentUser.profile.role === "superAdmin") {
         return <Route exact key={route.name} path={route.path} component={route.component} />;
       }
-      if (loggedIn && currentUser && currentUser.profile.role !== 'superAdmin') {
+      if (loggedIn && currentUser && currentUser.profile.role !== "superAdmin") {
         return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
       }
-      if (route.path === '/login') {
+      if (route.path === "/login") {
         return <Route exact key={route.name} path={route.path} component={route.component} />;
       }
-      if(currentUser === null) {
+      if (currentUser === null) {
         return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
       }
-    }
     };
     return (
       <BrowserRouter>
         <Switch>
           {Routes.map(route => {
-            if (route.permission === 'superAdmin') {
+            if (route.permission === "superAdmin") {
               return isSuperAdmin(route);
             }
             return isLoggedIn(route);
@@ -64,6 +63,6 @@ export default withTracker(() => {
   const loggedIn = !!Meteor.userId();
   return {
     loggedIn,
-    currentUser: Meteor.user()
+    currentUser: Meteor.user(),
   };
 })(Index);

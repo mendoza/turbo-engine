@@ -10,7 +10,7 @@ const Routes = [
   {
     path: "/login",
     name: "Login",
-    component: Login
+    component: Login,
   },
   {
     path: "/",
@@ -26,19 +26,19 @@ const Routes = [
     path: "/crearUsuarios",
     name: "Crear",
     component: CreateUsers,
-    permission: 'superAdmin',
+    permission: "superAdmin",
   },
   {
     path: "/listarUsuarios",
     name: "Listar",
     component: ListUsers,
-    permission: 'superAdmin',
+    permission: "superAdmin",
   },
   {
     path: "/actualizarUsuarios",
     name: "Actualizar",
     component: UpdateUsers,
-    permission: 'superAdmin',
+    permission: "superAdmin",
   },
   {
     path: "/empresa",
