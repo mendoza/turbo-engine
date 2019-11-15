@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
-
-// Para los usuarios
+import Empresa from "../imports/api/collections/Empresa/Empresa";
+import "../imports/api/collections/Empresa/Methods";
 import '../imports/api/collections/Usuarios/methods';
 
 Meteor.startup(() => {
@@ -14,6 +14,11 @@ Meteor.startup(() => {
         role: 'superAdmin'
       }
     };
+    Empresa.insert({
+      name: "Kike's autos",
+      RTN: "0000-0000-000000",
+      CAI: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    });
     Meteor.call('createUsers', superAdmin);
   }
 });

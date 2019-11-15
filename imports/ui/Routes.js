@@ -1,5 +1,6 @@
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
+import Empresa from "./pages/Empresa";
 import Login from "./pages/Login";
 
 const Routes = [
@@ -14,6 +15,10 @@ const Routes = [
     component: About,
   },
   {
+    path: "/empresa",
+    name: "Empresa",
+    component: Empresa,
+  },{
     path: "/login",
     name: "Login",
     component: Login,
