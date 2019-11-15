@@ -17,4 +17,10 @@ Meteor.methods({
   getEmpresaCAI() {
     return Empresa.find({}).fetch()[0].CAI;
   },
+  updateEmpresa(payload) {
+    const selector = { _id: payload._id };
+    delete payload._id;
+    const modifier = payload;
+    return Empresa.update(selector, modifier);
+  },
 });
