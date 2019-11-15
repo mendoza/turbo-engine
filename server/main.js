@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import '../imports/api/collections/Usuarios/publications';
 import Empresa from "../imports/api/collections/Empresa/Empresa";
 import "../imports/api/collections/Empresa/Methods";
 import "../imports/api/collections/Usuarios/methods";

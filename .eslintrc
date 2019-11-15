@@ -5,9 +5,9 @@
     "allowImportExportEverywhere": false,
     "codeFrame": false
   },
-  "extends": ["airbnb", "prettier"],
-  "plugins": ["react", "prettier"],
-  "env": { "browser": true, "jest": true, "mongo": true },
+  "extends": ["airbnb", "prettier","plugin:meteor/recommended"],
+  "plugins": ["react", "prettier", "meteor"],
+  "env": { "browser": true, "jest": true, "meteor": true },
   "rules": {
     "max-len": ["error", { "code": 100 }],
     "prefer-promise-reject-errors": ["off"],
