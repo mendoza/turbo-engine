@@ -1,8 +1,8 @@
 import { Meteor } from "meteor/meteor";
-import "../imports/api/collections/Usuarios/methods";
 
-// Para los usuarios
+// For the users
 import '../imports/api/collections/Usuarios/methods';
+import '../imports/api/collections/Usuarios/publications';
 
 Meteor.startup(() => {
   if (Meteor.users.find().fetch().length === 0) {

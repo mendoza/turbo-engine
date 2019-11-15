@@ -3,10 +3,14 @@ import About from "./pages/About";
 import CreateUsers from "./pages/CreateUsers";
 import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
-import DeleteUsers from "./pages/DeleteUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 
 const Routes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
+  },
   {
     path: "/",
     name: "Inicio",
@@ -18,29 +22,22 @@ const Routes = [
     component: About,
   },
   {
-    path: "/crear",
+    path: "/crearUsuarios",
     name: "Crear",
     component: CreateUsers,
+    permission: 'superAdmin',
   },
   {
-    path: "/login",
-    name: "Login",
-    component: Login
-  },
-  {
-    path: "/list",
+    path: "/listarUsuarios",
     name: "Listar",
     component: ListUsers,
+    permission: 'superAdmin',
   },
   {
-    path: "/delete",
-    name: "Eliminar",
-    component: DeleteUsers,
-  },
-  {
-    path: "/update",
+    path: "/actualizarUsuarios",
     name: "Actualizar",
     component: UpdateUsers,
+    permission: 'superAdmin',
   },
 ];
 export default Routes;
