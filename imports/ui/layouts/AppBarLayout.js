@@ -53,7 +53,7 @@ class AppBarLayout extends PureComponent {
                     <NavLink className="MuiLink-root" to={route.path}>
                       {route.name}
                     </NavLink>
-                    )}
+                  )}
                 />
               </ListItem>
             ))}

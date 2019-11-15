@@ -1,7 +1,7 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 
-Facturas = new Mongo.Collection("Facturas");
+const Facturas = new Mongo.Collection("Facturas");
 
 Facturas.schema = new SimpleSchema({
     numero: {type: Number},
