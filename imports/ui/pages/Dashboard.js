@@ -1,10 +1,12 @@
 import React, { PureComponent } from "react";
 import { Container, Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import { BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import Button from "@material-ui/core/Button";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Title from "../components/Title"
-import Orders from "../components/Orders"
+import Title from "../components/Title";
+import Orders from "../components/Orders";
+import { Meteor } from "meteor/meteor";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -15,22 +17,26 @@ class Dashboard extends PureComponent {
 
   render() {
     // Linechart
-    const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, 
-                  {name: 'Page B', uv: 100, pv: 2400, amt: 2400},
-                  {name: 'Page C', uv: 400, pv: 2400, amt: 2400}]
+    const data = [
+      { name: "Page A", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Page B", uv: 100, pv: 2400, amt: 2400 },
+      { name: "Page C", uv: 400, pv: 2400, amt: 2400 },
+    ];
     // Barchart
-    const databar = [{name: 'Enero', uv: 400, pv: 2400, amt: 2400},  
-                  {name: 'Febrero', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Marzo', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Abril', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Mayo', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Junio', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Julio', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Agost', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Septiembre', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Octubre', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Noviembre', uv: 400, pv: 2400, amt: 2400},
-                  {name: 'Diciembre', uv: 400, pv: 2400, amt: 2400}];
+    const databar = [
+      { name: "Enero", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Febrero", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Marzo", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Abril", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Mayo", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Junio", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Julio", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Agost", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Septiembre", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Octubre", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Noviembre", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Diciembre", uv: 400, pv: 2400, amt: 2400 },
+    ];
 
     return (
       <DashboardLayout Routes={[]}>
@@ -46,8 +52,14 @@ class Dashboard extends PureComponent {
               </LineChart>
             </Grid>
             <Grid item xs={6}>
-              <Title>Other</Title>
-              
+              <Button
+                variant="contained"
+                color="primary"
+                onCLick={() => {
+                  Meteor.call("generateFakeAutos", 50, (error, result) => {});
+                }}>
+                Primary
+              </Button>
             </Grid>
           </Grid>
           <Grid item xs={12}>

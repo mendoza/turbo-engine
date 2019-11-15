@@ -1,7 +1,8 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 
-const Autos = new Mongo.Collection("Autos");
+Autos = new Mongo.Collection("Autos");
+
 
 Autos.schema = new SimpleSchema({
   marca: { type: String },
@@ -17,4 +18,4 @@ Autos.schema = new SimpleSchema({
   estado: { type: SimpleSchema.Integer },
 });
 
-export default Autos;
+export default Autos
