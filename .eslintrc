@@ -5,7 +5,7 @@
     "allowImportExportEverywhere": false,
     "codeFrame": false
   },
-  "extends": ["airbnb", "prettier", "plugin:meteor/recommended"],
+  "extends": ["@meteorjs/eslint-config-meteor", "prettier", "plugin:meteor/recommended"],
   "plugins": ["react", "prettier", "meteor"],
   "env": { "browser": true, "jest": true, "meteor": true },
   "rules": {

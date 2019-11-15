@@ -19,9 +19,7 @@ Meteor.methods({
     return Empresa.find({}).fetch()[0].CAI;
   },
   updateEmpresa(payload) {
-    // eslint-disable-next-line no-underscore-dangle
     const selector = { _id: payload._id };
-    // eslint-disable-next-line no-underscore-dangle
     delete payload._id;
     const modifier = payload;
     return Empresa.update(selector, modifier);
