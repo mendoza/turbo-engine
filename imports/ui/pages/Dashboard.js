@@ -7,6 +7,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Orders from "../components/Orders";
 // import { Meteor } from "meteor/meteor";
+import faker from "faker";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -56,6 +57,7 @@ class Dashboard extends PureComponent {
                 variant="contained"
                 color="primary"
                 onClick={() => {
+                  console.log(faker.vehicle.color());
                   // Meteor.call("generateFakeAutos", 50, (error, result) => {
                   //   console.log(error);
                   // });
