@@ -2,10 +2,6 @@ import React, { PureComponent } from "react";
 import { Container, Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
-import Button from "@material-ui/core/Button";
-import DashboardLayout from "../layouts/DashboardLayout";
-import Title from "../components/Title";
-import Orders from "../components/Orders";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Orders from "../components/Orders";
@@ -53,8 +49,7 @@ class Dashboard extends PureComponent {
                 <YAxis />
               </LineChart>
             </Grid>
-            <Grid item xs={6}>
-            </Grid>
+            <Grid item xs={6}></Grid>
           </Grid>
           <Grid item xs={12}>
             <Paper>
