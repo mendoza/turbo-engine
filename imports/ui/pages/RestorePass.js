@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Container, Button, Typography, Grid, TextField,  } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
+import { Redirect } from 'react-router-dom';
 import DashboardLayout from "../layouts/DashboardLayout";
 
 class RestorePass extends PureComponent {
@@ -21,7 +22,9 @@ class RestorePass extends PureComponent {
 
     handleClick = () =>{
       const {correo, password} = this.state;
-      
+      const user = Meteor.users.findOne({'emails.0.address': correo});
+      Meteor.users.update(user.password, password);
+      return <Redirect to='/' />;
     }
 
     render(){
