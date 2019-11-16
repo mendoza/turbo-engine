@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
 import { Container, Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import { BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 import Button from "@material-ui/core/Button";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Orders from "../components/Orders";
-import { Meteor } from "meteor/meteor";
+// import { Meteor } from "meteor/meteor";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -55,8 +55,10 @@ class Dashboard extends PureComponent {
               <Button
                 variant="contained"
                 color="primary"
-                onCLick={() => {
-                  Meteor.call("generateFakeAutos", 50, (error, result) => {});
+                onClick={() => {
+                  // Meteor.call("generateFakeAutos", 50, (error, result) => {
+                  //   console.log(error);
+                  // });
                 }}>
                 Primary
               </Button>

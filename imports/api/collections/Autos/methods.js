@@ -4,8 +4,9 @@ import Autos from "./Autos";
 
 Meteor.methods({
   generateFakeAutos(quantity) {
-    const auto = { marca: vehicle.manufacturer(), modelo: vehicle.model()};
-    console.log(auto);
-    //return Autos.insert(auto);
+    for (let i = 0; i < quantity; i += 1) {
+      const auto = { marca: vehicle.manufacturer(), modelo: vehicle.model() };
+      console.log(auto);
+    }
   },
 });
