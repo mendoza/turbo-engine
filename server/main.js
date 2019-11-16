@@ -23,6 +23,6 @@ Meteor.startup(() => {
         role: "superAdmin",
       },
     };
-    Meteor.call("crearUsuarios", superAdmin);
+    Meteor.call("createUsuario", superAdmin);
   }
 });
