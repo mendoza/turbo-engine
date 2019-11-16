@@ -15,7 +15,12 @@ class Error404 extends PureComponent {
         <Paper style={{ padding: "2%" }}>
           <Grid container direction="row" alignItems="center" justify="center">
             <Grid item>
-              <Error className="Error" fontSize="large" style={{fontSize:"128pt"}} color="error" />
+              <Error
+                className="Error"
+                fontSize="large"
+                style={{ fontSize: "128pt" }}
+                color="error"
+              />
             </Grid>
             <Grid item>
               <Typography align="justify" variant="h3">

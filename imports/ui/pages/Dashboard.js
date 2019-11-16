@@ -6,8 +6,9 @@ import Button from "@material-ui/core/Button";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Orders from "../components/Orders";
-// import { Meteor } from "meteor/meteor";
-import faker from "faker";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Title from "../components/Title";
+import Orders from "../components/Orders";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -53,17 +54,6 @@ class Dashboard extends PureComponent {
               </LineChart>
             </Grid>
             <Grid item xs={6}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  console.log(faker.vehicle.color());
-                  // Meteor.call("generateFakeAutos", 50, (error, result) => {
-                  //   console.log(error);
-                  // });
-                }}>
-                Primary
-              </Button>
             </Grid>
           </Grid>
           <Grid item xs={12}>
