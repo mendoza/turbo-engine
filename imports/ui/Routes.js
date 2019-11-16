@@ -1,13 +1,22 @@
-import Users from "./pages/Users";
+import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
 import CreateUsers from "./pages/CreateUsers";
-import EditUsers from "./pages/EditUsers";
+import Empresa from "./pages/Empresa";
+import Login from "./pages/Login";
+import ListUsers from "./pages/ListUsers";
+import UpdateUsers from "./pages/UpdateUsers";
+import RestorePass from "./pages/RestorePass";
 
 const Routes = [
   {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
     path: "/",
     name: "Inicio",
-    component: Users,
+    component: Dashboard,
   },
   {
     path: "/about",
@@ -15,14 +24,38 @@ const Routes = [
     component: About,
   },
   {
-    path: "/crear",
+    path: "/crearUsuarios",
     name: "Crear",
     component: CreateUsers,
+    permission: "superAdmin",
   },
   {
-    path: "/editar",
-    name: "Editar",
-    component: EditUsers,
+    path: "/listarUsuarios",
+    name: "Listar",
+    component: ListUsers,
+    permission: "superAdmin",
+  },
+  {
+    path: "/actualizarUsuarios",
+    name: "Actualizar",
+    component: UpdateUsers,
+    permission: "superAdmin",
+  },
+  {
+    path: "/empresa",
+    name: "Empresa",
+    component: Empresa,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/reestablecerContra",
+    name: "Reestablecer",
+    component: RestorePass,
   },
 ];
+
 export default Routes;

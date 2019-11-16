@@ -1,34 +1,28 @@
 import { Meteor } from "meteor/meteor";
-import Links from "/imports/api/links";
+import Empresa from "../imports/api/collections/Empresa/Empresa";
+import "../imports/api/collections/Usuarios/publications";
+import "../imports/api/collections/Empresa/Methods";
+import "../imports/api/collections/Usuarios/methods";
+import "../imports/api/collections/Autos/methods";
 
-function insertLink(title, url) {
-  Links.insert({ title, url, createdAt: new Date() });
-}
-
-<<<<<<< HEAD
-Meteor.startup(() => {});
-
-// Meteor.publish("links.all", () => Links.find());
-
-Meteor.methods({
-  'insertJohnDoe'(objectFromClient) {
-    console.log(objectFromClient);
-    if (2 + 2 === 4) {
-      // Links.schema.validate(objectFromClient);
-      // Links.insert(objectFromClient);
-    }
-  },
-=======
 Meteor.startup(() => {
-  // If the Links collection is empty, add some data.
-  if (Links.find().count() === 0) {
-    insertLink("Do the Tutorial", "https://www.meteor.com/tutorials/react/creating-an-app");
-
-    insertLink("Follow the Guide", "http://guide.meteor.com");
-
-    insertLink("Read the Docs", "https://docs.meteor.com");
-
-    insertLink("Discussions", "https://forums.meteor.com");
+  if (Empresa.find().count() === 0) {
+    Empresa.insert({
+      name: "Kike's autos",
+      RTN: "0000-0000-000000",
+      CAI: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    });
   }
->>>>>>> 3d59a6eefd097fda771684d9cf4bb2ecf2b873af
+  if (Meteor.users.find().fetch().length === 0) {
+    const superAdmin = {
+      email: "ingenieria@ingenieria.com",
+      password: "Hola1234",
+      profile: {
+        firstName: "Usuario",
+        lastName: "Administrador",
+        role: "superAdmin",
+      },
+    };
+    Meteor.call("createUsuario", superAdmin);
+  }
 });
