@@ -43,6 +43,7 @@ class Index extends PureComponent {
         return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
       }
     };
+
     return (
       <BrowserRouter>
         <Switch>
