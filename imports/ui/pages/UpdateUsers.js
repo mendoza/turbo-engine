@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Container, Button, Typography } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
+
 class UpdateUsers extends PureComponent {
   constructor(props) {
     super(props);

@@ -5,6 +5,7 @@ import Empresa from "./pages/Empresa";
 import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
+import RestorePass from "./pages/RestorePass";
 
 const Routes = [
   {
@@ -49,6 +50,11 @@ const Routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/reestablecerContra",
+    name: "Reestablecer",
+    component: RestorePass,
   },
 ];
 
