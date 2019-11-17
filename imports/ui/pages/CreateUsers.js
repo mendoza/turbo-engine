@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/order */
+
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -9,8 +13,12 @@ import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+// eslint-disable-next-line import/no-unresolved
 import { Meteor } from "meteor/meteor";
 import DashboardLayout from "../layouts/DashboardLayout";
+import validator from 'validator';
+
+ 
 
 const Styles = theme => ({
   "@global": {
@@ -56,6 +64,8 @@ class CreateUsers extends React.Component {
 
   handleCreate = () => {
     const { nombre, apellido, correo, password } = this.state;
+    let validator = require('validator');
+    
     Meteor.call(
       "createUsuario",
       {
@@ -66,17 +76,30 @@ class CreateUsers extends React.Component {
         }
       },
       err => {
-        if (err) {
-          alert("Error al crear usuario");
-        } else {
+        if ((validator.isEmail(correo)===true)&&(validator.isEmpty(nombre)===false)&&(validator.isEmpty(apellido))===false
+              &&(validator.isEmpty(password))===false) {
           alert("Usuario creado exitosamente");
           this.setState({
             nombre: '',
             apellido: '',
             correo: '',
-            password: '',
+            password: ''
           });
+        } else {
+            if(validator.isEmpty(nombre)===true){
+              alert("Este Campo es requerido,por favor ingrese su nombre");
+            }
+            if(validator.isEmpty(apellido)===true){
+              alert("Este Campo es requerido,por favor ingrese su apellido");
+            }
+            if(validator.isEmail(correo)===false){
+              alert("Este Campo es requerido,por favor ingrese un correo valido");
+            }
+            if(validator.isEmpty(password)===true){
+              alert("Este Campo es requerido,por favor ingrese su contraseña");
+            }
         }
+          
       }
     );
   };
@@ -94,7 +117,7 @@ class CreateUsers extends React.Component {
             <Typography component="h1" variant="h5">
               Crear Usuarios
             </Typography>
-            <form noValidate>
+            <form id="formUserLogin" noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -157,9 +180,7 @@ class CreateUsers extends React.Component {
               <Grid container justify="flex-end">
                 <Grid item>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <Link href="#" variant="body2">
-                    ¿Ya está registrado? Ingrese
-                  </Link>
+                  <Link href="#" variant="body2" />
                 </Grid>
               </Grid>
             </form>
