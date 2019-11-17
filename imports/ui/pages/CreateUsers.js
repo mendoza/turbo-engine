@@ -16,9 +16,7 @@ import Container from "@material-ui/core/Container";
 // eslint-disable-next-line import/no-unresolved
 import { Meteor } from "meteor/meteor";
 import DashboardLayout from "../layouts/DashboardLayout";
-import validator from 'validator';
-
- 
+import validator from "validator";
 
 const Styles = theme => ({
   "@global": {
@@ -64,42 +62,59 @@ class CreateUsers extends React.Component {
 
   handleCreate = () => {
     const { nombre, apellido, correo, password } = this.state;
-    let validator = require('validator');
-    
+    let validator = require("validator");
+
     Meteor.call(
       "createUsuario",
       {
         email: correo,
         password,
         profile: {
-          firstName: nombre, lastName: apellido, role: 'empleado'
-        }
+          firstName: nombre,
+          lastName: apellido,
+          role: "empleado",
+        },
       },
       err => {
-        if ((validator.isEmail(correo)===true)&&(validator.isEmpty(nombre)===false)&&(validator.isEmpty(apellido))===false
-              &&(validator.isEmpty(password))===false) {
+        if (
+          () => {
+            return Meteor.users.find(correo);
+          }
+        ) {
+          alert("Este usuario ya existe.");
+          this.setState({
+            nombre: "",
+            apellido: "",
+            correo: "",
+            password: "",
+          });
+        } else if (
+          validator.isEmail(correo) === true &&
+          validator.isEmpty(nombre) === false &&
+          validator.isEmpty(apellido) === false &&
+          validator.isEmpty(password) === false
+        ) {
           alert("Usuario creado exitosamente");
           this.setState({
-            nombre: '',
-            apellido: '',
-            correo: '',
-            password: ''
+            nombre: "",
+            apellido: "",
+            correo: "",
+            password: "",
           });
         } else {
-            if(validator.isEmpty(nombre)===true){
-              alert("Este Campo es requerido,por favor ingrese su nombre");
-            }
-            if(validator.isEmpty(apellido)===true){
-              alert("Este Campo es requerido,por favor ingrese su apellido");
-            }
-            if(validator.isEmail(correo)===false){
-              alert("Este Campo es requerido,por favor ingrese un correo valido");
-            }
-            if(validator.isEmpty(password)===true){
-              alert("Este Campo es requerido,por favor ingrese su contraseña");
-            }
+          if (validator.isEmpty(nombre) === true) {
+            alert("Este Campo es requerido,por favor ingrese su nombre");
+          }
+          if (validator.isEmpty(apellido) === true) {
+            alert("Este Campo es requerido,por favor ingrese su apellido");
+          }
+          if (validator.isEmail(correo) === false) {
+            alert("Este Campo es requerido,por favor ingrese un correo valido");
+          }
+          if (validator.isEmpty(password) === true) {
+            alert("Este Campo es requerido,por favor ingrese su contraseña");
+          }
         }
-          
       }
     );
   };
