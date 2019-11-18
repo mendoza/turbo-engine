@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { Meteor } from "meteor/meteor";
+import Title from "../components/Title"
 import {
   Typography,
   Container,
@@ -18,7 +19,6 @@ import CreateIcon from "@material-ui/icons/Create";
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import Grid from '@material-ui/core/Grid';
 
 class ListUsers extends PureComponent {
   constructor(props) {
@@ -31,7 +31,7 @@ class ListUsers extends PureComponent {
     return (
       <DashboardLayout>
         <Container>
-          <Typography variant="h1">Listar usuarios</Typography>
+          <Title>Listar usuarios</Title>
           <Table aria-label="users table">
             <TableHead>
               <TableRow>
@@ -39,6 +39,7 @@ class ListUsers extends PureComponent {
                 <TableCell>Nombre(s)</TableCell>
                 <TableCell>Apellidos(s)</TableCell>
                 <TableCell>Rol</TableCell>
+                <TableCell>  </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -61,7 +62,7 @@ class ListUsers extends PureComponent {
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <div>
-                          <ToggleButtonGroup>
+                          <ToggleButtonGroup aria-label="text alignment">
                             <ToggleButton value="left" aria-label="left aligned">
                               <PersonIcon />
                             </ToggleButton>
