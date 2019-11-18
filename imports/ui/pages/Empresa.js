@@ -1,29 +1,45 @@
 import React, { PureComponent } from "react";
-import { Paper, Grid, Typography, TextField, Button } from "@material-ui/core";
+import {
+  Paper,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Snackbar,
+  IconButton,
+} from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 
 class Empresa extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = { empresa: {}, name: "", RTN: "", CAI: "" };
+    this.state = {
+      id: "",
+      empresa: {},
+      name: "",
+      RTN: "",
+      CAI: "",
+      open: false,
+    };
+    Meteor.call("getEmpresa", (error, result) => {
+      this.setState({
+        empresa: result,
+        id: result._id,
+        name: result.name,
+        RTN: result.RTN,
+        CAI: result.CAI,
+      });
+    });
   }
 
-  componentDidMount = () => {
-    Meteor.call("getEmpresa", (error, result) => {
-      this.setState({ empresa: result });
-    });
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
-    const { empresa, name, RTN, CAI } = this.state;
+    const { name, RTN, CAI, empresa, id, open } = this.state;
     return (
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper>
-            <Typography variant="h1">Datos de la empresa</Typography>
-          </Paper>
-        </Grid>
         <Grid item xs={4}>
           <Paper>
             <Typography variant="body1">{`Nombre: ${empresa.name}`}</Typography>
@@ -68,10 +84,37 @@ class Empresa extends PureComponent {
           variant="contained"
           color="primary"
           onClick={() => {
-            Meteor.call("updateEmpresa", { _id: empresa._id, name, RTN, CAI });
+            Meteor.call("updateEmpresa", { _id: id, name, RTN, CAI }, (error, result) => {
+              this.setState({
+                empresa: result,
+                id: result._id,
+                name: result.name,
+                RTN: result.RTN,
+                CAI: result.CAI,
+                open: true,
+              });
+            });
           }}>
           Actualizar
         </Button>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          ContentProps={{
+            "aria-describedby": "message-id",
+          }}
+          message={<span id="message-id">Datos Actualizados excitosamente</span>}
+          action={[
+            <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+              <i className="fas fa-times" />
+            </IconButton>,
+          ]}
+        />
       </Grid>
     );
   }
