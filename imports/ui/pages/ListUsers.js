@@ -1,10 +1,24 @@
 import React, { PureComponent } from "react";
 import { Meteor } from "meteor/meteor";
+import Title from "../components/Title"
 import {
-  Typography, Container, Table, TableHead, TableRow, TableCell, TableBody
+  Typography,
+  Container,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@material-ui/core";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
+
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import PersonIcon from "@material-ui/icons/Person";
+import CreateIcon from "@material-ui/icons/Create";
+
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 class ListUsers extends PureComponent {
   constructor(props) {
@@ -17,7 +31,7 @@ class ListUsers extends PureComponent {
     return (
       <DashboardLayout>
         <Container>
-          <Typography variant="h1">Listar usuarios</Typography>
+          <Title>Listar usuarios</Title>
           <Table aria-label="users table">
             <TableHead>
               <TableRow>
@@ -25,23 +39,42 @@ class ListUsers extends PureComponent {
                 <TableCell>Nombre(s)</TableCell>
                 <TableCell>Apellidos(s)</TableCell>
                 <TableCell>Rol</TableCell>
+                <TableCell>  </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => {
+              {users.map(user => {
                 if (user) {
                   return (
                     // eslint-disable-next-line no-underscore-dangle
                     <TableRow key={user._id}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                      >
+                      <TableCell component="th" scope="row">
                         {user.emails && user.emails[0].address}
                       </TableCell>
-                      <TableCell component="th" scope="row">{user.profile.firstName}</TableCell>
-                      <TableCell component="th" scope="row">{user.profile.lastName}</TableCell>
-                      <TableCell component="th" scope="row">{user.profile.role}</TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.profile.firstName}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.profile.lastName}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.profile.role}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <div>
+                          <ToggleButtonGroup aria-label="text alignment">
+                            <ToggleButton value="left" aria-label="left aligned">
+                              <PersonIcon />
+                            </ToggleButton>
+                            <ToggleButton value="center" aria-label="centered">
+                              <CreateIcon />
+                            </ToggleButton>
+                            <ToggleButton value="right" aria-label="right aligned">
+                              <DeleteForeverIcon />
+                            </ToggleButton>
+                          </ToggleButtonGroup>
+                        </div>
+                      </TableCell>
                     </TableRow>
                   );
                 }
@@ -49,6 +82,7 @@ class ListUsers extends PureComponent {
               })}
             </TableBody>
           </Table>
+
         </Container>
       </DashboardLayout>
     );
@@ -56,8 +90,8 @@ class ListUsers extends PureComponent {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('users.all');
+  Meteor.subscribe("users.all");
   return {
     users: Meteor.users.find().fetch(),
-  }
+  };
 })(ListUsers);
