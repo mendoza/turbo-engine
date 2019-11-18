@@ -21,6 +21,7 @@ Meteor.methods({
     const selector = { _id: payload._id };
     delete payload._id;
     const modifier = payload;
-    return Empresa.update(selector, modifier);
+    Empresa.update(selector, modifier);
+    return Empresa.find(selector).fetch()[0];
   },
 });

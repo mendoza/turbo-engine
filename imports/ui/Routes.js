@@ -18,7 +18,9 @@ const Routes = [
     path: "/empresa",
     name: "Empresa",
     component: Empresa,
-  },{
+    permission: "superAdmin",
+  },
+  {
     path: "/login",
     name: "Login",
     component: Login,
