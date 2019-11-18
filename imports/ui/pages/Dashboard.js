@@ -1,13 +1,10 @@
 import React, { PureComponent } from "react";
-import { Container, Typography } from "@material-ui/core";
-import ChartistGraph from "react-chartist";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import { Container, Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Title from "../components/Title";
+import Orders from "../components/Orders";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -17,75 +14,48 @@ class Dashboard extends PureComponent {
   }
 
   render() {
-    // Para el gráfico
-    const data = {
-      labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"],
-      series: [[1, 2, 4, 8, 6, -2, -1, -4, -6, -2]],
-    };
-
-    const options = {
-      high: 10,
-      low: -10,
-      axisX: {
-        unction(value, index) {
-          return index % 2 === 0 ? value : null;
-        },
-      },
-    };
-
-    const type = "Bar";
-
-    // Datos de ejemplo
-    function createData(typef, product, date, status) {
-      return { typef, product, date, status };
-    }
-    const rows = [
-      createData("Compra de repuesto", "Carburador", "10/12/2019", true),
-      createData("Reparación de automovil", "Toyota corolla", "10/12/2019", false),
-      createData("Venta de automovil", "Honda CRV", "10/12/2019", true),
-      createData("Compra de repuesto", "Amortiguador", "10/12/2019", true),
+    // Linechart
+    const data = [
+      { name: "Page A", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Page B", uv: 100, pv: 2400, amt: 2400 },
+      { name: "Page C", uv: 400, pv: 2400, amt: 2400 },
+    ];
+    // Barchart
+    const databar = [
+      { name: "Enero", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Febrero", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Marzo", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Abril", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Mayo", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Junio", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Julio", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Agost", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Septiembre", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Octubre", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Noviembre", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Diciembre", uv: 400, pv: 2400, amt: 2400 },
     ];
 
     return (
       <DashboardLayout Routes={[]}>
         <Container padding="30px">
-          <div>
-            <Typography variant="h4" component="h2" margin="30px">
-              Gráfico
-            </Typography>
+          <Grid container spacing={3} direction="row" justify="center" alignItems="center">
+            <Grid>
+              <Title>Ganancias anuales</Title>
+              <LineChart width={500} height={300} data={data}>
+                <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                <CartesianGrid stroke="#ccc" />
+                <XAxis dataKey="name" />
+                <YAxis />
+              </LineChart>
+            </Grid>
+            <Grid item xs={6}></Grid>
+          </Grid>
+          <Grid item xs={12}>
             <Paper>
-              <ChartistGraph data={data} options={options} type={type} />
+              <Orders />
             </Paper>
-          </div>
-          <div>
-            <Typography variant="h4" component="h2">
-              Reportes
-            </Typography>
-            <Paper>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Tipo de reporte</TableCell>
-                    <TableCell align="right">Producto</TableCell>
-                    <TableCell align="right">Fecha</TableCell>
-                    <TableCell align="right">Estado</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map(row => (
-                    <TableRow key={row.type}>
-                      <TableCell component="th" scope="row">
-                        {row.type}
-                      </TableCell>
-                      <TableCell align="right">{row.product}</TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Paper>
-          </div>
+          </Grid>
         </Container>
       </DashboardLayout>
     );

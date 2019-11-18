@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { Meteor } from "meteor/meteor";
 import Empresa from "./Empresa";
 
