@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Title from "../components/Title"
+import Title from "../components/Title";
 
 class UpdateUsers extends PureComponent {
   constructor(props) {
@@ -18,6 +18,16 @@ class UpdateUsers extends PureComponent {
       correo: "",
       services: "",
     };
+    if (props.location.state !== undefined) {
+      const { user } = props.location.state;
+      this.state = {
+        id: user._id,
+        nombre: user.profile.firstName,
+        apellido: user.profile.lastName,
+        correo: user.emails[0].address,
+        services: user.profile.services,
+      };
+    }
   }
 
   handleTextChange = (event, stateVariable) => {
@@ -40,46 +50,41 @@ class UpdateUsers extends PureComponent {
     console.log(users[0].services);
   };
 
-  handleClick = e => {
+  handleSubmit = e => {
     e.preventDefault();
     const { id, nombre, apellido, correo, services } = this.state;
-    Meteor.call(
-      "updateUsers",
-      {
-        _id: id,
-        emails: [
-          {
-            address: correo,
-            verified: false,
-          },
-        ],
-        services,
-        profile: {
-          firstName: nombre,
-          lastName: apellido,
-          role: "empleado",
+    Meteor.call("updateUsers", {
+      _id: id,
+      emails: [
+        {
+          address: correo,
+          verified: false,
         },
+      ],
+      services,
+      profile: {
+        firstName: nombre,
+        lastName: apellido,
+        role: "empleado",
       },
-    );
+    });
     alert("Usuario actualizado exitosamente");
-          this.setState({
-            nombre: "",
-            apellido: "",
-            correo: "",
-            services: "",
-          });
+    this.setState({
+      nombre: "",
+      apellido: "",
+      correo: "",
+      services: "",
+    });
   };
 
   render() {
-    const { id, nombre, apellido, correo} = this.state;
+    const { id, nombre, apellido, correo } = this.state;
     const { users } = this.props;
     return (
       <DashboardLayout>
         <Container>
-          <Title>
-            Actualizar Usuarios
-          </Title>
-          <form onSubmit={this.handleClick}>
+          <Title>Actualizar Usuarios</Title>
+          <form onSubmit={this.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Select
@@ -93,13 +98,7 @@ class UpdateUsers extends PureComponent {
                     if (user) {
                       return (
                         <MenuItem key={user._id} value={user._id}>
-                          {user._id}
-                          {' '}
-                          -
-                          {' '}
-                          {user.profile.firstName} 
-                          {' '}
-                          {user.profile.lastName}
+                          {user._id} - {user.profile.firstName} {user.profile.lastName}
                         </MenuItem>
                       );
                     }
@@ -119,7 +118,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={nombre}
                   onInput={event => this.handleTextChange(event, "nombre")}
-                  />
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -133,7 +132,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={apellido}
                   onInput={event => this.handleTextChange(event, "apellido")}
-                  />
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -146,7 +145,7 @@ class UpdateUsers extends PureComponent {
                   autoComplete="email"
                   value={correo}
                   onInput={event => this.handleTextChange(event, "correo")}
-                  />
+                />
               </Grid>
               <Button type="submit" fullWidth variant="contained" color="primary">
                 Actualizar
