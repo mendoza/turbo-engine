@@ -7,7 +7,7 @@ import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 
-const Routes = [
+export const Routes = [
   {
     path: "/login",
     name: "Login",
@@ -59,4 +59,7 @@ const Routes = [
   },
 ];
 
-export default Routes;
+export const dashboardRoutes = [
+  { pathName: "/", name: "Inicio", icon: "dashboard" },
+  { pathName: "/reports", name: "Reportes", icon: "bar_chart" },
+];

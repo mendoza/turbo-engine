@@ -22,11 +22,13 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { mainListItems, secondaryListItems } from "../components/listItems";
+import { secondaryListItems } from "../components/listItems";
 import { Meteor } from "meteor/meteor";
-import RedirectDashboard from "../components/RedirectDashboard";
+import Icon from "@material-ui/core/Icon";
+import { dashboardRoutes } from "../Routes";
 
 function Copyright() {
   return (
@@ -130,10 +132,11 @@ class DashboardLayout extends PureComponent {
     this.state = {
       open: false,
       anchorEl: null,
-      redirect: false,
-      direction: "",
       empresa: {},
+      shouldRedirect: false,
+      pathName: "",
     };
+
     Meteor.call("getEmpresa", (error, result) => {
       this.setState({
         empresa: result,
@@ -143,7 +146,7 @@ class DashboardLayout extends PureComponent {
 
   render() {
     const { classes, children } = this.props;
-    const { open, anchorEl, redirect, direction, empresa } = this.state;
+    const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
     const handleDrawerOpen = () => {
       this.setState({ open: true });
     };
@@ -159,7 +162,7 @@ class DashboardLayout extends PureComponent {
       this.setState({ anchorEl: null });
     };
     const RedirectTo = where => {
-      this.setState({ redirect: true, direction: where });
+      this.setState({ shouldRedirect: true, pathName: where });
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -243,7 +246,22 @@ class DashboardLayout extends PureComponent {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List>
+            {dashboardRoutes.map(Route => {
+              return (
+                <ListItem
+                  button
+                  onClick={() => {
+                    RedirectTo(Route.pathName);
+                  }}>
+                  <ListItemIcon>
+                    <Icon>{Route.icon}</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={Route.name} />
+                </ListItem>
+              );
+            })}
+          </List>
           <Divider />
           <List>{secondaryListItems}</List>
         </Drawer>
@@ -258,7 +276,7 @@ class DashboardLayout extends PureComponent {
           </Container>
           <Copyright />
         </main>
-        {redirect ? <Redirect to={direction} /> : null}
+        {shouldRedirect ? <Redirect to={pathName} /> : null}
       </div>
     );
   }
