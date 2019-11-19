@@ -63,7 +63,7 @@ class ListUsers extends PureComponent {
                       <TableCell component="th" scope="row">
                         <div>
                           <ToggleButtonGroup aria-label="text alignment">
-                            <ToggleButton value="left" aria-label="left aligned">
+                            <ToggleButton value="left" aria-label="left aligned" onClick={()=>{console.log("It's works")}}>
                               <PersonIcon />
                             </ToggleButton>
                             <ToggleButton value="center" aria-label="centered">
