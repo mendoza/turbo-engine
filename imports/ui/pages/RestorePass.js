@@ -1,7 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import React, { PureComponent } from "react";
 import { Container, Button, Typography, Grid, TextField,  } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
-import { Redirect } from 'react-router-dom';
+import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 class RestorePass extends PureComponent {
@@ -22,9 +23,20 @@ class RestorePass extends PureComponent {
 
     handleClick = () =>{
       const {correo, password} = this.state;
-      const user = Meteor.users.findOne({'emails.0.address': correo});
-      Meteor.users.update(user.password, password);
-      return <Redirect to='/' />;
+      let {users} = this.props;
+      users = users.filter(user => user.emails[0].address === correo);
+      console.log(users);
+      Meteor.call(
+        "restorePass", {
+          _id: users[0]._id,
+          password,
+        },
+      );
+      alert("Contraseña restablecida exitosamente");
+      this.setState({
+        correo:"",
+        password:"",
+      })
     }
 
     render(){
@@ -79,4 +91,9 @@ class RestorePass extends PureComponent {
     }
 }
 
-export default RestorePass;
+export default withTracker(() => {
+  Meteor.subscribe("users.all");
+  return {
+    users: Meteor.users.find().fetch(),
+  };
+})(RestorePass);

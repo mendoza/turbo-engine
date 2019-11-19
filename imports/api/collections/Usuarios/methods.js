@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 
@@ -14,4 +15,7 @@ Meteor.methods({
   deleteUsers(payload) {
     const selector = { _id: payload._id };
   },
+  restorePass(payload){
+    return Accounts.setPassword(payload._id, payload.password);
+  }
 });
