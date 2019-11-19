@@ -71,15 +71,15 @@ class UpdateUsers extends PureComponent {
   };
 
   render() {
-    const { id, nombre, apellido, correo, password } = this.state;
+    const { id, nombre, apellido, correo} = this.state;
     const { users } = this.props;
     return (
       <DashboardLayout>
-        <Container>0
+        <Container>
           <Title>
             Actualizar Usuarios
           </Title>
-          <div>
+          <form onSubmit={this.handleClick}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Select
@@ -93,7 +93,13 @@ class UpdateUsers extends PureComponent {
                     if (user) {
                       return (
                         <MenuItem key={user._id} value={user._id}>
-                          {user._id} - {user.profile.firstName} {user.profile.lastName}
+                          {user._id}
+                          {' '}
+                          -
+                          {' '}
+                          {user.profile.firstName} 
+                          {' '}
+                          {user.profile.lastName}
                         </MenuItem>
                       );
                     }
@@ -113,7 +119,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={nombre}
                   onInput={event => this.handleTextChange(event, "nombre")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -127,7 +133,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={apellido}
                   onInput={event => this.handleTextChange(event, "apellido")}
-                />
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -140,7 +146,7 @@ class UpdateUsers extends PureComponent {
                   autoComplete="email"
                   value={correo}
                   onInput={event => this.handleTextChange(event, "correo")}
-                />
+                  />
               </Grid>
               <Button type="submit" fullWidth variant="contained" color="primary">
                 Actualizar
