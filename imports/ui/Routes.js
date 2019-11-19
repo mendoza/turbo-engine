@@ -61,5 +61,6 @@ export const Routes = [
 
 export const dashboardRoutes = [
   { pathName: "/", name: "Inicio", icon: "dashboard" },
-  { pathName: "/reports", name: "Reportes", icon: "bar_chart" },
+  { pathName: "/listarUsuarios", name: "Listar usuarios", icon: "format_list_bulleted" },
+  { pathName: "/crearUsuarios", name: "Crear usuarios", icon: "person_add" },
 ];

@@ -263,7 +263,8 @@ class DashboardLayout extends PureComponent {
             })}
           </List>
           <Divider />
-          <List>{secondaryListItems}</List>
+          {/* <List>{secondaryListItems}</List> */}
+          <List></List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
@@ -274,7 +275,7 @@ class DashboardLayout extends PureComponent {
               </Grid>
             </Grid>
           </Container>
-          <Copyright />
+          <Copyright/>
         </main>
         {shouldRedirect ? <Redirect to={pathName} /> : null}
       </div>
