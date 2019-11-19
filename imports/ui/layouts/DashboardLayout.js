@@ -26,6 +26,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { mainListItems, secondaryListItems } from "../components/listItems";
 import { Meteor } from "meteor/meteor";
+import RedirectDashboard from "../components/RedirectDashboard";
 
 function Copyright() {
   return (
