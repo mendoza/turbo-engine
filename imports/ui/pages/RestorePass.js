@@ -2,7 +2,6 @@
 import React, { PureComponent } from "react";
 import { Container, Button, Typography, Grid, TextField,  } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
-import { Redirect } from 'react-router-dom';
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 
@@ -26,23 +25,18 @@ class RestorePass extends PureComponent {
       const {correo, password} = this.state;
       let {users} = this.props;
       users = users.filter(user => user.emails[0].address === correo);
+      console.log(users);
       Meteor.call(
-        "updateUsers", {
+        "restorePass", {
           _id: users[0]._id,
-          emails: [
-            {
-              address: correo,
-              verified: false,
-            },
-          ],
           password,
-          profile: {
-            firstName: users[0].profile.firstName,
-            lastName: users[0].profile.lastName,
-            role: "empleado",
-          },
         },
       );
+      alert("Contraseña restablecida exitosamente");
+      this.setState({
+        correo:"",
+        password:"",
+      })
     }
 
     render(){
