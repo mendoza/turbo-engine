@@ -5,6 +5,7 @@ import { InputLabel, Select, MenuItem } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Title from "../components/Title"
 
 class UpdateUsers extends PureComponent {
   constructor(props) {
@@ -58,9 +59,9 @@ class UpdateUsers extends PureComponent {
     return (
       <DashboardLayout>
         <Container>
-          <Typography variant="h5">
+          <Title>
             Actualizar Usuarios
-          </Typography>
+          </Title>
           <div>
             <Grid container spacing={2}>
               <Grid item xs={12}>
