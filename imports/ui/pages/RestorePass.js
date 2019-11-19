@@ -25,7 +25,6 @@ class RestorePass extends PureComponent {
       const {correo, password} = this.state;
       let {users} = this.props;
       users = users.filter(user => user.emails[0].address === correo);
-      console.log(users);
       Meteor.call(
         "restorePass", {
           _id: users[0]._id,
@@ -47,7 +46,7 @@ class RestorePass extends PureComponent {
               <Typography>
                       Reestablecer Contraseña
               </Typography>
-              <form noValidate>
+              <form onSubmit={this.handleClick}>
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -73,17 +72,16 @@ class RestorePass extends PureComponent {
                     autoComplete="new-password"
                     value={password}
                     onInput={event => this.handleTextChange(event, "password")}
-                  />
+                    />
                 </Grid>
-              </form>
-              <Button 
-                type="submit"
-                color="primary"
-                variant="contained"
-                onClick={this.handleClick}
-              >
+                <Button 
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  >
                   Reestablecer
-              </Button>
+                </Button>
+              </form>
             </Container>
           </DashboardLayout>
         );

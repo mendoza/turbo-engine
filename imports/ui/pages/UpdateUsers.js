@@ -6,6 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Title from "../components/Title"
 
 class UpdateUsers extends PureComponent {
   constructor(props) {
@@ -74,9 +75,11 @@ class UpdateUsers extends PureComponent {
     const { users } = this.props;
     return (
       <DashboardLayout>
-        <Container>
-          <Typography variant="h5">Actualizar Usuarios</Typography>
-          <form onSubmit={this.handleClick}>
+        <Container>0
+          <Title>
+            Actualizar Usuarios
+          </Title>
+          <div>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Select
