@@ -12,27 +12,28 @@ import {
   TableBody,
 } from "@material-ui/core";
 
-
-
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import PersonIcon from "@material-ui/icons/Person";
 import CreateIcon from "@material-ui/icons/Create";
 
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
+import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Title from "../components/Title"
+import Title from "../components/Title";
 
 class ListUsers extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { shouldRedirect: false, pathname: "", redirectData: {} };
   }
 
   render() {
     const { users } = this.props;
+    const { shouldRedirect, pathname, redirectData } = this.state;
+
     return (
       <DashboardLayout>
         <Container>
@@ -44,7 +45,7 @@ class ListUsers extends PureComponent {
                 <TableCell>Nombre(s)</TableCell>
                 <TableCell>Apellidos(s)</TableCell>
                 <TableCell>Rol</TableCell>
-                <TableCell>  </TableCell>
+                <TableCell> </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -71,7 +72,16 @@ class ListUsers extends PureComponent {
                             <ToggleButton value="left" aria-label="left aligned">
                               <PersonIcon />
                             </ToggleButton>
-                            <ToggleButton value="center" aria-label="centered" href="/actualizarUsuarios">
+                            <ToggleButton
+                              value="center"
+                              onClick={() => {
+                                this.setState({
+                                  shouldRedirect: true,
+                                  pathname: "/actualizarUsuarios",
+                                  redirectData: { user },
+                                });
+                              }}
+                              aria-label="centered">
                               <CreateIcon />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">
@@ -86,8 +96,8 @@ class ListUsers extends PureComponent {
                 return <></>;
               })}
             </TableBody>
+            {shouldRedirect ? <Redirect to={{ pathname, state: { ...redirectData } }} /> : null}
           </Table>
-
         </Container>
       </DashboardLayout>
     );
