@@ -1,9 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import React, { PureComponent } from "react";
-import { Container, Button, Typography, Grid, TextField, FormControl } from "@material-ui/core";
+import { Container, Button, Typography, Grid, TextField } from "@material-ui/core";
 import { InputLabel, Select, MenuItem } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
+import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 class UpdateUsers extends PureComponent {
@@ -13,8 +14,8 @@ class UpdateUsers extends PureComponent {
       id: "",
       nombre: "",
       apellido: "",
-      correo:"",
-      password:"",
+      correo: "",
+      services: "",
     };
   }
 
@@ -25,43 +26,57 @@ class UpdateUsers extends PureComponent {
   };
 
   handleChange = (event, stateVariable) => {
+    let { users } = this.props;
+    users = users.filter(user => user._id === event.target.value);
+    console.log(users);
     this.setState({
-      [stateVariable]: event.target.value,
+      id: users[0]._id,
+      correo: users[0].emails[0].address,
+      nombre: users[0].profile.firstName,
+      apellido: users[0].profile.lastName,
+      services: users[0].services,
     });
-    
-  }
+    console.log(users[0].services);
+  };
 
-  handleClick = () => {
-    const {id, nombre, apellido, correo, password} = this.state;
+  handleClick = e => {
+    e.preventDefault();
+    const { id, nombre, apellido, correo, services } = this.state;
     Meteor.call(
       "updateUsers",
       {
         _id: id,
-        email: correo,
-        password,
-        profile:{
+        emails: [
+          {
+            address: correo,
+            verified: false,
+          },
+        ],
+        services,
+        profile: {
           firstName: nombre,
           lastName: apellido,
           role: "empleado",
-        }
-      }
-    , (error, result) => {
-      console.log("esto es el resultado: ", result);
-      console.log("esto es el error: ", error);
-      console.log(this.state.id);
-    });
+        },
+      },
+    );
+    alert("Usuario actualizado exitosamente");
+          this.setState({
+            nombre: "",
+            apellido: "",
+            correo: "",
+            services: "",
+          });
   };
 
   render() {
-    const {id, nombre, apellido, correo, password} = this.state;
-    const {users} = this.props;
+    const { id, nombre, apellido, correo, password } = this.state;
+    const { users } = this.props;
     return (
       <DashboardLayout>
         <Container>
-          <Typography variant="h5">
-            Actualizar Usuarios
-          </Typography>
-          <div>
+          <Typography variant="h5">Actualizar Usuarios</Typography>
+          <form onSubmit={this.handleClick}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Select
@@ -70,26 +85,16 @@ class UpdateUsers extends PureComponent {
                   label="Id"
                   id="id"
                   value={id}
-                  onChange={event => this.handleChange(event, "id")}
-                  >
-                  {users.map((user) => {
-                    if (user){
-                      return( 
-                        <MenuItem 
-                          key={user._id}
-                          value={user._id}
-                          >
-                          {user._id} 
-                          {' '}
-                          - 
-                          {' '}
-                          {user.profile.firstName} 
-                          {' '}
-                          {user.profile.lastName}
+                  onChange={event => this.handleChange(event, "id")}>
+                  {users.map(user => {
+                    if (user) {
+                      return (
+                        <MenuItem key={user._id} value={user._id}>
+                          {user._id} - {user.profile.firstName} {user.profile.lastName}
                         </MenuItem>
                       );
                     }
-                    return<></>;
+                    return <></>;
                   })}
                 </Select>
               </Grid>
@@ -105,7 +110,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={nombre}
                   onInput={event => this.handleTextChange(event, "nombre")}
-                  />
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -119,7 +124,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={apellido}
                   onInput={event => this.handleTextChange(event, "apellido")}
-                  />
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -132,27 +137,13 @@ class UpdateUsers extends PureComponent {
                   autoComplete="email"
                   value={correo}
                   onInput={event => this.handleTextChange(event, "correo")}
-                  />
+                />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Contraseña"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={password}
-                  onInput={event => this.handleTextChange(event, "password")}
-                  />
-              </Grid>
-              <Button fullWidth variant="contained" color="primary" onClick={this.handleClick}>
+              <Button type="submit" fullWidth variant="contained" color="primary">
                 Actualizar
               </Button>
             </Grid>
-          </div>
+          </form>
         </Container>
       </DashboardLayout>
     );
@@ -160,8 +151,8 @@ class UpdateUsers extends PureComponent {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('users.all');
+  Meteor.subscribe("users.all");
   return {
     users: Meteor.users.find().fetch(),
-  }
+  };
 })(UpdateUsers);
