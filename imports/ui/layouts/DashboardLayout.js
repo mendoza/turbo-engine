@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import clsx from "clsx";
-import { Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -129,8 +129,6 @@ class DashboardLayout extends PureComponent {
     this.state = {
       open: false,
       anchorEl: null,
-      redirect: false,
-      direction: "",
       empresa: {},
     };
     Meteor.call("getEmpresa", (error, result) => {
@@ -142,7 +140,7 @@ class DashboardLayout extends PureComponent {
 
   render() {
     const { classes, children } = this.props;
-    const { open, anchorEl, redirect, direction, empresa } = this.state;
+    const { open, anchorEl, empresa } = this.state;
     const handleDrawerOpen = () => {
       this.setState({ open: true });
     };
@@ -216,10 +214,12 @@ class DashboardLayout extends PureComponent {
                 onClick={() => {
                   RedirectTo("empresa");
                 }}>
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Empresa" />
+                <NavLink className="MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"to="/empresa">
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Empresa" />
+                </NavLink>
               </MenuItem>
               <MenuItem onClick={() => Meteor.logout()}>
                 <ListItemIcon>
@@ -257,7 +257,6 @@ class DashboardLayout extends PureComponent {
           </Container>
           <Copyright />
         </main>
-        {redirect ? <Redirect to={direction} /> : null}
       </div>
     );
   }

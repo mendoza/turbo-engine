@@ -3,9 +3,6 @@ import { Meteor } from "meteor/meteor";
 import Empresa from "./Empresa";
 
 Meteor.methods({
-  startEmpresa(payload) {
-    Empresa.insert(payload);
-  },
   getEmpresa() {
     return Empresa.find({}).fetch()[0];
   },
