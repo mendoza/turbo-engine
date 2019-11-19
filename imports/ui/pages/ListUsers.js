@@ -1,17 +1,18 @@
 import React, { PureComponent } from "react";
 import { Meteor } from "meteor/meteor";
-import Title from "../components/Title"
 import {
-  Typography,
+  Backdrop,
   Container,
+  Fade,
+  Modal,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from "@material-ui/core";
-import { withTracker } from "meteor/react-meteor-data";
-import DashboardLayout from "../layouts/DashboardLayout";
+
+
 
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import PersonIcon from "@material-ui/icons/Person";
@@ -19,6 +20,10 @@ import CreateIcon from "@material-ui/icons/Create";
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+
+import { withTracker } from "meteor/react-meteor-data";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Title from "../components/Title"
 
 class ListUsers extends PureComponent {
   constructor(props) {
@@ -63,10 +68,10 @@ class ListUsers extends PureComponent {
                       <TableCell component="th" scope="row">
                         <div>
                           <ToggleButtonGroup aria-label="text alignment">
-                            <ToggleButton value="left" aria-label="left aligned" onClick={()=>{console.log("It's works")}}>
+                            <ToggleButton value="left" aria-label="left aligned">
                               <PersonIcon />
                             </ToggleButton>
-                            <ToggleButton value="center" aria-label="centered">
+                            <ToggleButton value="center" aria-label="centered" href="/actualizarUsuarios">
                               <CreateIcon />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">
