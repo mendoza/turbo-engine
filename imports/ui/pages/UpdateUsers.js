@@ -17,7 +17,7 @@ class UpdateUsers extends PureComponent {
       apellido: "",
       correo: "",
       services: "",
-      open: "",
+      open: false,
       message: "",
     };
     if (props.location.state !== undefined) {
