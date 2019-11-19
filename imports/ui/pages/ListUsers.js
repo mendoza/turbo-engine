@@ -71,7 +71,7 @@ class ListUsers extends PureComponent {
                             <ToggleButton value="left" aria-label="left aligned">
                               <PersonIcon />
                             </ToggleButton>
-                            <ToggleButton value="center" aria-label="centered" href="/actualizarUsuarios">
+                            <ToggleButton value="center" aria-label="centered" >
                               <CreateIcon />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">
