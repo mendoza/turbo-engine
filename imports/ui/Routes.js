@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
+import Piezas from "./pages/Piezas"
 
 const Routes = [
   {
@@ -50,6 +51,11 @@ const Routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/seccionPiezas",
+    name: "Piezas",
+    component: Piezas,
   },
   {
     path: "/restablecerContra",
