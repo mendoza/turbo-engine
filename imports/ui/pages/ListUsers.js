@@ -1,10 +1,13 @@
 import React, { PureComponent } from "react";
 import { Meteor } from "meteor/meteor";
 import {
-  Backdrop,
+  Button,
   Container,
-  Fade,
-  Modal,
+  DialogContent,
+  DialogActions,
+  Dialog,
+  DialogTitle,
+  Divider,
   Table,
   TableHead,
   TableRow,
@@ -27,12 +30,16 @@ import Title from "../components/Title";
 class ListUsers extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { shouldRedirect: false, pathname: "", redirectData: {} };
+    this.state = { shouldRender: false, shouldRedirect: false, pathname: "", redirectData: {} };
   }
 
   render() {
     const { users } = this.props;
-    const { shouldRedirect, pathname, redirectData } = this.state;
+    const { shouldRender, shouldRedirect, pathname, redirectData } = this.state;
+
+    const handleClose = () => {
+      this.setState({ shouldRender: false });
+    };
 
     return (
       <DashboardLayout>
@@ -69,8 +76,44 @@ class ListUsers extends PureComponent {
                       <TableCell component="th" scope="row">
                         <div>
                           <ToggleButtonGroup aria-label="text alignment">
-                            <ToggleButton value="left" aria-label="left aligned">
+                            <ToggleButton
+                              value="left"
+                              onClick={() => {
+                                this.setState({ shouldRender: true });
+                              }}
+                              aria-label="left aligned">
                               <PersonIcon />
+                              <Dialog open={shouldRender} onClose={handleClose}>
+                                <DialogTitle>Información del usuario</DialogTitle>
+                                <Divider />
+
+                                <DialogContent dividers>
+                                  <Title>Nombre: </Title>
+                                  <p>{user.profile.firstName}</p>
+                                  <Title>Segundo nombre:</Title>
+                                  <p>{user.profile.lastName}</p>
+                                  <Title>Rol: </Title>
+                                  <p>{user.profile.role}</p>
+                                  <Title>Fecha de nacimiento: </Title>
+                                  <p> nel </p>
+                                  <Title>Correos: </Title>
+
+                                  <Title>trabajos: </Title>
+                                  <Table>
+                                    <TableHead>
+                                      <TableRow>
+                                        <TableCell>Tipo</TableCell>
+                                        <TableCell>ID del auto</TableCell>
+                                      </TableRow>
+                                    </TableHead>
+                                  </Table>
+                                </DialogContent>
+                                <DialogActions>
+                                  <Button onClick={handleClose} color="primary">
+                                    Cerrar
+                                  </Button>
+                                </DialogActions>
+                              </Dialog>
                             </ToggleButton>
                             <ToggleButton
                               value="center"
