@@ -76,27 +76,30 @@ export default function Album() {
         </Toolbar>
       </AppBar>
       <main>
-        {/* Hero unit */}
+        {/* INICIO */}
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               Vehiculos
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Something short and leading about the collection below—its contents, the creator, etc.
-              Make it short and sweet, but not too short so folks don&apos;t simply skip over it
+              SJDGHKDGKSDGSKJGSKGHSKDJGHSKDG
+              JDGJSDGKJDKJDBKDBKjfdkvbdkfb
+              kjjdkbkdjhkdjbhakjbhkaba
+              bakbakjbakbkabkab
+              &apos;jhdhgjdhgdhgdg
               entirely.
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
                   <Button variant="contained" color="primary">
-                    Main call to action
+                    Agregar otro Vehiculo
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button variant="outlined" color="primary">
-                    Secondary action
+                    Eliminar un Vehiculo
                   </Button>
                 </Grid>
               </Grid>
@@ -116,10 +119,10 @@ export default function Album() {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      Titulo
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the content.
+                      lero lero lerolerolerolero lero lero lerolerolerolerolero
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -136,7 +139,7 @@ export default function Album() {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
+      {/* Inicio*/}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           Seccion para Vehiculos
@@ -146,7 +149,7 @@ export default function Album() {
         </Typography>
         <Copyright />
       </footer>
-      {/* End footer */}
+      {/* FIn */}
     </React.Fragment>
   );
 }
