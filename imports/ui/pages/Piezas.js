@@ -83,20 +83,22 @@ export default function Album() {
               Piezas
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Something short and leading about the collection below—its contents, the creator, etc.
-              Make it short and sweet, but not too short so folks don&apos;t simply skip over it
+              djghsdgkjhsdgjhsdkjghs
+              dkgjhsdgksjdhgksjgh
+              sjkdghsjdkghsdkjghskdgjhsdj
+              ghsdkgjhsdkjghsdkjghsdkgjhsdk&apos;sdgsdgdsggsgds
               entirely.
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
                   <Button variant="contained" color="primary">
-                    Main call to action
+                    Agregar otra Pieza
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button variant="outlined" color="primary">
-                    Secondary action
+                    Eliminar una Pieza
                   </Button>
                 </Grid>
               </Grid>
@@ -116,10 +118,10 @@ export default function Album() {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      Titulos
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the content.
+                      blahblahblahblah blah blah blah blah blah blah blahblahblah.
                     </Typography>
                   </CardContent>
                   <CardActions>
