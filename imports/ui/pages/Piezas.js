@@ -76,7 +76,7 @@ export default function Album() {
         </Toolbar>
       </AppBar>
       <main>
-        {/* Hero unit */}
+        {/* INICIO */}
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -106,7 +106,7 @@ export default function Album() {
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
+          {/* FIn */}
           <Grid container spacing={4}>
             {cards.map(card => (
               <Grid item key={card} xs={12} sm={6} md={4}>
@@ -138,7 +138,7 @@ export default function Album() {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
+      {/* Inicio*/}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           Seccion para Piezas
@@ -148,7 +148,7 @@ export default function Album() {
         </Typography>
         <Copyright />
       </footer>
-      {/* End footer */}
+      {/* Fin */}
     </React.Fragment>
   );
 }
