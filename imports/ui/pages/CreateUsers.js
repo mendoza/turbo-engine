@@ -3,45 +3,23 @@
 /* eslint-disable import/order */
 
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 // eslint-disable-next-line import/no-unresolved
+import {
+  Container,
+  Typography,
+  Box,
+  Grid,
+  Link,
+  TextField,
+  CssBaseline,
+  Button,
+  Avatar,
+} from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { Meteor } from "meteor/meteor";
 import DashboardLayout from "../layouts/DashboardLayout";
 import validator from "validator";
 import { Snackbar, IconButton } from "@material-ui/core";
-
-const Styles = theme => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-});
 
 class CreateUsers extends React.Component {
   constructor(props) {
@@ -70,7 +48,6 @@ class CreateUsers extends React.Component {
 
   handleCreate = () => {
     const { nombre, apellido, correo, password } = this.state;
-
     let alert;
     if (validator.isEmpty(nombre) === true) {
       alert = "El campo nombre es requerido";
@@ -115,8 +92,6 @@ class CreateUsers extends React.Component {
               message: "Usuario creado exitosamente",
             });
           }
-        }
-      );
     }
   };
 

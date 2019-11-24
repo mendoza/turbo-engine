@@ -42,7 +42,6 @@ class UpdateUsers extends PureComponent {
     this.setState({
       [stateVariable]: event.target.value,
     });
-  };
 
   handleChange = (event, stateVariable) => {
     let { users } = this.props;

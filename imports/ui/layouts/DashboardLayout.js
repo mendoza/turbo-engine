@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import clsx from "clsx";
+import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -16,8 +17,18 @@ import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "../components/listItems";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import SettingsIcon from "@material-ui/icons/Settings";
+import { secondaryListItems } from "../components/listItems";
+import { Meteor } from "meteor/meteor";
+import Icon from "@material-ui/core/Icon";
+import { dashboardRoutes } from "../Routes";
 
 function Copyright() {
   return (
@@ -120,18 +131,40 @@ class DashboardLayout extends PureComponent {
 
     this.state = {
       open: false,
+      anchorEl: null,
+      empresa: {},
+      shouldRedirect: false,
+      pathName: "",
     };
+
+    Meteor.call("getEmpresa", (error, result) => {
+      this.setState({
+        empresa: result,
+      });
+    });
   }
 
   render() {
     const { classes, children } = this.props;
-    const { open } = this.state;
+    const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
     const handleDrawerOpen = () => {
       this.setState({ open: true });
     };
     const handleDrawerClose = () => {
       this.setState({ open: false });
     };
+
+    const handleMoreClick = event => {
+      this.setState({ anchorEl: event.currentTarget });
+    };
+
+    const handleMoreClose = () => {
+      this.setState({ anchorEl: null });
+    };
+    const RedirectTo = where => {
+      this.setState({ shouldRedirect: true, pathName: where });
+    };
+
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
@@ -153,16 +186,52 @@ class DashboardLayout extends PureComponent {
               color="inherit"
               noWrap
               className={classes.title}>
-              Turbo Engine
+              {`${empresa.name}`}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit" onClick={() => Meteor.logout()}>
-              <i className="fas fa-sign-out-alt" />
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={handleMoreClick}>
+              <MoreVertIcon />
             </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMoreClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              elevation={0}
+              getContentAnchorEl={null}>
+              <MenuItem
+                onClick={() => {
+                  RedirectTo("empresa");
+                }}>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Empresa" />
+              </MenuItem>
+              <MenuItem onClick={() => Meteor.logout()}>
+                <ListItemIcon>
+                  <i className="fas fa-sign-out-alt" />
+                </ListItemIcon>
+                <ListItemText primary="Log out" />
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -177,9 +246,25 @@ class DashboardLayout extends PureComponent {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List>
+            {dashboardRoutes.map(Route => {
+              return (
+                <ListItem
+                  button
+                  onClick={() => {
+                    RedirectTo(Route.pathName);
+                  }}>
+                  <ListItemIcon>
+                    <Icon>{Route.icon}</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={Route.name} />
+                </ListItem>
+              );
+            })}
+          </List>
           <Divider />
-          <List>{secondaryListItems}</List>
+          {/* <List>{secondaryListItems}</List> */}
+          <List></List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
@@ -190,8 +275,9 @@ class DashboardLayout extends PureComponent {
               </Grid>
             </Grid>
           </Container>
-          <Copyright />
+          <Copyright/>
         </main>
+        {shouldRedirect ? <Redirect to={pathName} /> : null}
       </div>
     );
   }

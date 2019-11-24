@@ -8,6 +8,8 @@ import {
   Dialog,
   DialogTitle,
   Divider,
+  Typography,
+  Container,
   Table,
   TableHead,
   TableRow,
