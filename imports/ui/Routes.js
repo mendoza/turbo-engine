@@ -53,8 +53,8 @@ export const Routes = [
     component: Login,
   },
   {
-    path: "/reestablecerContra",
-    name: "Reestablecer",
+    path: "/restablecerContra",
+    name: "Restablecer",
     component: RestorePass,
   },
 ];
