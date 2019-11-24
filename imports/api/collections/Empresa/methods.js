@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { Meteor } from "meteor/meteor";
 import Empresa from "./Empresa";
 import Empleados from "../Empleados/Empleados";
@@ -17,6 +16,7 @@ Meteor.methods({
     return Empresa.find({}).fetch()[0].CAI;
   },
   updateEmpresa(payload) {
+    console.log(payload)
     const selector = { _id: payload._id };
     delete payload._id;
     const modifier = payload;

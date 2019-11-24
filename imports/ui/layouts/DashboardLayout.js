@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import clsx from "clsx";
-import { NavLink } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -23,7 +23,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import SettingsIcon from "@material-ui/icons/Settings";
 import { mainListItems, secondaryListItems } from "../components/listItems";
 import { Meteor } from "meteor/meteor";
 
@@ -130,6 +129,8 @@ class DashboardLayout extends PureComponent {
       open: false,
       anchorEl: null,
       empresa: {},
+      shouldRedirect: false,
+      pathName: "",
     };
     Meteor.call("getEmpresa", (error, result) => {
       this.setState({
@@ -140,7 +141,7 @@ class DashboardLayout extends PureComponent {
 
   render() {
     const { classes, children } = this.props;
-    const { open, anchorEl, empresa } = this.state;
+    const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
     const handleDrawerOpen = () => {
       this.setState({ open: true });
     };
@@ -156,7 +157,7 @@ class DashboardLayout extends PureComponent {
       this.setState({ anchorEl: null });
     };
     const RedirectTo = where => {
-      this.setState({ redirect: true, direction: where });
+      this.setState({ shouldRedirect: true, pathName: where });
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -214,12 +215,10 @@ class DashboardLayout extends PureComponent {
                 onClick={() => {
                   RedirectTo("empresa");
                 }}>
-                <NavLink className="MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"to="/empresa">
-                  <ListItemIcon>
-                    <SettingsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Empresa" />
-                </NavLink>
+                <ListItemIcon>
+                  <i className="fas fa-cog" />
+                </ListItemIcon>
+                <ListItemText primary="Empresa" />
               </MenuItem>
               <MenuItem onClick={() => Meteor.logout()}>
                 <ListItemIcon>
@@ -257,6 +256,7 @@ class DashboardLayout extends PureComponent {
           </Container>
           <Copyright />
         </main>
+        {shouldRedirect ? <Redirect to={pathName} /> : null}
       </div>
     );
   }

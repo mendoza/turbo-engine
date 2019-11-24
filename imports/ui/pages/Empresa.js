@@ -32,7 +32,7 @@ class Empresa extends PureComponent {
   };
 
   render() {
-    const { name, RTN, CAI, empresa, open, mensaje } = this.state;
+    const { name, RTN, CAI, empresa, id, open, mensaje } = this.state;
     return (
       <DashboardLayout>
         <Grid container spacing={3}>
@@ -89,7 +89,8 @@ class Empresa extends PureComponent {
               if (alert) {
                 this.setState({ open: true, mensaje: alert });
               } else {
-                Meteor.call("updateEmpresa", { name, RTN, CAI }, (error, result) => {
+                Meteor.call("updateEmpresa", { name, _id: id, RTN, CAI }, (error, result) => {
+                  console.log(result);
                   this.setState({
                     empresa: result,
                     id: result._id,
