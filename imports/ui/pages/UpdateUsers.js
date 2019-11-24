@@ -8,6 +8,7 @@ class UpdateUsers extends PureComponent {
 
     this.state = {};
   }
+  
   handleClick = () => {
     Meteor.call("updateUsers", {}, (error, result) => {
       console.log("esto es el resultado: ", result);
