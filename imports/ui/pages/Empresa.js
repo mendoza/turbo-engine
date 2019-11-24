@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
-import { Grid, Typography, TextField, Button, Snackbar, IconButton, Icon } from "@material-ui/core";
+import { Grid, Typography, TextField, Button, Snackbar, IconButton } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
-import DashboardLayout from "../layouts/DashboardLayout";
 import validator from "validator";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 class Empresa extends PureComponent {
   constructor(props) {

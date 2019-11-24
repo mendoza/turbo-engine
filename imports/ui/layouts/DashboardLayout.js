@@ -22,9 +22,11 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { mainListItems, secondaryListItems } from "../components/listItems";
 import { Meteor } from "meteor/meteor";
+import Icon from "@material-ui/core/Icon";
+import { dashboardRoutes } from "../Routes";
 
 function Copyright() {
   return (
@@ -132,6 +134,7 @@ class DashboardLayout extends PureComponent {
       shouldRedirect: false,
       pathName: "",
     };
+
     Meteor.call("getEmpresa", (error, result) => {
       this.setState({
         empresa: result,
@@ -241,9 +244,25 @@ class DashboardLayout extends PureComponent {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List>
+            {dashboardRoutes.map(Route => {
+              return (
+                <ListItem
+                  button
+                  onClick={() => {
+                    RedirectTo(Route.pathName);
+                  }}>
+                  <ListItemIcon>
+                    <Icon>{Route.icon}</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={Route.name} />
+                </ListItem>
+              );
+            })}
+          </List>
           <Divider />
-          <List>{secondaryListItems}</List>
+          {/* <List>{secondaryListItems}</List> */}
+          <List></List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />

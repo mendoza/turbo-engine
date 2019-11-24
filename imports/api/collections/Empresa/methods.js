@@ -16,11 +16,10 @@ Meteor.methods({
     return Empresa.find({}).fetch()[0].CAI;
   },
   updateEmpresa(payload) {
-    console.log(payload)
     const selector = { _id: payload._id };
     delete payload._id;
     const modifier = payload;
     Empresa.update(selector, modifier);
-    return Empresa.find(selector).fetch()[0];
+    return { ...Empresa.find(selector).fetch()[0], cuantosEmpleados: Empleados.find().count() };
   },
 });
