@@ -8,9 +8,9 @@ import {
   TextField,
   CssBaseline,
   Button,
-  Avatar
+  Avatar,
 } from "@material-ui/core";
-import { LockOutlinedIcon } from "@material-ui/icons";
+import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { Meteor } from "meteor/meteor";
 import DashboardLayout from "../layouts/DashboardLayout";
 
@@ -21,13 +21,13 @@ class CreateUsers extends React.Component {
       nombre: "",
       apellido: "",
       correo: "",
-      password: ""
+      password: "",
     };
   }
 
   handleTextChange = (event, stateVariable) => {
     this.setState({
-      [stateVariable]: event.target.value
+      [stateVariable]: event.target.value,
     });
   };
 
@@ -41,8 +41,8 @@ class CreateUsers extends React.Component {
         profile: {
           firstName: nombre,
           lastName: apellido,
-          role: "empleado"
-        }
+          role: "empleado",
+        },
       },
       err => {
         if (err) {
@@ -53,7 +53,7 @@ class CreateUsers extends React.Component {
             nombre: "",
             apellido: "",
             correo: "",
-            password: ""
+            password: "",
           });
         }
       }
@@ -130,12 +130,7 @@ class CreateUsers extends React.Component {
                   />
                 </Grid>
               </Grid>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={this.handleCreate}
-              >
+              <Button fullWidth variant="contained" color="primary" onClick={this.handleCreate}>
                 Crear
               </Button>
               <Grid container justify="flex-end">
