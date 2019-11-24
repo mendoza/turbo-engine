@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import clsx from "clsx";
-import { NavLink } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -25,7 +25,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { secondaryListItems } from "../components/listItems";
 import { Meteor } from "meteor/meteor";
 import Icon from "@material-ui/core/Icon";
 import { dashboardRoutes } from "../Routes";
@@ -220,12 +219,10 @@ class DashboardLayout extends PureComponent {
                 onClick={() => {
                   RedirectTo("empresa");
                 }}>
-                <NavLink className="MuiButtonBase-root MuiListItem-root MuiMenuItem-root MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"to="/empresa">
-                  <ListItemIcon>
-                    <SettingsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Empresa" />
-                </NavLink>
+                <ListItemIcon>
+                  <i className="fas fa-cog" />
+                </ListItemIcon>
+                <ListItemText primary="Empresa" />
               </MenuItem>
               <MenuItem onClick={() => Meteor.logout()}>
                 <ListItemIcon>
