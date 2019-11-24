@@ -1,7 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import React, { PureComponent } from "react";
-import { Container, Button, IconButton, Grid, TextField,
-   Snackbar, Select, MenuItem } from "@material-ui/core";
+import {
+  Container,
+  Button,
+  IconButton,
+  Grid,
+  TextField,
+  Snackbar,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
@@ -42,6 +50,7 @@ class UpdateUsers extends PureComponent {
     this.setState({
       [stateVariable]: event.target.value,
     });
+  };
 
   handleChange = (event, stateVariable) => {
     let { users } = this.props;
@@ -58,7 +67,7 @@ class UpdateUsers extends PureComponent {
   };
 
   handleClick = () => {
-    const { id, nombre, apellido, correo, services,} = this.state;
+    const { id, nombre, apellido, correo, services } = this.state;
     let alert;
 
     if (validator.isEmpty(nombre) === true) {
@@ -70,12 +79,12 @@ class UpdateUsers extends PureComponent {
     if (validator.isEmail(correo) === false) {
       alert = "El campo correo es requerido";
     }
-    if(alert){
+    if (alert) {
       this.setState({
-        open:true,
-        message:alert,
-      })
-    }else{
+        open: true,
+        message: alert,
+      });
+    } else {
       Meteor.call("updateUsers", {
         _id: id,
         emails: [
@@ -99,7 +108,7 @@ class UpdateUsers extends PureComponent {
         open: true,
         message: "Usuario actualizado exitosamente",
       });
-  }
+    }
   };
 
   render() {
@@ -123,13 +132,7 @@ class UpdateUsers extends PureComponent {
                     if (user) {
                       return (
                         <MenuItem key={user._id} value={user._id}>
-                          {user._id} 
-                          {' '}
-                          -
-                          {' '} 
-                          {user.profile.firstName} 
-                          {' '}
-                          {user.profile.lastName}
+                          {user._id} - {user.profile.firstName} {user.profile.lastName}
                         </MenuItem>
                       );
                     }
@@ -149,7 +152,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={nombre}
                   onInput={event => this.handleTextChange(event, "nombre")}
-                  />
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -163,7 +166,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={apellido}
                   onInput={event => this.handleTextChange(event, "apellido")}
-                  />
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -176,15 +179,14 @@ class UpdateUsers extends PureComponent {
                   autoComplete="email"
                   value={correo}
                   onInput={event => this.handleTextChange(event, "correo")}
-                  />
+                />
               </Grid>
-              <Button 
-                type="submit" 
-                fullWidth 
-                variant="contained" 
-                color="primary" 
-                onClick={this.handleClick}
-                >
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={this.handleClick}>
                 Actualizar
               </Button>
             </Grid>
@@ -207,7 +209,7 @@ class UpdateUsers extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-          />
+        />
       </DashboardLayout>
     );
   }

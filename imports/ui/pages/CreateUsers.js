@@ -92,6 +92,8 @@ class CreateUsers extends React.Component {
               message: "Usuario creado exitosamente",
             });
           }
+        }
+      );
     }
   };
 
