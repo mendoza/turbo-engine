@@ -1,13 +1,11 @@
 // eslint-disable-next-line import/no-unresolved
 import { Meteor } from "meteor/meteor";
 import Empresa from "./Empresa";
+import Empleados from "../Empleados/Empleados";
 
 Meteor.methods({
-  startEmpresa(payload) {
-    Empresa.insert(payload);
-  },
   getEmpresa() {
-    return Empresa.find({}).fetch()[0];
+    return { ...Empresa.find().fetch()[0], cuantosEmpleados: Empleados.find().count() };
   },
   getEmpresaName() {
     return Empresa.find({}).fetch()[0].name;
