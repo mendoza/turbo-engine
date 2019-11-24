@@ -30,13 +30,14 @@ class ListUsers extends PureComponent {
     this.state = { shouldRender: false, shouldRedirect: false, pathname: "", redirectData: {} };
   }
 
+  handleClose = () => {
+    this.setState({ shouldRender: false });
+  };
+
   render() {
     const { users } = this.props;
     const { shouldRender, shouldRedirect, pathname, redirectData } = this.state;
 
-    const handleClose = () => {
-      this.setState({ shouldRender: false });
-    };
 
     return (
       <DashboardLayout>
@@ -80,7 +81,7 @@ class ListUsers extends PureComponent {
                               }}
                               aria-label="left aligned">
                               <PersonIcon />
-                              <Dialog open={shouldRender} onClose={handleClose}>
+                              <Dialog open={shouldRender} onClose={this.handleClose}>
                                 <DialogTitle>Información del usuario</DialogTitle>
                                 <Divider />
 
@@ -106,7 +107,7 @@ class ListUsers extends PureComponent {
                                   </Table>
                                 </DialogContent>
                                 <DialogActions>
-                                  <Button onClick={handleClose} color="primary">
+                                  <Button onClick={this.handleClose} color="primary">
                                     Cerrar
                                   </Button>
                                 </DialogActions>
