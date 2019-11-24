@@ -8,21 +8,17 @@ import {
   Dialog,
   DialogTitle,
   Divider,
-  Typography,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from "@material-ui/core";
-
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import PersonIcon from "@material-ui/icons/Person";
 import CreateIcon from "@material-ui/icons/Create";
-
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
