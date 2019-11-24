@@ -1,8 +1,9 @@
 import { Meteor } from "meteor/meteor";
-import '../imports/api/collections/Usuarios/publications';
+import "../imports/api/collections/Usuarios/publications";
 import Empresa from "../imports/api/collections/Empresa/Empresa";
-import "../imports/api/collections/Empresa/Methods";
+import "../imports/api/collections/Empresa/methods";
 import "../imports/api/collections/Usuarios/methods";
+import "../imports/api/collections/Autos/methods";
 
 Meteor.startup(() => {
   if (Empresa.find().count() === 0) {
