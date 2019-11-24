@@ -7,7 +7,7 @@ import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 
-const Routes = [
+export const Routes = [
   {
     path: "/login",
     name: "Login",
@@ -53,10 +53,14 @@ const Routes = [
     component: Login,
   },
   {
-    path: "/reestablecerContra",
-    name: "Reestablecer",
+    path: "/restablecerContra",
+    name: "Restablecer",
     component: RestorePass,
   },
 ];
 
-export default Routes;
+export const dashboardRoutes = [
+  { pathName: "/", name: "Inicio", icon: "dashboard" },
+  { pathName: "/listarUsuarios", name: "Listar usuarios", icon: "format_list_bulleted" },
+  { pathName: "/crearUsuarios", name: "Crear usuarios", icon: "person_add" },
+];

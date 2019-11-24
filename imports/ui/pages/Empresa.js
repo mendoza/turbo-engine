@@ -67,6 +67,7 @@ class Empresa extends PureComponent {
                 this.setState({ CAI: e.target.value });
               }}
             />
+
           </Grid>
           <Button
             fullWidth
@@ -116,6 +117,7 @@ class Empresa extends PureComponent {
               "aria-describedby": "message-id",
             }}
             message={<span id="message-id">{mensaje}</span>}
+
             action={[
               <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
                 <i className="fas fa-times" />
