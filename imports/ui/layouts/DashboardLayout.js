@@ -275,7 +275,7 @@ class DashboardLayout extends PureComponent {
               </Grid>
             </Grid>
           </Container>
-          <Copyright/>
+          <Copyright />
         </main>
         {shouldRedirect ? <Redirect to={pathName} /> : null}
       </div>
