@@ -24,7 +24,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import SettingsIcon from "@material-ui/icons/Settings";
 import { Meteor } from "meteor/meteor";
 import Icon from "@material-ui/core/Icon";
 import { dashboardRoutes } from "../Routes";

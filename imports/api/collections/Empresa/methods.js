@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { Meteor } from "meteor/meteor";
 import Empresa from "./Empresa";
 import Empleados from "../Empleados/Empleados";
@@ -21,6 +20,6 @@ Meteor.methods({
     delete payload._id;
     const modifier = payload;
     Empresa.update(selector, modifier);
-    return Empresa.find(selector).fetch()[0];
+    return { ...Empresa.find(selector).fetch()[0], cuantosEmpleados: Empleados.find().count() };
   },
 });

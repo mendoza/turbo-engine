@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
-import { Grid, Typography, TextField, Button, Snackbar, IconButton, Icon } from "@material-ui/core";
+import { Grid, Typography, TextField, Button, Snackbar, IconButton } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
-import DashboardLayout from "../layouts/DashboardLayout";
 import validator from "validator";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 class Empresa extends PureComponent {
   constructor(props) {
@@ -32,7 +32,7 @@ class Empresa extends PureComponent {
   };
 
   render() {
-    const { name, RTN, CAI, empresa, open, mensaje } = this.state;
+    const { name, RTN, CAI, empresa, id, open, mensaje } = this.state;
     return (
       <DashboardLayout>
         <Grid container spacing={3}>
@@ -67,7 +67,6 @@ class Empresa extends PureComponent {
                 this.setState({ CAI: e.target.value });
               }}
             />
-
           </Grid>
           <Button
             fullWidth
@@ -90,7 +89,8 @@ class Empresa extends PureComponent {
               if (alert) {
                 this.setState({ open: true, mensaje: alert });
               } else {
-                Meteor.call("updateEmpresa", { name, RTN, CAI }, (error, result) => {
+                Meteor.call("updateEmpresa", { name, _id: id, RTN, CAI }, (error, result) => {
+                  console.log(result);
                   this.setState({
                     empresa: result,
                     id: result._id,
@@ -117,7 +117,6 @@ class Empresa extends PureComponent {
               "aria-describedby": "message-id",
             }}
             message={<span id="message-id">{mensaje}</span>}
-
             action={[
               <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
                 <i className="fas fa-times" />
