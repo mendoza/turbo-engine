@@ -1,7 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import React, { PureComponent } from "react";
-import { Container, Button, Typography, Grid, TextField,  } from "@material-ui/core";
+import { Container, Button, Typography, Grid, TextField, Snackbar, 
+  IconButton} from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
-import { Redirect } from 'react-router-dom';
+import validator from "validator";
+import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 class RestorePass extends PureComponent {
@@ -10,8 +13,16 @@ class RestorePass extends PureComponent {
         this.state = {
           correo: "",
           password: "",
+          open: false,
+          message: "",
         };
     }
+
+    handleClose = () => {
+      this.setState({
+        open: false,
+      });
+    };
 
     handleTextChange = (event, stateVariable) => {
         this.setState({
@@ -22,20 +33,47 @@ class RestorePass extends PureComponent {
 
     handleClick = () =>{
       const {correo, password} = this.state;
-      const user = Meteor.users.findOne({'emails.0.address': correo});
-      Meteor.users.update(user.password, password);
-      return <Redirect to='/' />;
+      let {users} = this.props;
+      let alert;
+
+      if (validator.isEmail(correo) === false) {
+        alert = "El campo correo es requerido";
+      }
+      if (validator.isEmpty(password) === true) {
+        alert = "El campo contraseña es requerido";
+      }
+
+      if(alert){
+        this.setState({
+          open: true,
+          message: alert,
+        })
+      }else{
+        users = users.filter(user => user.emails[0].address === correo);
+        Meteor.call(
+          "restorePass", {
+            _id: users[0]._id,
+            password,
+          },
+        );
+        this.setState({
+          correo:"",
+          password:"",
+          open: true,
+          message: "Contraseña restablecida exitosamente",
+        })
+    }
     }
 
     render(){
-        const{correo, password} = this.state;
+        const{correo, password, open, message} = this.state;
         return (
           <DashboardLayout>
             <Container>
               <Typography>
                       Reestablecer Contraseña
               </Typography>
-              <form noValidate>
+              <form>
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -61,22 +99,45 @@ class RestorePass extends PureComponent {
                     autoComplete="new-password"
                     value={password}
                     onInput={event => this.handleTextChange(event, "password")}
-                  />
+                    />
                 </Grid>
-              </form>
-              <Button 
-                type="submit"
-                color="primary"
-                variant="contained"
-                onClick={this.handleClick}
-              >
+                <Button 
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  onClick={this.handleClick}
+                  >
                   Reestablecer
-              </Button>
+                </Button>
+              </form>
             </Container>
+            <Snackbar
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              open={open}
+              autoHideDuration={6000}
+              onClose={this.handleClose}
+              ContentProps={{
+                "aria-describedby": "message-id",
+              }}
+              message={<span id="message-id">{message}</span>}
+              action={[
+                <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+                  <i className="fas fa-times" />
+                </IconButton>,
+              ]}
+              />
           </DashboardLayout>
         );
         
     }
 }
 
-export default RestorePass;
+export default withTracker(() => {
+  Meteor.subscribe("users.all");
+  return {
+    users: Meteor.users.find().fetch(),
+  };
+})(RestorePass);
