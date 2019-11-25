@@ -148,8 +148,25 @@ class DashboardLayout extends PureComponent {
     const { classes, children, currentUser } = this.props;
     const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
 
+    const isSuperAdminLayout = () => {
+      if (currentUser && currentUser.profile.role === "superAdmin") {
+        return (
+          <MenuItem
+            onClick={() => {
+              RedirectTo("empresa");
+            }}>
+            <ListItemIcon>
+              <i className="fas fa-cog" />
+            </ListItemIcon>
+            <ListItemText primary="Empresa" />
+          </MenuItem>
+        );
+      }
+      return false;
+    };
+
     const isSuperAdmin = route => {
-      if(currentUser && currentUser.profile.role === "superAdmin"){
+      if (currentUser && currentUser.profile.role === "superAdmin") {
         return (
           <ListItem
             button
@@ -162,10 +179,9 @@ class DashboardLayout extends PureComponent {
             <ListItemText primary={route.name} />
           </ListItem>
         );
-      }else{
-        return false;
       }
-    }
+      return false;
+    };
 
     const isOtherUser = route => {
       return (
@@ -180,7 +196,7 @@ class DashboardLayout extends PureComponent {
           <ListItemText primary={route.name} />
         </ListItem>
       );
-    }
+    };
 
     const handleDrawerOpen = () => {
       this.setState({ open: true });
@@ -201,7 +217,7 @@ class DashboardLayout extends PureComponent {
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -251,15 +267,7 @@ class DashboardLayout extends PureComponent {
               }}
               elevation={0}
               getContentAnchorEl={null}>
-              <MenuItem
-                onClick={() => {
-                  RedirectTo("empresa");
-                }}>
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Empresa" />
-              </MenuItem>
+              { currentUser && currentUser.profile.role==="superAdmin" ? isSuperAdminLayout() : null}
               <MenuItem onClick={() => Meteor.logout()}>
                 <ListItemIcon>
                   <i className="fas fa-sign-out-alt" />
@@ -283,10 +291,10 @@ class DashboardLayout extends PureComponent {
           <Divider />
           <List>
             {dashboardRoutes.map(Route => {
-              if (Route.permission === "superAdmin"){
-                return isSuperAdmin(Route)
+              if (Route.permission === "superAdmin") {
+                return isSuperAdmin(Route);
               }
-              return isOtherUser(Route)
+              return isOtherUser(Route);
             })}
           </List>
           <Divider />
@@ -302,7 +310,7 @@ class DashboardLayout extends PureComponent {
               </Grid>
             </Grid>
           </Container>
-          <Copyright/>
+          <Copyright />
         </main>
         {shouldRedirect ? <Redirect to={pathName} /> : null}
       </div>
