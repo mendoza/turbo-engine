@@ -6,8 +6,8 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
-import Piezas from "./pages/Piezas"
-import Vehiculos from "./pages/Vehiculos";
+import PiezasPage from "./pages/PiezasPage";
+import AutosPage from "./pages/AutosPage";
 
 export const Routes = [
   {
@@ -57,7 +57,7 @@ export const Routes = [
   {
     path: "/seccionPiezas",
     name: "Piezas",
-    component: Piezas,
+    component: PiezasPage,
   },
   {
     path: "/restablecerContra",
@@ -67,7 +67,7 @@ export const Routes = [
   {
     path: "/seccionVehiculos",
     name: "Vehiculos",
-    component: Vehiculos,
+    component: AutosPage,
   },
 ];
 

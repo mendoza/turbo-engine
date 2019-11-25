@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { Button, Grid, Typography, Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { withTracker } from "meteor/react-meteor-data";
+import Piezas from "../../api/collections/Piezas/Piezas";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 
@@ -36,9 +38,7 @@ const useStyles = theme => ({
   },
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-class Piezas extends PureComponent {
+class PiezasPage extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -46,7 +46,7 @@ class Piezas extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, piezas } = this.props;
     return (
       <DashboardLayout>
         <main>
@@ -83,7 +83,7 @@ class Piezas extends PureComponent {
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
-              {cards.map(card => (
+              {piezas.map(card => (
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <ItemCard
                     title="Lorem Ipsum"
@@ -101,4 +101,11 @@ class Piezas extends PureComponent {
   }
 }
 
-export default withStyles(useStyles)(Piezas);
+export default withStyles(useStyles)(
+  withTracker(() => {
+    Meteor.subscribe("piezas.all");
+    return {
+      piezas: Piezas.find().fetch(),
+    };
+  })(PiezasPage)
+);

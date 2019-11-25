@@ -4,6 +4,9 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { withTracker } from "meteor/react-meteor-data";
+import { Meteor } from "meteor/meteor";
+import Autos from "../../api/collections/Autos/Autos";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 
@@ -39,17 +42,14 @@ const useStyles = theme => ({
   },
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-class Vehiculos extends PureComponent {
+class AutosPage extends PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, autos } = this.props;
     return (
       <DashboardLayout>
         <div className={classes.heroContent}>
@@ -80,8 +80,8 @@ class Vehiculos extends PureComponent {
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            {cards.map(card => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+            {autos.map((auto, index) => (
+              <Grid item key={index + auto.modelo} xs={12} sm={6} md={4}>
                 <ItemCard
                   title="Lorem Ipsum"
                   body="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum urna mauris, non tempus quam ultricies sit amet. Pellentesque pharetra et tellus aliquam malesuada."
@@ -97,4 +97,9 @@ class Vehiculos extends PureComponent {
   }
 }
 
-export default withStyles(useStyles)(Vehiculos);
+export default withTracker(() => {
+  Meteor.subscribe("autos.all");
+  return {
+    autos: Autos.find().fetch(),
+  };
+})(withStyles(useStyles)(AutosPage));
