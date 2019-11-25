@@ -29,6 +29,7 @@ import { secondaryListItems } from "../components/listItems";
 import { Meteor } from "meteor/meteor";
 import Icon from "@material-ui/core/Icon";
 import { dashboardRoutes } from "../Routes";
+import { withTracker } from "meteor/react-meteor-data";
 
 function Copyright() {
   return (
@@ -135,6 +136,7 @@ class DashboardLayout extends PureComponent {
       empresa: {},
       shouldRedirect: false,
       pathName: "",
+      currentUser: Meteor.user()
     };
 
     Meteor.call("getEmpresa", (error, result) => {
@@ -146,7 +148,8 @@ class DashboardLayout extends PureComponent {
 
   render() {
     const { classes, children } = this.props;
-    const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
+    const { open, anchorEl, empresa, shouldRedirect, pathName, currentUser } = this.state;
+
     const handleDrawerOpen = () => {
       this.setState({ open: true });
     };
@@ -284,3 +287,4 @@ class DashboardLayout extends PureComponent {
 }
 
 export default withStyles(useStyles)(DashboardLayout);
+
