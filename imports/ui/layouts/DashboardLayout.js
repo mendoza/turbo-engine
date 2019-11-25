@@ -121,7 +121,7 @@ const useStyles = theme => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: "80vh",
+    height: "90vh",
   },
 });
 

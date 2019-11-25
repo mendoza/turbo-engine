@@ -32,7 +32,7 @@ class ListUsers extends PureComponent {
       shouldRedirect: false,
       pathname: "",
       redirectData: {},
-      dialogUser: {profile:{}},
+      dialogUser: { emails: [{}], profile: {} },
     };
   }
 
@@ -82,7 +82,7 @@ class ListUsers extends PureComponent {
                             <ToggleButton
                               value="left"
                               onClick={() => {
-                                this.setState({ shouldRender: true,dialogUser:user });
+                                this.setState({ shouldRender: true, dialogUser: user });
                               }}
                               aria-label="left aligned">
                               <PersonIcon />
@@ -113,7 +113,6 @@ class ListUsers extends PureComponent {
               <Dialog open={shouldRender} onClose={this.handleClose}>
                 <DialogTitle>Información del usuario</DialogTitle>
                 <Divider />
-
                 <DialogContent dividers>
                   <Title>Nombre: </Title>
                   <p>{dialogUser.profile.firstName}</p>

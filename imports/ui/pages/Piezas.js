@@ -1,14 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-  Container,
-} from "@material-ui/core";
+import { Button, Grid, Typography, Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
@@ -91,15 +82,12 @@ class Piezas extends PureComponent {
             </Container>
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
-            {/* FIn */}
             <Grid container spacing={4}>
               {cards.map(card => (
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <ItemCard
                     title="Lorem Ipsum"
                     body="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum urna mauris, non tempus quam ultricies sit amet. Pellentesque pharetra et tellus aliquam malesuada."
-                    actionTitle1="Lorem"
-                    actionTitle2="Ipsum"
                     action1={() => {}}
                     action2={() => {}}
                   />
