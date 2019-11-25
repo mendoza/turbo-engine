@@ -24,8 +24,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { secondaryListItems } from "../components/listItems";
 import { Meteor } from "meteor/meteor";
 import Icon from "@material-ui/core/Icon";
 import { dashboardRoutes } from "../Routes";
@@ -221,7 +219,7 @@ class DashboardLayout extends PureComponent {
                   RedirectTo("empresa");
                 }}>
                 <ListItemIcon>
-                  <SettingsIcon />
+                  <i className="fas fa-cog" />
                 </ListItemIcon>
                 <ListItemText primary="Empresa" />
               </MenuItem>
@@ -275,7 +273,7 @@ class DashboardLayout extends PureComponent {
               </Grid>
             </Grid>
           </Container>
-          <Copyright/>
+          <Copyright />
         </main>
         {shouldRedirect ? <Redirect to={pathName} /> : null}
       </div>
