@@ -26,7 +26,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { secondaryListItems } from "../components/listItems";
-import { Meteor } from "meteor/meteor";
 import Icon from "@material-ui/core/Icon";
 import { dashboardRoutes } from "../Routes";
 import { withTracker } from "meteor/react-meteor-data";
@@ -136,7 +135,6 @@ class DashboardLayout extends PureComponent {
       empresa: {},
       shouldRedirect: false,
       pathName: "",
-      currentUser: Meteor.user()
     };
 
     Meteor.call("getEmpresa", (error, result) => {
@@ -147,8 +145,42 @@ class DashboardLayout extends PureComponent {
   }
 
   render() {
-    const { classes, children } = this.props;
-    const { open, anchorEl, empresa, shouldRedirect, pathName, currentUser } = this.state;
+    const { classes, children, currentUser } = this.props;
+    const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
+
+    const isSuperAdmin = route => {
+      if(currentUser && currentUser.profile.role === "superAdmin"){
+        return (
+          <ListItem
+            button
+            onClick={() => {
+              RedirectTo(route.pathName);
+            }}>
+            <ListItemIcon>
+              <Icon>{route.icon}</Icon>
+            </ListItemIcon>
+            <ListItemText primary={route.name} />
+          </ListItem>
+        );
+      }else{
+        return false;
+      }
+    }
+
+    const isOtherUser = route => {
+      return (
+        <ListItem
+          button
+          onClick={() => {
+            RedirectTo(route.pathName);
+          }}>
+          <ListItemIcon>
+            <Icon>{route.icon}</Icon>
+          </ListItemIcon>
+          <ListItemText primary={route.name} />
+        </ListItem>
+      );
+    }
 
     const handleDrawerOpen = () => {
       this.setState({ open: true });
@@ -169,7 +201,7 @@ class DashboardLayout extends PureComponent {
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
+    
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -251,18 +283,10 @@ class DashboardLayout extends PureComponent {
           <Divider />
           <List>
             {dashboardRoutes.map(Route => {
-              return (
-                <ListItem
-                  button
-                  onClick={() => {
-                    RedirectTo(Route.pathName);
-                  }}>
-                  <ListItemIcon>
-                    <Icon>{Route.icon}</Icon>
-                  </ListItemIcon>
-                  <ListItemText primary={Route.name} />
-                </ListItem>
-              );
+              if (Route.permission === "superAdmin"){
+                return isSuperAdmin(Route)
+              }
+              return isOtherUser(Route)
             })}
           </List>
           <Divider />
@@ -286,5 +310,10 @@ class DashboardLayout extends PureComponent {
   }
 }
 
-export default withStyles(useStyles)(DashboardLayout);
-
+export default withStyles(useStyles)(
+  withTracker(() => {
+    return {
+      currentUser: Meteor.user(),
+    };
+  })(DashboardLayout)
+);

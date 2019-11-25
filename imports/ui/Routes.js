@@ -66,7 +66,8 @@ export const dashboardRoutes = [
   },
   { pathName: "/listarUsuarios", 
     name: "Listar usuarios", 
-    icon: "format_list_bulleted" 
+    icon: "format_list_bulleted",
+    permission: "superAdmin"
   },
   { pathName: "/crearUsuarios", 
     name: "Crear usuarios", 
