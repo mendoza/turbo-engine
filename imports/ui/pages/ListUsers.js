@@ -8,21 +8,17 @@ import {
   Dialog,
   DialogTitle,
   Divider,
-  Typography,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from "@material-ui/core";
-
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import PersonIcon from "@material-ui/icons/Person";
 import CreateIcon from "@material-ui/icons/Create";
-
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -31,16 +27,22 @@ import Title from "../components/Title";
 class ListUsers extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { shouldRender: false, shouldRedirect: false, pathname: "", redirectData: {} };
+    this.state = {
+      shouldRender: false,
+      shouldRedirect: false,
+      pathname: "",
+      redirectData: {},
+      dialogUser: { emails: [{}], profile: {} },
+    };
   }
+
+  handleClose = () => {
+    this.setState({ shouldRender: false });
+  };
 
   render() {
     const { users } = this.props;
-    const { shouldRender, shouldRedirect, pathname, redirectData } = this.state;
-
-    const handleClose = () => {
-      this.setState({ shouldRender: false });
-    };
+    const { shouldRender, shouldRedirect, pathname, redirectData, dialogUser } = this.state;
 
     return (
       <DashboardLayout>
@@ -80,41 +82,10 @@ class ListUsers extends PureComponent {
                             <ToggleButton
                               value="left"
                               onClick={() => {
-                                this.setState({ shouldRender: true });
+                                this.setState({ shouldRender: true, dialogUser: user });
                               }}
                               aria-label="left aligned">
                               <PersonIcon />
-                              <Dialog open={shouldRender} onClose={handleClose}>
-                                <DialogTitle>Información del usuario</DialogTitle>
-                                <Divider />
-
-                                <DialogContent dividers>
-                                  <Title>Nombre: </Title>
-                                  <p>{user.profile.firstName}</p>
-                                  <Title>Segundo nombre:</Title>
-                                  <p>{user.profile.lastName}</p>
-                                  <Title>Rol: </Title>
-                                  <p>{user.profile.role}</p>
-                                  <Title>Fecha de nacimiento: </Title>
-                                  <p> nel </p>
-                                  <Title>Correos: </Title>
-
-                                  <Title>trabajos: </Title>
-                                  <Table>
-                                    <TableHead>
-                                      <TableRow>
-                                        <TableCell>Tipo</TableCell>
-                                        <TableCell>ID del auto</TableCell>
-                                      </TableRow>
-                                    </TableHead>
-                                  </Table>
-                                </DialogContent>
-                                <DialogActions>
-                                  <Button onClick={handleClose} color="primary">
-                                    Cerrar
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
                             </ToggleButton>
                             <ToggleButton
                               value="center"
@@ -139,6 +110,36 @@ class ListUsers extends PureComponent {
                 }
                 return <></>;
               })}
+              <Dialog open={shouldRender} onClose={this.handleClose}>
+                <DialogTitle>Información del usuario</DialogTitle>
+                <Divider />
+                <DialogContent dividers>
+                  <Title>Nombre: </Title>
+                  <p>{dialogUser.profile.firstName}</p>
+                  <Title>Segundo nombre:</Title>
+                  <p>{dialogUser.profile.lastName}</p>
+                  <Title>Rol: </Title>
+                  <p>{dialogUser.profile.role}</p>
+                  <Title>Fecha de nacimiento: </Title>
+                  <p> nel </p>
+                  <Title>Correos: </Title>
+                  <p>{dialogUser.emails[0].address}</p>
+                  <Title>trabajos: </Title>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Tipo</TableCell>
+                        <TableCell>ID del auto</TableCell>
+                      </TableRow>
+                    </TableHead>
+                  </Table>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </TableBody>
             {shouldRedirect ? <Redirect to={{ pathname, state: { ...redirectData } }} /> : null}
           </Table>

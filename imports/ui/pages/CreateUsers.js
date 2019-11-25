@@ -1,7 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/order */
-
 import React from "react";
 // eslint-disable-next-line import/no-unresolved
 import {
@@ -14,12 +10,13 @@ import {
   CssBaseline,
   Button,
   Avatar,
+  Snackbar,
+  IconButton,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { Meteor } from "meteor/meteor";
-import DashboardLayout from "../layouts/DashboardLayout";
 import validator from "validator";
-import { Snackbar, IconButton } from "@material-ui/core";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 class CreateUsers extends React.Component {
   constructor(props) {
