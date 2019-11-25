@@ -8,6 +8,9 @@ import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
+   
+
+
 
 export const Routes = [
   {
