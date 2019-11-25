@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
+import PiezasPage from "./pages/PiezasPage";
+import AutosPage from "./pages/AutosPage";
 
 export const Routes = [
   {
@@ -53,9 +55,19 @@ export const Routes = [
     component: Login,
   },
   {
-    path: "/reestablecerContra",
-    name: "Reestablecer",
+    path: "/seccionPiezas",
+    name: "Piezas",
+    component: PiezasPage,
+  },
+  {
+    path: "/restablecerContra",
+    name: "Restablecer",
     component: RestorePass,
+  },
+  {
+    path: "/seccionVehiculos",
+    name: "Vehiculos",
+    component: AutosPage,
   },
 ];
 
