@@ -39,6 +39,7 @@
     "testModule": "tests/main.js"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.11.2",
     "@meteorjs/eslint-config-meteor": "^1.0.5",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.6.0",

@@ -253,7 +253,8 @@ class DashboardLayout extends PureComponent {
                     RedirectTo(Route.pathName);
                   }}>
                   <ListItemIcon>
-                    <Icon>{Route.icon}</Icon>
+                    { /* <Icon>{Route.icon}</Icon> */}
+                    <i className={Route.icon} style={{fontSize:"26px", align:"center"}} />
                   </ListItemIcon>
                   <ListItemText primary={Route.name} />
                 </ListItem>
