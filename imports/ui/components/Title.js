@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import Typography from "@material-ui/core/Typography";
+import "../Styles/Title.css"
 
 class Title extends PureComponent {
   constructor(props) {
@@ -11,7 +12,7 @@ class Title extends PureComponent {
   render() {
     const { children } = this.props;
     return (
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+      <Typography class="title" component="h2" variant="h6" gutterBottom>
         {children}
       </Typography>
     );
