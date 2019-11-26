@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
+import { Accounts } from "meteor/accounts-base";
 import { Container, Button, Typography, Grid, TextField,  } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
-import { Redirect } from 'react-router-dom';
 import DashboardLayout from "../layouts/DashboardLayout";
 
 class RestorePass extends PureComponent {
@@ -18,13 +18,13 @@ class RestorePass extends PureComponent {
           [stateVariable]: event.target.value,
         });
       };
-    
+
 
     handleClick = () =>{
       const {correo, password} = this.state;
       const user = Meteor.users.findOne({'emails.0.address': correo});
-      Meteor.users.update(user.password, password);
-      return <Redirect to='/' />;
+      Accounts.setPassword(user && user._id, password, { logout: true });
+      alert('Contraseña cambiada exitosamente');
     }
 
     render(){
@@ -33,7 +33,7 @@ class RestorePass extends PureComponent {
           <DashboardLayout>
             <Container>
               <Typography>
-                      Reestablecer Contraseña
+                Reestablecer Contraseña
               </Typography>
               <form noValidate>
                 <Grid item xs={12}>
@@ -64,7 +64,7 @@ class RestorePass extends PureComponent {
                   />
                 </Grid>
               </form>
-              <Button 
+              <Button
                 type="submit"
                 color="primary"
                 variant="contained"
@@ -75,7 +75,7 @@ class RestorePass extends PureComponent {
             </Container>
           </DashboardLayout>
         );
-        
+
     }
 }
 

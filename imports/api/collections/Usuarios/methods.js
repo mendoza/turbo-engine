@@ -14,4 +14,9 @@ Meteor.methods({
   deleteUsers(payload) {
     const selector = { _id: payload._id };
   },
+  changePassword(payload) {
+    const {correo, password} = payload;
+    const user = Meteor.users.findOne({'emails.0.address': correo});
+    Accounts.setPassword(user && user._id, password, { logout: true });
+  }
 });

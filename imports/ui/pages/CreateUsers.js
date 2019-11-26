@@ -8,9 +8,7 @@ import {
   TextField,
   CssBaseline,
   Button,
-  Avatar,
 } from "@material-ui/core";
-import { LockOutlinedIcon } from "@material-ui/icons";
 import { Meteor } from "meteor/meteor";
 import DashboardLayout from "../layouts/DashboardLayout";
 
@@ -67,9 +65,6 @@ class CreateUsers extends React.Component {
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div>
-            <Avatar>
-              <LockOutlinedIcon />
-            </Avatar>
             <Typography component="h1" variant="h5">
               Crear Usuarios
             </Typography>
