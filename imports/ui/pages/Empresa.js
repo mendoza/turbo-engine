@@ -1,32 +1,48 @@
 import React, { PureComponent } from "react";
-import { Paper, Grid, Typography, TextField, Button } from "@material-ui/core";
+import { Grid, Typography, TextField, Button, Snackbar, IconButton } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
+import validator from "validator";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 class Empresa extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = { empresa: {}, name: "", RTN: "", CAI: "" };
+    this.state = {
+      id: "",
+      empresa: {},
+      name: "",
+      RTN: "",
+      CAI: "",
+      open: false,
+      mensaje: "",
+    };
+    Meteor.call("getEmpresa", (error, result) => {
+      this.setState({
+        empresa: result,
+        id: result._id,
+        name: result.name,
+        RTN: result.RTN,
+        CAI: result.CAI,
+      });
+    });
   }
 
-  componentDidMount = () => {
-    Meteor.call("getEmpresa", (error, result) => {
-      this.setState({ empresa: result });
-    });
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
-    const { empresa, name, RTN, CAI } = this.state;
+    const { name, RTN, CAI, empresa, id, open, mensaje } = this.state;
     return (
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper>
-            <Typography variant="h1">Datos de la empresa</Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper>
+      <DashboardLayout>
+        <Grid container spacing={3}>
+          <Grid item xs={6}>
             <Typography variant="body1">{`Nombre: ${empresa.name}`}</Typography>
+            <Typography variant="body1">{`RTN: ${empresa.RTN}`}</Typography>
+            <Typography variant="body1">{`CAI: ${empresa.CAI}`}</Typography>
+            <Typography variant="body1">{`Cuantos empleados: ${empresa.cuantosEmpleados}`}</Typography>
+          </Grid>
+          <Grid item xs={6}>
             <TextField
               label="Nombre"
               fullWidth
@@ -35,11 +51,6 @@ class Empresa extends PureComponent {
                 this.setState({ name: e.target.value });
               }}
             />
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper>
-            <Typography variant="body1">{`RTN: ${empresa.RTN}`}</Typography>
             <TextField
               label="RTN"
               fullWidth
@@ -48,11 +59,6 @@ class Empresa extends PureComponent {
                 this.setState({ RTN: e.target.value });
               }}
             />
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper>
-            <Typography variant="body1">{`CAI: ${empresa.CAI}`}</Typography>
             <TextField
               label="CAI"
               fullWidth
@@ -61,18 +67,64 @@ class Empresa extends PureComponent {
                 this.setState({ CAI: e.target.value });
               }}
             />
-          </Paper>
+          </Grid>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              let alert;
+              if (validator.isEmpty(name)) {
+                alert = "El nombre no puede estar vacio.";
+              }
+              if (validator.isEmpty(RTN)) {
+                alert = "El RTN no puede estar vacio.";
+              }
+              if (!validator.matches(RTN, /\d{4}-\d{4}-\d{6}/)) {
+                alert = "El formato del rtn es incorrecto";
+              }
+              if (validator.isEmpty(CAI)) {
+                alert = "El CAI no puede estar vacio.";
+              }
+              if (alert) {
+                this.setState({ open: true, mensaje: alert });
+              } else {
+                Meteor.call("updateEmpresa", { name, _id: id, RTN, CAI }, (error, result) => {
+                  console.log(result);
+                  this.setState({
+                    empresa: result,
+                    id: result._id,
+                    name: result.name,
+                    RTN: result.RTN,
+                    CAI: result.CAI,
+                    open: true,
+                    mensaje: "Datos actualizados exitosamente",
+                  });
+                });
+              }
+            }}>
+            Actualizar
+          </Button>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            open={open}
+            autoHideDuration={6000}
+            onClose={this.handleClose}
+            ContentProps={{
+              "aria-describedby": "message-id",
+            }}
+            message={<span id="message-id">{mensaje}</span>}
+            action={[
+              <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+                <i className="fas fa-times" />
+              </IconButton>,
+            ]}
+          />
         </Grid>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            Meteor.call("updateEmpresa", { _id: empresa._id, name, RTN, CAI });
-          }}>
-          Actualizar
-        </Button>
-      </Grid>
+      </DashboardLayout>
     );
   }
 }

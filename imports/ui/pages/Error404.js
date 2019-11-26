@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { Container, Paper, Grid, Typography } from "@material-ui/core";
-import { Error } from "@material-ui/icons";
+import Error from "@material-ui/icons/Error";
 
 class Error404 extends PureComponent {
   constructor(props) {

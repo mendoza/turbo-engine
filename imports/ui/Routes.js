@@ -6,8 +6,10 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
+import PiezasPage from "./pages/PiezasPage";
+import AutosPage from "./pages/AutosPage";
 
-const Routes = [
+export const Routes = [
   {
     path: "/login",
     name: "Login",
@@ -45,6 +47,7 @@ const Routes = [
     path: "/empresa",
     name: "Empresa",
     component: Empresa,
+    permission: "superAdmin",
   },
   {
     path: "/login",
@@ -52,10 +55,35 @@ const Routes = [
     component: Login,
   },
   {
-    path: "/reestablecerContra",
-    name: "Reestablecer",
+    path: "/seccionPiezas",
+    name: "Piezas",
+    component: PiezasPage,
+  },
+  {
+    path: "/restablecerContra",
+    name: "Restablecer",
     component: RestorePass,
+  },
+  {
+    path: "/seccionVehiculos",
+    name: "Vehiculos",
+    component: AutosPage,
   },
 ];
 
-export default Routes;
+export const dashboardRoutes = [
+  { pathName: "/", 
+    name: "Inicio", 
+    icon: "dashboard" 
+  },
+  { pathName: "/listarUsuarios", 
+    name: "Listar usuarios", 
+    icon: "format_list_bulleted",
+    permission: "superAdmin"
+  },
+  { pathName: "/crearUsuarios", 
+    name: "Crear usuarios", 
+    icon: "person_add" , 
+    permission: "superAdmin"
+  },
+];

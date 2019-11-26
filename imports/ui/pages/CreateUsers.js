@@ -1,4 +1,5 @@
 import React from "react";
+// eslint-disable-next-line import/no-unresolved
 import {
   Container,
   Typography,
@@ -8,8 +9,13 @@ import {
   TextField,
   CssBaseline,
   Button,
+  Avatar,
+  Snackbar,
+  IconButton,
 } from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { Meteor } from "meteor/meteor";
+import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 class CreateUsers extends React.Component {
@@ -20,8 +26,16 @@ class CreateUsers extends React.Component {
       apellido: "",
       correo: "",
       password: "",
+      open: false,
+      message: "",
     };
   }
+
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
 
   handleTextChange = (event, stateVariable) => {
     this.setState({
@@ -31,35 +45,57 @@ class CreateUsers extends React.Component {
 
   handleCreate = () => {
     const { nombre, apellido, correo, password } = this.state;
-    Meteor.call(
-      "createUsuario",
-      {
-        email: correo,
-        password,
-        profile: {
-          firstName: nombre,
-          lastName: apellido,
-          role: "empleado",
+    let alert;
+    if (validator.isEmpty(nombre) === true) {
+      alert = "El campo nombre es requerido";
+    }
+    if (validator.isEmpty(apellido) === true) {
+      alert = "El campo apellido es requerido";
+    }
+    if (validator.isEmail(correo) === false) {
+      alert = "El campo correo es requerido";
+    }
+    if (validator.isEmpty(password) === true) {
+      alert = "El campo contraseña es requerido";
+    }
+
+    if (alert) {
+      this.setState({
+        open: true,
+        message: alert,
+      });
+    } else {
+      Meteor.call(
+        "createUsuario",
+        {
+          email: correo,
+          password,
+          profile: {
+            firstName: nombre,
+            lastName: apellido,
+            role: "empleado",
+          },
         },
-      },
-      err => {
-        if (err) {
-          alert("Error al crear usuario");
-        } else {
-          alert("Usuario creado exitosamente");
-          this.setState({
-            nombre: "",
-            apellido: "",
-            correo: "",
-            password: "",
-          });
+        err => {
+          if (err) {
+            console.log(err);
+            this.setState({
+              open: true,
+              message: "Hubo un error al crear el usuario",
+            });
+          } else {
+            this.setState({
+              open: true,
+              message: "Usuario creado exitosamente",
+            });
+          }
         }
-      }
-    );
+      );
+    }
   };
 
   render() {
-    const { nombre, apellido, correo, password } = this.state;
+    const { nombre, apellido, correo, password, open, message } = this.state;
     return (
       <DashboardLayout>
         <Container component="main" maxWidth="xs">
@@ -68,7 +104,7 @@ class CreateUsers extends React.Component {
             <Typography component="h1" variant="h5">
               Crear Usuarios
             </Typography>
-            <form noValidate>
+            <form id="formUserLogin" noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -128,18 +164,28 @@ class CreateUsers extends React.Component {
               <Button fullWidth variant="contained" color="primary" onClick={this.handleCreate}>
                 Crear
               </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <Link href="#" variant="body2">
-                    ¿Ya está registrado? Ingrese
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
           </div>
           <Box mt={5}>{/* <Copyright /> */}</Box>
         </Container>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          ContentProps={{
+            "aria-describedby": "message-id",
+          }}
+          message={<span id="message-id">{message}</span>}
+          action={[
+            <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+              <i className="fas fa-times" />
+            </IconButton>,
+          ]}
+        />
       </DashboardLayout>
     );
   }
