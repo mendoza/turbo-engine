@@ -76,3 +76,4 @@ export const dashboardRoutes = [
   { pathName: "/listarUsuarios", name: "Listar usuarios", icon: "fas fa-clipboard-list" },
   { pathName: "/crearUsuarios", name: "Crear usuarios", icon: "fas fa-user-plus" },
 ];
+

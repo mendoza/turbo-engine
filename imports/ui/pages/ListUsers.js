@@ -8,15 +8,13 @@ import {
   Dialog,
   DialogTitle,
   Divider,
+  Grid,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from "@material-ui/core";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import PersonIcon from "@material-ui/icons/Person";
-import CreateIcon from "@material-ui/icons/Create";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Redirect } from "react-router-dom";
@@ -85,7 +83,7 @@ class ListUsers extends PureComponent {
                                 this.setState({ shouldRender: true, dialogUser: user });
                               }}
                               aria-label="left aligned">
-                              <PersonIcon />
+                              <i className="fas fa-address-card" />
                             </ToggleButton>
                             <ToggleButton
                               value="center"
@@ -97,10 +95,10 @@ class ListUsers extends PureComponent {
                                 });
                               }}
                               aria-label="centered">
-                              <CreateIcon />
+                              <i className="fas fa-user-plus" />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">
-                              <DeleteForeverIcon />
+                              <i className="fas fa-trash-alt" />
                             </ToggleButton>
                           </ToggleButtonGroup>
                         </div>
@@ -114,25 +112,23 @@ class ListUsers extends PureComponent {
                 <DialogTitle>Información del usuario</DialogTitle>
                 <Divider />
                 <DialogContent dividers>
-                  <Title>Nombre: </Title>
-                  <p>{dialogUser.profile.firstName}</p>
-                  <Title>Segundo nombre:</Title>
-                  <p>{dialogUser.profile.lastName}</p>
+                  <i className="fas fa-user-circle" style={{ fontSize: "90px", align: "center" }} />
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <Title>Nombre: </Title>
+                      <p>{dialogUser.profile.firstName}</p>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Title>Segundo nombre:</Title>
+                      <p>{dialogUser.profile.lastName}</p>
+                    </Grid>
+                  </Grid>
                   <Title>Rol: </Title>
                   <p>{dialogUser.profile.role}</p>
                   <Title>Fecha de nacimiento: </Title>
                   <p> nel </p>
                   <Title>Correos: </Title>
                   <p>{dialogUser.emails[0].address}</p>
-                  <Title>trabajos: </Title>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Tipo</TableCell>
-                        <TableCell>ID del auto</TableCell>
-                      </TableRow>
-                    </TableHead>
-                  </Table>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={this.handleClose} color="primary">
