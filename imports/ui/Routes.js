@@ -72,18 +72,18 @@ export const Routes = [
 ];
 
 export const dashboardRoutes = [
-  { pathName: "/", 
-    name: "Inicio", 
-    icon: "dashboard" 
+  { pathName: "/",
+    name: "Inicio",
+    icon: "dashboard"
   },
-  { pathName: "/listarUsuarios", 
-    name: "Listar usuarios", 
+  { pathName: "/listarUsuarios",
+    name: "Listar usuarios",
     icon: "format_list_bulleted",
     permission: "superAdmin"
   },
-  { pathName: "/crearUsuarios", 
-    name: "Crear usuarios", 
-    icon: "person_add" , 
+  { pathName: "/crearUsuarios",
+    name: "Crear usuarios",
+    icon: "person_add" ,
     permission: "superAdmin"
   },
 ];

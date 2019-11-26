@@ -5,6 +5,7 @@ import { Routes } from "./Routes";
 import Error404 from "./pages/Error404";
 import RedirectLogin from "./components/RedirectLogin";
 import RedirectDashboard from "./components/RedirectDashboard";
+import Loading from "./components/Loading";
 
 class Index extends PureComponent {
   constructor(props) {
@@ -34,7 +35,7 @@ class Index extends PureComponent {
         return <Route exact key={route.name} path={route.path} component={route.component} />;
       }
       if (loggedIn && currentUser && currentUser.profile.role !== "superAdmin") {
-        return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
+        return <Route exact key={route.name} path={route.path} component={Error404} />;
       }
       if (route.path === "/login") {
         return <Route exact key={route.name} path={route.path} component={route.component} />;
@@ -42,6 +43,7 @@ class Index extends PureComponent {
       if (currentUser === null) {
         return <Route exact key={route.name} path={route.path} component={RedirectLogin} />;
       }
+      return <Route exact key={route.name} path={route.path} component={Loading} />;
     };
 
     return (

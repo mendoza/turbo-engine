@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Box, Paper, TextField, Button, Grid, Snackbar, IconButton } from "@material-ui/core";
+import isEmail from 'validator/lib/isEmail';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
+      emailError: null,
       password: "",
+      passwordError: null,
       redirect: props.isLogged,
       open: false,
     };
@@ -18,8 +21,23 @@ class Login extends Component {
   };
 
   changeText = (event, stateValue) => {
+    let error;
+    if (stateValue === 'email') {
+      error = !isEmail(event.target.value);
+      if (error) {
+        error = 'Correo no válido';
+      }
+    }
+    if (stateValue === 'password') {
+      error = event.target.value.length < 8;
+      if (error) {
+        error = 'La contraseña debe tener al menos 8 caractéres';
+      }
+    }
+    const stateValueError = `${stateValue}Error`;
     this.setState({
       [stateValue]: event.target.value,
+      [stateValueError]: error,
     });
   };
 
@@ -44,7 +62,7 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password, open } = this.state;
+    const { email, emailError, password, passwordError, open } = this.state;
     return (
       <Box
         className="w-100"
@@ -78,8 +96,11 @@ class Login extends Component {
                     <TextField
                       fullWidth
                       value={email}
+                      error={emailError}
+                      helperText={emailError || ''}
                       label="Correo Electrónico"
                       onInput={event => this.changeText(event, "email")}
+                      required
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -88,7 +109,10 @@ class Login extends Component {
                       type="password"
                       label="Contraseña"
                       value={password}
+                      error={passwordError}
+                      helperText={passwordError || ''}
                       onInput={event => this.changeText(event, "password")}
+                      required
                     />
                   </Grid>
                   <Grid item xs={12}>
