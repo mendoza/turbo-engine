@@ -168,7 +168,7 @@ class DashboardLayout extends PureComponent {
               RedirectTo(route.pathName);
             }}>
             <ListItemIcon>
-              <Icon>{route.icon}</Icon>
+              <i className={route.icon} />
             </ListItemIcon>
             <ListItemText primary={route.name} />
           </ListItem>
@@ -185,7 +185,7 @@ class DashboardLayout extends PureComponent {
             RedirectTo(route.pathName);
           }}>
           <ListItemIcon>
-            <Icon>{route.icon}</Icon>
+            <i className={route.icon} />
           </ListItemIcon>
           <ListItemText primary={route.name} />
         </ListItem>
@@ -261,7 +261,9 @@ class DashboardLayout extends PureComponent {
               }}
               elevation={0}
               getContentAnchorEl={null}>
-              { currentUser && currentUser.profile.role==="superAdmin" ? isSuperAdminLayout() : null}
+              {currentUser && currentUser.profile.role === "superAdmin"
+                ? isSuperAdminLayout()
+                : null}
               <MenuItem onClick={() => Meteor.logout()}>
                 <ListItemIcon>
                   <i className="fas fa-sign-out-alt" />
@@ -285,19 +287,6 @@ class DashboardLayout extends PureComponent {
           <Divider />
           <List>
             {dashboardRoutes.map(Route => {
-              return (
-                <ListItem
-                  button
-                  onClick={() => {
-                    RedirectTo(Route.pathName);
-                  }}>
-                  <ListItemIcon>
-                    {/* <Icon>{Route.icon}</Icon> */}
-                    <i className={Route.icon} style={{ fontSize: "26px", align: "center" }} />
-                  </ListItemIcon>
-                  <ListItemText primary={Route.name} />
-                </ListItem>
-              );
               if (Route.permission === "superAdmin") {
                 return isSuperAdmin(Route);
               }

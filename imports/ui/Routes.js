@@ -8,7 +8,7 @@ import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
-   
+
 export const Routes = [
   {
     path: "/login",
@@ -73,7 +73,16 @@ export const Routes = [
 
 export const dashboardRoutes = [
   { pathName: "/", name: "Inicio", icon: "fas fa-tachometer-alt" },
-  { pathName: "/listarUsuarios", name: "Listar usuarios", icon: "fas fa-clipboard-list" },
-  { pathName: "/crearUsuarios", name: "Crear usuarios", icon: "fas fa-user-plus" },
+  {
+    pathName: "/listarUsuarios",
+    name: "Listar usuarios",
+    icon: "fas fa-clipboard-list",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/crearUsuarios",
+    name: "Crear usuarios",
+    icon: "fas fa-user-plus",
+    permission: "superAdmin",
+  },
 ];
-
