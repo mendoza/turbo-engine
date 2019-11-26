@@ -150,7 +150,7 @@ class DashboardLayout extends PureComponent {
               RedirectTo("empresa");
             }}>
             <ListItemIcon>
-              <i className="fas fa-cog" />
+              <i style={{ fontSize: "24px" }} className="fas fa-cog" />
             </ListItemIcon>
             <ListItemText primary="Empresa" />
           </MenuItem>
@@ -168,7 +168,7 @@ class DashboardLayout extends PureComponent {
               RedirectTo(route.pathName);
             }}>
             <ListItemIcon>
-              <i className={route.icon} />
+              <i style={{ fontSize: "24px" }} className={route.icon} />
             </ListItemIcon>
             <ListItemText primary={route.name} />
           </ListItem>
@@ -185,7 +185,7 @@ class DashboardLayout extends PureComponent {
             RedirectTo(route.pathName);
           }}>
           <ListItemIcon>
-            <i className={route.icon} />
+            <i style={{ fontSize: "24px" }} className={route.icon} />
           </ListItemIcon>
           <ListItemText primary={route.name} />
         </ListItem>
