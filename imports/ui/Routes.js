@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
+import PiezasPage from "./pages/PiezasPage";
+import AutosPage from "./pages/AutosPage";
 
 export const Routes = [
   {
@@ -53,14 +55,34 @@ export const Routes = [
     component: Login,
   },
   {
+    path: "/seccionPiezas",
+    name: "Piezas",
+    component: PiezasPage,
+  },
+  {
     path: "/restablecerContra",
     name: "Restablecer",
     component: RestorePass,
   },
+  {
+    path: "/seccionVehiculos",
+    name: "Vehiculos",
+    component: AutosPage,
+  },
 ];
 
 export const dashboardRoutes = [
-  { pathName: "/", name: "Inicio", icon: "dashboard" },
-  { pathName: "/listarUsuarios", name: "Listar usuarios", icon: "format_list_bulleted" },
-  { pathName: "/crearUsuarios", name: "Crear usuarios", icon: "person_add" },
+  { pathName: "/", name: "Inicio", icon: "fas fa-tachometer-alt" },
+  {
+    pathName: "/listarUsuarios",
+    name: "Listar usuarios",
+    icon: "fas fa-clipboard-list",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/crearUsuarios",
+    name: "Crear usuarios",
+    icon: "fas fa-user-plus",
+    permission: "superAdmin",
+  },
 ];

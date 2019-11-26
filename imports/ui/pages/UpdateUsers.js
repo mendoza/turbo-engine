@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React, { PureComponent } from "react";
 import {
   Container,
@@ -52,10 +51,9 @@ class UpdateUsers extends PureComponent {
     });
   };
 
-  handleChange = (event, stateVariable) => {
+  handleChange = event => {
     let { users } = this.props;
     users = users.filter(user => user._id === event.target.value);
-    //console.log(users);
     this.setState({
       id: users[0]._id,
       correo: users[0].emails[0].address,
@@ -63,7 +61,6 @@ class UpdateUsers extends PureComponent {
       apellido: users[0].profile.lastName,
       services: users[0].services,
     });
-    //console.log(users[0].services);
   };
 
   handleClick = () => {
@@ -132,7 +129,7 @@ class UpdateUsers extends PureComponent {
                     if (user) {
                       return (
                         <MenuItem key={user._id} value={user._id}>
-                          {user._id} - {user.profile.firstName} {user.profile.lastName}
+                          {`${user._id} - ${user.profile.firstName} ${user.profile.lastName}`}
                         </MenuItem>
                       );
                     }
