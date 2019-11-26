@@ -5,7 +5,6 @@ import {
   Typography,
   Box,
   Grid,
-  Link,
   TextField,
   CssBaseline,
   Button,
@@ -13,7 +12,6 @@ import {
   Snackbar,
   IconButton,
 } from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -102,7 +100,7 @@ class CreateUsers extends React.Component {
           <CssBaseline />
           <div>
             <Avatar>
-              <LockOutlinedIcon />
+              <i className="fas fa-user-lock" />
             </Avatar>
             <Typography component="h1" variant="h5">
               Crear Usuarios

@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { Container, Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import { BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Orders from "../components/Orders";

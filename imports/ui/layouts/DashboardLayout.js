@@ -15,18 +15,12 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { secondaryListItems } from "../components/listItems";
-import Icon from "@material-ui/core/Icon";
+import { Meteor } from "meteor/meteor";
 import { dashboardRoutes } from "../Routes";
 import { withTracker } from "meteor/react-meteor-data";
 
@@ -229,7 +223,7 @@ class DashboardLayout extends PureComponent {
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
-              <MenuIcon />
+              <i className="fas fa-bars" />
             </IconButton>
             <Typography
               component="h1"
@@ -241,7 +235,7 @@ class DashboardLayout extends PureComponent {
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
+                <i className="fas fa-bell" />
               </Badge>
             </IconButton>
             <IconButton
@@ -249,7 +243,7 @@ class DashboardLayout extends PureComponent {
               aria-haspopup="true"
               color="inherit"
               onClick={handleMoreClick}>
-              <MoreVertIcon />
+              <i className="fas fa-ellipsis-v" />
             </IconButton>
             <Menu
               id="simple-menu"
@@ -285,12 +279,25 @@ class DashboardLayout extends PureComponent {
           open={open}>
           <div className={classes.toolbarIcon}>
             <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
+              <i className="fas fa-chevron-left" />
             </IconButton>
           </div>
           <Divider />
           <List>
             {dashboardRoutes.map(Route => {
+              return (
+                <ListItem
+                  button
+                  onClick={() => {
+                    RedirectTo(Route.pathName);
+                  }}>
+                  <ListItemIcon>
+                    {/* <Icon>{Route.icon}</Icon> */}
+                    <i className={Route.icon} style={{ fontSize: "26px", align: "center" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={Route.name} />
+                </ListItem>
+              );
               if (Route.permission === "superAdmin") {
                 return isSuperAdmin(Route);
               }
