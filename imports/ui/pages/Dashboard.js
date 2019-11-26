@@ -49,7 +49,6 @@ class Dashboard extends PureComponent {
                 <YAxis />
               </LineChart>
             </Grid>
-            <Grid item xs={6}></Grid>
           </Grid>
           <Grid item xs={12}>
             <Paper>
