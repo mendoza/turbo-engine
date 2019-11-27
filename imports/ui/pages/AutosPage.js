@@ -98,7 +98,7 @@ class AutosPage extends PureComponent {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe("autos.all");
+  Meteor.subscribe("Autos.all");
   return {
     autos: Autos.find().fetch(),
   };
