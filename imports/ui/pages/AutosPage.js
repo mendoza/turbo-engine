@@ -72,6 +72,7 @@ class AutosPage extends PureComponent {
       _id: "",
       open: false,
       message: "",
+      showX: false,
     };
   }
 
@@ -91,6 +92,7 @@ class AutosPage extends PureComponent {
       year,
       estado,
       open,
+      showX,
       message,
     } = this.state;
 
@@ -103,7 +105,6 @@ class AutosPage extends PureComponent {
         [event.target.name]: event.target.value,
       });
     };
-
     const handleCreate = () => {
       let alert;
 
@@ -188,7 +189,14 @@ class AutosPage extends PureComponent {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="outlined" color="primary">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      this.setState(state => {
+                        return { showX: !state.showX };
+                      });
+                    }}>
                     Eliminar un Vehiculo
                   </Button>
                 </Grid>
@@ -201,11 +209,15 @@ class AutosPage extends PureComponent {
             {autos.map((auto, index) => (
               <Grid item key={auto.modelo + auto.marca + index} xs={12} sm={6} md={4}>
                 <ItemCard
+                  showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
                   action1={() => {}}
-                  action2={async () => {
+                  action2={() => {
                     this.setState({ shouldRender: true, dialogCar: auto, ...auto });
+                  }}
+                  action3={() => {
+                    Meteor.call("deleteAuto", { ...auto });
                   }}
                 />
               </Grid>
