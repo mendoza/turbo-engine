@@ -218,6 +218,7 @@ class AutosPage extends PureComponent {
                   }}
                   action3={() => {
                     Meteor.call("deleteAuto", { ...auto });
+                    this.setState({ showX: false });
                   }}
                 />
               </Grid>
