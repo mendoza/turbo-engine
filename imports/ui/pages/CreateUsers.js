@@ -58,7 +58,6 @@ class CreateUsers extends React.Component {
 
   handleCreate = () => {
     const { nombre, apellido, correo, password } = this.state;
-    let validator = require("validator");
 
     Meteor.call(
       "createUsuario",

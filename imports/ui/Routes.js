@@ -7,12 +7,13 @@ import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 import Vehiculos from "./pages/Vehiculos";
+import CreateAutos from "./pages/CreateAutos";
 
 const Routes = [
   {
     path: "/login",
     name: "Login",
-    component: Login
+    component: Login,
   },
   {
     path: "/",
@@ -28,19 +29,19 @@ const Routes = [
     path: "/crearUsuarios",
     name: "Crear",
     component: CreateUsers,
-    permission: 'superAdmin',
+    permission: "superAdmin",
   },
   {
     path: "/listarUsuarios",
     name: "Listar",
     component: ListUsers,
-    permission: 'superAdmin',
+    permission: "superAdmin",
   },
   {
     path: "/actualizarUsuarios",
     name: "Actualizar",
     component: UpdateUsers,
-    permission: 'superAdmin',
+    permission: "superAdmin",
   },
   {
     path: "/empresa",
@@ -61,6 +62,11 @@ const Routes = [
     path: "/seccionVehiculos",
     name: "Vehiculos",
     component: Vehiculos,
+  },
+  {
+    path: "/agregarAutos",
+    name: "Agregar Autos",
+    component: CreateAutos,
   },
 ];
 
