@@ -85,4 +85,10 @@ export const dashboardRoutes = [
     icon: "fas fa-user-plus",
     permission: "superAdmin",
   },
+  {
+    pathName: "/restablecerContra",
+    name: "Modificar contraseña",
+    icon: "fas fa-edit",
+    permission: "superAdmin",
+  },
 ];

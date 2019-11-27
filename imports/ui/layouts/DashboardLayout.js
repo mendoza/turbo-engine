@@ -21,13 +21,14 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Meteor } from "meteor/meteor";
-import { dashboardRoutes } from "../Routes";
 import { withTracker } from "meteor/react-meteor-data";
+import { dashboardRoutes } from "../Routes";
+
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {`Copyright © `}
+      Copyright © 
       <Link color="inherit" href="https://github.com/Dmendoza99/turbo-engine">
         Turbo Engine
       </Link>
@@ -105,9 +106,7 @@ const useStyles = theme => ({
     overflow: "auto",
   },
   container: {
-    // paddingTop: theme.spacing(4),
     padding: 0,
-    // paddingBottom: theme.spacing(4),
     paddingBottom: 0,
   },
   paper: {
@@ -144,6 +143,7 @@ class DashboardLayout extends PureComponent {
     const { classes, children, currentUser } = this.props;
     const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
 
+    // Functions
     const isSuperAdminLayout = () => {
       if (currentUser && currentUser.profile.role === "superAdmin") {
         return (
