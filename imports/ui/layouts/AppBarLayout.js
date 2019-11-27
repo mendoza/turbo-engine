@@ -49,11 +49,11 @@ class AppBarLayout extends PureComponent {
             {Routes.map(route => (
               <ListItem button key={route.name}>
                 <ListItemText
-                  primary={(
+                  primary={
                     <NavLink className="MuiLink-root" to={route.path}>
                       {route.name}
                     </NavLink>
-                  )}
+                  }
                 />
               </ListItem>
             ))}

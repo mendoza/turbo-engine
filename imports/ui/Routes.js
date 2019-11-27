@@ -8,8 +8,12 @@ import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 import Vehiculos from "./pages/Vehiculos";
 import CreateAutos from "./pages/CreateAutos";
+import Piezas from "./pages/Piezas"
+import CreatePiezas from "./pages/CreatePiezas";
+import PiezasPage from "./pages/PiezasPage";
+import AutosPage from "./pages/AutosPage";
 
-const Routes = [
+export const Routes = [
   {
     path: "/login",
     name: "Login",
@@ -47,6 +51,7 @@ const Routes = [
     path: "/empresa",
     name: "Empresa",
     component: Empresa,
+    permission: "superAdmin",
   },
   {
     path: "/login",
@@ -54,14 +59,24 @@ const Routes = [
     component: Login,
   },
   {
-    path: "/reestablecerContra",
-    name: "Reestablecer",
+    path: "/seccionPiezas",
+    name: "Piezas",
+    component: PiezasPage,
+  },
+  {
+    path: "/restablecerContra",
+    name: "Restablecer",
     component: RestorePass,
+  },
+  {
+    path: "/crearPiezas",
+    name: "CrearP",
+    component: CreatePiezas,
   },
   {
     path: "/seccionVehiculos",
     name: "Vehiculos",
-    component: Vehiculos,
+    component: AutosPage,
   },
   {
     path: "/agregarAutos",
@@ -70,4 +85,8 @@ const Routes = [
   },
 ];
 
-export default Routes;
+export const dashboardRoutes = [
+  { pathName: "/", name: "Inicio", icon: "dashboard" },
+  { pathName: "/listarUsuarios", name: "Listar usuarios", icon: "format_list_bulleted" },
+  { pathName: "/crearUsuarios", name: "Crear usuarios", icon: "person_add" },
+];

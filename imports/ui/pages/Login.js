@@ -11,23 +11,19 @@ class Login extends Component {
       redirect: props.isLogged,
       open: false,
     };
-    this.handleClose = this.handleClose.bind(this);
-    this.changeText = this.changeText.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  handleClose() {
+  handleClose = () => {
     this.setState({ open: false });
-  }
+  };
 
-  changeText(event, stateValue) {
+  changeText = (event, stateValue) => {
     this.setState({
       [stateValue]: event.target.value,
     });
-  }
+  };
 
-  handleLogin(event) {
+  handleLogin = event => {
     event.preventDefault();
     const { email, password } = this.state;
     Meteor.loginWithPassword(email, password, err => {
@@ -37,15 +33,15 @@ class Login extends Component {
         this.setState({ redirect: true });
       }
     });
-  }
+  };
 
-  renderRedirect() {
+  renderRedirect = () => {
     const { redirect } = this.state;
     if (redirect) {
       return <Redirect to="/" />;
     }
     return undefined;
-  }
+  };
 
   render() {
     const { email, password, open } = this.state;
