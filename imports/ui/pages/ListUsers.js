@@ -1,38 +1,49 @@
 import React, { PureComponent } from "react";
 import { Meteor } from "meteor/meteor";
 import {
-  Backdrop,
+  Button,
   Container,
-  Fade,
-  Modal,
+  DialogContent,
+  DialogActions,
+  Dialog,
+  DialogTitle,
+  Divider,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from "@material-ui/core";
-
-
-
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import PersonIcon from "@material-ui/icons/Person";
 import CreateIcon from "@material-ui/icons/Create";
-
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Title from "../components/Title"
+import Title from "../components/Title";
 
 class ListUsers extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      shouldRender: false,
+      shouldRedirect: false,
+      pathname: "",
+      redirectData: {},
+      dialogUser: { emails: [{}], profile: {} },
+    };
   }
+
+  handleClose = () => {
+    this.setState({ shouldRender: false });
+  };
 
   render() {
     const { users } = this.props;
+    const { shouldRender, shouldRedirect, pathname, redirectData, dialogUser } = this.state;
+
     return (
       <DashboardLayout>
         <Container>
@@ -44,7 +55,7 @@ class ListUsers extends PureComponent {
                 <TableCell>Nombre(s)</TableCell>
                 <TableCell>Apellidos(s)</TableCell>
                 <TableCell>Rol</TableCell>
-                <TableCell>  </TableCell>
+                <TableCell> </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -68,10 +79,24 @@ class ListUsers extends PureComponent {
                       <TableCell component="th" scope="row">
                         <div>
                           <ToggleButtonGroup aria-label="text alignment">
-                            <ToggleButton value="left" aria-label="left aligned">
+                            <ToggleButton
+                              value="left"
+                              onClick={() => {
+                                this.setState({ shouldRender: true, dialogUser: user });
+                              }}
+                              aria-label="left aligned">
                               <PersonIcon />
                             </ToggleButton>
-                            <ToggleButton value="center" aria-label="centered" href="/actualizarUsuarios">
+                            <ToggleButton
+                              value="center"
+                              onClick={() => {
+                                this.setState({
+                                  shouldRedirect: true,
+                                  pathname: "/actualizarUsuarios",
+                                  redirectData: { user },
+                                });
+                              }}
+                              aria-label="centered">
                               <CreateIcon />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">
@@ -85,9 +110,39 @@ class ListUsers extends PureComponent {
                 }
                 return <></>;
               })}
+              <Dialog open={shouldRender} onClose={this.handleClose}>
+                <DialogTitle>Información del usuario</DialogTitle>
+                <Divider />
+                <DialogContent dividers>
+                  <Title>Nombre: </Title>
+                  <p>{dialogUser.profile.firstName}</p>
+                  <Title>Segundo nombre:</Title>
+                  <p>{dialogUser.profile.lastName}</p>
+                  <Title>Rol: </Title>
+                  <p>{dialogUser.profile.role}</p>
+                  <Title>Fecha de nacimiento: </Title>
+                  <p> nel </p>
+                  <Title>Correos: </Title>
+                  <p>{dialogUser.emails[0].address}</p>
+                  <Title>trabajos: </Title>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Tipo</TableCell>
+                        <TableCell>ID del auto</TableCell>
+                      </TableRow>
+                    </TableHead>
+                  </Table>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </TableBody>
+            {shouldRedirect ? <Redirect to={{ pathname, state: { ...redirectData } }} /> : null}
           </Table>
-
         </Container>
       </DashboardLayout>
     );

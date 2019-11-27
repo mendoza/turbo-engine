@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 

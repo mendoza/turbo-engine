@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
-import Routes from "./Routes";
+import { Routes } from "./Routes";
 import Error404 from "./pages/Error404";
 import RedirectLogin from "./components/RedirectLogin";
 import RedirectDashboard from "./components/RedirectDashboard";
