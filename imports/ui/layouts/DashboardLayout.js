@@ -32,6 +32,8 @@ function Copyright() {
         Turbo Engine
       </Link>
       {` ${new Date().getFullYear()}.`}
+      <br/>
+      <img src="/imagenes/Logoblack.png" width="8%" height="8%"/>
     </Typography>
   );
 }
@@ -296,6 +298,9 @@ class DashboardLayout extends PureComponent {
           <Divider />
           {/* <List>{secondaryListItems}</List> */}
           <List></List>
+          <center>
+            <img src="/imagenes/Favicon.png" width="65" height="35"/>
+          </center>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
