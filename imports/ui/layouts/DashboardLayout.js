@@ -24,17 +24,16 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { dashboardRoutes } from "../Routes";
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      Copyright © 
+      Copyright ©
       <Link color="inherit" href="https://github.com/Dmendoza99/turbo-engine">
         Turbo Engine
       </Link>
       {` ${new Date().getFullYear()}.`}
-      <br/>
-      <img src="/imagenes/Logoblack.png" width="8%" height="8%"/>
+      <br />
+      <img src="/imagenes/Logoblack.png" width="8%" height="8%" />
     </Typography>
   );
 }
@@ -282,6 +281,9 @@ class DashboardLayout extends PureComponent {
           }}
           open={open}>
           <div className={classes.toolbarIcon}>
+            <center>
+              <img src="/imagenes/Favicon.png" width="65" height="35" />
+            </center>
             <IconButton onClick={handleDrawerClose}>
               <i className="fas fa-chevron-left" />
             </IconButton>
@@ -298,9 +300,6 @@ class DashboardLayout extends PureComponent {
           <Divider />
           {/* <List>{secondaryListItems}</List> */}
           <List></List>
-          <center>
-            <img src="/imagenes/Favicon.png" width="65" height="35"/>
-          </center>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
