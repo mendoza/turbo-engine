@@ -7,6 +7,7 @@ import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 import Piezas from "./pages/Piezas"
+import CreatePiezas from "./pages/CreatePiezas";
 
 const Routes = [
   {
@@ -62,6 +63,11 @@ const Routes = [
     name: "Restablecer",
     component: RestorePass,
   },
+  {
+    path: "/crearPiezas",
+    name: "CrearP",
+    component: CreatePiezas,
+  }
 ];
 
 export default Routes;

@@ -1,13 +1,9 @@
 import React, { PureComponent } from "react";
 import { Container, Button, IconButton, Grid, TextField, Snackbar} from "@material-ui/core";
-import { InputLabel, Select, MenuItem } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
-import { withStyles } from "@material-ui/core/styles";
-import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
-import Piezas from "../../api/collections/Piezas/Piezas";
 
 class CreatePiezas extends PureComponent {
   constructor(props) {
@@ -31,34 +27,46 @@ class CreatePiezas extends PureComponent {
   handleClick = () => {
     const { vendedor, precio, numeroDeSerie, tipo } = this.state;
     let alert;
-    if (validator.isEmpty(vendedor)) {
-      alert = "El campo vendedor es requerido";
-    }
-    if (validator.isEmpty(numeroDeSerie)) {
-      alert = "El numero de serie es requerido";
+    
+    
+    if (validator.isEmpty(tipo)) {
+      alert = "El campo tipo es requerido";
     }
     if (validator.isEmpty(precio)) {
       alert = "El campo precio es requerido";
     }
-    if (validator.isEmpty(tipo)) {
-      alert = "El campo tipo es requerido";
+    if (validator.isEmpty(numeroDeSerie)) {
+      alert = "El numero de serie es requerido";
+    }
+    if (validator.isEmpty(vendedor)) {
+      alert = "El campo vendedor es requerido";
     }
 
     if (alert) {
-      this.state({
+      this.setState({
         open: true,
         message: alert,
       });
 		}else{
+      console.log({
+        vendedor,
+        precio,
+				numeroDeSerie,
+				tipo,
+      })
 			Meteor.call(
 				"addPieza",
 				{
-					seller: vendedor,
-					serieNumber: numeroDeSerie,
-					price: precio,
-					type: tipo,
+					vendedor,
+          precio,
+					numeroDeSerie,
+					tipo,
 				}
-			);
+      );
+      this.setState({
+        open: true,
+        message: "Pieza agregada exitosamente",
+      });
 		}
   };
 
@@ -93,7 +101,6 @@ class CreatePiezas extends PureComponent {
                   fullWidth
                   id="SerieNumber"
                   label="NumeroDeSerie"
-                  autoFocus
                   value={numeroDeSerie}
                   onInput={event => this.handleTextChange(event, "numeroDeSerie")}
                 />
@@ -107,7 +114,6 @@ class CreatePiezas extends PureComponent {
                   fullWidth
                   id="Price"
                   label="precio"
-                  autoFocus
                   value={precio}
                   onInput={event => this.handleTextChange(event, "precio")}
                 />
@@ -121,13 +127,11 @@ class CreatePiezas extends PureComponent {
                   fullWidth
                   id="Type"
                   label="tipo"
-                  autoFocus
                   value={tipo}
                   onInput={event => this.handleTextChange(event, "tipo")}
                 />
               </Grid>
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
@@ -160,9 +164,4 @@ class CreatePiezas extends PureComponent {
   }
 }
 
-export default withTracker(() => {
-  Meteor.subscribe("piezas.all");
-  return {
-    piezas: Piezas.find().fetch(),
-  };
-})(CreatePiezas);
+export default CreatePiezas;
