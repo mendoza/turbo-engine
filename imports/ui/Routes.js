@@ -67,7 +67,7 @@ export const Routes = [
     component: RestorePass,
   },
   {
-    path: "/crearPiezas",
+    path: "/agregarPiezas",
     name: "CrearP",
     component: CreatePiezas,
   },

@@ -95,12 +95,12 @@ class PiezasPage extends PureComponent {
       alert = "El campo vendedor es requerido";
     }
 
-    if(alert){
+    if (alert) {
       this.setState({
-        open:true,
-        message:alert,
+        open: true,
+        message: alert,
       });
-    } 
+    }
   };
 
   render() {
@@ -114,7 +114,7 @@ class PiezasPage extends PureComponent {
       tipo,
       open,
       message,
-      showX
+      showX,
     } = this.state;
 
     return (
@@ -143,28 +143,27 @@ class PiezasPage extends PureComponent {
                     </Button>
                   </Grid>
                   <Grid item>
-                    <Button 
-                      variant="outlined" 
+                    <Button
+                      variant="outlined"
                       color="primary"
-                      onClick={() =>{
-                        this.setState(state =>{
-                          return {showX: !state.showX};
+                      onClick={() => {
+                        this.setState(state => {
+                          return { showX: !state.showX };
                         });
-                      }}
-                      >
+                      }}>
                       Eliminar una Pieza
                     </Button>
                   </Grid>
                 </Grid>
               </div>
-            </Container> 
+            </Container>
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
-            <Grid container spacing={4}> 
-              {piezas.map((pieza) => (
+            <Grid container spacing={4}>
+              {piezas.map(pieza => (
                 <Grid item key={pieza} xs={12} sm={6} md={4}>
                   <ItemCard
-                    showX={showX} 
+                    showX={showX}
                     title="esto es el title"
                     body="esto es el body"
                     action1={() => {}}
@@ -172,8 +171,8 @@ class PiezasPage extends PureComponent {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
                     }}
                     action3={() => {
-                      Meteor.call("deletePieza", {...pieza});
-                      this.setState({showX: false});
+                      Meteor.call("deletePieza", { ...pieza });
+                      this.setState({ showX: false });
                     }}
                   />
                 </Grid>
@@ -277,7 +276,7 @@ class PiezasPage extends PureComponent {
 
 export default withStyles(useStyles)(
   withTracker(() => {
-    Meteor.subscribe("piezas.all");
+    Meteor.subscribe("Piezas.all");
     return {
       piezas: Piezas.find().fetch(),
     };
