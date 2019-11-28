@@ -1,22 +1,13 @@
 import React, { PureComponent } from "react";
 import { Meteor } from "meteor/meteor";
 import {
-  Button,
   Container,
-  DialogContent,
-  DialogActions,
-  Dialog,
-  DialogTitle,
-  Divider,
-  Grid,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from "@material-ui/core";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -30,7 +21,6 @@ class ListUsers extends PureComponent {
       shouldRedirect: false,
       pathname: "",
       redirectData: {},
-      dialogUser: { emails: [{}], profile: {} },
     };
   }
 
@@ -40,7 +30,7 @@ class ListUsers extends PureComponent {
 
   render() {
     const { users } = this.props;
-    const { shouldRender, shouldRedirect, pathname, redirectData, dialogUser } = this.state;
+    const { shouldRender, shouldRedirect, pathname, redirectData } = this.state;
 
     return (
       <DashboardLayout>
@@ -73,9 +63,6 @@ class ListUsers extends PureComponent {
                       </TableCell>
                       <TableCell component="th" scope="row">
                         {user.profile.role}
-                      </TableCell>
-                      <TableCell component="th" scope="row">
-                        
                       </TableCell>
                     </TableRow>
                   );

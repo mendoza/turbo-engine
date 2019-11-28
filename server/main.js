@@ -3,6 +3,7 @@ import "../imports/api/collections/Usuarios/publications";
 import Empresa from "../imports/api/collections/Empresa/Empresa";
 import "../imports/api/collections/Empresa/methods";
 import "../imports/api/collections/Usuarios/methods";
+import "../imports/api/collections/Piezas/methods";
 import "../imports/api/collections/Autos/methods";
 
 Meteor.startup(() => {
