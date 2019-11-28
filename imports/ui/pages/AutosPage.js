@@ -341,7 +341,7 @@ class AutosPage extends PureComponent {
                 </Grid>
               </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
-                Crear
+                Modificar
               </Button>
             </form>
           </DialogContent>
