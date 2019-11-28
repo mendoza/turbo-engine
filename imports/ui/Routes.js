@@ -10,7 +10,7 @@ import CreateAutos from "./pages/CreateAutos";
 import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
-import EstadoVehiculos from "./pages/EstadoVehiculos";
+import EstadoAutos from "./pages/EstadoAutos";
 
 export const Routes = [
   {
@@ -78,9 +78,9 @@ export const Routes = [
     component: AutosPage,
   },
   {
-    path: "/estadoVehiculos",
+    path: "/estadoAutos",
     name: "Estado",
-    component: EstadoVehiculos,
+    component: EstadoAutos,
   },
   {
     path: "/agregarAutos",

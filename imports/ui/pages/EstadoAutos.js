@@ -13,7 +13,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 
-class ListUsers extends PureComponent {
+class EstadoAutos extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,11 +31,13 @@ class ListUsers extends PureComponent {
       <DashboardLayout>
         <Container>
           <Title>Estado de Vehículos</Title>
-          <Table aria-label="users table">
+          <Table aria-label="autos table">
             <TableHead>
               <TableRow>
-                <TableCell>Vehículo</TableCell>
+                <TableCell>Marca</TableCell>
+                <TableCell>Modelo</TableCell>
                 <TableCell>Año</TableCell>
+                <TableCell>Color</TableCell>
                 <TableCell>Número de Placa</TableCell>
                 <TableCell>Estado de Reparación</TableCell>
                 <TableCell>Estado de Venta</TableCell>
@@ -60,7 +62,13 @@ class ListUsers extends PureComponent {
                         {user.profile.role}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        Pollo
+                        -
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        -
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        -
                       </TableCell>
                     </TableRow>
                   );
@@ -81,4 +89,4 @@ export default withTracker(() => {
   return {
     users: Meteor.users.find().fetch(),
   };
-})(ListUsers);
+})(EstadoAutos);
