@@ -82,7 +82,8 @@ class ListUsers extends PureComponent {
                               onClick={() => {
                                 this.setState({ shouldRender: true, dialogUser: user });
                               }}
-                              aria-label="left aligned">
+                              aria-label="left aligned"
+                              >
                               <i className="fas fa-address-card" />
                             </ToggleButton>
                             <ToggleButton
@@ -94,7 +95,8 @@ class ListUsers extends PureComponent {
                                   redirectData: { user },
                                 });
                               }}
-                              aria-label="centered">
+                              aria-label="centered"
+                              >
                               <i className="fas fa-user-plus" />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">

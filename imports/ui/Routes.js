@@ -8,6 +8,7 @@ import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
+import EstadoVehiculos from "./pages/EstadoVehiculos";
 
 export const Routes = [
   {
@@ -68,6 +69,11 @@ export const Routes = [
     path: "/seccionVehiculos",
     name: "Vehiculos",
     component: AutosPage,
+  },
+  {
+    path: "/estadoVehiculos",
+    name: "Estado",
+    component: EstadoVehiculos,
   },
 ];
 
