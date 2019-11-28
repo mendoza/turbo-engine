@@ -17,20 +17,15 @@ class ListUsers extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      shouldRender: false,
       shouldRedirect: false,
       pathname: "",
       redirectData: {},
     };
   }
 
-  handleClose = () => {
-    this.setState({ shouldRender: false });
-  };
-
   render() {
     const { users } = this.props;
-    const { shouldRender, shouldRedirect, pathname, redirectData } = this.state;
+    const { shouldRedirect, pathname, redirectData } = this.state;
 
     return (
       <DashboardLayout>
@@ -63,6 +58,9 @@ class ListUsers extends PureComponent {
                       </TableCell>
                       <TableCell component="th" scope="row">
                         {user.profile.role}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        Pollo
                       </TableCell>
                     </TableRow>
                   );
