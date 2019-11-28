@@ -108,5 +108,9 @@ export const dashboardRoutes = [
     name: "Modificar contraseña",
     icon: "fas fa-edit",
     permission: "superAdmin",
-  },
+  },{
+    pathName: "/estadoAutos",
+    name: "Estado del vehiculo",
+    icon: "fas fa-car-building"
+  }
 ];

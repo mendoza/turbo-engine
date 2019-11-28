@@ -14,7 +14,6 @@ import {
 import DashboardLayout from "../layouts/DashboardLayout";
 import Orders from "../components/Orders";
 import Title from "../components/Title";
-import "../Styles/Dashboard.css";
 
 class Dashboard extends PureComponent {
   constructor(props) {
