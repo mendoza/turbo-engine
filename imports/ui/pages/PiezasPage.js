@@ -160,13 +160,13 @@ class PiezasPage extends PureComponent {
             </Container> 
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
-            <Grid container spacing={4}>
-              {piezas.map((pieza, index) => (
-                <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+            <Grid container spacing={4}> 
+              {piezas.map((pieza) => (
+                <Grid item key={pieza} xs={12} sm={6} md={4}>
                   <ItemCard
-                    showX={showX}
-                    title={`Tipo: ${pieza.tipo}`}
-                    body={`Vendedor: ${pieza.vendedor}`}
+                    showX={showX} 
+                    title="esto es el title"
+                    body="esto es el body"
                     action1={() => {}}
                     action2={() => {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
