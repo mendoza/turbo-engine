@@ -32,7 +32,7 @@ export default function Orders() {
   const classes = useStyles();
   return (
     <>
-      <Title>Recent Reports</Title>
+      <Title>Reportes</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -57,7 +57,7 @@ export default function Orders() {
       <div className={classes.seeMore}>
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */} 
         <Link color="primary" href="javascript:;">
-          See more reports
+          Ver mas Reportes
         </Link>
       </div>
     </>

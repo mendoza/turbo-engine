@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogTitle,
   Divider,
+  Grid,
   Table,
   TableHead,
   TableRow,
@@ -17,9 +18,6 @@ import {
   IconButton,
   Snackbar,
 } from "@material-ui/core";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import PersonIcon from "@material-ui/icons/Person";
-import CreateIcon from "@material-ui/icons/Create";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Redirect } from "react-router-dom";
@@ -33,6 +31,7 @@ class ListUsers extends PureComponent {
     this.state = {
       shouldRender: false,
       shouldRedirect: false,
+      shouldRedirectAdd: false,
       pathname: "",
       redirectData: {},
       dialogUser: { emails: [{}], profile: {} },
@@ -97,11 +96,27 @@ class ListUsers extends PureComponent {
     const { shouldRender, shouldRedirect, pathname,
       redirectData, dialogUser, showDeleteDialog,
       showSnackbar, snackbarText } = this.state;
-
     return (
       <DashboardLayout>
         <Container>
-          <Title>Listar usuarios</Title>
+          <Grid container xs={12}>
+            <Grid xs="6">
+              <Title>Listar usuarios</Title>
+            </Grid>
+            <Grid xs="6">
+              <Button
+                width="10%"
+                type="submit"
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  this.setState({ shouldRedirectAdd: true, pathname: "/crearUsuarios" });
+                }}>
+                <i className="fas fa-user-plus" />
+                Agregar Usuarios
+              </Button>
+            </Grid>
+          </Grid>
           <Table aria-label="users table">
             <TableHead>
               <TableRow>
@@ -138,9 +153,8 @@ class ListUsers extends PureComponent {
                               onClick={() => {
                                 this.setState({ shouldRender: true, dialogUser: user });
                               }}
-                              aria-label="left aligned"
-                              >
-                              <PersonIcon />
+                              aria-label="left aligned">
+                              <i className="fas fa-address-card" />
                             </ToggleButton>
                             <ToggleButton
                               value="center"
@@ -174,25 +188,23 @@ class ListUsers extends PureComponent {
                 <DialogTitle>Información del usuario</DialogTitle>
                 <Divider />
                 <DialogContent dividers>
-                  <Title>Nombre: </Title>
-                  <p>{dialogUser.profile.firstName}</p>
-                  <Title>Segundo nombre:</Title>
-                  <p>{dialogUser.profile.lastName}</p>
+                  <i className="fas fa-user-circle" style={{ fontSize: "90px", align: "center" }} />
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <Title>Nombre: </Title>
+                      <p>{dialogUser.profile.firstName}</p>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Title>Apellido:</Title>
+                      <p>{dialogUser.profile.lastName}</p>
+                    </Grid>
+                  </Grid>
                   <Title>Rol: </Title>
                   <p>{dialogUser.profile.role}</p>
                   <Title>Fecha de nacimiento: </Title>
                   <p> nel </p>
                   <Title>Correos: </Title>
                   <p>{dialogUser.emails[0].address}</p>
-                  <Title>trabajos: </Title>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Tipo</TableCell>
-                        <TableCell>ID del auto</TableCell>
-                      </TableRow>
-                    </TableHead>
-                  </Table>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={this.handleClose} color="primary">
@@ -201,6 +213,7 @@ class ListUsers extends PureComponent {
                 </DialogActions>
               </Dialog>
             </TableBody>
+            {shouldRedirectAdd ? <Redirect to={pathname} /> : null}
             {shouldRedirect ? <Redirect to={{ pathname, state: { ...redirectData } }} /> : null}
           </Table>
         </Container>

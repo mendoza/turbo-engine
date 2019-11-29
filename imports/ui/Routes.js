@@ -6,8 +6,11 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
+import CreateAutos from "./pages/CreateAutos";
+import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
+import EstadoAutos from "./pages/EstadoAutos";
 
 export const Routes = [
   {
@@ -65,9 +68,24 @@ export const Routes = [
     component: RestorePass,
   },
   {
-    path: "/seccionVehiculos",
-    name: "Vehiculos",
+    path: "/agregarPiezas",
+    name: "CrearP",
+    component: CreatePiezas,
+  },
+  {
+    path: "/seccionAutos",
+    name: "Autos",
     component: AutosPage,
+  },
+  {
+    path: "/estadoAutos",
+    name: "Estado",
+    component: EstadoAutos,
+  },
+  {
+    path: "/agregarAutos",
+    name: "Agregar Autos",
+    component: CreateAutos,
   },
 ];
 
@@ -85,5 +103,27 @@ export const dashboardRoutes = [
     name: "Crear usuarios",
     icon: "person_add" ,
     permission: "superAdmin"
+  { pathName: "/", name: "Inicio", icon: "fas fa-tachometer-alt" },
+  {
+    pathName: "/listarUsuarios",
+    name: "Usuarios",
+    icon: "fas fa-users",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/seccionAutos",
+    name: "Vehiculos",
+    icon: "fas fa-car",
+  },
+  {
+    pathName: "/seccionPiezas",
+    name: "Piezas",
+    icon: "fas fa-puzzle-piece",
+  },
+  {
+    pathName: "/restablecerContra",
+    name: "Modificar contraseña",
+    icon: "fas fa-edit",
+    permission: "superAdmin",
   },
 ];
