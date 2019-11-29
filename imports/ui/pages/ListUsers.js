@@ -45,7 +45,17 @@ class ListUsers extends PureComponent {
     return (
       <DashboardLayout>
         <Container>
-          <Title>Listar usuarios</Title>
+          <Grid container xs={12}>
+            <Grid xs="6"> 
+              <Title>Listar usuarios</Title>
+            </Grid>
+            <Grid xs="6">
+              <Button width="10%" type="submit" color="primary" variant="contained">
+                <i className="fas fa-user-plus" />
+                Agregar Usuarios
+              </Button>
+            </Grid>
+          </Grid>
           <Table aria-label="users table">
             <TableHead>
               <TableRow>
@@ -82,7 +92,9 @@ class ListUsers extends PureComponent {
                               onClick={() => {
                                 this.setState({ shouldRender: true, dialogUser: user });
                               }}
-                              aria-label="left aligned">
+
+                              aria-label="left aligned"
+                              >
                               <i className="fas fa-address-card" />
                             </ToggleButton>
                             <ToggleButton
@@ -94,7 +106,8 @@ class ListUsers extends PureComponent {
                                   redirectData: { user },
                                 });
                               }}
-                              aria-label="centered">
+                              aria-label="centered"
+                              >
                               <i className="fas fa-user-plus" />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">
