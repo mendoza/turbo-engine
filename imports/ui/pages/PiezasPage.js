@@ -72,6 +72,12 @@ class PiezasPage extends PureComponent {
     this.setState({ shouldRender: false });
   };
 
+  handleBar = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
   handleTextChange = event => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -270,13 +276,13 @@ class PiezasPage extends PureComponent {
             }}
             open={open}
             autoHideDuration={6000}
-            onClose={this.handleClose}
+            onClose={this.handleBar}
             ContentProps={{
               "aria-describedby": "message-id",
             }}
             message={<span id="message-id">{message}</span>}
             action={[
-              <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+              <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleBar}>
                 <i className="fas fa-times" />
               </IconButton>,
             ]}

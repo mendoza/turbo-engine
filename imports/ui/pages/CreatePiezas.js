@@ -18,6 +18,12 @@ class CreatePiezas extends PureComponent {
     };
   }
 
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
   handleTextChange = (event, stateVariable) => {
     this.setState({
       [stateVariable]: event.target.value,
