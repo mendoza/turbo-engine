@@ -45,7 +45,17 @@ class ListUsers extends PureComponent {
     return (
       <DashboardLayout>
         <Container>
-          <Title>Listar usuarios</Title>
+          <Grid container xs={12}>
+            <Grid xs="6"> 
+              <Title>Listar usuarios</Title>
+            </Grid>
+            <Grid xs="6">
+              <Button width="10%" type="submit" color="primary" variant="contained">
+                <i className="fas fa-user-plus" />
+                Agregar Usuarios
+              </Button>
+            </Grid>
+          </Grid>
           <Table aria-label="users table">
             <TableHead>
               <TableRow>

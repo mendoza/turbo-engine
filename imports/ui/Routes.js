@@ -93,14 +93,8 @@ export const dashboardRoutes = [
   { pathName: "/", name: "Inicio", icon: "fas fa-tachometer-alt" },
   {
     pathName: "/listarUsuarios",
-    name: "Listar usuarios",
-    icon: "fas fa-clipboard-list",
-    permission: "superAdmin",
-  },
-  {
-    pathName: "/crearUsuarios",
-    name: "Crear usuarios",
-    icon: "fas fa-user-plus",
+    name: "Usuarios",
+    icon: "fas fa-users",
     permission: "superAdmin",
   },
   {
@@ -108,9 +102,10 @@ export const dashboardRoutes = [
     name: "Modificar contraseña",
     icon: "fas fa-edit",
     permission: "superAdmin",
-  },{
-    pathName: "/estadoAutos",
-    name: "Estado del vehiculo",
-    icon: "fas fa-car"
-  }
+  },
+  {
+    pathName: "/seccionVehiculos",
+    name: "Vehiculos",
+    icon: "fas fa-car",
+  },
 ];
