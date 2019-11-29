@@ -79,7 +79,7 @@ class PiezasPage extends PureComponent {
   };
 
   handleClick = () => {
-    const { vendedor, precio, numeroDeSerie, tipo, open, message } = this.state;
+    const { vendedor, precio, numeroDeSerie, tipo, dialogPiece } = this.state;
     let alert;
 
     if (validator.isEmpty(tipo)) {
@@ -100,6 +100,19 @@ class PiezasPage extends PureComponent {
         open: true,
         message: alert,
       });
+    } else {
+      Meteor.call("updatePieza",{
+        _id: dialogPiece._id,
+        vendedor,
+        precio,
+        numeroDeSerie,
+        tipo,
+      });
+      this.setState({
+        open: true,
+        message: "Pieza actualizada exitosamente",
+        shouldRender: false,
+      })
     }
   };
 
@@ -150,7 +163,8 @@ class PiezasPage extends PureComponent {
                         this.setState(state => {
                           return { showX: !state.showX };
                         });
-                      }}>
+                      }}
+                      >
                       Eliminar una Pieza
                     </Button>
                   </Grid>
@@ -160,12 +174,12 @@ class PiezasPage extends PureComponent {
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
-              {piezas.map(pieza => (
-                <Grid item key={pieza} xs={12} sm={6} md={4}>
+              {piezas.map((pieza, index) => (
+                <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
                   <ItemCard
                     showX={showX}
-                    title="esto es el title"
-                    body="esto es el body"
+                    title={`Tipo: ${pieza.tipo}`}
+                    body={`Vendedor: ${pieza.vendedor}`}
                     action1={() => {}}
                     action2={() => {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
