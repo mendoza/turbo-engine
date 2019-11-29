@@ -111,6 +111,6 @@ export const dashboardRoutes = [
   },{
     pathName: "/estadoAutos",
     name: "Estado del vehiculo",
-    icon: "fas fa-car-building"
+    icon: "fas fa-car"
   }
 ];
