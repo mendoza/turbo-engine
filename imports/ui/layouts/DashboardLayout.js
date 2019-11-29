@@ -15,27 +15,26 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Meteor } from "meteor/meteor";
-import Icon from "@material-ui/core/Icon";
+import { withTracker } from "meteor/react-meteor-data";
 import { dashboardRoutes } from "../Routes";
+
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {`Copyright © `}
+      Copyright © 
       <Link color="inherit" href="https://github.com/Dmendoza99/turbo-engine">
         Turbo Engine
       </Link>
       {` ${new Date().getFullYear()}.`}
+      <br/>
+      <img src="/imagenes/Logoblack.png" width="8%" height="8%"/>
     </Typography>
   );
 }
@@ -107,9 +106,7 @@ const useStyles = theme => ({
     overflow: "auto",
   },
   container: {
-    // paddingTop: theme.spacing(4),
     padding: 0,
-    // paddingBottom: theme.spacing(4),
     paddingBottom: 0,
   },
   paper: {
@@ -143,8 +140,60 @@ class DashboardLayout extends PureComponent {
   }
 
   render() {
-    const { classes, children } = this.props;
+    const { classes, children, currentUser } = this.props;
     const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
+
+    // Functions
+    const isSuperAdminLayout = () => {
+      if (currentUser && currentUser.profile.role === "superAdmin") {
+        return (
+          <MenuItem
+            onClick={() => {
+              RedirectTo("empresa");
+            }}>
+            <ListItemIcon>
+              <i style={{ fontSize: "24px" }} className="fas fa-cog" />
+            </ListItemIcon>
+            <ListItemText primary="Empresa" />
+          </MenuItem>
+        );
+      }
+      return false;
+    };
+
+    const isSuperAdmin = route => {
+      if (currentUser && currentUser.profile.role === "superAdmin") {
+        return (
+          <ListItem
+            button
+            onClick={() => {
+              RedirectTo(route.pathName);
+            }}>
+            <ListItemIcon>
+              <i style={{ fontSize: "24px" }} className={route.icon} />
+            </ListItemIcon>
+            <ListItemText primary={route.name} />
+          </ListItem>
+        );
+      }
+      return false;
+    };
+
+    const isOtherUser = route => {
+      return (
+        <ListItem
+          button
+          onClick={() => {
+            RedirectTo(route.pathName);
+          }}>
+          <ListItemIcon>
+            <i style={{ fontSize: "24px" }} className={route.icon} />
+          </ListItemIcon>
+          <ListItemText primary={route.name} />
+        </ListItem>
+      );
+    };
+
     const handleDrawerOpen = () => {
       this.setState({ open: true });
     };
@@ -176,7 +225,7 @@ class DashboardLayout extends PureComponent {
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
-              <MenuIcon />
+              <i className="fas fa-bars" />
             </IconButton>
             <Typography
               component="h1"
@@ -188,7 +237,7 @@ class DashboardLayout extends PureComponent {
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
+                <i className="fas fa-bell" />
               </Badge>
             </IconButton>
             <IconButton
@@ -196,7 +245,7 @@ class DashboardLayout extends PureComponent {
               aria-haspopup="true"
               color="inherit"
               onClick={handleMoreClick}>
-              <MoreVertIcon />
+              <i className="fas fa-ellipsis-v" />
             </IconButton>
             <Menu
               id="simple-menu"
@@ -214,15 +263,9 @@ class DashboardLayout extends PureComponent {
               }}
               elevation={0}
               getContentAnchorEl={null}>
-              <MenuItem
-                onClick={() => {
-                  RedirectTo("empresa");
-                }}>
-                <ListItemIcon>
-                  <i className="fas fa-cog" />
-                </ListItemIcon>
-                <ListItemText primary="Empresa" />
-              </MenuItem>
+              {currentUser && currentUser.profile.role === "superAdmin"
+                ? isSuperAdminLayout()
+                : null}
               <MenuItem onClick={() => Meteor.logout()}>
                 <ListItemIcon>
                   <i className="fas fa-sign-out-alt" />
@@ -240,29 +283,24 @@ class DashboardLayout extends PureComponent {
           open={open}>
           <div className={classes.toolbarIcon}>
             <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
+              <i className="fas fa-chevron-left" />
             </IconButton>
           </div>
           <Divider />
           <List>
             {dashboardRoutes.map(Route => {
-              return (
-                <ListItem
-                  button
-                  onClick={() => {
-                    RedirectTo(Route.pathName);
-                  }}>
-                  <ListItemIcon>
-                    <Icon>{Route.icon}</Icon>
-                  </ListItemIcon>
-                  <ListItemText primary={Route.name} />
-                </ListItem>
-              );
+              if (Route.permission === "superAdmin") {
+                return isSuperAdmin(Route);
+              }
+              return isOtherUser(Route);
             })}
           </List>
           <Divider />
           {/* <List>{secondaryListItems}</List> */}
           <List></List>
+          <center>
+            <img src="/imagenes/Favicon.png" width="65" height="35"/>
+          </center>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
@@ -281,4 +319,10 @@ class DashboardLayout extends PureComponent {
   }
 }
 
-export default withStyles(useStyles)(DashboardLayout);
+export default withStyles(useStyles)(
+  withTracker(() => {
+    return {
+      currentUser: Meteor.user(),
+    };
+  })(DashboardLayout)
+);

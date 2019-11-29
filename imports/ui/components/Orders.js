@@ -32,7 +32,7 @@ export default function Orders() {
   const classes = useStyles();
   return (
     <>
-      <Title>Recent Reports</Title>
+      <Title>Reportes</Title>
       <Table size="small">
         <TableHead>
           <TableRow>

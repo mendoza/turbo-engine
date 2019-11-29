@@ -84,7 +84,23 @@ export const Routes = [
 ];
 
 export const dashboardRoutes = [
-  { pathName: "/", name: "Inicio", icon: "dashboard" },
-  { pathName: "/listarUsuarios", name: "Listar usuarios", icon: "format_list_bulleted" },
-  { pathName: "/crearUsuarios", name: "Crear usuarios", icon: "person_add" },
+  { pathName: "/", name: "Inicio", icon: "fas fa-tachometer-alt" },
+  {
+    pathName: "/listarUsuarios",
+    name: "Listar usuarios",
+    icon: "fas fa-clipboard-list",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/crearUsuarios",
+    name: "Crear usuarios",
+    icon: "fas fa-user-plus",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/restablecerContra",
+    name: "Modificar contraseña",
+    icon: "fas fa-edit",
+    permission: "superAdmin",
+  },
 ];
