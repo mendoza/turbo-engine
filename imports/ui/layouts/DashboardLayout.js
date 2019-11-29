@@ -300,10 +300,6 @@ class DashboardLayout extends PureComponent {
           </List>
           <Divider />
           {/* <List>{secondaryListItems}</List> */}
-          <List></List>
-          <center>
-            <img src="/imagenes/Favicon.png" width="65" height="35"/>
-          </center>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />

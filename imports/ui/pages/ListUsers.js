@@ -28,6 +28,7 @@ class ListUsers extends PureComponent {
     this.state = {
       shouldRender: false,
       shouldRedirect: false,
+      shouldRedirectAdd: false,
       pathname: "",
       redirectData: {},
       dialogUser: { emails: [{}], profile: {} },
@@ -40,17 +41,24 @@ class ListUsers extends PureComponent {
 
   render() {
     const { users } = this.props;
-    const { shouldRender, shouldRedirect, pathname, redirectData, dialogUser } = this.state;
-
+    const { shouldRender, shouldRedirect, shouldRedirectAdd, pathname, redirectData, dialogUser } = this.state;
+    
     return (
       <DashboardLayout>
         <Container>
           <Grid container xs={12}>
-            <Grid xs="6"> 
+            <Grid xs="6">
               <Title>Listar usuarios</Title>
             </Grid>
             <Grid xs="6">
-              <Button width="10%" type="submit" color="primary" variant="contained">
+              <Button
+                width="10%"
+                type="submit"
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  this.setState({ shouldRedirectAdd: true, pathname: "/crearUsuarios" });
+                }}>
                 <i className="fas fa-user-plus" />
                 Agregar Usuarios
               </Button>
@@ -92,9 +100,7 @@ class ListUsers extends PureComponent {
                               onClick={() => {
                                 this.setState({ shouldRender: true, dialogUser: user });
                               }}
-
-                              aria-label="left aligned"
-                              >
+                              aria-label="left aligned">
                               <i className="fas fa-address-card" />
                             </ToggleButton>
                             <ToggleButton
@@ -106,8 +112,7 @@ class ListUsers extends PureComponent {
                                   redirectData: { user },
                                 });
                               }}
-                              aria-label="centered"
-                              >
+                              aria-label="centered">
                               <i className="fas fa-user-plus" />
                             </ToggleButton>
                             <ToggleButton value="right" aria-label="right aligned">
@@ -150,6 +155,7 @@ class ListUsers extends PureComponent {
                 </DialogActions>
               </Dialog>
             </TableBody>
+            {shouldRedirectAdd ? <Redirect to={pathname} /> : null}
             {shouldRedirect ? <Redirect to={{ pathname, state: { ...redirectData } }} /> : null}
           </Table>
         </Container>

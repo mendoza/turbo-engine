@@ -178,6 +178,23 @@ class AutosPage extends PureComponent {
         });
       }
     };
+
+    const Status = status => {
+      if (parseInt(status) === 0) {
+        return "Aún no en reparación";
+      }
+      if (parseInt(status) === 1) {
+        return "Reparado";
+      }
+      if (parseInt(status) === 2) {
+        return "En venta";
+      }
+      if (parseInt(status) === 3) {
+        return "Vendido";
+      }
+      return "Sin especificar";
+    };
+
     return (
       <DashboardLayout>
         <div className={classes.heroContent}>
@@ -226,6 +243,7 @@ class AutosPage extends PureComponent {
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
+                  description={`Estado: ${Status(auto.estado)}`}
                   action1={() => {}}
                   action2={() => {
                     this.setState({ shouldRender: true, dialogCar: auto, ...auto });
