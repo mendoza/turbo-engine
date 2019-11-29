@@ -92,6 +92,7 @@ class ListUsers extends PureComponent {
                               onClick={() => {
                                 this.setState({ shouldRender: true, dialogUser: user });
                               }}
+
                               aria-label="left aligned"
                               >
                               <i className="fas fa-address-card" />

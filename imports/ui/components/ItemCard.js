@@ -7,8 +7,11 @@ import {
   CardContent,
   CardMedia,
   Typography,
+  CardHeader,
+  IconButton,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { red } from "@material-ui/core/colors";
 
 const useStyles = () => ({
   card: {
@@ -27,9 +30,20 @@ class ItemCard extends PureComponent {
   }
 
   render() {
-    const { title, body, action1, action2, classes } = this.props;
+    const { title, body, action1, action2, action3, classes, showX } = this.props;
     return (
       <Card className={classes.card}>
+        <CardHeader
+          action={
+            showX ? (
+              <IconButton aria-label="settings" onClick={action3}>
+                <span style={{ fontSize: 12 }}>
+                  <i className="fas fa-trash" />
+                </span>
+              </IconButton>
+            ) : null
+          }
+        />
         <CardActionArea>
           <CardMedia
             component="img"

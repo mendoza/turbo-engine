@@ -68,13 +68,13 @@ export const Routes = [
     component: RestorePass,
   },
   {
-    path: "/crearPiezas",
+    path: "/agregarPiezas",
     name: "CrearP",
     component: CreatePiezas,
   },
   {
-    path: "/seccionVehiculos",
-    name: "Vehiculos",
+    path: "/seccionAutos",
+    name: "Autos",
     component: AutosPage,
   },
   {
@@ -95,6 +95,12 @@ export const dashboardRoutes = [
     pathName: "/listarUsuarios",
     name: "Usuarios",
     icon: "fas fa-users",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/crearUsuarios",
+    name: "Crear usuarios",
+    icon: "fas fa-user-plus",
     permission: "superAdmin",
   },
   {

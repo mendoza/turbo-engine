@@ -10,7 +10,6 @@ Meteor.methods({
   },
   updateAuto(payload) {
     const selector = { _id: payload._id };
-    delete payload._id;
     const modifier = payload;
     return Auto.update(selector, modifier) > 0;
   },

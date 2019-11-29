@@ -24,6 +24,7 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { dashboardRoutes } from "../Routes";
 
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -300,6 +301,9 @@ class DashboardLayout extends PureComponent {
           <Divider />
           {/* <List>{secondaryListItems}</List> */}
           <List></List>
+          <center>
+            <img src="/imagenes/Favicon.png" width="65" height="35"/>
+          </center>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
