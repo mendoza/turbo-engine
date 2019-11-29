@@ -14,6 +14,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  DialogContentText,
+  IconButton,
+  Snackbar,
 } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
@@ -32,6 +35,10 @@ class ListUsers extends PureComponent {
       pathname: "",
       redirectData: {},
       dialogUser: { emails: [{}], profile: {} },
+      showDeleteDialog: false,
+      deleteUserId: undefined,
+      showSnackbar: false,
+      snackbarText: '',
     };
   }
 
@@ -39,10 +46,56 @@ class ListUsers extends PureComponent {
     this.setState({ shouldRender: false });
   };
 
+  handleCloseDelete = () => {
+    this.setState({
+      showDeleteDialog: false,
+      deleteUserId: undefined,
+    });
+  }
+
+  showDeleteDialog = (event, userId) => {
+    this.setState({
+      showDeleteDialog: true,
+      deleteUserId: userId,
+    });
+  }
+
+  handleCloseSnackbar = () => {
+    this.setState({
+      showSnackbar: false,
+    });
+  }
+
+  deleteUser = () => {
+    const { deleteUserId } = this.state;
+    Meteor.call('deleteUsers', deleteUserId, err => {
+      if (err) {
+        let snackbarText;
+        if (err.error === 'superAdmin') {
+          snackbarText = 'No puede eliminar al usuario super administrador';
+        } else {
+          snackbarText = 'Ha habido un error al intentar eliminar este usuario';
+        }
+        this.setState({
+          showDeleteDialog: false,
+          showSnackbar: true,
+          snackbarText
+        });
+      } else {
+        this.setState({
+          showDeleteDialog: false,
+          showSnackbar: true,
+          snackbarText: 'El usuario ha sido eliminado exitosamente',
+        });
+      }
+    });
+  }
+
   render() {
     const { users } = this.props;
-    const { shouldRender, shouldRedirect, shouldRedirectAdd, pathname, redirectData, dialogUser } = this.state;
-    
+    const { shouldRender, shouldRedirect, pathname,
+      redirectData, dialogUser, showDeleteDialog,
+      showSnackbar, snackbarText } = this.state;
     return (
       <DashboardLayout>
         <Container>
@@ -112,11 +165,16 @@ class ListUsers extends PureComponent {
                                   redirectData: { user },
                                 });
                               }}
-                              aria-label="centered">
-                              <i className="fas fa-user-plus" />
+                              aria-label="centered"
+                              >
+                              <CreateIcon />
                             </ToggleButton>
-                            <ToggleButton value="right" aria-label="right aligned">
-                              <i className="fas fa-trash-alt" />
+                            <ToggleButton
+                              value="right"
+                              aria-label="right aligned"
+                              onClick={(event) => { this.showDeleteDialog(event, user._id) }}
+                              >
+                              <DeleteForeverIcon />
                             </ToggleButton>
                           </ToggleButtonGroup>
                         </div>
@@ -159,6 +217,52 @@ class ListUsers extends PureComponent {
             {shouldRedirect ? <Redirect to={{ pathname, state: { ...redirectData } }} /> : null}
           </Table>
         </Container>
+        <Dialog
+          open={showDeleteDialog}
+          onClose={this.handleCloseDelete}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          >
+          <DialogTitle id="alert-dialog-title">
+            ¿Esta seguro que desea eliminar este usuario?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Eliminar el usuario es una acción no reversible.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseDelete} color="primary" autoFocus>
+              Cancelar
+            </Button>
+            <Button onClick={this.deleteUser} color="primary">
+              Eliminar
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          open={showSnackbar}
+          autoHideDuration={6000}
+          onClose={this.handleCloseSnackbar}
+          ContentProps={{
+            "aria-describedby": "message-id",
+          }}
+          message={<span id="message-id">{snackbarText}</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={this.handleCloseSnackbar}
+              >
+              <i className="fas fa-times" />
+            </IconButton>,
+          ]}
+          />
       </DashboardLayout>
     );
   }

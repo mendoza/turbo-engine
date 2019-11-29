@@ -17,9 +17,16 @@ Meteor.methods({
     return Meteor.users.update(selector, modifier);
   },
   deleteUsers(payload) {
-    const selector = { _id: payload._id };
+    if (Meteor.user().profile.role === 'superAdmin') {
+      const user = Meteor.users.findOne({ _id: payload });
+      if (user && user.profile.role !== 'superAdmin') {
+        Meteor.users.remove({ _id: payload });
+      } else {
+        throw new Meteor.Error('superAdmin');
+      }
+    }
   },
-  restorePass(payload){
+  restorePass(payload) {
     return Accounts.setPassword(payload._id, payload.password);
   }
 });
