@@ -14,6 +14,7 @@ import {
   Snackbar,
   IconButton,
 } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
@@ -73,6 +74,8 @@ class AutosPage extends PureComponent {
       open: false,
       message: "",
       showX: false,
+      pathName: "",
+      shouldRedirect: false,
     };
   }
 
@@ -94,10 +97,16 @@ class AutosPage extends PureComponent {
       open,
       showX,
       message,
+      pathName,
+      shouldRedirect,
     } = this.state;
 
-    const handleClose = () => {
+    const handleCloseDialog = () => {
       this.setState({ shouldRender: false });
+    };
+
+    const handleCloseSnack = () => {
+      this.setState({ open: false });
     };
 
     const handleTextChange = event => {
@@ -184,7 +193,12 @@ class AutosPage extends PureComponent {
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      this.setState({ shouldRedirect: true, pathName: "agregarAutos" });
+                    }}>
                     Agregar otro Vehiculo
                   </Button>
                 </Grid>
@@ -225,7 +239,7 @@ class AutosPage extends PureComponent {
             ))}
           </Grid>
         </Container>
-        <Dialog open={shouldRender} onClose={handleClose}>
+        <Dialog open={shouldRender} onClose={handleCloseDialog}>
           <DialogTitle>Modificar Auto</DialogTitle>
           <Divider />
           <DialogContent dividers>
@@ -346,7 +360,7 @@ class AutosPage extends PureComponent {
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleCloseDialog} color="primary">
               Cerrar
             </Button>
           </DialogActions>
@@ -364,11 +378,12 @@ class AutosPage extends PureComponent {
           }}
           message={<span id="message-id">{message}</span>}
           action={[
-            <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+            <IconButton key="close" aria-label="close" color="inherit" onClick={handleCloseSnack}>
               <i className="fas fa-times" />
             </IconButton>,
           ]}
         />
+        {shouldRedirect ? <Redirect to={pathName} /> : null}
       </DashboardLayout>
     );
   }

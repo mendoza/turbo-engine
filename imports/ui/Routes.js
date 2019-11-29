@@ -72,8 +72,8 @@ export const Routes = [
     component: CreatePiezas,
   },
   {
-    path: "/seccionVehiculos",
-    name: "Vehiculos",
+    path: "/seccionAutos",
+    name: "Autos",
     component: AutosPage,
   },
   {

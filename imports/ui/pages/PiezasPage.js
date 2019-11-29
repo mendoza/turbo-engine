@@ -13,6 +13,7 @@ import {
   Snackbar,
   IconButton,
 } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
@@ -65,6 +66,8 @@ class PiezasPage extends PureComponent {
       open: false,
       message: "",
       showX: false,
+      pathName: "",
+      shoudlRedirect: false,
     };
   }
 
@@ -128,6 +131,8 @@ class PiezasPage extends PureComponent {
       open,
       message,
       showX,
+      pathName,
+      shoudlRedirect,
     } = this.state;
 
     return (
@@ -151,7 +156,12 @@ class PiezasPage extends PureComponent {
               <div className={classes.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        this.setState({ pathName: "agregarPiezas", shoudlRedirect: true });
+                      }}>
                       Agregar otra Pieza
                     </Button>
                   </Grid>
@@ -282,6 +292,7 @@ class PiezasPage extends PureComponent {
             ]}
           />
         </main>
+        {shoudlRedirect ? <Redirect to={pathName} /> : null}
       </DashboardLayout>
     );
   }
