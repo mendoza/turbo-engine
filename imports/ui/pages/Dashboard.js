@@ -25,11 +25,11 @@ class Dashboard extends PureComponent {
   render() {
     // Linechart
     const data = [
-      { name: "Page A", uv: 400, pv: 2400, amt: 2400 },
-      { name: "Page B", uv: 100, pv: 2400, amt: 2400 },
-      { name: "Page C", uv: 400, pv: 2400, amt: 2400 },
-      { name: "Page D", uv: 300, pv: 2400, amt: 2400 },
-      { name: "Page E", uv: 150, pv: 2400, amt: 2400 },
+      { name: "Pagina A", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Pagina B", uv: 100, pv: 2400, amt: 2400 },
+      { name: "Pagina C", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Pagina D", uv: 300, pv: 2400, amt: 2400 },
+      { name: "Pagina E", uv: 150, pv: 2400, amt: 2400 },
     ];
     // Barchart
     const databar = [
