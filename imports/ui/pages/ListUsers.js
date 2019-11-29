@@ -137,7 +137,7 @@ class ListUsers extends PureComponent {
                       <p>{dialogUser.profile.firstName}</p>
                     </Grid>
                     <Grid item xs={6}>
-                      <Title>Segundo nombre:</Title>
+                      <Title>Apellido:</Title>
                       <p>{dialogUser.profile.lastName}</p>
                     </Grid>
                   </Grid>
