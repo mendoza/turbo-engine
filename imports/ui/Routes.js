@@ -98,20 +98,14 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/crearUsuarios",
-    name: "Crear usuarios",
-    icon: "fas fa-user-plus",
-    permission: "superAdmin",
+    pathName: "/seccionAutos",
+    name: "Vehiculos",
+    icon: "fas fa-car",
   },
   {
     pathName: "/restablecerContra",
     name: "Modificar contraseña",
     icon: "fas fa-edit",
     permission: "superAdmin",
-  },
-  {
-    pathName: "/seccionVehiculos",
-    name: "Vehiculos",
-    icon: "fas fa-car",
   },
 ];
