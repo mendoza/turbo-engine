@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
+import CreateAutos from "./pages/CreateAutos";
+import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 
@@ -65,9 +67,19 @@ export const Routes = [
     component: RestorePass,
   },
   {
-    path: "/seccionVehiculos",
-    name: "Vehiculos",
+    path: "/agregarPiezas",
+    name: "CrearP",
+    component: CreatePiezas,
+  },
+  {
+    path: "/seccionAutos",
+    name: "Autos",
     component: AutosPage,
+  },
+  {
+    path: "/agregarAutos",
+    name: "Agregar Autos",
+    component: CreateAutos,
   },
 ];
 
