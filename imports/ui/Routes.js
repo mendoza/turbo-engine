@@ -94,16 +94,6 @@ export const dashboardRoutes = [
     name: "Inicio",
     icon: "dashboard"
   },
-  { pathName: "/listarUsuarios",
-    name: "Listar usuarios",
-    icon: "format_list_bulleted",
-    permission: "superAdmin"
-  },
-  { pathName: "/crearUsuarios",
-    name: "Crear usuarios",
-    icon: "person_add" ,
-    permission: "superAdmin"
-  { pathName: "/", name: "Inicio", icon: "fas fa-tachometer-alt" },
   {
     pathName: "/listarUsuarios",
     name: "Usuarios",
@@ -114,11 +104,13 @@ export const dashboardRoutes = [
     pathName: "/seccionAutos",
     name: "Vehiculos",
     icon: "fas fa-car",
+    permission: "superAdmin",
   },
   {
     pathName: "/seccionPiezas",
     name: "Piezas",
     icon: "fas fa-puzzle-piece",
+    permission: "superAdmin",
   },
   {
     pathName: "/restablecerContra",
