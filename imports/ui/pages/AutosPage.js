@@ -1,11 +1,22 @@
 import React, { PureComponent } from "react";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import {
+  Grid,
+  Typography,
+  Container,
+  Button,
+  Dialog,
+  DialogTitle,
+  Divider,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Snackbar,
+  IconButton,
+} from "@material-ui/core";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
+import validator from "validator";
 import Autos from "../../api/collections/Autos/Autos";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
@@ -45,11 +56,119 @@ const useStyles = theme => ({
 class AutosPage extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      shouldRender: false,
+      dialogCar: {},
+      marca: "",
+      modelo: "",
+      tipo: "",
+      transmision: "",
+      color: "",
+      placa: "",
+      traccion: "",
+      year: 0,
+      piezas: [],
+      estado: 0,
+      _id: "",
+      open: false,
+      message: "",
+      showX: false,
+    };
   }
 
   render() {
     const { classes, autos } = this.props;
+
+    const {
+      shouldRender,
+      dialogCar,
+      marca,
+      modelo,
+      tipo,
+      transmision,
+      color,
+      placa,
+      traccion,
+      year,
+      estado,
+      open,
+      showX,
+      message,
+    } = this.state;
+
+    const handleClose = () => {
+      this.setState({ shouldRender: false });
+    };
+
+    const handleTextChange = event => {
+      this.setState({
+        [event.target.name]: event.target.value,
+      });
+    };
+    const handleCreate = () => {
+      let alert;
+
+      if (validator.isEmpty(marca)) {
+        alert = "El campo marca es requerido";
+      }
+
+      if (validator.isEmpty(modelo)) {
+        alert = "El campo modelo es requerido";
+      }
+
+      if (validator.isEmpty(tipo)) {
+        alert = "El campo tipo es requerido";
+      }
+
+      if (validator.isEmpty(transmision)) {
+        alert = "El campo transmision es requerido";
+      }
+
+      if (validator.isEmpty(color)) {
+        alert = "El campo color es requerido";
+      }
+
+      if (validator.isEmpty(placa)) {
+        alert = "El campo placa es requerido";
+      }
+
+      if (validator.isEmpty(traccion)) {
+        alert = "El campo traccion es requerido";
+      }
+
+      if (validator.isEmpty(String(year))) {
+        alert = "El campo año es requerido";
+      }
+
+      if (validator.isEmpty(String(estado))) {
+        alert = "El campo estado es requerido";
+      }
+
+      if (alert) {
+        this.setState({
+          open: true,
+          message: alert,
+        });
+      } else {
+        Meteor.call("updateAuto", {
+          _id: dialogCar._id,
+          marca,
+          modelo,
+          tipo,
+          transmision,
+          color,
+          placa,
+          traccion,
+          year,
+          estado,
+        });
+        this.setState({
+          open: true,
+          message: "Auto Actualizado exitosamente",
+          shouldRender: false,
+        });
+      }
+    };
     return (
       <DashboardLayout>
         <div className={classes.heroContent}>
@@ -70,7 +189,14 @@ class AutosPage extends PureComponent {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="outlined" color="primary">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      this.setState(state => {
+                        return { showX: !state.showX };
+                      });
+                    }}>
                     Eliminar un Vehiculo
                   </Button>
                 </Grid>
@@ -81,24 +207,175 @@ class AutosPage extends PureComponent {
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {autos.map((auto, index) => (
-              <Grid item key={index + auto.modelo} xs={12} sm={6} md={4}>
+              <Grid item key={auto.modelo + auto.marca + index} xs={12} sm={6} md={4}>
                 <ItemCard
-                  title="Lorem Ipsum"
-                  body="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum urna mauris, non tempus quam ultricies sit amet. Pellentesque pharetra et tellus aliquam malesuada."
+                  showX={showX}
+                  title={`Marca: ${auto.marca}`}
+                  body={`Modelo: ${auto.modelo}`}
                   action1={() => {}}
-                  action2={() => {}}
+                  action2={() => {
+                    this.setState({ shouldRender: true, dialogCar: auto, ...auto });
+                  }}
+                  action3={() => {
+                    Meteor.call("deleteAuto", { ...auto });
+                    this.setState({ showX: false });
+                  }}
                 />
               </Grid>
             ))}
           </Grid>
         </Container>
+        <Dialog open={shouldRender} onClose={handleClose}>
+          <DialogTitle>Modificar Auto</DialogTitle>
+          <Divider />
+          <DialogContent dividers>
+            <form id="formUserLogin" noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="marca"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Marca"
+                    autoFocus
+                    value={marca}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="modelo"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Modelo"
+                    autoFocus
+                    value={modelo}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="tipo"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Tipo"
+                    autoFocus
+                    value={tipo}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="transmision"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Transmision"
+                    autoFocus
+                    value={transmision}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="color"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Color"
+                    autoFocus
+                    value={color}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="placa"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Placa"
+                    autoFocus
+                    value={placa}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="traccion"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Traccion"
+                    autoFocus
+                    value={traccion}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="year"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Año"
+                    autoFocus
+                    value={year}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="estado"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Estado"
+                    autoFocus
+                    value={estado}
+                    onInput={handleTextChange}
+                  />
+                </Grid>
+              </Grid>
+              <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
+                Modificar
+              </Button>
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          ContentProps={{
+            "aria-describedby": "message-id",
+          }}
+          message={<span id="message-id">{message}</span>}
+          action={[
+            <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+              <i className="fas fa-times" />
+            </IconButton>,
+          ]}
+        />
       </DashboardLayout>
     );
   }
 }
 
 export default withTracker(() => {
-  Meteor.subscribe("autos.all");
+  Meteor.subscribe("Autos.all");
   return {
     autos: Autos.find().fetch(),
   };

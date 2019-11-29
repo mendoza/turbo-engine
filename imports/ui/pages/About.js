@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { Typography, Grid } from "@material-ui/core";
+// import Empresa from "../../../client/config.json";
 
 class About extends PureComponent {
   constructor(props) {

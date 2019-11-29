@@ -6,9 +6,7 @@ import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import UpdateUsers from "./pages/UpdateUsers";
 import RestorePass from "./pages/RestorePass";
-import Vehiculos from "./pages/Vehiculos";
 import CreateAutos from "./pages/CreateAutos";
-import Piezas from "./pages/Piezas"
 import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
@@ -69,7 +67,7 @@ export const Routes = [
     component: RestorePass,
   },
   {
-    path: "/crearPiezas",
+    path: "/agregarPiezas",
     name: "CrearP",
     component: CreatePiezas,
   },
