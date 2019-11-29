@@ -101,7 +101,7 @@ class PiezasPage extends PureComponent {
         message: alert,
       });
     } else {
-      Meteor.call("updatePieza",{
+      Meteor.call("updatePieza", {
         _id: dialogPiece._id,
         vendedor,
         precio,
@@ -112,7 +112,7 @@ class PiezasPage extends PureComponent {
         open: true,
         message: "Pieza actualizada exitosamente",
         shouldRender: false,
-      })
+      });
     }
   };
 
@@ -163,8 +163,7 @@ class PiezasPage extends PureComponent {
                         this.setState(state => {
                           return { showX: !state.showX };
                         });
-                      }}
-                      >
+                      }}>
                       Eliminar una Pieza
                     </Button>
                   </Grid>
@@ -202,7 +201,7 @@ class PiezasPage extends PureComponent {
                   <Grid item xs={12}>
                     <TextField
                       autoComplete="seller"
-                      name="Seller"
+                      name="vendedor"
                       variant="outlined"
                       required
                       fullWidth
@@ -210,46 +209,46 @@ class PiezasPage extends PureComponent {
                       label="Vendedor"
                       autoFocus
                       value={vendedor}
-                      onInput={event => this.handleTextChange(event, "vendedor")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       autoComplete="serieNum"
-                      name="SerieNumbre"
+                      name="numeroDeSerie"
                       variant="outlined"
                       required
                       fullWidth
                       id="SerieNumber"
                       label="NumeroDeSerie"
                       value={numeroDeSerie}
-                      onInput={event => this.handleTextChange(event, "numeroDeSerie")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="price"
-                      name="Price"
+                      name="precio"
                       variant="outlined"
                       required
                       fullWidth
                       id="Price"
                       label="precio"
                       value={precio}
-                      onInput={event => this.handleTextChange(event, "precio")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="type"
-                      name="Type"
+                      name="tipo"
                       variant="outlined"
                       required
                       fullWidth
                       id="Type"
                       label="tipo"
                       value={tipo}
-                      onInput={event => this.handleTextChange(event, "tipo")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Button fullWidth variant="contained" color="primary" onClick={this.handleClick}>
