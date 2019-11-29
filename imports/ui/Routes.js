@@ -103,6 +103,11 @@ export const dashboardRoutes = [
     icon: "fas fa-car",
   },
   {
+    pathName: "/seccionPiezas",
+    name: "Piezas",
+    icon: "fas fa-puzzle-piece",
+  },
+  {
     pathName: "/restablecerContra",
     name: "Modificar contraseña",
     icon: "fas fa-edit",
