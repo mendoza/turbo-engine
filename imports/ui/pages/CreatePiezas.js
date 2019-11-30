@@ -18,6 +18,12 @@ class CreatePiezas extends PureComponent {
     };
   }
 
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
   handleTextChange = (event, stateVariable) => {
     this.setState({
       [stateVariable]: event.target.value,
@@ -81,7 +87,7 @@ class CreatePiezas extends PureComponent {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="seller"
-                  name="Seller"
+                  name="vendedor"
                   variant="outlined"
                   required
                   fullWidth
@@ -95,7 +101,7 @@ class CreatePiezas extends PureComponent {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="serieNum"
-                  name="SerieNumbre"
+                  name="numeroDeSerie"
                   variant="outlined"
                   required
                   fullWidth
@@ -108,7 +114,7 @@ class CreatePiezas extends PureComponent {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="price"
-                  name="Price"
+                  name="precio"
                   variant="outlined"
                   required
                   fullWidth
@@ -121,7 +127,7 @@ class CreatePiezas extends PureComponent {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="type"
-                  name="Type"
+                  name="tipo"
                   variant="outlined"
                   required
                   fullWidth

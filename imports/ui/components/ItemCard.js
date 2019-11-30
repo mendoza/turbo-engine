@@ -30,7 +30,7 @@ class ItemCard extends PureComponent {
   }
 
   render() {
-    const { title, body, action1, action2, action3, classes, showX } = this.props;
+    const { title, body, description, action1, action2, action3, classes, showX, image } = this.props;
     return (
       <Card className={classes.card}>
         <CardHeader
@@ -49,7 +49,7 @@ class ItemCard extends PureComponent {
             component="img"
             alt="Contemplative Reptile"
             height="140"
-            image="https://source.unsplash.com/random"
+            image={image || "https://source.unsplash.com/random"}
             title="Image title"
           />
           <CardContent>
@@ -58,6 +58,9 @@ class ItemCard extends PureComponent {
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               {body}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {description}
             </Typography>
           </CardContent>
         </CardActionArea>

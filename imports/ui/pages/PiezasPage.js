@@ -13,6 +13,7 @@ import {
   Snackbar,
   IconButton,
 } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
@@ -65,11 +66,19 @@ class PiezasPage extends PureComponent {
       open: false,
       message: "",
       showX: false,
+      pathName: "",
+      shoudlRedirect: false,
     };
   }
 
   handleClose = () => {
     this.setState({ shouldRender: false });
+  };
+
+  handleBar = () => {
+    this.setState({
+      open: false,
+    });
   };
 
   handleTextChange = event => {
@@ -79,7 +88,7 @@ class PiezasPage extends PureComponent {
   };
 
   handleClick = () => {
-    const { vendedor, precio, numeroDeSerie, tipo, open, message } = this.state;
+    const { vendedor, precio, numeroDeSerie, tipo, dialogPiece } = this.state;
     let alert;
 
     if (validator.isEmpty(tipo)) {
@@ -100,6 +109,19 @@ class PiezasPage extends PureComponent {
         open: true,
         message: alert,
       });
+    } else {
+      Meteor.call("updatePieza", {
+        _id: dialogPiece._id,
+        vendedor,
+        precio,
+        numeroDeSerie,
+        tipo,
+      });
+      this.setState({
+        open: true,
+        message: "Pieza actualizada exitosamente",
+        shouldRender: false,
+      });
     }
   };
 
@@ -115,6 +137,8 @@ class PiezasPage extends PureComponent {
       open,
       message,
       showX,
+      pathName,
+      shoudlRedirect,
     } = this.state;
 
     return (
@@ -138,7 +162,12 @@ class PiezasPage extends PureComponent {
               <div className={classes.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        this.setState({ pathName: "agregarPiezas", shoudlRedirect: true });
+                      }}>
                       Agregar otra Pieza
                     </Button>
                   </Grid>
@@ -160,12 +189,12 @@ class PiezasPage extends PureComponent {
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
-              {piezas.map(pieza => (
-                <Grid item key={pieza} xs={12} sm={6} md={4}>
+              {piezas.map((pieza, index) => (
+                <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
                   <ItemCard
                     showX={showX}
-                    title="esto es el title"
-                    body="esto es el body"
+                    title={`Tipo: ${pieza.tipo}`}
+                    body={`Vendedor: ${pieza.vendedor}`}
                     action1={() => {}}
                     action2={() => {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
@@ -188,7 +217,7 @@ class PiezasPage extends PureComponent {
                   <Grid item xs={12}>
                     <TextField
                       autoComplete="seller"
-                      name="Seller"
+                      name="vendedor"
                       variant="outlined"
                       required
                       fullWidth
@@ -196,46 +225,46 @@ class PiezasPage extends PureComponent {
                       label="Vendedor"
                       autoFocus
                       value={vendedor}
-                      onInput={event => this.handleTextChange(event, "vendedor")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       autoComplete="serieNum"
-                      name="SerieNumbre"
+                      name="numeroDeSerie"
                       variant="outlined"
                       required
                       fullWidth
                       id="SerieNumber"
                       label="NumeroDeSerie"
                       value={numeroDeSerie}
-                      onInput={event => this.handleTextChange(event, "numeroDeSerie")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="price"
-                      name="Price"
+                      name="precio"
                       variant="outlined"
                       required
                       fullWidth
                       id="Price"
                       label="precio"
                       value={precio}
-                      onInput={event => this.handleTextChange(event, "precio")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="type"
-                      name="Type"
+                      name="tipo"
                       variant="outlined"
                       required
                       fullWidth
                       id="Type"
                       label="tipo"
                       value={tipo}
-                      onInput={event => this.handleTextChange(event, "tipo")}
+                      onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
                   <Button fullWidth variant="contained" color="primary" onClick={this.handleClick}>
@@ -257,18 +286,19 @@ class PiezasPage extends PureComponent {
             }}
             open={open}
             autoHideDuration={6000}
-            onClose={this.handleClose}
+            onClose={this.handleBar}
             ContentProps={{
               "aria-describedby": "message-id",
             }}
             message={<span id="message-id">{message}</span>}
             action={[
-              <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+              <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleBar}>
                 <i className="fas fa-times" />
               </IconButton>,
             ]}
           />
         </main>
+        {shoudlRedirect ? <Redirect to={pathName} /> : null}
       </DashboardLayout>
     );
   }

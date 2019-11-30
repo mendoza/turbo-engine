@@ -80,17 +80,9 @@ class Login extends Component {
               <Paper style={{ padding: "1rem" }}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Box
-                      fontSize="5rem"
-                      className="w-100"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      color="primary">
-                      <span style={{ color: "#303f9f" }}>
-                        <i className="fas fa-user" />
-                      </span>
-                    </Box>
+                    <center>
+                      <img src="/imagenes/Logoblack.png" width="100%" height="100%"/>
+                    </center>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
