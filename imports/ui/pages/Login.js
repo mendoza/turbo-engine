@@ -83,17 +83,6 @@ class Login extends Component {
                     <center>
                       <img src="/imagenes/Logoblack.png" width="100%" height="100%"/>
                     </center>
-                    {/*<Box
-                      fontSize="5rem"
-                      className="w-100"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      color="primary">
-                      <span style={{ color: "#303f9f" }}>
-                        <i className="fas fa-user" />
-                      </span>
-                    </Box>*/}
                   </Grid>
                   <Grid item xs={12}>
                     <TextField

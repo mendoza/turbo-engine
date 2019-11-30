@@ -13,6 +13,7 @@ import {
   TextField,
   Snackbar,
   IconButton,
+  Box,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
@@ -21,6 +22,7 @@ import validator from "validator";
 import Autos from "../../api/collections/Autos/Autos";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
+import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 
 const useStyles = theme => ({
   icon: {
@@ -76,11 +78,12 @@ class AutosPage extends PureComponent {
       showX: false,
       pathName: "",
       shouldRedirect: false,
+      pictures: [],
     };
   }
 
   render() {
-    const { classes, autos } = this.props;
+    const { classes, autos, autosFiles } = this.props;
 
     const {
       shouldRender,
@@ -99,6 +102,7 @@ class AutosPage extends PureComponent {
       message,
       pathName,
       shouldRedirect,
+      pictures,
     } = this.state;
 
     const handleCloseDialog = () => {
@@ -216,7 +220,8 @@ class AutosPage extends PureComponent {
                     color="primary"
                     onClick={() => {
                       this.setState({ shouldRedirect: true, pathName: "agregarAutos" });
-                    }}>
+                    }}
+                  >
                     Agregar otro Vehiculo
                   </Button>
                 </Grid>
@@ -228,7 +233,8 @@ class AutosPage extends PureComponent {
                       this.setState(state => {
                         return { showX: !state.showX };
                       });
-                    }}>
+                    }}
+                  >
                     Eliminar un Vehiculo
                   </Button>
                 </Grid>
@@ -238,14 +244,21 @@ class AutosPage extends PureComponent {
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            {autos.map((auto, index) => (
-              <Grid item key={auto.modelo + auto.marca} xs={12} sm={6} md={4}>
+            {autos.map(auto => (
+              <Grid item key={auto._id} xs={12} sm={6} md={4}
                 <ItemCard
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
                   description={`Estado: ${Status(auto.estado)}`}
-                  action1={() => {}}
+                  image={(()=>{
+                    try {
+                      return AutosFiles.findOne({ _id: auto.pictures[0] }).link();
+                    } catch (error) {
+                      return undefined;
+                    }
+                  })()}
+                  action1={() => { }}
                   action2={() => {
                     this.setState({ shouldRender: true, dialogCar: auto, ...auto });
                   }}
@@ -258,7 +271,7 @@ class AutosPage extends PureComponent {
             ))}
           </Grid>
         </Container>
-        <Dialog open={shouldRender} onClose={handleCloseDialog}>
+        <Dialog open={shouldRender} onClose={handleCloseDialog} style={{ width: '80%' }}>
           <DialogTitle>Modificar Auto</DialogTitle>
           <Divider />
           <DialogContent dividers>
@@ -372,6 +385,22 @@ class AutosPage extends PureComponent {
                     onInput={handleTextChange}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  Imagenes del auto
+                </Grid>
+                {
+                  pictures.map(imageId => (
+                    <Grid key={imageId} item xs={12} md={6}>
+                      <Box padding="1rem" width="100%">
+                        <img
+                          src={AutosFiles.findOne({ _id: imageId }).link()}
+                          alt="Auto"
+                          style={{ width: '100%', objectFit: 'contain' }}
+                        />
+                      </Box>
+                    </Grid>
+                  ))
+                }
               </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
                 Modificar
@@ -410,7 +439,9 @@ class AutosPage extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("Autos.all");
+  Meteor.subscribe("AutosFiles.all");
   return {
     autos: Autos.find().fetch(),
+    autosFiles: AutosFiles.find().fetch(),
   };
 })(withStyles(useStyles)(AutosPage));

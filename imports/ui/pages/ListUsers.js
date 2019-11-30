@@ -93,25 +93,17 @@ class ListUsers extends PureComponent {
 
   render() {
     const { users } = this.props;
-    const {
-      shouldRender,
-      shouldRedirect,
-      shouldRedirectAdd,
-      pathname,
-      redirectData,
-      dialogUser,
-      showDeleteDialog,
-      showSnackbar,
-      snackbarText,
-    } = this.state;
+    const { shouldRender, shouldRedirect, pathname,
+      redirectData, dialogUser, showDeleteDialog,
+      showSnackbar, snackbarText, shouldRedirectAdd } = this.state;
     return (
       <DashboardLayout>
         <Container>
-          <Grid container xs={12}>
-            <Grid xs="6">
+          <Grid container>
+            <Grid item xs={6}>
               <Title>Listar usuarios</Title>
             </Grid>
-            <Grid xs="6">
+            <Grid item xs={6}>
               <Button
                 width="10%"
                 type="submit"
@@ -120,7 +112,7 @@ class ListUsers extends PureComponent {
                 onClick={() => {
                   this.setState({ shouldRedirectAdd: true, pathname: "/crearUsuarios" });
                 }}>
-                <i className="fas fa-user-plus" />
+                <i className="fas fa-user-pen" />
                 Agregar Usuarios
               </Button>
             </Grid>
@@ -173,16 +165,16 @@ class ListUsers extends PureComponent {
                                   redirectData: { user },
                                 });
                               }}
-                              aria-label="centered">
-                              <i className="fas fa-user-edit" />
+                              aria-label="centered"
+                              >
+                              <i className="fas fa-plus" />
                             </ToggleButton>
                             <ToggleButton
                               value="right"
                               aria-label="right aligned"
-                              onClick={event => {
-                                this.showDeleteDialog(event, user._id);
-                              }}>
-                              <i className="fas fa-user-minus" />
+                              onClick={(event) => { this.showDeleteDialog(event, user._id) }}
+                              >
+                              <i className="fas fa-trash" />
                             </ToggleButton>
                           </ToggleButtonGroup>
                         </div>
@@ -192,7 +184,7 @@ class ListUsers extends PureComponent {
                 }
                 return <></>;
               })}
-              <Dialog open={shouldRender} onClose={this.handleClose}>
+              <Dialog fullWidth open={shouldRender} onClose={this.handleClose}>
                 <DialogTitle>Información del usuario</DialogTitle>
                 <Divider />
                 <DialogContent dividers>

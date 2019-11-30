@@ -10,10 +10,12 @@ import {
   Container,
   Snackbar,
   IconButton,
+  Box,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
+import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
@@ -32,7 +34,59 @@ class CreateAutos extends PureComponent {
       estado: 0,
       open: false,
       message: "",
+      files: [],
+      uploaded: true,
     };
+  }
+
+  setFiles = event => {
+    const { files } = event.target;
+    let uploaded = 0;
+    const fileIds = [];
+    Object.keys(files).forEach(key => {
+      const uploadFile = files[key];
+      if (uploadFile) {
+        // We upload only one file, in case
+        // multiple files were selected
+        const upload = AutosFiles.insert({
+          file: uploadFile,
+          streams: 'dynamic',
+          chunkSize: 'dynamic',
+        }, false);
+        upload.on('start', () => {
+          this.setState({
+            uploaded: false,
+          });
+        })
+        upload.on('end', (error, fileObj) => {
+          if (error) {
+            uploaded += 1;
+            if (uploaded === files.length) {
+              this.setState({
+                uploaded: true,
+              });
+            }
+            console.log(error);
+          } else {
+            uploaded += 1;
+            fileIds.push(fileObj._id);
+            if (uploaded === files.length) {
+              this.setState({
+                uploaded: true,
+                files: fileIds,
+              });
+            }
+          }
+        });
+        upload.start();
+      }
+    });
+  }
+
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
   }
 
   render() {
@@ -43,7 +97,8 @@ class CreateAutos extends PureComponent {
     };
 
     const handleCreate = () => {
-      const { marca, modelo, tipo, transmision, color, placa, traccion, year, estado } = this.state;
+      const { marca, modelo, tipo, transmision, color,
+        placa, traccion, year, estado, files } = this.state;
       let alert;
 
       if (validator.isEmpty(marca)) {
@@ -99,6 +154,7 @@ class CreateAutos extends PureComponent {
           year,
           estado,
           piezas: [],
+          pictures: files
         });
         this.setState({
           open: true,
@@ -119,6 +175,7 @@ class CreateAutos extends PureComponent {
       estado,
       message,
       open,
+      uploaded,
     } = this.state;
 
     return (
@@ -144,7 +201,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={marca}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -156,7 +213,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={modelo}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -168,7 +225,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={tipo}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -180,7 +237,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={transmision}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -192,7 +249,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={color}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -204,7 +261,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={placa}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -216,7 +273,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={traccion}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -228,7 +285,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={year}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -240,10 +297,21 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={estado}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
               </Grid>
-              <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
+              <Box paddingY="1rem">
+                Imagenes del auto
+                <br />
+                <input type="file" onChange={this.setFiles} multiple />
+              </Box>
+              <Button
+                disabled={!uploaded}
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleCreate}
+                >
                 Crear
               </Button>
             </form>
@@ -266,7 +334,7 @@ class CreateAutos extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }

@@ -16,6 +16,7 @@
     "chartist": "^0.11.4",
     "clsx": "^1.0.4",
     "create-react-class": "^15.6.3",
+    "gridfs-stream": "^1.1.1",
     "meteor-node-stubs": "^0.4.1",
     "react": "^16.5.0",
     "react-addons-pure-render-mixin": "^15.6.2",
