@@ -11,7 +11,6 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { red } from "@material-ui/core/colors";
 
 const useStyles = () => ({
   card: {
@@ -44,7 +43,10 @@ class ItemCard extends PureComponent {
             ) : null
           }
         />
-        <CardActionArea>
+        <CardActionArea
+          onClick={() => {
+            this.setState({ open: true });
+          }}>
           <CardMedia
             component="img"
             alt="Contemplative Reptile"
@@ -65,9 +67,9 @@ class ItemCard extends PureComponent {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary" onClick={action1}>
+          {/* <Button size="small" color="primary" onClick={action1}>
             Visualizar
-          </Button>
+          </Button> */}
           <Button size="small" color="primary" onClick={action2}>
             Modificar
           </Button>
