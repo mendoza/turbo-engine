@@ -114,6 +114,7 @@ class AutosPage extends PureComponent {
         [event.target.name]: event.target.value,
       });
     };
+    
     const handleCreate = () => {
       let alert;
 
@@ -238,12 +239,7 @@ class AutosPage extends PureComponent {
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {autos.map((auto, index) => (
-              <Grid
-                item
-                key={auto.modelo + auto.marca + new Date().getMilliseconds()}
-                xs={12}
-                sm={6}
-                md={4}>
+              <Grid item key={auto.modelo + auto.marca} xs={12} sm={6} md={4}>
                 <ItemCard
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
