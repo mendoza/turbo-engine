@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Avatar,
   Button,
@@ -48,17 +47,20 @@ class CreateAutos extends PureComponent {
       if (uploadFile) {
         // We upload only one file, in case
         // multiple files were selected
-        const upload = AutosFiles.insert({
-          file: uploadFile,
-          streams: 'dynamic',
-          chunkSize: 'dynamic',
-        }, false);
-        upload.on('start', () => {
+        const upload = AutosFiles.insert(
+          {
+            file: uploadFile,
+            streams: "dynamic",
+            chunkSize: "dynamic",
+          },
+          false
+        );
+        upload.on("start", () => {
           this.setState({
             uploaded: false,
           });
-        })
-        upload.on('end', (error, fileObj) => {
+        });
+        upload.on("end", (error, fileObj) => {
           if (error) {
             uploaded += 1;
             if (uploaded === files.length) {
@@ -81,13 +83,13 @@ class CreateAutos extends PureComponent {
         upload.start();
       }
     });
-  }
+  };
 
   handleClose = () => {
     this.setState({
       open: false,
     });
-  }
+  };
 
   render() {
     const handleTextChange = event => {
@@ -97,8 +99,18 @@ class CreateAutos extends PureComponent {
     };
 
     const handleCreate = () => {
-      const { marca, modelo, tipo, transmision, color,
-        placa, traccion, year, estado, files } = this.state;
+      const {
+        marca,
+        modelo,
+        tipo,
+        transmision,
+        color,
+        placa,
+        traccion,
+        year,
+        estado,
+        files,
+      } = this.state;
       let alert;
 
       if (validator.isEmpty(marca)) {
@@ -154,7 +166,7 @@ class CreateAutos extends PureComponent {
           year,
           estado,
           piezas: [],
-          pictures: files
+          pictures: files,
         });
         this.setState({
           open: true,
@@ -184,7 +196,7 @@ class CreateAutos extends PureComponent {
           <CssBaseline />
           <div>
             <Avatar>
-              <LockOutlinedIcon />
+              <i className="fas fa-lock" />
             </Avatar>
             <Typography component="h1" variant="h5">
               Crear Autos
@@ -201,7 +213,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={marca}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -213,7 +225,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={modelo}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -225,7 +237,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={tipo}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -237,7 +249,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={transmision}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -249,7 +261,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={color}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -261,7 +273,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={placa}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -273,7 +285,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={traccion}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -285,7 +297,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={year}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -297,7 +309,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={estado}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
               </Grid>
               <Box paddingY="1rem">
@@ -310,8 +322,7 @@ class CreateAutos extends PureComponent {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleCreate}
-                >
+                onClick={handleCreate}>
                 Crear
               </Button>
             </form>
@@ -334,7 +345,7 @@ class CreateAutos extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-          />
+        />
       </DashboardLayout>
     );
   }

@@ -118,7 +118,7 @@ class AutosPage extends PureComponent {
         [event.target.name]: event.target.value,
       });
     };
-    
+
     const handleCreate = () => {
       let alert;
 
@@ -220,8 +220,7 @@ class AutosPage extends PureComponent {
                     color="primary"
                     onClick={() => {
                       this.setState({ shouldRedirect: true, pathName: "agregarAutos" });
-                    }}
-                  >
+                    }}>
                     Agregar otro Vehiculo
                   </Button>
                 </Grid>
@@ -233,8 +232,7 @@ class AutosPage extends PureComponent {
                       this.setState(state => {
                         return { showX: !state.showX };
                       });
-                    }}
-                  >
+                    }}>
                     Eliminar un Vehiculo
                   </Button>
                 </Grid>
@@ -245,20 +243,20 @@ class AutosPage extends PureComponent {
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {autos.map(auto => (
-              <Grid item key={auto._id} xs={12} sm={6} md={4}
+              <Grid item key={auto._id} xs={12} sm={6} md={4}>
                 <ItemCard
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
                   description={`Estado: ${Status(auto.estado)}`}
-                  image={(()=>{
+                  image={(() => {
                     try {
                       return AutosFiles.findOne({ _id: auto.pictures[0] }).link();
                     } catch (error) {
                       return undefined;
                     }
                   })()}
-                  action1={() => { }}
+                  action1={() => {}}
                   action2={() => {
                     this.setState({ shouldRender: true, dialogCar: auto, ...auto });
                   }}
@@ -271,7 +269,7 @@ class AutosPage extends PureComponent {
             ))}
           </Grid>
         </Container>
-        <Dialog open={shouldRender} onClose={handleCloseDialog} style={{ width: '80%' }}>
+        <Dialog open={shouldRender} onClose={handleCloseDialog} style={{ width: "80%" }}>
           <DialogTitle>Modificar Auto</DialogTitle>
           <Divider />
           <DialogContent dividers>
@@ -388,19 +386,17 @@ class AutosPage extends PureComponent {
                 <Grid item xs={12}>
                   Imagenes del auto
                 </Grid>
-                {
-                  pictures.map(imageId => (
-                    <Grid key={imageId} item xs={12} md={6}>
-                      <Box padding="1rem" width="100%">
-                        <img
-                          src={AutosFiles.findOne({ _id: imageId }).link()}
-                          alt="Auto"
-                          style={{ width: '100%', objectFit: 'contain' }}
-                        />
-                      </Box>
-                    </Grid>
-                  ))
-                }
+                {pictures.map(imageId => (
+                  <Grid key={imageId} item xs={12} md={6}>
+                    <Box padding="1rem" width="100%">
+                      <img
+                        src={AutosFiles.findOne({ _id: imageId }).link()}
+                        alt="Auto"
+                        style={{ width: "100%", objectFit: "contain" }}
+                      />
+                    </Box>
+                  </Grid>
+                ))}
               </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
                 Modificar
