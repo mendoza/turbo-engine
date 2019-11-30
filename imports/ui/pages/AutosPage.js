@@ -118,6 +118,7 @@ class AutosPage extends PureComponent {
         [event.target.name]: event.target.value,
       });
     };
+    
     const handleCreate = () => {
       let alert;
 
@@ -184,16 +185,16 @@ class AutosPage extends PureComponent {
     };
 
     const Status = status => {
-      if (parseInt(status) === 0) {
+      if (parseInt(status, 10) === 0) {
         return "Aún no en reparación";
       }
-      if (parseInt(status) === 1) {
+      if (parseInt(status, 10) === 1) {
         return "Reparado";
       }
-      if (parseInt(status) === 2) {
+      if (parseInt(status, 10) === 2) {
         return "En venta";
       }
-      if (parseInt(status) === 3) {
+      if (parseInt(status, 10) === 3) {
         return "Vendido";
       }
       return "Sin especificar";
@@ -244,7 +245,7 @@ class AutosPage extends PureComponent {
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {autos.map(auto => (
-              <Grid item key={auto._id} xs={12} sm={6} md={4}>
+              <Grid item key={auto._id} xs={12} sm={6} md={4}
                 <ItemCard
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
