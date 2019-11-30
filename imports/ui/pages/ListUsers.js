@@ -38,7 +38,7 @@ class ListUsers extends PureComponent {
       showDeleteDialog: false,
       deleteUserId: undefined,
       showSnackbar: false,
-      snackbarText: '',
+      snackbarText: "",
     };
   }
 
@@ -51,51 +51,59 @@ class ListUsers extends PureComponent {
       showDeleteDialog: false,
       deleteUserId: undefined,
     });
-  }
+  };
 
   showDeleteDialog = (event, userId) => {
     this.setState({
       showDeleteDialog: true,
       deleteUserId: userId,
     });
-  }
+  };
 
   handleCloseSnackbar = () => {
     this.setState({
       showSnackbar: false,
     });
-  }
+  };
 
   deleteUser = () => {
     const { deleteUserId } = this.state;
-    Meteor.call('deleteUsers', deleteUserId, err => {
+    Meteor.call("deleteUsers", deleteUserId, err => {
       if (err) {
         let snackbarText;
-        if (err.error === 'superAdmin') {
-          snackbarText = 'No puede eliminar al usuario super administrador';
+        if (err.error === "superAdmin") {
+          snackbarText = "No puede eliminar al usuario super administrador";
         } else {
-          snackbarText = 'Ha habido un error al intentar eliminar este usuario';
+          snackbarText = "Ha habido un error al intentar eliminar este usuario";
         }
         this.setState({
           showDeleteDialog: false,
           showSnackbar: true,
-          snackbarText
+          snackbarText,
         });
       } else {
         this.setState({
           showDeleteDialog: false,
           showSnackbar: true,
-          snackbarText: 'El usuario ha sido eliminado exitosamente',
+          snackbarText: "El usuario ha sido eliminado exitosamente",
         });
       }
     });
-  }
+  };
 
   render() {
     const { users } = this.props;
-    const { shouldRender, shouldRedirect, pathname,
-      redirectData, dialogUser, showDeleteDialog,
-      showSnackbar, snackbarText } = this.state;
+    const {
+      shouldRender,
+      shouldRedirect,
+      shouldRedirectAdd,
+      pathname,
+      redirectData,
+      dialogUser,
+      showDeleteDialog,
+      showSnackbar,
+      snackbarText,
+    } = this.state;
     return (
       <DashboardLayout>
         <Container>
@@ -165,16 +173,16 @@ class ListUsers extends PureComponent {
                                   redirectData: { user },
                                 });
                               }}
-                              aria-label="centered"
-                              >
-                              <CreateIcon />
+                              aria-label="centered">
+                              <i className="fas fa-user-edit" />
                             </ToggleButton>
                             <ToggleButton
                               value="right"
                               aria-label="right aligned"
-                              onClick={(event) => { this.showDeleteDialog(event, user._id) }}
-                              >
-                              <DeleteForeverIcon />
+                              onClick={event => {
+                                this.showDeleteDialog(event, user._id);
+                              }}>
+                              <i className="fas fa-user-minus" />
                             </ToggleButton>
                           </ToggleButtonGroup>
                         </div>
@@ -221,8 +229,7 @@ class ListUsers extends PureComponent {
           open={showDeleteDialog}
           onClose={this.handleCloseDelete}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          >
+          aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">
             ¿Esta seguro que desea eliminar este usuario?
           </DialogTitle>
@@ -257,12 +264,11 @@ class ListUsers extends PureComponent {
               key="close"
               aria-label="close"
               color="inherit"
-              onClick={this.handleCloseSnackbar}
-              >
+              onClick={this.handleCloseSnackbar}>
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-          />
+        />
       </DashboardLayout>
     );
   }

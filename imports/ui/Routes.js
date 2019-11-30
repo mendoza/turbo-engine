@@ -92,7 +92,7 @@ export const Routes = [
 export const dashboardRoutes = [
   { pathName: "/",
     name: "Inicio",
-    icon: "dashboard"
+    icon: "fas fa-tachometer-alt"
   },
   {
     pathName: "/listarUsuarios",
