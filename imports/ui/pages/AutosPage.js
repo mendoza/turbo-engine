@@ -205,12 +205,10 @@ class AutosPage extends PureComponent {
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Vehiculos
+              Autos
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum urna
-              mauris, non tempus quam ultricies sit amet. Pellentesque pharetra et tellus aliquam
-              malesuada.
+              Seccion para trabajar Autos
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
@@ -221,7 +219,7 @@ class AutosPage extends PureComponent {
                     onClick={() => {
                       this.setState({ shouldRedirect: true, pathName: "agregarAutos" });
                     }}>
-                    Agregar otro Vehiculo
+                    Agregar otro Auto
                   </Button>
                 </Grid>
                 <Grid item>
@@ -233,7 +231,7 @@ class AutosPage extends PureComponent {
                         return { showX: !state.showX };
                       });
                     }}>
-                    Eliminar un Vehiculo
+                    Eliminar un Auto
                   </Button>
                 </Grid>
               </Grid>

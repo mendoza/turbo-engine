@@ -155,9 +155,7 @@ class PiezasPage extends PureComponent {
                 Piezas
               </Typography>
               <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum urna
-                mauris, non tempus quam ultricies sit amet. Pellentesque pharetra et tellus aliquam
-                malesuada.
+                Seccion para trabajar Piezas
               </Typography>
               <div className={classes.heroButtons}>
                 <Grid container spacing={2} justify="center">
