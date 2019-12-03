@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Avatar,
   Button,
@@ -10,15 +9,18 @@ import {
   Container,
   Snackbar,
   IconButton,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { Estados, Traccion, transmision } from "../Constants";
+import MaskedTextField from "../components/MaskedTextField";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {
       marca: "",
       modelo: "",
@@ -127,7 +129,7 @@ class CreateAutos extends PureComponent {
           <CssBaseline />
           <div>
             <Avatar>
-              <LockOutlinedIcon />
+              <i className="fas fa-car" />
             </Avatar>
             <Typography component="h1" variant="h5">
               Crear Autos
@@ -171,16 +173,16 @@ class CreateAutos extends PureComponent {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="transmision"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Transmision"
-                    autoFocus
-                    value={transmision}
-                    onInput={handleTextChange}
-                  />
+                    name="transmision"
+                    value={0}
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Traccion.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -195,52 +197,37 @@ class CreateAutos extends PureComponent {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="placa"
-                    variant="outlined"
-                    required
-                    fullWidth
+                  <MaskedTextField
+                    mask={[/[A-Z]/, /[A-Z]/, /[A-Z]/, " ", /\d/, /\d/, /\d/, /\d/]}
                     label="Placa"
-                    autoFocus
-                    value={placa}
-                    onInput={handleTextChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <Select
+                    fullWidth
                     name="traccion"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Traccion"
-                    autoFocus
-                    value={traccion}
-                    onInput={handleTextChange}
-                  />
+                    value={0}
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Traccion.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="year"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Año"
-                    autoFocus
-                    value={year}
-                    onInput={handleTextChange}
-                  />
+                  <MaskedTextField mask={[/\d/, /\d/, /\d/, /\d/, "-", /\d/]} label="Año" />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
+                <Grid item xs={12} sm={12}>
+                  <Select
+                    fullWidth
                     name="estado"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Estado"
-                    autoFocus
-                    value={estado}
-                    onInput={handleTextChange}
-                  />
+                    value={0}
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Estados.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
               </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
