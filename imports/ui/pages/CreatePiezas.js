@@ -54,14 +54,6 @@ class CreatePiezas extends PureComponent {
     });
   };
 
-  handleChange = event => {
-    let { tipos } = this.props;
-    tipos = tipos.filter(tipoFilter => tipoFilter._id === event.target.value);
-    this.setState({
-      tipo: tipos[0].nombre,
-    });
-  };
-
   handleClick = () => {
     const { marca, vendedor, precio, numeroDeSerie, tipo, cantidad } = this.state;
     let alert;
@@ -232,44 +224,31 @@ class CreatePiezas extends PureComponent {
                 />
               </Grid>
               <Grid item xs={12} sm={10}>
-                <TextField
-                  autoComplete="type"
-                  name="tipo"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="Type"
-                  label="tipo"
-                  value={tipo}
-                  onInput={event => this.handleTextChange(event, "tipo")}
-                />
-              </Grid>
-              {/* <Grid item xs={12} sm={10}>
                 <Select
                   fullWidth
                   required
                   label="Tipo"
-                  id="Type"
+                  id="type"
                   value={tipo}
-                  onChange={event => this.handleChange(event, "tipo")}>
+                  onChange={event => this.handleTextChange(event, "tipo")}>
                   {tipos.map(tipoMap => {
                     if (tipoMap) {
                       return (
-                        <MenuItem key={tipoMap._id} value={tipoMap._id}>
-                          {`${tipoMap.nombre}`}
+                        <MenuItem key={tipoMap._id} value={tipoMap.nombre}>
+                          {tipoMap.nombre}
                         </MenuItem>
                       );
                     }
                     return <></>;
                   })}
                 </Select>
-              </Grid> */}
+              </Grid>
               <Grid item xs={12} sm={2}>
                 <Button
                   fullWidth
                   variant="outlined"
                   color="default"
-                  size="large"
+                  // size="large"
                   onClick={() => {
                     this.setState({ shouldRender: true });
                   }}>
