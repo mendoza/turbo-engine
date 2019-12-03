@@ -7,6 +7,7 @@ import "../imports/api/collections/Empresa/methods";
 import "../imports/api/collections/Usuarios/methods";
 import "../imports/api/collections/Piezas/methods";
 import "../imports/api/collections/Autos/methods";
+import "../imports/api/collections/Tipos/methods";
 
 Meteor.startup(() => {
   if (Empresa.find().count() === 0) {
