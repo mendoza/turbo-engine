@@ -4,7 +4,6 @@ import MaskedInput from "react-text-mask";
 
 const TextMaskCustom = props => {
   const { inputRef, ...other } = props;
-
   return (
     <MaskedInput
       {...other}
@@ -15,29 +14,22 @@ const TextMaskCustom = props => {
   );
 };
 class MaskedTextField extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = { textmask: "" };
-  }
-
   render() {
-    const handleChange = name => event => {
-      this.setState({ [name]: event.target.value });
-    };
-
-    const { textmask } = this.state;
-    const { label, mask } = this.props;
+    const { label, mask, value, onChange, name } = this.props;
     return (
       <div>
         <FormControl variant="outlined" fullWidth>
           <InputLabel htmlFor="formatted-text-mask-input">{label}</InputLabel>
           <Input
-            value={textmask}
-            onChange={handleChange("textmask")}
+            name={name}
             id="formatted-text-mask-input"
             inputComponent={TextMaskCustom}
-            inputProps={{ mask }}
+            inputProps={{
+              mask,
+              value,
+              name,
+              onChange,
+            }}
           />
         </FormControl>
       </div>

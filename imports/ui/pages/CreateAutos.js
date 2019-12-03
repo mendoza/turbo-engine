@@ -15,7 +15,7 @@ import {
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { Estados, Traccion, transmision } from "../Constants";
+import { Estados, Traccion, Transmision } from "../Constants";
 import MaskedTextField from "../components/MaskedTextField";
 
 class CreateAutos extends PureComponent {
@@ -29,7 +29,7 @@ class CreateAutos extends PureComponent {
       color: "",
       placa: "",
       traccion: "",
-      year: 0,
+      year: "",
       piezas: [],
       estado: 0,
       open: false,
@@ -39,6 +39,7 @@ class CreateAutos extends PureComponent {
 
   render() {
     const handleTextChange = event => {
+      event.persist();
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -179,7 +180,7 @@ class CreateAutos extends PureComponent {
                     value={0}
                     onChange={handleTextChange}
                     variant="outlined">
-                    {Traccion.map((dato, index) => {
+                    {Transmision.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
                   </Select>
@@ -199,6 +200,9 @@ class CreateAutos extends PureComponent {
                 <Grid item xs={12} sm={6}>
                   <MaskedTextField
                     mask={[/[A-Z]/, /[A-Z]/, /[A-Z]/, " ", /\d/, /\d/, /\d/, /\d/]}
+                    value={placa}
+                    name="placa"
+                    onChange={handleTextChange}
                     label="Placa"
                   />
                 </Grid>
@@ -215,7 +219,13 @@ class CreateAutos extends PureComponent {
                   </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <MaskedTextField mask={[/\d/, /\d/, /\d/, /\d/, "-", /\d/]} label="Año" />
+                  <MaskedTextField
+                    mask={[/\d/, /\d/, /\d/, /\d/]}
+                    value={year}
+                    name="year"
+                    onChange={handleTextChange}
+                    label="Año"
+                  />
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <Select
