@@ -11,6 +11,8 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
+import SignUpClient from "./pages/SignUpClient"
+import SignInClient from "./pages/SignInClient"
 
 export const Routes = [
   {
@@ -86,6 +88,16 @@ export const Routes = [
     path: "/agregarAutos",
     name: "Agregar Autos",
     component: CreateAutos,
+  },
+  {
+    path: "/RegistroClientes",
+    name: "Registro CLientes",
+    component: SignUpClient,
+  },
+  {
+    path: "/InicioSesionClientes",
+    name: "Inicio Sesion CLientes",
+    component: SignInClient,
   },
 ];
 
