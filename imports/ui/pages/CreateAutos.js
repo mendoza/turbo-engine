@@ -34,6 +34,7 @@ class CreateAutos extends PureComponent {
       estado: 0,
       open: false,
       message: "",
+      vin: "",
     };
   }
 
@@ -47,7 +48,18 @@ class CreateAutos extends PureComponent {
     };
 
     const handleCreate = () => {
-      const { marca, modelo, tipo, transmision, color, placa, traccion, year, estado } = this.state;
+      const {
+        marca,
+        modelo,
+        tipo,
+        transmision,
+        color,
+        placa,
+        traccion,
+        year,
+        estado,
+        vin,
+      } = this.state;
       let alert;
       console.log(this.state);
 
@@ -75,6 +87,10 @@ class CreateAutos extends PureComponent {
         alert = "El campo año es requerido";
       }
 
+      if (validator.isEmpty(vin)) {
+        alert = "El campo vin es requerido";
+      }
+
       if (alert) {
         this.setState({
           open: true,
@@ -92,6 +108,7 @@ class CreateAutos extends PureComponent {
           year,
           estado: Estados[estado],
           piezas: [],
+          vin,
         });
         this.setState({
           marca: "",
@@ -121,6 +138,7 @@ class CreateAutos extends PureComponent {
       estado,
       message,
       open,
+      vin,
     } = this.state;
 
     return (
@@ -226,7 +244,7 @@ class CreateAutos extends PureComponent {
                     label="Año"
                   />
                 </Grid>
-                <Grid item xs={12} sm={12}>
+                <Grid item sm={12}>
                   <Select
                     fullWidth
                     name="estado"
@@ -237,6 +255,33 @@ class CreateAutos extends PureComponent {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
                   </Select>
+                </Grid>
+                <Grid item sm={12}>
+                  <MaskedTextField
+                    mask={[
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                    ]}
+                    value={vin}
+                    name="vin"
+                    onChange={handleTextChange}
+                    label="VIN"
+                  />
                 </Grid>
               </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
