@@ -17,6 +17,7 @@ import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Estados, Traccion, Transmision } from "../Constants";
 import MaskedTextField from "../components/MaskedTextField";
+import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
@@ -35,8 +36,63 @@ class CreateAutos extends PureComponent {
       open: false,
       message: "",
       vin: "",
+      files: [],
+      uploaded: true,
     };
   }
+
+  setFiles = event => {
+    const { files } = event.target;
+    let uploaded = 0;
+    const fileIds = [];
+    Object.keys(files).forEach(key => {
+      const uploadFile = files[key];
+      if (uploadFile) {
+        // We upload only one file, in case
+        // multiple files were selected
+        const upload = AutosFiles.insert(
+          {
+            file: uploadFile,
+            streams: "dynamic",
+            chunkSize: "dynamic",
+          },
+          false
+        );
+        upload.on("start", () => {
+          this.setState({
+            uploaded: false,
+          });
+        });
+        upload.on("end", (error, fileObj) => {
+          if (error) {
+            uploaded += 1;
+            if (uploaded === files.length) {
+              this.setState({
+                uploaded: true,
+              });
+            }
+            console.log(error);
+          } else {
+            uploaded += 1;
+            fileIds.push(fileObj._id);
+            if (uploaded === files.length) {
+              this.setState({
+                uploaded: true,
+                files: fileIds,
+              });
+            }
+          }
+        });
+        upload.start();
+      }
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
 
   render() {
     const handleTextChange = event => {
@@ -59,6 +115,7 @@ class CreateAutos extends PureComponent {
         year,
         estado,
         vin,
+        files,
       } = this.state;
       let alert;
       console.log(this.state);
@@ -109,6 +166,7 @@ class CreateAutos extends PureComponent {
           estado: Estados[estado],
           piezas: [],
           vin,
+          pictures: files,
         });
         this.setState({
           marca: "",
@@ -139,6 +197,7 @@ class CreateAutos extends PureComponent {
       message,
       open,
       vin,
+      uploaded,
     } = this.state;
 
     return (
@@ -284,7 +343,17 @@ class CreateAutos extends PureComponent {
                   />
                 </Grid>
               </Grid>
-              <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
+              <Box paddingY="1rem">
+                Imagenes del auto
+                <br />
+                <input type="file" onChange={this.setFiles} multiple />
+              </Box>
+              <Button
+                disabled={!uploaded}
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleCreate}>
                 Crear
               </Button>
             </form>

@@ -10,6 +10,7 @@ import CreateAutos from "./pages/CreateAutos";
 import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
+import EstadoAutos from "./pages/EstadoAutos";
 
 export const Routes = [
   {
@@ -77,6 +78,11 @@ export const Routes = [
     component: AutosPage,
   },
   {
+    path: "/estadoAutos",
+    name: "Estado",
+    component: EstadoAutos,
+  },
+  {
     path: "/agregarAutos",
     name: "Agregar Autos",
     component: CreateAutos,
@@ -84,17 +90,26 @@ export const Routes = [
 ];
 
 export const dashboardRoutes = [
-  { pathName: "/", name: "Inicio", icon: "fas fa-tachometer-alt" },
+  { pathName: "/",
+    name: "Inicio",
+    icon: "fas fa-tachometer-alt"
+  },
   {
     pathName: "/listarUsuarios",
-    name: "Listar usuarios",
-    icon: "fas fa-clipboard-list",
+    name: "Usuarios",
+    icon: "fas fa-users",
     permission: "superAdmin",
   },
   {
-    pathName: "/crearUsuarios",
-    name: "Crear usuarios",
-    icon: "fas fa-user-plus",
+    pathName: "/seccionAutos",
+    name: "Vehiculos",
+    icon: "fas fa-car",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/seccionPiezas",
+    name: "Piezas",
+    icon: "fas fa-puzzle-piece",
     permission: "superAdmin",
   },
   {

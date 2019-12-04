@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Box, Paper, TextField, Button, Grid, Snackbar, IconButton } from "@material-ui/core";
+import isEmail from 'validator/lib/isEmail';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
+      emailError: null,
       password: "",
+      passwordError: null,
       redirect: props.isLogged,
       open: false,
     };
@@ -18,8 +21,23 @@ class Login extends Component {
   };
 
   changeText = (event, stateValue) => {
+    let error;
+    if (stateValue === 'email') {
+      error = !isEmail(event.target.value);
+      if (error) {
+        error = 'Correo no válido';
+      }
+    }
+    if (stateValue === 'password') {
+      error = event.target.value.length < 8;
+      if (error) {
+        error = 'La contraseña debe tener al menos 8 caractéres';
+      }
+    }
+    const stateValueError = `${stateValue}Error`;
     this.setState({
       [stateValue]: event.target.value,
+      [stateValueError]: error,
     });
   };
 
@@ -44,7 +62,7 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password, open } = this.state;
+    const { email, emailError, password, passwordError, open } = this.state;
     return (
       <Box
         className="w-100"
@@ -65,24 +83,16 @@ class Login extends Component {
                     <center>
                       <img src="/imagenes/Logoblack.png" width="100%" height="100%"/>
                     </center>
-                    {/*<Box
-                      fontSize="5rem"
-                      className="w-100"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      color="primary">
-                      <span style={{ color: "#303f9f" }}>
-                        <i className="fas fa-user" />
-                      </span>
-                    </Box>*/}
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
                       value={email}
+                      error={emailError}
+                      helperText={emailError || ''}
                       label="Correo Electrónico"
                       onInput={event => this.changeText(event, "email")}
+                      required
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -91,7 +101,10 @@ class Login extends Component {
                       type="password"
                       label="Contraseña"
                       value={password}
+                      error={passwordError}
+                      helperText={passwordError || ''}
                       onInput={event => this.changeText(event, "password")}
+                      required
                     />
                   </Grid>
                   <Grid item xs={12}>
