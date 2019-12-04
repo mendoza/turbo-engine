@@ -25,10 +25,10 @@ class CreateAutos extends PureComponent {
       marca: "",
       modelo: "",
       tipo: "",
-      transmision: "",
+      transmision: 0,
       color: "",
       placa: "",
-      traccion: "",
+      traccion: 0,
       year: "",
       piezas: [],
       estado: 0,
@@ -40,6 +40,7 @@ class CreateAutos extends PureComponent {
   render() {
     const handleTextChange = event => {
       event.persist();
+      console.log(`${[event.target.name]}: ${event.target.value}`);
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -48,6 +49,7 @@ class CreateAutos extends PureComponent {
     const handleCreate = () => {
       const { marca, modelo, tipo, transmision, color, placa, traccion, year, estado } = this.state;
       let alert;
+      console.log(this.state);
 
       if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
@@ -61,10 +63,6 @@ class CreateAutos extends PureComponent {
         alert = "El campo tipo es requerido";
       }
 
-      if (validator.isEmpty(transmision)) {
-        alert = "El campo transmision es requerido";
-      }
-
       if (validator.isEmpty(color)) {
         alert = "El campo color es requerido";
       }
@@ -73,16 +71,8 @@ class CreateAutos extends PureComponent {
         alert = "El campo placa es requerido";
       }
 
-      if (validator.isEmpty(traccion)) {
-        alert = "El campo traccion es requerido";
-      }
-
       if (validator.isEmpty(String(year))) {
         alert = "El campo año es requerido";
-      }
-
-      if (validator.isEmpty(String(estado))) {
-        alert = "El campo estado es requerido";
       }
 
       if (alert) {
@@ -95,15 +85,24 @@ class CreateAutos extends PureComponent {
           marca,
           modelo,
           tipo,
-          transmision,
+          transmision: Transmision[transmision],
           color,
           placa,
-          traccion,
+          traccion: Traccion[traccion],
           year,
-          estado,
+          estado: Estados[estado],
           piezas: [],
         });
         this.setState({
+          marca: "",
+          modelo: "",
+          tipo: "",
+          transmision: 0,
+          color: "",
+          placa: "",
+          traccion: 0,
+          year: "",
+          estado: 0,
           open: true,
           message: "Auto agregado exitosamente",
         });
@@ -177,7 +176,7 @@ class CreateAutos extends PureComponent {
                   <Select
                     fullWidth
                     name="transmision"
-                    value={0}
+                    value={transmision}
                     onChange={handleTextChange}
                     variant="outlined">
                     {Transmision.map((dato, index) => {
@@ -210,7 +209,7 @@ class CreateAutos extends PureComponent {
                   <Select
                     fullWidth
                     name="traccion"
-                    value={0}
+                    value={traccion}
                     onChange={handleTextChange}
                     variant="outlined">
                     {Traccion.map((dato, index) => {
@@ -231,7 +230,7 @@ class CreateAutos extends PureComponent {
                   <Select
                     fullWidth
                     name="estado"
-                    value={0}
+                    value={estado}
                     onChange={handleTextChange}
                     variant="outlined">
                     {Estados.map((dato, index) => {
