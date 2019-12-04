@@ -24,7 +24,6 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { dashboardRoutes } from "../Routes";
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
