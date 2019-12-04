@@ -153,7 +153,7 @@ class CreateAutos extends PureComponent {
               Crear Autos
             </Typography>
             <form id="formUserLogin" noValidate>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} style={{ marginBottom: "5px" }}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     name="marca"
