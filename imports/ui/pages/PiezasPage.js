@@ -59,10 +59,12 @@ class PiezasPage extends PureComponent {
     this.state = {
       shouldRender: false,
       dialogPiece: {},
+      marca: "",
       vendedor: "",
       precio: "",
       numeroDeSerie: "",
       tipo: "",
+      cantidad: "",
       open: false,
       message: "",
       showX: false,
@@ -88,9 +90,12 @@ class PiezasPage extends PureComponent {
   };
 
   handleClick = () => {
-    const { vendedor, precio, numeroDeSerie, tipo, dialogPiece } = this.state;
+    const { marca, vendedor, precio, numeroDeSerie, tipo, cantidad, dialogPiece } = this.state;
     let alert;
 
+    if (validator.isEmpty(marca)) {
+      alert = "El campo marca es requerido";
+    }
     if (validator.isEmpty(tipo)) {
       alert = "El campo tipo es requerido";
     }
@@ -103,6 +108,19 @@ class PiezasPage extends PureComponent {
     if (validator.isEmpty(vendedor)) {
       alert = "El campo vendedor es requerido";
     }
+    if (validator.isEmpty(cantidad)) {
+      alert = "El campo cantidad es requerido";
+    }
+    if (!validator.isNumeric(precio)) {
+      alert = "El campo precio solo debe contener números";
+    } else if (precio < 1) {
+      alert = "El precio no puede ser cero o un número negativo";
+    }
+    if (!validator.isNumeric(cantidad)) {
+      alert = "El campo cantidad solo debe contener números";
+    } else if (cantidad < 1) {
+      alert = "La cantidad no puede ser cero o un número negativo";
+    }
 
     if (alert) {
       this.setState({
@@ -112,10 +130,12 @@ class PiezasPage extends PureComponent {
     } else {
       Meteor.call("updatePieza", {
         _id: dialogPiece._id,
+        marca,
         vendedor,
         precio,
         numeroDeSerie,
         tipo,
+        cantidad,
       });
       this.setState({
         open: true,
@@ -130,10 +150,12 @@ class PiezasPage extends PureComponent {
     const {
       shouldRender,
       dialogPiece,
+      marca,
       vendedor,
       precio,
       numeroDeSerie,
       tipo,
+      cantidad,
       open,
       message,
       showX,
@@ -212,7 +234,21 @@ class PiezasPage extends PureComponent {
             <DialogContent dividers>
               <form id="formUserLogin" noValidate>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      autoComplete="brand"
+                      name="marca"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="Brand"
+                      label="Marca"
+                      autoFocus
+                      value={marca}
+                      onInput={event => this.handleTextChange(event, "marca")}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       autoComplete="seller"
                       name="vendedor"
@@ -221,7 +257,6 @@ class PiezasPage extends PureComponent {
                       fullWidth
                       id="Seller"
                       label="Vendedor"
-                      autoFocus
                       value={vendedor}
                       onInput={event => this.handleTextChange(event)}
                     />
@@ -253,6 +288,19 @@ class PiezasPage extends PureComponent {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
+                    <TextField
+                      autoComplete="quantity"
+                      name="cantidad"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="Quantity"
+                      label="cantidad"
+                      value={cantidad}
+                      onInput={event => this.handleTextChange(event, "cantidad")}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
                     <TextField
                       autoComplete="type"
                       name="tipo"
