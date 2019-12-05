@@ -10,6 +10,9 @@ import {
   Snackbar,
   IconButton,
   Box,
+  Dialog,
+  AppBar,
+  Toolbar,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
@@ -21,6 +24,7 @@ class CreateAutos extends PureComponent {
     super(props);
 
     this.state = {
+      shouldOpen: false,
       marca: "",
       modelo: "",
       tipo: "",
@@ -88,10 +92,27 @@ class CreateAutos extends PureComponent {
   handleClose = () => {
     this.setState({
       open: false,
+      shouldOpen: false,
     });
   };
 
   render() {
+    const {
+      marca,
+      modelo,
+      tipo,
+      transmision,
+      color,
+      placa,
+      traccion,
+      shouldOpen,
+      year,
+      estado,
+      message,
+      open,
+      uploaded,
+    } = this.state;
+
     const handleTextChange = event => {
       this.setState({
         [event.target.name]: event.target.value,
@@ -169,26 +190,12 @@ class CreateAutos extends PureComponent {
           pictures: files,
         });
         this.setState({
+          shouldOpen: false,
           open: true,
           message: "Auto agregado exitosamente",
         });
       }
     };
-
-    const {
-      marca,
-      modelo,
-      tipo,
-      transmision,
-      color,
-      placa,
-      traccion,
-      year,
-      estado,
-      message,
-      open,
-      uploaded,
-    } = this.state;
 
     return (
       <DashboardLayout>
@@ -317,6 +324,31 @@ class CreateAutos extends PureComponent {
                 <br />
                 <input type="file" onChange={this.setFiles} multiple />
               </Box>
+              <Button
+                onClick={() => {
+                  this.setState({
+                    shouldOpen: true,
+                  });
+                }}>
+                Agregar piezas
+              </Button>
+              <Dialog fullScreen open={shouldOpen} onClose={this.handleClose}>
+                <AppBar>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={this.handleClose}
+                      aria-label="close">
+                      <i className="fas fa-times-circle" />
+                    </IconButton>
+                    <Typography variant="h6">Piezas</Typography>
+                    <Button autoFocus color="inherit" onClick={this.handleClose}>
+                      Guardar
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+              </Dialog>
               <Button
                 disabled={!uploaded}
                 fullWidth
