@@ -11,6 +11,7 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
+import UpdateTypes from "./pages/UpdateTypes";
 
 export const Routes = [
   {
@@ -86,6 +87,11 @@ export const Routes = [
     path: "/agregarAutos",
     name: "Agregar Autos",
     component: CreateAutos,
+  },
+  {
+    pathName: "/actualizarTipos",
+    name: "ActualizarT ",
+    component: UpdateTypes,
   },
 ];
 
