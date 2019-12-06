@@ -12,6 +12,8 @@ import {
   TextField,
   Snackbar,
   IconButton,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -20,6 +22,7 @@ import validator from "validator";
 import Piezas from "../../api/collections/Piezas/Piezas";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
+import Tipos from "../../api/collections/Tipos/Tipos";
 
 const useStyles = theme => ({
   icon: {
@@ -146,7 +149,7 @@ class PiezasPage extends PureComponent {
   };
 
   render() {
-    const { classes, piezas } = this.props;
+    const { classes, piezas, tipos } = this.props;
     const {
       shouldRender,
       dialogPiece,
@@ -301,17 +304,25 @@ class PiezasPage extends PureComponent {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="type"
+                    <Select
                       name="tipo"
-                      variant="outlined"
-                      required
                       fullWidth
-                      id="Type"
-                      label="tipo"
+                      required
+                      label="Tipo"
+                      id="type"
                       value={tipo}
-                      onInput={event => this.handleTextChange(event)}
-                    />
+                      onChange={event => this.handleTextChange(event, "tipo")}>
+                      {tipos.map(tipoMap => {
+                        if (tipoMap) {
+                          return (
+                            <MenuItem key={tipoMap._id} value={tipoMap.nombre}>
+                              {tipoMap.nombre}
+                            </MenuItem>
+                          );
+                        }
+                        return <></>;
+                      })}
+                    </Select>
                   </Grid>
                   <Button fullWidth variant="contained" color="primary" onClick={this.handleClick}>
                     Modificar
@@ -353,8 +364,10 @@ class PiezasPage extends PureComponent {
 export default withStyles(useStyles)(
   withTracker(() => {
     Meteor.subscribe("Piezas.all");
+    Meteor.subscribe("Tipos.all");
     return {
       piezas: Piezas.find().fetch(),
+      tipos: Tipos.find().fetch(),
     };
   })(PiezasPage)
 );
