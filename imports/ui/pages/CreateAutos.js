@@ -11,13 +11,17 @@ import {
   IconButton,
   Box,
   Dialog,
+  DialogContent,
   AppBar,
   Toolbar,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Piezas from "../../api/collections/Piezas/Piezas";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
+import ItemCard from "../components/ItemCard";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
@@ -33,9 +37,10 @@ class CreateAutos extends PureComponent {
       placa: "",
       traccion: "",
       year: 0,
-      piezas: [],
+      autoPiezas: [],
       estado: 0,
       open: false,
+      showX: false,
       message: "",
       files: [],
       uploaded: true,
@@ -111,7 +116,12 @@ class CreateAutos extends PureComponent {
       message,
       open,
       uploaded,
+      showX,
     } = this.state;
+
+    const {
+      piezas
+    } = this.props  
 
     const handleTextChange = event => {
       this.setState({
@@ -186,7 +196,7 @@ class CreateAutos extends PureComponent {
           traccion,
           year,
           estado,
-          piezas: [],
+          autoPiezas: [],
           pictures: files,
         });
         this.setState({
@@ -348,6 +358,24 @@ class CreateAutos extends PureComponent {
                     </Button>
                   </Toolbar>
                 </AppBar>
+                <DialogContent>
+                  {piezas.map((pieza, index) => (
+                    <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+                      <ItemCard
+                        labelButton="Agregar"
+                        showX={showX}
+                        title={`Tipo: ${pieza.tipo}`}
+                        body={`Vendedor: ${pieza.vendedor}`}
+                        action1={() => {}}
+                        action2={() => {
+                          
+                          this.setState({ showX: false });
+                        }}
+                        action3={() => {}}
+                      />
+                    </Grid>
+                  ))}
+                </DialogContent>
               </Dialog>
               <Button
                 disabled={!uploaded}
@@ -383,4 +411,9 @@ class CreateAutos extends PureComponent {
   }
 }
 
-export default CreateAutos;
+export default withTracker(() => {
+  Meteor.subscribe("Piezas.all");
+  return {
+    piezas: Piezas.find().fetch(),
+  };
+})(CreateAutos);

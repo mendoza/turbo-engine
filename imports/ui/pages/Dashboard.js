@@ -62,7 +62,7 @@ class Dashboard extends PureComponent {
           <Grid item xs={12} sm={6}>
             <ResponsiveContainer width="100%">
               <div>
-                <LineChart height={230} data={data}>
+                <LineChart width={500} height={230} data={data}>
                   <Line type="monotone" dataKey="uv" stroke="#8884d8" />
                   <CartesianGrid stroke="#ccc" />
                   <XAxis dataKey="name" />
@@ -74,7 +74,7 @@ class Dashboard extends PureComponent {
           <Grid item xs={12} sm={6}>
             <ResponsiveContainer width="100%">
               <div>
-                <BarChart height={230} data={data}>
+                <BarChart width={500} height={230} data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
