@@ -12,6 +12,7 @@ import {
   Box,
   Dialog,
   DialogContent,
+  Divider,
   AppBar,
   Toolbar,
 } from "@material-ui/core";
@@ -26,7 +27,6 @@ import ItemCard from "../components/ItemCard";
 class CreateAutos extends PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {
       shouldOpen: false,
       marca: "",
@@ -102,6 +102,7 @@ class CreateAutos extends PureComponent {
   };
 
   render() {
+    const { piezas } = this.props;
     const {
       marca,
       modelo,
@@ -117,11 +118,38 @@ class CreateAutos extends PureComponent {
       open,
       uploaded,
       showX,
+      autoPiezas,
     } = this.state;
 
-    const {
-      piezas
-    } = this.props  
+    const isExist = piece => {
+      /*let exist = true;
+      for (let i = 0; i < autoPiezas.length(); i++) {
+        if (piece.numeroDeSerie === autoPiezas[i].numeroDeSerie) {
+          exist = false;
+        }
+      }
+      return exist;*/
+      return true;
+    };
+
+    const shouldRenderPiece = (piece, index) => {
+      return (
+        <Grid item key={piece.vendedor + piece.tipo + index} xs={12} sm={6} md={4}>
+          <ItemCard
+            labelButton="Agregar"
+            showX={showX}
+            title={`Tipo: ${piece.tipo}`}
+            body={`Vendedor: ${piece.vendedor}`}
+            action1={() => {}}
+            action2={() => {
+              autoPiezas.push(piece);
+              this.setState({ showX: false });
+            }}
+            action3={() => {}}
+          />
+        </Grid>
+      );
+    };
 
     const handleTextChange = event => {
       this.setState({
@@ -141,6 +169,7 @@ class CreateAutos extends PureComponent {
         year,
         estado,
         files,
+        autoPiezas,
       } = this.state;
       let alert;
 
@@ -196,10 +225,11 @@ class CreateAutos extends PureComponent {
           traccion,
           year,
           estado,
-          autoPiezas: [],
+          autoPiezas,
           pictures: files,
         });
         this.setState({
+          autoPiezas: [],
           shouldOpen: false,
           open: true,
           message: "Auto agregado exitosamente",
@@ -358,23 +388,35 @@ class CreateAutos extends PureComponent {
                     </Button>
                   </Toolbar>
                 </AppBar>
+                <DialogContent container>
+                  <Grid container spacing={4}>
+                    {piezas.map((pieza, index) =>
+                      isExist(pieza) ? shouldRenderPiece(pieza, index) : null
+                    )}
+                  </Grid>
+                </DialogContent>
+                <Divider />
                 <DialogContent>
-                  {piezas.map((pieza, index) => (
-                    <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
-                      <ItemCard
-                        labelButton="Agregar"
-                        showX={showX}
-                        title={`Tipo: ${pieza.tipo}`}
-                        body={`Vendedor: ${pieza.vendedor}`}
-                        action1={() => {}}
-                        action2={() => {
-                          
-                          this.setState({ showX: false });
-                        }}
-                        action3={() => {}}
-                      />
-                    </Grid>
-                  ))}
+                  <Grid container spacing={4}>
+                    {autoPiezas.map((pieza, index) => (
+                      <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+                        <ItemCard
+                          labelButton="Quitar"
+                          showX={showX}
+                          title={`Tipo: ${pieza.tipo}`}
+                          body={`Vendedor: ${pieza.vendedor}`}
+                          action1={() => {}}
+                          action2={() => {
+                            if (index > -1) {
+                              autoPiezas.splice(index, 1);
+                            }
+                            this.setState({ showX: false });
+                          }}
+                          action3={() => {}}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
                 </DialogContent>
               </Dialog>
               <Button

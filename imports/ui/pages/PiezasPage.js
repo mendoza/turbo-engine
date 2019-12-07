@@ -129,7 +129,6 @@ class PiezasPage extends PureComponent {
     const { classes, piezas } = this.props;
     const {
       shouldRender,
-      dialogPiece,
       vendedor,
       precio,
       numeroDeSerie,
@@ -201,7 +200,7 @@ class PiezasPage extends PureComponent {
                       Meteor.call("deletePieza", { ...pieza });
                       this.setState({ showX: false });
                     }}
-                  />
+                    />
                 </Grid>
               ))}
             </Grid>
