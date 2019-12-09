@@ -14,6 +14,8 @@ import {
   Snackbar,
   IconButton,
   Box,
+  AppBar,
+  Toolbar,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
@@ -23,6 +25,7 @@ import Autos from "../../api/collections/Autos/Autos";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
+import Title from "../components/Title";
 
 const useStyles = theme => ({
   icon: {
@@ -78,6 +81,7 @@ class AutosPage extends PureComponent {
       showX: false,
       pathName: "",
       shouldRedirect: false,
+      shouldRenderFull: false,
       pictures: [],
     };
   }
@@ -103,12 +107,16 @@ class AutosPage extends PureComponent {
       pathName,
       shouldRedirect,
       pictures,
+      shouldRenderFull,
     } = this.state;
 
     const handleCloseDialog = () => {
       this.setState({ shouldRender: false });
     };
 
+    const handleCloseFullDialog = () => {
+      this.setState({ shouldRenderFull: false });
+    };
     const handleCloseSnack = () => {
       this.setState({ open: false });
     };
@@ -226,6 +234,7 @@ class AutosPage extends PureComponent {
                   <Button
                     variant="outlined"
                     color="primary"
+                    Toolbar
                     onClick={() => {
                       this.setState(state => {
                         return { showX: !state.showX };
@@ -262,12 +271,15 @@ class AutosPage extends PureComponent {
                     Meteor.call("deleteAuto", { ...auto });
                     this.setState({ showX: false });
                   }}
+                  action4={() => {
+                    this.setState({ shouldRenderFull: true, dialogCar: auto });
+                  }}
                 />
               </Grid>
             ))}
           </Grid>
         </Container>
-        <Dialog open={shouldRender} onClose={handleCloseDialog} style={{ width: "80%" }}>
+        <Dialog open={shouldRender} onClose={handleCloseDialog} maxWidth="lg">
           <DialogTitle>Modificar Auto</DialogTitle>
           <Divider />
           <DialogContent dividers>
@@ -403,6 +415,55 @@ class AutosPage extends PureComponent {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog} color="primary">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={shouldRenderFull} onClose={handleCloseFullDialog} maxWidth="lg">
+          <DialogTitle>Auto</DialogTitle>
+          <Divider />
+          <DialogContent dividers>
+            <Grid container>
+              <Grid item sm={6}>
+                <Title>Marca: </Title>
+                <Typography>{`${dialogCar.marca}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Modelo: </Title>
+
+                <Typography>{` ${dialogCar.modelo}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Tipo: </Title>
+
+                <Typography>{` ${dialogCar.tipo}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Transmision: </Title>
+                <Typography>{`${dialogCar.transmision}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Color: </Title>
+
+                <Typography>{`${dialogCar.color}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Placa: </Title>
+                <Typography>{`${dialogCar.placa}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Traccion: </Title>
+                <Typography>{`${dialogCar.traccion}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Año: </Title>
+                <Typography>{`${dialogCar.year}`}</Typography>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseFullDialog} color="primary">
               Cerrar
             </Button>
           </DialogActions>

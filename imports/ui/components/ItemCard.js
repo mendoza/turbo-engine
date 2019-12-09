@@ -29,7 +29,18 @@ class ItemCard extends PureComponent {
   }
 
   render() {
-    const { title, body, description, action1, action2, action3, classes, showX, image } = this.props;
+    const {
+      title,
+      body,
+      description,
+      action1,
+      action2,
+      action3,
+      action4,
+      classes,
+      showX,
+      image,
+    } = this.props;
     return (
       <Card className={classes.card}>
         <CardHeader
@@ -43,10 +54,7 @@ class ItemCard extends PureComponent {
             ) : null
           }
         />
-        <CardActionArea
-          onClick={() => {
-            this.setState({ open: true });
-          }}>
+        <CardActionArea onClick={action4}>
           <CardMedia
             component="img"
             alt="Contemplative Reptile"
