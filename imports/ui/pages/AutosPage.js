@@ -14,8 +14,10 @@ import {
   Snackbar,
   IconButton,
   Box,
-  AppBar,
-  Toolbar,
+  FormControl,
+  Input,
+  InputAdornment,
+  InputLabel,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
@@ -26,6 +28,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import Title from "../components/Title";
+import { Estados } from "../Constants";
 
 const useStyles = theme => ({
   icon: {
@@ -75,7 +78,6 @@ class AutosPage extends PureComponent {
       year: 0,
       piezas: [],
       estado: 0,
-      _id: "",
       open: false,
       message: "",
       showX: false,
@@ -83,8 +85,15 @@ class AutosPage extends PureComponent {
       shouldRedirect: false,
       shouldRenderFull: false,
       pictures: [],
+      filteredCars: [],
     };
   }
+
+  componentWillReceiveProps = props => {
+    if (props.autos) {
+      this.setState({ filteredCars: props.autos });
+    }
+  };
 
   render() {
     const { classes, autos, autosFiles } = this.props;
@@ -108,6 +117,7 @@ class AutosPage extends PureComponent {
       shouldRedirect,
       pictures,
       shouldRenderFull,
+      filteredCars,
     } = this.state;
 
     const handleCloseDialog = () => {
@@ -243,13 +253,41 @@ class AutosPage extends PureComponent {
                     Eliminar un Auto
                   </Button>
                 </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="standard-adornment-amount">Busqueda</InputLabel>
+                    <Input
+                      id="standard-adornment-amount"
+                      onChange={event => {
+                        event.preventDefault();
+                        let { value } = event.target;
+                        value = value.toLowerCase();
+                        this.setState({ filteredCars: autos });
+                        this.setState({
+                          filteredCars: autos.filter(car => {
+                            return (
+                              car.marca.toLowerCase().includes(value) ||
+                              car.modelo.toLowerCase().includes(value) ||
+                              Estados[car.estado].toLowerCase().includes(value)
+                            );
+                          }),
+                        });
+                      }}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <span className="fas fa-search" />
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
             </div>
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            {autos.map(auto => (
+            {filteredCars.map(auto => (
               <Grid item key={auto._id} xs={12} sm={6} md={4}>
                 <ItemCard
                   showX={showX}
