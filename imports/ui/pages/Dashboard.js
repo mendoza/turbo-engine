@@ -11,6 +11,7 @@ import {
   CartesianGrid,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Orders from "../components/Orders";
