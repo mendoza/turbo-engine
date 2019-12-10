@@ -403,15 +403,15 @@ class CreateAutos extends PureComponent {
                           action1={() => {}}
                           action2={() => {
                             autoPiezas.push(pieza);
-                            this.setState({autoPiezas})
-                            this.forceUpdate()
+                            this.setState({ autoPiezas });
+                            this.forceUpdate();
                             if (index > -1) {
                               piezas.splice(index, 1);
                             }
                             this.setState({ showX: false });
                           }}
                           action3={() => {}}
-                          />
+                        />
                       </Grid>
                     ))}
                   </Grid>
@@ -419,25 +419,28 @@ class CreateAutos extends PureComponent {
                 <Divider />
                 <DialogContent>
                   <Grid container spacing={4}>
-                    {autoPiezas.map((pieza, index) => { console.log(pieza);return (
-                      <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
-                        <ItemCard
-                          labelButton="Eliminar"
-                          showX={showX}
-                          title={`Tipo: ${pieza.tipo}`}
-                          body={`Vendedor: ${pieza.vendedor}`}
-                          action1={() => {}}
-                          action2={() => {
-                            piezas.push(pieza);
-                            if (index > -1) {
-                              autoPiezas.splice(index, 1);
-                            }
-                            this.setState({ showX: false });
-                          }}
-                          action3={() => {}}
-                        />
-                      </Grid>
-                    )})}
+                    {autoPiezas.map((pieza, index) => {
+                      console.log(pieza);
+                      return (
+                        <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+                          <ItemCard
+                            labelButton="Eliminar"
+                            showX={showX}
+                            title={`Tipo: ${pieza.tipo}`}
+                            body={`Vendedor: ${pieza.vendedor}`}
+                            action1={() => {}}
+                            action2={() => {
+                              piezas.push(pieza);
+                              if (index > -1) {
+                                autoPiezas.splice(index, 1);
+                              }
+                              this.setState({ showX: false });
+                            }}
+                            action3={() => {}}
+                          />
+                        </Grid>
+                      );
+                    })}
                   </Grid>
                 </DialogContent>
               </Dialog>
