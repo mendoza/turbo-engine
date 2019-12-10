@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Grid } from "@material-ui/core";
 import {
+  ResponsiveContainer,
   Legend,
   Tooltip,
   Bar,
@@ -20,10 +21,18 @@ class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      widthChart: 0,
+    };
   }
 
+  componentDidMount = () => {
+    this.setState({ widthChart: window.innerWidth });
+  };
+
   render() {
+    const { widthChart } = this.state;
+
     // Linechart
     const data = [
       { name: "Pagina A", uv: 400, pv: 2400, amt: 2400 },

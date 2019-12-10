@@ -12,18 +12,27 @@ import {
   Select,
   MenuItem,
   Box,
+  Dialog,
+  DialogContent,
+  Divider,
+  AppBar,
+  Toolbar,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Piezas from "../../api/collections/Piezas/Piezas";
 import { Estados, Traccion, Transmision } from "../Constants";
 import MaskedTextField from "../components/MaskedTextField";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
+import ItemCard from "../components/ItemCard";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      shouldOpen: false,
       marca: "",
       modelo: "",
       tipo: "",
@@ -32,9 +41,10 @@ class CreateAutos extends PureComponent {
       placa: "",
       traccion: 0,
       year: "",
-      piezas: [],
+      autoPiezas: [],
       estado: 0,
       open: false,
+      showX: false,
       message: "",
       vin: "",
       files: [],
@@ -92,10 +102,30 @@ class CreateAutos extends PureComponent {
   handleClose = () => {
     this.setState({
       open: false,
+      shouldOpen: false,
     });
   };
 
   render() {
+    const { piezas } = this.props;
+    const {
+      marca,
+      modelo,
+      tipo,
+      transmision,
+      color,
+      placa,
+      traccion,
+      shouldOpen,
+      year,
+      estado,
+      message,
+      open,
+      uploaded,
+      showX,
+      autoPiezas,
+    } = this.state;
+
     const handleTextChange = event => {
       event.persist();
       console.log(`${[event.target.name]}: ${event.target.value}`);
@@ -117,6 +147,7 @@ class CreateAutos extends PureComponent {
         estado,
         vin,
         files,
+        autoPiezas,
       } = this.state;
       let alert;
       console.log(this.state);
@@ -165,11 +196,13 @@ class CreateAutos extends PureComponent {
           traccion: Traccion[traccion],
           year,
           estado: Estados[estado],
-          piezas: [],
+          autoPiezas: [],
           vin,
           pictures: files,
         });
         this.setState({
+          autoPiezas: [],
+          shouldOpen: false,
           marca: "",
           modelo: "",
           tipo: "",
@@ -350,6 +383,80 @@ class CreateAutos extends PureComponent {
                 <input type="file" onChange={this.setFiles} multiple />
               </Box>
               <Button
+                onClick={() => {
+                  this.setState({
+                    shouldOpen: true,
+                  });
+                }}>
+                Agregar piezas
+              </Button>
+              <Dialog fullScreen open={shouldOpen} onClose={this.handleClose}>
+                <AppBar>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={this.handleClose}
+                      aria-label="close">
+                      <i className="fas fa-times-circle" />
+                    </IconButton>
+                    <Typography variant="h6">Piezas</Typography>
+                    <Button autoFocus color="inherit" onClick={this.handleClose}>
+                      Guardar
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+                <DialogContent container>
+                  <Grid container spacing={4}>
+                    {piezas.map((pieza, index) => (
+                      <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+                        <ItemCard
+                          labelButton="Agregar"
+                          showX={showX}
+                          title={`Tipo: ${pieza.tipo}`}
+                          body={`Vendedor: ${pieza.vendedor}`}
+                          action1={() => {}}
+                          action2={() => {
+                            autoPiezas.push(pieza);
+                            this.setState({autoPiezas})
+                            this.forceUpdate()
+                            if (index > -1) {
+                              piezas.splice(index, 1);
+                            }
+                            this.setState({ showX: false });
+                          }}
+                          action3={() => {}}
+                          />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </DialogContent>
+                <Divider />
+                <DialogContent>
+                  <Grid container spacing={4}>
+                    {autoPiezas.map((pieza, index) => { console.log(pieza);return (
+                      <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+                        <ItemCard
+                          labelButton="Eliminar"
+                          showX={showX}
+                          title={`Tipo: ${pieza.tipo}`}
+                          body={`Vendedor: ${pieza.vendedor}`}
+                          action1={() => {}}
+                          action2={() => {
+                            piezas.push(pieza);
+                            if (index > -1) {
+                              autoPiezas.splice(index, 1);
+                            }
+                            this.setState({ showX: false });
+                          }}
+                          action3={() => {}}
+                        />
+                      </Grid>
+                    )})}
+                  </Grid>
+                </DialogContent>
+              </Dialog>
+              <Button
                 disabled={!uploaded}
                 fullWidth
                 variant="contained"
@@ -383,4 +490,9 @@ class CreateAutos extends PureComponent {
   }
 }
 
-export default CreateAutos;
+export default withTracker(() => {
+  Meteor.subscribe("Piezas.all");
+  return {
+    piezas: Piezas.find().fetch(),
+  };
+})(CreateAutos);

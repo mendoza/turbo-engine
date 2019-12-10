@@ -226,7 +226,7 @@ class PiezasPage extends PureComponent {
                       Meteor.call("deletePieza", { ...pieza });
                       this.setState({ showX: false });
                     }}
-                  />
+                    />
                 </Grid>
               ))}
             </Grid>

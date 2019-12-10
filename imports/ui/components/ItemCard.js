@@ -29,7 +29,18 @@ class ItemCard extends PureComponent {
   }
 
   render() {
-    const { title, body, description, action1, action2, action3, classes, showX, image } = this.props;
+    const {
+      labelButton,
+      title,
+      body,
+      description,
+      action1,
+      action2,
+      action3,
+      classes,
+      showX,
+      image,
+    } = this.props;
     return (
       <Card className={classes.card}>
         <CardHeader
@@ -53,7 +64,7 @@ class ItemCard extends PureComponent {
             height="140"
             image={image || "https://source.unsplash.com/random"}
             title="Image title"
-          />
+            />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {title}
@@ -71,7 +82,7 @@ class ItemCard extends PureComponent {
             Visualizar
           </Button> */}
           <Button size="small" color="primary" onClick={action2}>
-            Modificar
+            {labelButton !== null ? labelButton : "Modificar"}
           </Button>
         </CardActions>
       </Card>
