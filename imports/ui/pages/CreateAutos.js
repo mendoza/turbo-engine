@@ -27,6 +27,7 @@ import { Estados, Traccion, Transmision } from "../Constants";
 import MaskedTextField from "../components/MaskedTextField";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import ItemCard from "../components/ItemCard";
+import Title from "../components/Title";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
@@ -219,6 +220,31 @@ class CreateAutos extends PureComponent {
       }
     };
 
+    const shouldRenderCard = (pieza, index) =>{
+      return (
+        <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+          <ItemCard
+            labelButton="Agregar"
+            showX={showX}
+            title={`Tipo: ${pieza.tipo}`}
+            body={`Vendedor: ${pieza.vendedor}`}
+            description={`Cantidad: ${pieza.cantidad}`}
+            action1={() => {}}
+            action2={() => {
+              autoPiezas.push(pieza);
+              this.setState({ autoPiezas });
+              this.forceUpdate();
+              if (index > -1) {
+                  piezas.splice(index, 1);
+              }
+              this.setState({ showX: false });
+            }}
+            action3={() => {}}
+            />
+        </Grid>
+      );
+    }
+
     return (
       <DashboardLayout>
         <Container component="main" maxWidth="xs">
@@ -392,35 +418,18 @@ class CreateAutos extends PureComponent {
                   </Toolbar>
                 </AppBar>
                 <DialogContent container>
+                  <Title>Piezas Disponibles</Title>
                   <Grid container spacing={4}>
                     {piezas.map((pieza, index) => (
-                      <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
-                        <ItemCard
-                          labelButton="Agregar"
-                          showX={showX}
-                          title={`Tipo: ${pieza.tipo}`}
-                          body={`Vendedor: ${pieza.vendedor}`}
-                          action1={() => {}}
-                          action2={() => {
-                            autoPiezas.push(pieza);
-                            this.setState({ autoPiezas });
-                            this.forceUpdate();
-                            if (index > -1) {
-                              piezas.splice(index, 1);
-                            }
-                            this.setState({ showX: false });
-                          }}
-                          action3={() => {}}
-                        />
-                      </Grid>
+                      pieza.cantidad > 0 ? shouldRenderCard(pieza, index) : null
                     ))}
                   </Grid>
                 </DialogContent>
                 <Divider />
                 <DialogContent>
+                  <Title>Piezas agregadas</Title>
                   <Grid container spacing={4}>
                     {autoPiezas.map((pieza, index) => {
-                      console.log(pieza);
                       return (
                         <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
                           <ItemCard
@@ -428,6 +437,7 @@ class CreateAutos extends PureComponent {
                             showX={showX}
                             title={`Tipo: ${pieza.tipo}`}
                             body={`Vendedor: ${pieza.vendedor}`}
+                            description={`Cantidad: ${pieza.cantidad}`}
                             action1={() => {}}
                             action2={() => {
                               piezas.push(pieza);
@@ -435,6 +445,7 @@ class CreateAutos extends PureComponent {
                                 autoPiezas.splice(index, 1);
                               }
                               this.setState({ showX: false });
+                              this.forceUpdate();
                             }}
                             action3={() => {}}
                           />
