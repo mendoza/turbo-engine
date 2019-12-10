@@ -124,6 +124,7 @@ class CreateAutos extends PureComponent {
       uploaded,
       showX,
       autoPiezas,
+      vin,
     } = this.state;
 
     const handleTextChange = event => {
@@ -217,22 +218,6 @@ class CreateAutos extends PureComponent {
         });
       }
     };
-
-    const {
-      marca,
-      modelo,
-      tipo,
-      transmision,
-      color,
-      placa,
-      traccion,
-      year,
-      estado,
-      message,
-      open,
-      vin,
-      uploaded,
-    } = this.state;
 
     return (
       <DashboardLayout>
