@@ -14,6 +14,10 @@ import {
   IconButton,
   Select,
   MenuItem,
+  FormControl,
+  Input,
+  InputLabel,
+  InputAdornment,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -75,8 +79,15 @@ class PiezasPage extends PureComponent {
       pathName: "",
       shoudlRedirect: false,
       shouldRenderFull: false,
+      filteredPieces: [],
     };
   }
+
+  componentWillReceiveProps = props => {
+    if (props.piezas) {
+      this.setState({ filteredPieces: props.piezas });
+    }
+  };
 
   handleClose = () => {
     this.setState({ shouldRender: false });
@@ -171,6 +182,7 @@ class PiezasPage extends PureComponent {
       pathName,
       shoudlRedirect,
       shouldRenderFull,
+      filteredPieces,
     } = this.state;
 
     return (
@@ -213,14 +225,41 @@ class PiezasPage extends PureComponent {
                       Eliminar una Pieza
                     </Button>
                   </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="standard-adornment-amount">Busqueda</InputLabel>
+                      <Input
+                        id="standard-adornment-amount"
+                        onChange={event => {
+                          event.preventDefault();
+                          let { value } = event.target;
+                          value = value.toLowerCase();
+                          this.setState({ filteredPieces: piezas });
+                          this.setState({
+                            filteredPieces: piezas.filter(piece => {
+                              return (
+                                piece.tipo.toLowerCase().includes(value) ||
+                                piece.vendedor.toLowerCase().includes(value)
+                              );
+                            }),
+                          });
+                        }}
+                        endAdornment={(
+                          <InputAdornment position="end">
+                            <span className="fas fa-search" />
+                          </InputAdornment>
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
               </div>
             </Container>
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
-              {piezas.map((pieza, index) => (
-                <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+              {filteredPieces.map(pieza => (
+                <Grid item key={pieza._id} xs={12} sm={6} md={4}>
                   <ItemCard
                     showX={showX}
                     title={`Tipo: ${pieza.tipo}`}
@@ -234,7 +273,7 @@ class PiezasPage extends PureComponent {
                       this.setState({ showX: false });
                     }}
                     action4={() => {
-                      this.setState({shouldRenderFull: true, dialogPiece: pieza});
+                      this.setState({ shouldRenderFull: true, dialogPiece: pieza });
                     }}
                   />
                 </Grid>
@@ -348,9 +387,7 @@ class PiezasPage extends PureComponent {
           </Dialog>
 
           <Dialog open={shouldRenderFull} onClose={this.handleCloseFullDialog} maxWidth="lg">
-            <DialogTitle>
-              Pieza
-            </DialogTitle>
+            <DialogTitle>Pieza</DialogTitle>
             <Divider />
             <DialogContent dividers>
               <Grid container>
