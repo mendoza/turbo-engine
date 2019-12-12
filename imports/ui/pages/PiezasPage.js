@@ -276,6 +276,7 @@ class PiezasPage extends PureComponent {
                       this.setState({ shouldRenderFull: true, dialogPiece: pieza });
                     }}
                   />
+
                 </Grid>
               ))}
             </Grid>

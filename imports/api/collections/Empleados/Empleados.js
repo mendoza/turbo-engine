@@ -5,7 +5,9 @@ const Empleados = new Mongo.Collection("Empleados");
 
 Empleados.schema = new SimpleSchema({
   nombre: { type: String },
-  fechaDeNacimiento: { type: Date },
+  apellido: { type: String },
+  telefono: { type: Number },
+  email: { type: String },
 });
 
 export default Empleados;

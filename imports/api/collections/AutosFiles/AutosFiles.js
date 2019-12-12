@@ -15,7 +15,7 @@ if (Meteor.isServer) {
 const Images = new FilesCollection({
   collectionName: 'AutosFiles',
   allowClientCode: false,
-  debug: Meteor.isServer && process.env.NODE_ENV === 'development',
+  debug: false,
   onBeforeUpload(file) {
     if (/png|jpg|jpeg/i.test(file.extension)) return true;
     return 'No es un formato válido';

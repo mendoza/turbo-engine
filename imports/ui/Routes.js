@@ -11,6 +11,8 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
+import Clientes from "./pages/Clientes";
+import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 
 export const Routes = [
@@ -89,6 +91,16 @@ export const Routes = [
     component: CreateAutos,
   },
   {
+    path: "/clientes",
+    name: "Clientes",
+    component: Clientes
+  },
+  {
+    path: "/empleados",
+    name: "Empleados",
+    component: Empleados
+  },
+  {
     pathName: "/actualizarTipos",
     name: "ActualizarT ",
     component: UpdateTypes,
@@ -96,7 +108,8 @@ export const Routes = [
 ];
 
 export const dashboardRoutes = [
-  { pathName: "/",
+  {
+    pathName: "/",
     name: "Inicio",
     icon: "fas fa-tachometer-alt"
   },
@@ -117,6 +130,18 @@ export const dashboardRoutes = [
     name: "Piezas",
     icon: "fas fa-puzzle-piece",
     permission: "superAdmin",
+  },
+  {
+    pathName: "/clientes",
+    name: "Clientes",
+    icon: "fas fa-user-tie",
+    component: Clientes
+  },
+  {
+    pathName: "/empleados",
+    name: "Empleados",
+    icon: "fas fa-people-carry",
+    component: Clientes
   },
   {
     pathName: "/restablecerContra",

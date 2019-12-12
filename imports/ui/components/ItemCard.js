@@ -24,12 +24,12 @@ const useStyles = () => ({
 class ItemCard extends PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
   render() {
     const {
+      labelButton,
       title,
       body,
       description,
@@ -42,8 +42,8 @@ class ItemCard extends PureComponent {
       image,
     } = this.props;
     return (
-      <Card className={classes.card}>
-        <CardHeader
+      <Card className={classes.card} elevation={10}>
+        {/* <CardHeader
           action={
             showX ? (
               <IconButton aria-label="settings" onClick={action3}>
@@ -53,15 +53,18 @@ class ItemCard extends PureComponent {
               </IconButton>
             ) : null
           }
-        />
-        <CardActionArea onClick={action4}>
+        /> */}
+        <CardActionArea
+          onClick={() => {
+            this.setState({ open: true });
+          }}>
           <CardMedia
             component="img"
             alt="Contemplative Reptile"
             height="140"
             image={image || "https://source.unsplash.com/random"}
             title="Image title"
-          />
+            />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {title}
@@ -74,14 +77,14 @@ class ItemCard extends PureComponent {
             </Typography>
           </CardContent>
         </CardActionArea>
-        <CardActions>
-          {/* <Button size="small" color="primary" onClick={action1}>
+        {/* <CardActions>
+          <Button size="small" color="primary" onClick={action1}>
             Visualizar
-          </Button> */}
-          <Button size="small" color="primary" onClick={action2}>
-            Modificar
           </Button>
-        </CardActions>
+          <Button size="small" color="primary" onClick={action2}>
+            {labelButton !== null ? labelButton : "Modificar"}
+          </Button>
+        </CardActions> */}
       </Card>
     );
   }
