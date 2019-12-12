@@ -153,7 +153,6 @@ class CreateAutos extends PureComponent {
       } = this.state;
       let alert;
       console.log(this.state);
-
       if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
       }
@@ -198,7 +197,7 @@ class CreateAutos extends PureComponent {
           traccion: Traccion[traccion],
           year,
           estado: Estados[estado],
-          autoPiezas: [],
+          autoPiezas,
           vin,
           pictures: files,
         });
