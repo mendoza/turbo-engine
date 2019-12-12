@@ -14,6 +14,10 @@ import {
   Snackbar,
   IconButton,
   Box,
+  FormControl,
+  Input,
+  InputAdornment,
+  InputLabel,
   Select,
   MenuItem,
 } from "@material-ui/core";
@@ -26,6 +30,8 @@ import Autos from "../../api/collections/Autos/Autos";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
+import Title from "../components/Title";
+import { Estados } from "../Constants";
 import { Estados, Traccion, Transmision } from "../Constants";
 
 const useStyles = theme => ({
@@ -76,17 +82,24 @@ class AutosPage extends PureComponent {
       year: 0,
       piezas: [],
       estado: 0,
-      _id: "",
       open: false,
       message: "",
       showX: false,
       pathName: "",
       shouldRedirect: false,
+      shouldRenderFull: false,
       pictures: [],
+      filteredCars: [],
       uploaded: true,
       vin: "",
     };
   }
+
+  componentWillReceiveProps = props => {
+    if (props.autos) {
+      this.setState({ filteredCars: props.autos });
+    }
+  };
 
   render() {
     const { classes, autos, autosFiles } = this.props;
@@ -110,6 +123,8 @@ class AutosPage extends PureComponent {
       shouldRedirect,
       vin,
       pictures,
+      shouldRenderFull,
+      filteredCars,
       uploaded,
     } = this.state;
 
@@ -117,6 +132,9 @@ class AutosPage extends PureComponent {
       this.setState({ shouldRender: false });
     };
 
+    const handleCloseFullDialog = () => {
+      this.setState({ shouldRenderFull: false });
+    };
     const handleCloseSnack = () => {
       this.setState({ open: false });
     };
@@ -234,6 +252,7 @@ class AutosPage extends PureComponent {
                   <Button
                     variant="outlined"
                     color="primary"
+                    Toolbar
                     onClick={() => {
                       this.setState(state => {
                         return { showX: !state.showX };
@@ -242,13 +261,41 @@ class AutosPage extends PureComponent {
                     Eliminar un Auto
                   </Button>
                 </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="standard-adornment-amount">Busqueda</InputLabel>
+                    <Input
+                      id="standard-adornment-amount"
+                      onChange={event => {
+                        event.preventDefault();
+                        let { value } = event.target;
+                        value = value.toLowerCase();
+                        this.setState({ filteredCars: autos });
+                        this.setState({
+                          filteredCars: autos.filter(car => {
+                            return (
+                              car.marca.toLowerCase().includes(value) ||
+                              car.modelo.toLowerCase().includes(value) ||
+                              Estados[car.estado].toLowerCase().includes(value)
+                            );
+                          }),
+                        });
+                      }}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <span className="fas fa-search" />
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
             </div>
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            {autos.map(auto => (
+            {filteredCars.map(auto => (
               <Grid item key={auto._id} xs={12} sm={6} md={4}>
                 <ItemCard
                   showX={showX}
@@ -270,12 +317,15 @@ class AutosPage extends PureComponent {
                     Meteor.call("deleteAuto", { ...auto });
                     this.setState({ showX: false });
                   }}
+                  action4={() => {
+                    this.setState({ shouldRenderFull: true, dialogCar: auto });
+                  }}
                 />
               </Grid>
             ))}
           </Grid>
         </Container>
-        <Dialog open={shouldRender} onClose={handleCloseDialog} style={{ width: "80%" }}>
+        <Dialog open={shouldRender} onClose={handleCloseDialog} maxWidth="lg">
           <DialogTitle>Modificar Auto</DialogTitle>
           <Divider />
           <DialogContent dividers>
@@ -428,6 +478,55 @@ class AutosPage extends PureComponent {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog} color="primary">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={shouldRenderFull} onClose={handleCloseFullDialog} maxWidth="lg">
+          <DialogTitle>Auto</DialogTitle>
+          <Divider />
+          <DialogContent dividers>
+            <Grid container>
+              <Grid item sm={6}>
+                <Title>Marca: </Title>
+                <Typography>{`${dialogCar.marca}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Modelo: </Title>
+
+                <Typography>{` ${dialogCar.modelo}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Tipo: </Title>
+
+                <Typography>{` ${dialogCar.tipo}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Transmision: </Title>
+                <Typography>{`${dialogCar.transmision}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Color: </Title>
+
+                <Typography>{`${dialogCar.color}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Placa: </Title>
+                <Typography>{`${dialogCar.placa}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Traccion: </Title>
+                <Typography>{`${dialogCar.traccion}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Año: </Title>
+                <Typography>{`${dialogCar.year}`}</Typography>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseFullDialog} color="primary">
               Cerrar
             </Button>
           </DialogActions>

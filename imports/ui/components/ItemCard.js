@@ -36,6 +36,7 @@ class ItemCard extends PureComponent {
       action1,
       action2,
       action3,
+      action4,
       classes,
       showX,
       image,
