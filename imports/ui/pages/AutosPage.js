@@ -14,15 +14,19 @@ import {
   Snackbar,
   IconButton,
   Box,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
+import MaskedTextField from "../components/MaskedTextField";
 import Autos from "../../api/collections/Autos/Autos";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
+import { Estados, Traccion, Transmision } from "../Constants";
 
 const useStyles = theme => ({
   icon: {
@@ -79,6 +83,8 @@ class AutosPage extends PureComponent {
       pathName: "",
       shouldRedirect: false,
       pictures: [],
+      uploaded: true,
+      vin: "",
     };
   }
 
@@ -102,7 +108,9 @@ class AutosPage extends PureComponent {
       message,
       pathName,
       shouldRedirect,
+      vin,
       pictures,
+      uploaded,
     } = this.state;
 
     const handleCloseDialog = () => {
@@ -272,7 +280,7 @@ class AutosPage extends PureComponent {
           <Divider />
           <DialogContent dividers>
             <form id="formUserLogin" noValidate>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} style={{ marginBottom: "5px" }}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     name="marca"
@@ -310,16 +318,16 @@ class AutosPage extends PureComponent {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="transmision"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Transmision"
-                    autoFocus
+                    name="transmision"
                     value={transmision}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Transmision.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -334,70 +342,87 @@ class AutosPage extends PureComponent {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="placa"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Placa"
-                    autoFocus
+                  <MaskedTextField
+                    mask={[/[A-Z]/, /[A-Z]/, /[A-Z]/, " ", /\d/, /\d/, /\d/, /\d/]}
                     value={placa}
-                    onInput={handleTextChange}
+                    name="placa"
+                    onChange={handleTextChange}
+                    label="Placa"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <Select
+                    fullWidth
                     name="traccion"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Traccion"
-                    autoFocus
                     value={traccion}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Traccion.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="year"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Año"
-                    autoFocus
+                  <MaskedTextField
+                    mask={[/\d/, /\d/, /\d/, /\d/]}
                     value={year}
-                    onInput={handleTextChange}
+                    name="year"
+                    onChange={handleTextChange}
+                    label="Año"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="estado"
-                    variant="outlined"
-                    required
+                <Grid item sm={12}>
+                  <Select
                     fullWidth
-                    label="Estado"
-                    autoFocus
+                    name="estado"
                     value={estado}
-                    onInput={handleTextChange}
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Estados.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
+                </Grid>
+                <Grid item sm={12}>
+                  <MaskedTextField
+                    mask={[
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                    ]}
+                    value={vin}
+                    name="vin"
+                    onChange={handleTextChange}
+                    label="VIN"
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  Imagenes del auto
-                </Grid>
-                {pictures.map(imageId => (
-                  <Grid key={imageId} item xs={12} md={6}>
-                    <Box padding="1rem" width="100%">
-                      <img
-                        src={AutosFiles.findOne({ _id: imageId }).link()}
-                        alt="Auto"
-                        style={{ width: "100%", objectFit: "contain" }}
-                      />
-                    </Box>
-                  </Grid>
-                ))}
               </Grid>
-              <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
-                Modificar
+              <Box paddingY="1rem">
+                Imagenes del auto
+                <br />
+                <input type="file" onChange={this.setFiles} multiple />
+              </Box>
+              <Button
+                disabled={!uploaded}
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleCreate}>
+                Crear
               </Button>
             </form>
           </DialogContent>

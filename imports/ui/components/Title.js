@@ -11,7 +11,7 @@ class Title extends PureComponent {
   render() {
     const { children } = this.props;
     return (
-      <Typography class="title" component="h2" variant="h6" gutterBottom>
+      <Typography className="title" component="h2" variant="h6" gutterBottom>
         {children}
       </Typography>
     );

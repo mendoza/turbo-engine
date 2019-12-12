@@ -13,6 +13,7 @@ import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
+import UpdateTypes from "./pages/UpdateTypes";
 
 export const Routes = [
   {
@@ -98,7 +99,12 @@ export const Routes = [
     path: "/empleados",
     name: "Empleados",
     component: Empleados
-  }
+  },
+  {
+    pathName: "/actualizarTipos",
+    name: "ActualizarT ",
+    component: UpdateTypes,
+  },
 ];
 
 export const dashboardRoutes = [
