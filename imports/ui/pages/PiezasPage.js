@@ -23,6 +23,7 @@ import Piezas from "../../api/collections/Piezas/Piezas";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import Tipos from "../../api/collections/Tipos/Tipos";
+import Title from "../components/Title";
 
 const useStyles = theme => ({
   icon: {
@@ -73,11 +74,16 @@ class PiezasPage extends PureComponent {
       showX: false,
       pathName: "",
       shoudlRedirect: false,
+      shouldRenderFull: false,
     };
   }
 
   handleClose = () => {
     this.setState({ shouldRender: false });
+  };
+
+  handleCloseFullDialog = () => {
+    this.setState({ shouldRenderFull: false });
   };
 
   handleBar = () => {
@@ -164,6 +170,7 @@ class PiezasPage extends PureComponent {
       showX,
       pathName,
       shoudlRedirect,
+      shouldRenderFull,
     } = this.state;
 
     return (
@@ -225,6 +232,9 @@ class PiezasPage extends PureComponent {
                     action3={() => {
                       Meteor.call("deletePieza", { ...pieza });
                       this.setState({ showX: false });
+                    }}
+                    action4={() => {
+                      this.setState({shouldRenderFull: true, dialogPiece: pieza});
                     }}
                   />
                 </Grid>
@@ -332,6 +342,46 @@ class PiezasPage extends PureComponent {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
+                Cerrar
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog open={shouldRenderFull} onClose={this.handleCloseFullDialog} maxWidth="lg">
+            <DialogTitle>
+              Pieza
+            </DialogTitle>
+            <Divider />
+            <DialogContent dividers>
+              <Grid container>
+                <Grid item sm={6}>
+                  <Title>Marca: </Title>
+                  <Typography>{`${dialogPiece.marca}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Vendedor: </Title>
+                  <Typography>{`${dialogPiece.vendedor}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Precio: </Title>
+                  <Typography>{`${dialogPiece.precio}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Numero de Serie: </Title>
+                  <Typography>{`${dialogPiece.numeroDeSerie}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Tipo: </Title>
+                  <Typography>{`${dialogPiece.tipo}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Cantidad: </Title>
+                  <Typography>{`${dialogPiece.cantidad}`}</Typography>
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCloseFullDialog} color="primary">
                 Cerrar
               </Button>
             </DialogActions>
