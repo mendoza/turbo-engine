@@ -7,7 +7,6 @@ Empleados.schema = new SimpleSchema({
   nombre: { type: String },
   apellido: { type: String },
   telefono: { type: Number },
-  fechaDeNacimiento: { type: Date },
   email: { type: String },
 });
 

@@ -7,13 +7,13 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import { withTracker } from 'meteor/react-meteor-data';
 import DashboardLayout from "../layouts/DashboardLayout";
-import Cliente from '../../api/collections/Cliente/Cliente';
+import Empleados from '../../api/collections/Empleados/Empleados';
 
-class Clientes extends Component {
+class Empleado extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showClientDialog: false,
+      showEmpleadoDialog: false,
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
@@ -22,8 +22,6 @@ class Clientes extends Component {
       Apellido: '',
       RTN: '',
       Telefono: '',
-      Telefono2: '',
-      Company: '',
       email: '',
     }
   }
@@ -42,90 +40,84 @@ class Clientes extends Component {
     }
   }
 
-  handleCreateClient = event => {
+  handleCreateEmpleado = event => {
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId,
+      Nombre, Apellido, RTN, Telefono, email, editId,
     } = this.state;
-    const newClient = {
+    const newEmpleado = {
       _id: editId,
       nombre: Nombre,
       apellido: Apellido,
       rtn: RTN,
       telefono: Telefono,
-      telefonoTrabajo: Telefono2,
-      compania: Company,
       email,
     };
     let methodName;
     if (editId) {
-      methodName = 'handleEditClient';
+      methodName = 'handleEditEmpleado';
     } else {
-      methodName = 'handleCreateClient';
+      methodName = 'handleCreateEmpleado';
     }
-    Meteor.call(methodName, newClient, error => {
+    Meteor.call(methodName, newEmpleado, error => {
       if (error) {
         this.setState({
           showSnackbar: true,
-          snackbarText: 'Ha ocurrido un error al intentar guardar el cliente'
+          snackbarText: 'Ha ocurrido un error al intentar guardar el empleado'
         });
       } else {
         this.setState({
-          showClientDialog: false,
+          showEmpleadoDialog: false,
           Nombre: '',
           Apellido: '',
           RTN: '',
           Telefono: '',
-          Telefono2: '',
-          Company: '',
           email: '',
         });
       }
     });
   }
 
-  handleDeleteClient = () => {
+  handleDeleteEmpleado = () => {
     const { editId } = this.state;
-    Meteor.call('handleDeleteClient', editId, error => {
+    Meteor.call('handleDeleteEmpleado', editId, error => {
       if (error) {
         this.setState({
           showSnackbar: true,
-          snackbarText: 'Ha ocurrido un error al eliminar el cliente'
+          snackbarText: 'Ha ocurrido un error al eliminar el empleado'
         });
       } else {
         this.setState({
           showDeleteDialog: false,
           showSnackbar: true,
-          snackbarText: 'Cliente eliminado exitosamente'
+          snackbarText: 'Empleado eliminado exitosamente'
         });
       }
     });
   }
 
-  renderClientDialog = () => {
+  renderEmpleadoDialog = () => {
     const {
-      showClientDialog,
+      showEmpleadoDialog,
       Nombre,
       Apellido,
       RTN,
       Telefono,
-      Telefono2,
-      Company,
       email,
       editId
     } = this.state;
     return (
       <Dialog
-        open={showClientDialog}
-        onClose={() => { this.setState({ showClientDialog: false }) }}
+        open={showEmpleadoDialog}
+        onClose={() => { this.setState({ showEmpleadoDialog: false }) }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
         fullWidth
         >
-        <form onSubmit={this.handleCreateClient}>
+        <form onSubmit={this.handleCreateEmpleado}>
           <DialogTitle id="form-dialog-title">
             {editId ? 'Editar ' : 'Agregar '}
-            cliente
+            empleado
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>
@@ -183,26 +175,6 @@ class Clientes extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Teléfono del trabajo"
-                  onInput={event => {
-                    this.handleTextInput(event, 'Telefono2', text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
-                    })
-                  }}
-                  value={Telefono2}
-                  fullWidth
-                  />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Compañía"
-                  onInput={event => { this.handleTextInput(event, 'Company') }}
-                  value={Company}
-                  fullWidth
-                  />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
                   label="E-Mail"
                   onInput={event => { this.handleTextInput(event, 'email', validatorjs.isEmail) }}
                   value={email}
@@ -213,7 +185,7 @@ class Clientes extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={() => { this.setState({ showClientDialog: false }) }}
+              onClick={() => { this.setState({ showEmpleadoDialog: false }) }}
               color="primary"
               variant="contained"
               >
@@ -239,7 +211,7 @@ class Clientes extends Component {
         fullWidth
         >
         <DialogTitle id="form-dialog-title">
-          ¿Está seguro que desea eliminar este cliente?
+          ¿Está seguro que desea eliminar este empleado?
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
@@ -256,7 +228,7 @@ class Clientes extends Component {
             >
             Cancelar
           </Button>
-          <Button color="primary" variant="contained" onClick={this.handleDeleteClient}>
+          <Button color="primary" variant="contained" onClick={this.handleDeleteEmpleado}>
             Eliminar
           </Button>
         </DialogActions>
@@ -264,8 +236,8 @@ class Clientes extends Component {
     );
   }
 
-  renderClientTable = () => {
-    const { clients } = this.props;
+  renderEmpleadoTable = () => {
+    const { empleados } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -274,38 +246,30 @@ class Clientes extends Component {
             <TableCell>Apellido</TableCell>
             <TableCell>RTN</TableCell>
             <TableCell>Teléfono</TableCell>
-            <TableCell>Teléfono de Trabajo</TableCell>
-            <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {clients.map(client => {
-            if (client) {
+          {empleados.map(empleado => {
+            if (empleado) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
-                <TableRow key={client.nombre}>
+                <TableRow key={empleado.nombre}>
                   <TableCell component="th" scope="row">
-                    {client.nombre}
+                    {empleado.nombre}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.apellido}
+                    {empleado.apellido}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.rtn}
+                    {empleado.rtn}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.telefono}
+                    {empleado.telefono}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.telefonoTrabajo}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {client.compania}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {client.email}
+                    {empleado.email}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
@@ -314,15 +278,13 @@ class Clientes extends Component {
                           value="center"
                           onClick={() => {
                             this.setState({
-                              editId: client._id,
-                              showClientDialog: true,
-                              Nombre: client.nombre,
-                              Apellido: client.apellido,
-                              RTN: client.rtn,
-                              Telefono: client.telefono,
-                              Telefono2: client.telefonoTrabajo,
-                              Company: client.compania,
-                              email: client.email
+                              editId: empleado._id,
+                              showEmpleadoDialog: true,
+                              Nombre: empleado.nombre,
+                              Apellido: empleado.apellido,
+                              RTN: empleado.rtn,
+                              Telefono: empleado.telefono,
+                              email: empleado.email
                             });
                           }}
                           aria-label="centered"
@@ -334,7 +296,7 @@ class Clientes extends Component {
                           aria-label="right aligned"
                           onClick={() => {
                             this.setState({
-                              editId: client._id,
+                              editId: empleado._id,
                               showDeleteDialog: true,
                             })
                           }}
@@ -393,16 +355,16 @@ class Clientes extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => { this.setState({ showClientDialog: true, editId: undefined }) }}
+              onClick={() => { this.setState({ showEmpleadoDialog: true, editId: undefined }) }}
               >
-              Agregar Cliente
+              Agregar Empleado
             </Button>
           </Grid>
           <Grid item xs={12}>
-            {this.renderClientTable()}
+            {this.renderEmpleadoTable()}
           </Grid>
         </Grid>
-        {this.renderClientDialog()}
+        {this.renderEmpleadoDialog()}
         {this.renderSnackbar()}
         {this.renderDeleteDialog()}
       </DashboardLayout>
@@ -411,9 +373,9 @@ class Clientes extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('clientes.all');
-  const clients = Cliente.find().fetch();
+  Meteor.subscribe('empleados.all');
+  const empleados = Empleados.find().fetch();
   return {
-    clients: clients && clients.reverse(),
+    empleados: empleados && empleados.reverse(),
   }
-})(Clientes);
+})(Empleado);

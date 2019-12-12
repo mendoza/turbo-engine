@@ -12,6 +12,7 @@ import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
 import Clientes from "./pages/Clientes";
+import Empleados from "./pages/Empleados";
 
 export const Routes = [
   {
@@ -89,9 +90,14 @@ export const Routes = [
     component: CreateAutos,
   },
   {
-    path: "/clients",
+    path: "/clientes",
     name: "Clientes",
     component: Clientes
+  },
+  {
+    path: "/empleados",
+    name: "Empleados",
+    component: Empleados
   }
 ];
 
@@ -120,9 +126,15 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/clients",
+    pathName: "/clientes",
     name: "Clientes",
     icon: "fas fa-user-tie",
+    component: Clientes
+  },
+  {
+    pathName: "/empleados",
+    name: "Empleados",
+    icon: "fas fa-people-carry",
     component: Clientes
   },
   {
