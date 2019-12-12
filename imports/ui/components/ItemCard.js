@@ -45,19 +45,16 @@ class ItemCard extends PureComponent {
       <Card className={classes.card} elevation={10}>
         {showX ? (
           <CardHeader
-            action={(
+            action={
               <IconButton aria-label="settings" onClick={action3}>
                 <span style={{ fontSize: 12 }}>
                   <i className="fas fa-trash" />
                 </span>
               </IconButton>
-            )}
+            }
           />
         ) : null}
-        <CardActionArea
-          onClick={() => {
-            this.setState({ open: true });
-          }}>
+        <CardActionArea onClick={action4}>
           <CardMedia
             component="img"
             alt="Contemplative Reptile"
