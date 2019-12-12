@@ -31,7 +31,6 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import Title from "../components/Title";
-import { Estados } from "../Constants";
 import { Estados, Traccion, Transmision } from "../Constants";
 
 const useStyles = theme => ({

@@ -43,17 +43,17 @@ class ItemCard extends PureComponent {
     } = this.props;
     return (
       <Card className={classes.card} elevation={10}>
-        {/* <CardHeader
-          action={
-            showX ? (
+        {showX ? (
+          <CardHeader
+            action={(
               <IconButton aria-label="settings" onClick={action3}>
                 <span style={{ fontSize: 12 }}>
                   <i className="fas fa-trash" />
                 </span>
               </IconButton>
-            ) : null
-          }
-        /> */}
+            )}
+          />
+        ) : null}
         <CardActionArea
           onClick={() => {
             this.setState({ open: true });
@@ -64,7 +64,7 @@ class ItemCard extends PureComponent {
             height="140"
             image={image || "https://source.unsplash.com/random"}
             title="Image title"
-            />
+          />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {title}
