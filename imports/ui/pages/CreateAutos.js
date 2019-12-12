@@ -152,6 +152,7 @@ class CreateAutos extends PureComponent {
         autoPiezas,
       } = this.state;
       let alert;
+  
       console.log(this.state);
       if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
@@ -169,7 +170,8 @@ class CreateAutos extends PureComponent {
         alert = "El campo color es requerido";
       }
 
-      if (validator.isEmpty(placa)) {
+      /*validator.isEmpty(placa)*/
+      if (false) {
         alert = "El campo placa es requerido";
       }
 
@@ -187,6 +189,16 @@ class CreateAutos extends PureComponent {
           message: alert,
         });
       } else {
+        
+        piezas.map((pieza) =>{
+          Piezas.update(
+            {_id:pieza._id},
+            {$set:{
+              cantidad: 1
+            }}
+          )
+        }) 
+
         Meteor.call("addAuto", {
           marca,
           modelo,
