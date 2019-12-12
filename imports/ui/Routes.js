@@ -11,6 +11,7 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
+import Clientes from "./pages/Clientes";
 
 export const Routes = [
   {
@@ -87,10 +88,16 @@ export const Routes = [
     name: "Agregar Autos",
     component: CreateAutos,
   },
+  {
+    path: "/clients",
+    name: "Clientes",
+    component: Clientes
+  }
 ];
 
 export const dashboardRoutes = [
-  { pathName: "/",
+  {
+    pathName: "/",
     name: "Inicio",
     icon: "fas fa-tachometer-alt"
   },
@@ -111,6 +118,11 @@ export const dashboardRoutes = [
     name: "Piezas",
     icon: "fas fa-puzzle-piece",
     permission: "superAdmin",
+  },
+  {
+    path: "/clients",
+    name: "Clientes",
+    component: Clientes
   },
   {
     pathName: "/restablecerContra",
