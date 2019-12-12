@@ -3,18 +3,20 @@ import validatorjs from "validator";
 import {
   Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Grid, Snackbar, IconButton, Table, TableRow, TableHead, TableCell, TableBody
 } from '@material-ui/core';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ToggleButton from '@material-ui/lab/ToggleButton';
 import { withTracker } from 'meteor/react-meteor-data';
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from '../../api/collections/Cliente/Cliente';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import ToggleButton from '@material-ui/lab/ToggleButton';
 
 class Clientes extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showAddClientDialog: false,
+      showClientDialog: false,
       showSnackbar: false,
+      showDeleteDialog: false,
+      editId: undefined,
       snackbarText: '',
       Nombre: '',
       Apellido: '',
@@ -43,9 +45,10 @@ class Clientes extends Component {
   handleCreateClient = event => {
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email,
+      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId,
     } = this.state;
     const newClient = {
+      _id: editId,
       nombre: Nombre,
       apellido: Apellido,
       rtn: RTN,
@@ -54,7 +57,13 @@ class Clientes extends Component {
       compania: Company,
       email,
     };
-    Meteor.call('handleCreateClient', newClient, error => {
+    let methodName;
+    if (editId) {
+      methodName = 'handleEditClient';
+    } else {
+      methodName = 'handleCreateClient';
+    }
+    Meteor.call(methodName, newClient, error => {
       if (error) {
         this.setState({
           showSnackbar: true,
@@ -62,7 +71,7 @@ class Clientes extends Component {
         });
       } else {
         this.setState({
-          showAddClientDialog: false,
+          showClientDialog: false,
           Nombre: '',
           Apellido: '',
           RTN: '',
@@ -75,9 +84,27 @@ class Clientes extends Component {
     });
   }
 
-  renderAddClientDialog = () => {
+  handleDeleteClient = () => {
+    const { editId } = this.state;
+    Meteor.call('handleDeleteClient', editId, error => {
+      if (error) {
+        this.setState({
+          showSnackbar: true,
+          snackbarText: 'Ha ocurrido un error al eliminar el usuario'
+        });
+      } else {
+        this.setState({
+          showDeleteDialog: false,
+          showSnackbar: true,
+          snackbarText: 'Usuario eliminado exitosamente'
+        });
+      }
+    });
+  }
+
+  renderClientDialog = () => {
     const {
-      showAddClientDialog,
+      showClientDialog,
       Nombre,
       Apellido,
       RTN,
@@ -85,17 +112,21 @@ class Clientes extends Component {
       Telefono2,
       Company,
       email,
+      editId
     } = this.state;
     return (
       <Dialog
-        open={showAddClientDialog}
-        onClose={() => { this.setState({ showAddClientDialog: false }) }}
+        open={showClientDialog}
+        onClose={() => { this.setState({ showClientDialog: false }) }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
         fullWidth
         >
         <form onSubmit={this.handleCreateClient}>
-          <DialogTitle id="form-dialog-title">Agregar cliente</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            {editId ? 'Editar ' : 'Agregar '}
+            cliente
+          </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
@@ -182,17 +213,53 @@ class Clientes extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={() => { this.setState({ showAddClientDialog: false }) }}
+              onClick={() => { this.setState({ showClientDialog: false }) }}
               color="primary"
               variant="contained"
               >
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
-              Agregar
+              Guardar
             </Button>
           </DialogActions>
         </form>
+      </Dialog>
+    );
+  }
+
+  renderDeleteDialog = () => {
+    const { showDeleteDialog } = this.state;
+    return (
+      <Dialog
+        open={showDeleteDialog}
+        onClose={() => { this.setState({ showDeleteDialog: false }) }}
+        aria-labelledby="form-dialog-title"
+        maxWidth="sm"
+        fullWidth
+        >
+        <DialogTitle id="form-dialog-title">
+          ¿Está seguro que desea eliminar este cliente?
+        </DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              Esta acción es irreversible.
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => { this.setState({ showDeleteDialog: false }) }}
+            color="primary"
+            variant="contained"
+            >
+            Cancelar
+          </Button>
+          <Button color="primary" variant="contained" onClick={this.handleDeleteClient}>
+            Eliminar
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }
@@ -244,31 +311,33 @@ class Clientes extends Component {
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
                         <ToggleButton
-                          value="left"
-                          onClick={() => {
-                            this.setState({ shouldRender: true, dialogUser: user });
-                          }}
-                          aria-label="left aligned"
-                          >
-                          <i className="fas fa-address-card" />
-                        </ToggleButton>
-                        <ToggleButton
                           value="center"
                           onClick={() => {
                             this.setState({
-                              shouldRedirect: true,
-                              pathname: "/actualizarUsuarios",
-                              redirectData: { user },
+                              editId: client._id,
+                              showClientDialog: true,
+                              Nombre: client.nombre,
+                              Apellido: client.apellido,
+                              RTN: client.rtn,
+                              Telefono: client.telefono,
+                              Telefono2: client.telefonoTrabajo,
+                              Company: client.compania,
+                              email: client.email
                             });
                           }}
                           aria-label="centered"
                           >
-                          <i className="fas fa-plus" />
+                          <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
                           value="right"
                           aria-label="right aligned"
-                          onClick={(event) => { this.showDeleteDialog(event, user._id) }}
+                          onClick={() => {
+                            this.setState({
+                              editId: client._id,
+                              showDeleteDialog: true,
+                            })
+                          }}
                           >
                           <i className="fas fa-trash" />
                         </ToggleButton>
@@ -324,7 +393,7 @@ class Clientes extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => { this.setState({ showAddClientDialog: true }) }}
+              onClick={() => { this.setState({ showClientDialog: true, editId: undefined }) }}
               >
               Agregar Cliente
             </Button>
@@ -333,8 +402,9 @@ class Clientes extends Component {
             {this.renderClientTable()}
           </Grid>
         </Grid>
-        {this.renderAddClientDialog()}
+        {this.renderClientDialog()}
         {this.renderSnackbar()}
+        {this.renderDeleteDialog()}
       </DashboardLayout>
     )
   }
@@ -342,7 +412,8 @@ class Clientes extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe('clientes.all');
+  const clients = Cliente.find().fetch();
   return {
-    clients: Cliente.find().fetch()
+    clients: clients && clients.reverse(),
   }
 })(Clientes);
