@@ -120,8 +120,9 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
-    path: "/clients",
+    pathName: "/clients",
     name: "Clientes",
+    icon: "fas fa-user-tie",
     component: Clientes
   },
   {
