@@ -272,6 +272,11 @@ class AutosPage extends PureComponent {
                         this.setState({ filteredCars: autos });
                         this.setState({
                           filteredCars: autos.filter(car => {
+                            console.log(
+                              car.marca.toLowerCase().includes(value) ||
+                                car.modelo.toLowerCase().includes(value) ||
+                                Estados[car.estado].toLowerCase().includes(value)
+                            );
                             return (
                               car.marca.toLowerCase().includes(value) ||
                               car.modelo.toLowerCase().includes(value) ||
@@ -301,6 +306,7 @@ class AutosPage extends PureComponent {
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
                   description={`Estado: ${Status(auto.estado)}`}
+                  labelButton="Modificar"
                   image={(() => {
                     try {
                       return AutosFiles.findOne({ _id: auto.pictures[0] }).link();

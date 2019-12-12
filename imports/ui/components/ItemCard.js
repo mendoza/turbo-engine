@@ -74,14 +74,11 @@ class ItemCard extends PureComponent {
             </Typography>
           </CardContent>
         </CardActionArea>
-        {/* <CardActions>
-          <Button size="small" color="primary" onClick={action1}>
-            Visualizar
-          </Button>
+        <CardActions>
           <Button size="small" color="primary" onClick={action2}>
             {labelButton !== null ? labelButton : "Modificar"}
           </Button>
-        </CardActions> */}
+        </CardActions>
       </Card>
     );
   }
