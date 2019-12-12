@@ -11,6 +11,7 @@ import {
   IconButton,
   Select,
   MenuItem,
+  Box
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
