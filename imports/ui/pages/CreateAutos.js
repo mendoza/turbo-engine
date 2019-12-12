@@ -220,34 +220,55 @@ class CreateAutos extends PureComponent {
       }
     };
 
-    const shouldRenderCard = (pieza, index) =>{
+    const shouldRenderCard = (label, list1, list2, pieza, index) => {
       return (
         <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
           <ItemCard
-            labelButton="Agregar"
+            labelButton={label}
             showX={showX}
             title={`Tipo: ${pieza.tipo}`}
             body={`Vendedor: ${pieza.vendedor}`}
             description={`Cantidad: ${pieza.cantidad}`}
             action1={() => {}}
             action2={() => {
-              autoPiezas.push(pieza);
-              this.setState({ autoPiezas });
-              this.forceUpdate();
-              if (index > -1) {
-                  piezas.splice(index, 1);
+              let contains = false;
+              let indexAuto = 0;
+              for(let i=0; i<list1.length; i++){ // Busca si la pieza existe dentro del arreglo del auto
+                  if (list1[i].marca === pieza.marca &&
+                    list1[i].vendedor === pieza.vendedor &&
+                    list1[i].precio === pieza.precio &&
+                    list1[i].numeroDeSerie === pieza.numeroDeSerie &&
+                    list1[i].tipo === pieza.tipo){
+                    contains = true; 
+                    indexAuto = i;
+                  }
               }
+              if (contains) { // En caso de que lo contenga
+                pieza.cantidad -= 1; // Se le resta esta cantidad al arreglo principal
+                list1[indexAuto].cantidad +=1; // Se suma una cantidad al arreglo del auto
+                if (pieza.cantidad === 0) { // En caso de que el objeto del arreglo principal sea cero, se elimina de la lista
+                  if (index > -1) {
+                    list2.splice(index, 1);
+                  }
+                }
+              } else {
+                // No pushear el objeto completo agregar copia
+                list1.push({...pieza,cantidad:1});
+                pieza.cantidad -= 1;
+              }
+              this.forceUpdate();
               this.setState({ showX: false });
             }}
             action3={() => {}}
             />
         </Grid>
       );
-    }
+    };
 
     return (
       <DashboardLayout>
-        <Container component="main" maxWidth="xs">
+        <Container
+         component="main" maxWidth="xs">
           <CssBaseline />
           <div>
             <Avatar>
@@ -268,7 +289,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={marca}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -420,38 +441,18 @@ class CreateAutos extends PureComponent {
                 <DialogContent container>
                   <Title>Piezas Disponibles</Title>
                   <Grid container spacing={4}>
-                    {piezas.map((pieza, index) => (
-                      pieza.cantidad > 0 ? shouldRenderCard(pieza, index) : null
-                    ))}
+                    {piezas.map((pieza, index) =>
+                      pieza.cantidad > 0 ? shouldRenderCard("Agregar", autoPiezas, piezas, pieza, index) : null
+                    )}
                   </Grid>
                 </DialogContent>
                 <Divider />
                 <DialogContent>
                   <Title>Piezas agregadas</Title>
                   <Grid container spacing={4}>
-                    {autoPiezas.map((pieza, index) => {
-                      return (
-                        <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
-                          <ItemCard
-                            labelButton="Eliminar"
-                            showX={showX}
-                            title={`Tipo: ${pieza.tipo}`}
-                            body={`Vendedor: ${pieza.vendedor}`}
-                            description={`Cantidad: ${pieza.cantidad}`}
-                            action1={() => {}}
-                            action2={() => {
-                              piezas.push(pieza);
-                              if (index > -1) {
-                                autoPiezas.splice(index, 1);
-                              }
-                              this.setState({ showX: false });
-                              this.forceUpdate();
-                            }}
-                            action3={() => {}}
-                          />
-                        </Grid>
-                      );
-                    })}
+                    {autoPiezas.map((pieza, index) => 
+                      pieza.cantidad > 0 ? shouldRenderCard("Eliminar", piezas ,autoPiezas, pieza, index) : null
+                    )}
                   </Grid>
                 </DialogContent>
               </Dialog>
