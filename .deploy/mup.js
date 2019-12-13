@@ -4,7 +4,7 @@ module.exports = {
       // TODO: set host address, username, and authentication method
       host: '34.201.106.233',
       username: 'ubuntu',
-      pem: '../../Turbo-Engine.pem'
+      pem: '../../turbo.pem'
       // password: 'server-password'
       // or neither for authenticate from ssh-agent
     }
