@@ -189,16 +189,15 @@ class CreateAutos extends PureComponent {
           message: alert,
         });
       } else {
-        
-        piezas.map((pieza) =>{
-          Piezas.update(
-            {_id:pieza._id},
-            {$set:{
-              cantidad: 1
-            }}
-          )
-        }) 
 
+        piezas.map((pieza) => {
+          Meteor.call("updatePieza", {
+            _id:pieza._id,
+            $set:{
+              cantidad: pieza.cantidad
+            }
+          });
+        })
         Meteor.call("addAuto", {
           marca,
           modelo,
@@ -244,7 +243,7 @@ class CreateAutos extends PureComponent {
             action2={() => {
               let contains = false;
               let indexAuto = 0;
-              for(let i=0; i<list1.length; i++){ // Busca si la pieza existe dentro del arreglo del auto
+              for(let i=0; i<list1.length; i++){
                   if (list1[i].marca === pieza.marca &&
                     list1[i].vendedor === pieza.vendedor &&
                     list1[i].precio === pieza.precio &&
@@ -254,16 +253,15 @@ class CreateAutos extends PureComponent {
                     indexAuto = i;
                   }
               }
-              if (contains) { // En caso de que lo contenga
-                pieza.cantidad -= 1; // Se le resta esta cantidad al arreglo principal
-                list1[indexAuto].cantidad +=1; // Se suma una cantidad al arreglo del auto
-                if (pieza.cantidad === 0) { // En caso de que el objeto del arreglo principal sea cero, se elimina de la lista
+              if (contains) {
+                pieza.cantidad -= 1;
+                list1[indexAuto].cantidad +=1;
+                if (pieza.cantidad === 0) {
                   if (index > -1) {
                     list2.splice(index, 1);
                   }
                 }
               } else {
-                // No pushear el objeto completo agregar copia
                 list1.push({...pieza,cantidad:1});
                 pieza.cantidad -= 1;
               }
