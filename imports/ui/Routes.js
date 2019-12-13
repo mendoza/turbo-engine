@@ -98,7 +98,8 @@ export const Routes = [
   {
     path: "/empleados",
     name: "Empleados",
-    component: Empleados
+    component: Empleados,
+    permission: "superAdmin",
   },
   {
     pathName: "/actualizarTipos",
@@ -141,6 +142,7 @@ export const dashboardRoutes = [
     pathName: "/empleados",
     name: "Empleados",
     icon: "fas fa-people-carry",
+    permission: "superAdmin",
     component: Clientes
   },
   {

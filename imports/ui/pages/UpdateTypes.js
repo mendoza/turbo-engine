@@ -101,6 +101,7 @@ class UpdateTypes extends PureComponent {
       this.setState({
         nombre: "",
         open: true,
+        id: "",
         message: "Tipo actualizado exitosamente",
       });
     }

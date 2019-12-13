@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import Auto from "./Autos";
+import AutosFiles from "../AutosFiles/AutosFiles";
 
 Meteor.methods({
   addAuto(payload) {
@@ -16,5 +17,8 @@ Meteor.methods({
   deleteAuto(payload) {
     const selector = { _id: payload._id };
     return Auto.remove(selector) > 0;
+  },
+  deleteAutoPicture(payload) {
+    AutosFiles.remove({ _id: payload });
   },
 });

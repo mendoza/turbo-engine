@@ -27,6 +27,13 @@ class Empleado extends Component {
   }
 
   handleTextInput = (event, stateName, validator) => {
+    let error;
+    if (stateName === 'email') {
+      error = !validatorjs.isEmail(event.target.value);
+      if (error) {
+        error = 'Correo no válido';
+      }
+    }
     if (validator) {
       if (validator(event.target.value) || event.target.value === '') {
         this.setState({
@@ -36,6 +43,7 @@ class Empleado extends Component {
     } else {
       this.setState({
         [stateName]: event.target.value,
+        emailError: error,
       });
     }
   }
@@ -43,7 +51,7 @@ class Empleado extends Component {
   handleCreateEmpleado = event => {
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, email, editId,
+      Nombre, Apellido, RTN, Telefono, email, editId, emailError,
     } = this.state;
     const newEmpleado = {
       _id: editId,
@@ -59,23 +67,30 @@ class Empleado extends Component {
     } else {
       methodName = 'handleCreateEmpleado';
     }
-    Meteor.call(methodName, newEmpleado, error => {
-      if (error) {
-        this.setState({
-          showSnackbar: true,
-          snackbarText: 'Ha ocurrido un error al intentar guardar el empleado'
-        });
-      } else {
-        this.setState({
-          showEmpleadoDialog: false,
-          Nombre: '',
-          Apellido: '',
-          RTN: '',
-          Telefono: '',
-          email: '',
-        });
-      }
-    });
+    if (emailError) {
+      this.setState({
+        showSnackbar: true,
+        snackbarText: 'Por favor llene el campo de Correo Electrónico',
+      });
+    } else {
+      Meteor.call(methodName, newEmpleado, error => {
+        if (error) {
+          this.setState({
+            showSnackbar: true,
+            snackbarText: 'Ha ocurrido un error al intentar guardar el empleado'
+          });
+        } else {
+          this.setState({
+            showEmpleadoDialog: false,
+            Nombre: '',
+            Apellido: '',
+            RTN: '',
+            Telefono: '',
+            email: '',
+          });
+        }
+      });
+    }
   }
 
   handleDeleteEmpleado = () => {
@@ -104,7 +119,8 @@ class Empleado extends Component {
       RTN,
       Telefono,
       email,
-      editId
+      editId,
+      emailError,
     } = this.state;
     return (
       <Dialog
@@ -175,9 +191,12 @@ class Empleado extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="E-Mail"
-                  onInput={event => { this.handleTextInput(event, 'email', validatorjs.isEmail) }}
+                  label="Correo Electrónico"
+                  onInput={event => { this.handleTextInput(event, 'email') }}
                   value={email}
+                  error={!!emailError}
+                  helperText={emailError || ''}
+                  required
                   fullWidth
                   />
               </Grid>
