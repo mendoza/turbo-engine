@@ -27,6 +27,7 @@ import { Estados, Traccion, Transmision } from "../Constants";
 import MaskedTextField from "../components/MaskedTextField";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import ItemCard from "../components/ItemCard";
+import Title from "../components/Title";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
@@ -136,23 +137,10 @@ class CreateAutos extends PureComponent {
     };
 
     const handleCreate = () => {
-      const {
-        marca,
-        modelo,
-        tipo,
-        transmision,
-        color,
-        placa,
-        traccion,
-        year,
-        estado,
-        vin,
-        files,
-        autoPiezas,
-      } = this.state;
+      const { files } = this.state;
       let alert;
-      console.log(this.state);
 
+      console.log(this.state);
       if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
       }
@@ -169,7 +157,8 @@ class CreateAutos extends PureComponent {
         alert = "El campo color es requerido";
       }
 
-      if (validator.isEmpty(placa)) {
+      /*validator.isEmpty(placa)*/
+      if (false) {
         alert = "El campo placa es requerido";
       }
 
@@ -187,6 +176,15 @@ class CreateAutos extends PureComponent {
           message: alert,
         });
       } else {
+
+        piezas.map((pieza) => {
+          Meteor.call("updatePieza", {
+            _id:pieza._id,
+            $set:{
+              cantidad: pieza.cantidad
+            }
+          });
+        })
         Meteor.call("addAuto", {
           marca,
           modelo,
@@ -197,9 +195,10 @@ class CreateAutos extends PureComponent {
           traccion: Traccion[traccion],
           year,
           estado: Estados[estado],
-          autoPiezas: [],
+          autoPiezas,
           vin,
           pictures: files,
+          piezas,
         });
         this.setState({
           autoPiezas: [],
@@ -217,6 +216,50 @@ class CreateAutos extends PureComponent {
           message: "Auto agregado exitosamente",
         });
       }
+    };
+
+    const shouldRenderCard = (label, list1, list2, pieza, index) => {
+      return (
+        <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+          <ItemCard
+            labelButton={label}
+            showX={showX}
+            title={`Tipo: ${pieza.tipo}`}
+            body={`Vendedor: ${pieza.vendedor}`}
+            description={`Cantidad: ${pieza.cantidad}`}
+            action1={() => {}}
+            action2={() => {
+              let contains = false;
+              let indexAuto = 0;
+              for(let i=0; i<list1.length; i++){
+                  if (list1[i].marca === pieza.marca &&
+                    list1[i].vendedor === pieza.vendedor &&
+                    list1[i].precio === pieza.precio &&
+                    list1[i].numeroDeSerie === pieza.numeroDeSerie &&
+                    list1[i].tipo === pieza.tipo){
+                    contains = true; 
+                    indexAuto = i;
+                  }
+              }
+              if (contains) {
+                pieza.cantidad -= 1;
+                list1[indexAuto].cantidad +=1;
+                if (pieza.cantidad === 0) {
+                  if (index > -1) {
+                    list2.splice(index, 1);
+                  }
+                }
+              } else {
+                list1.push({...pieza,cantidad:1});
+                pieza.cantidad -= 1;
+              }
+              this.forceUpdate();
+              this.setState({ showX: false });
+            }}
+            action3={() => {}}
+          />
+        </Grid>
+      );
     };
 
     return (
@@ -392,52 +435,24 @@ class CreateAutos extends PureComponent {
                   </Toolbar>
                 </AppBar>
                 <DialogContent container>
+                  <Title>Piezas Disponibles</Title>
                   <Grid container spacing={4}>
-                    {piezas.map((pieza, index) => (
-                      <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
-                        <ItemCard
-                          labelButton="Agregar"
-                          showX={showX}
-                          title={`Tipo: ${pieza.tipo}`}
-                          body={`Vendedor: ${pieza.vendedor}`}
-                          action1={() => {}}
-                          action2={() => {
-                            autoPiezas.push(pieza);
-                            this.setState({autoPiezas})
-                            this.forceUpdate()
-                            if (index > -1) {
-                              piezas.splice(index, 1);
-                            }
-                            this.setState({ showX: false });
-                          }}
-                          action3={() => {}}
-                          />
-                      </Grid>
-                    ))}
+                    {piezas.map((pieza, index) =>
+                      pieza.cantidad > 0
+                        ? shouldRenderCard("Agregar", autoPiezas, piezas, pieza, index)
+                        : null
+                    )}
                   </Grid>
                 </DialogContent>
                 <Divider />
                 <DialogContent>
+                  <Title>Piezas agregadas</Title>
                   <Grid container spacing={4}>
-                    {autoPiezas.map((pieza, index) => { console.log(pieza);return (
-                      <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
-                        <ItemCard
-                          labelButton="Eliminar"
-                          showX={showX}
-                          title={`Tipo: ${pieza.tipo}`}
-                          body={`Vendedor: ${pieza.vendedor}`}
-                          action1={() => {}}
-                          action2={() => {
-                            piezas.push(pieza);
-                            if (index > -1) {
-                              autoPiezas.splice(index, 1);
-                            }
-                            this.setState({ showX: false });
-                          }}
-                          action3={() => {}}
-                        />
-                      </Grid>
-                    )})}
+                    {autoPiezas.map((pieza, index) =>
+                      pieza.cantidad > 0
+                        ? shouldRenderCard("Eliminar", piezas, autoPiezas, pieza, index)
+                        : null
+                    )}
                   </Grid>
                 </DialogContent>
               </Dialog>
