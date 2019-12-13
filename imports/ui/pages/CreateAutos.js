@@ -137,22 +137,9 @@ class CreateAutos extends PureComponent {
     };
 
     const handleCreate = () => {
-      const {
-        marca,
-        modelo,
-        tipo,
-        transmision,
-        color,
-        placa,
-        traccion,
-        year,
-        estado,
-        vin,
-        files,
-        autoPiezas,
-      } = this.state;
+      const { files } = this.state;
       let alert;
-  
+
       console.log(this.state);
       if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
@@ -211,6 +198,7 @@ class CreateAutos extends PureComponent {
           autoPiezas,
           vin,
           pictures: files,
+          piezas,
         });
         this.setState({
           autoPiezas: [],
@@ -269,15 +257,14 @@ class CreateAutos extends PureComponent {
               this.setState({ showX: false });
             }}
             action3={() => {}}
-            />
+          />
         </Grid>
       );
     };
 
     return (
       <DashboardLayout>
-        <Container
-         component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div>
             <Avatar>
@@ -298,7 +285,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={marca}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -451,7 +438,9 @@ class CreateAutos extends PureComponent {
                   <Title>Piezas Disponibles</Title>
                   <Grid container spacing={4}>
                     {piezas.map((pieza, index) =>
-                      pieza.cantidad > 0 ? shouldRenderCard("Agregar", autoPiezas, piezas, pieza, index) : null
+                      pieza.cantidad > 0
+                        ? shouldRenderCard("Agregar", autoPiezas, piezas, pieza, index)
+                        : null
                     )}
                   </Grid>
                 </DialogContent>
@@ -459,8 +448,10 @@ class CreateAutos extends PureComponent {
                 <DialogContent>
                   <Title>Piezas agregadas</Title>
                   <Grid container spacing={4}>
-                    {autoPiezas.map((pieza, index) => 
-                      pieza.cantidad > 0 ? shouldRenderCard("Eliminar", piezas ,autoPiezas, pieza, index) : null
+                    {autoPiezas.map((pieza, index) =>
+                      pieza.cantidad > 0
+                        ? shouldRenderCard("Eliminar", piezas, autoPiezas, pieza, index)
+                        : null
                     )}
                   </Grid>
                 </DialogContent>
