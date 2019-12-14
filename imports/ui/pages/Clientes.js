@@ -29,6 +29,13 @@ class Clientes extends Component {
   }
 
   handleTextInput = (event, stateName, validator) => {
+    let error;
+    if (stateName === 'email') {
+      error = !validatorjs.isEmail(event.target.value);
+      if (error) {
+        error = 'Correo no válido';
+      }
+    }
     if (validator) {
       if (validator(event.target.value) || event.target.value === '') {
         this.setState({
@@ -38,11 +45,13 @@ class Clientes extends Component {
     } else {
       this.setState({
         [stateName]: event.target.value,
+        emailError: error,
       });
     }
   }
 
   handleCreateClient = event => {
+    const { emailError } = this.state;
     event.preventDefault();
     const {
       Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId,
@@ -63,25 +72,32 @@ class Clientes extends Component {
     } else {
       methodName = 'handleCreateClient';
     }
-    Meteor.call(methodName, newClient, error => {
-      if (error) {
-        this.setState({
-          showSnackbar: true,
-          snackbarText: 'Ha ocurrido un error al intentar guardar el cliente'
-        });
-      } else {
-        this.setState({
-          showClientDialog: false,
-          Nombre: '',
-          Apellido: '',
-          RTN: '',
-          Telefono: '',
-          Telefono2: '',
-          Company: '',
-          email: '',
-        });
-      }
-    });
+    if (emailError) {
+      this.setState({
+        showSnackbar: true,
+        snackbarText: 'Por favor llene el campo de Correo Electrónico',
+      });
+    } else {
+      Meteor.call(methodName, newClient, error => {
+        if (error) {
+          this.setState({
+            showSnackbar: true,
+            snackbarText: 'Ha ocurrido un error al intentar guardar el cliente'
+          });
+        } else {
+          this.setState({
+            showClientDialog: false,
+            Nombre: '',
+            Apellido: '',
+            RTN: '',
+            Telefono: '',
+            Telefono2: '',
+            Company: '',
+            email: '',
+          });
+        }
+      });
+    }
   }
 
   handleDeleteClient = () => {
@@ -112,7 +128,8 @@ class Clientes extends Component {
       Telefono2,
       Company,
       email,
-      editId
+      editId,
+      emailError,
     } = this.state;
     return (
       <Dialog
@@ -190,6 +207,7 @@ class Clientes extends Component {
                     })
                   }}
                   value={Telefono2}
+                  required
                   fullWidth
                   />
               </Grid>
@@ -198,14 +216,18 @@ class Clientes extends Component {
                   label="Compañía"
                   onInput={event => { this.handleTextInput(event, 'Company') }}
                   value={Company}
+                  required
                   fullWidth
                   />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="E-Mail"
-                  onInput={event => { this.handleTextInput(event, 'email', validatorjs.isEmail) }}
+                  label="Correo Electrónico"
+                  onInput={event => { this.handleTextInput(event, 'email') }}
                   value={email}
+                  error={!!emailError}
+                  helperText={emailError || ''}
+                  required
                   fullWidth
                   />
               </Grid>
