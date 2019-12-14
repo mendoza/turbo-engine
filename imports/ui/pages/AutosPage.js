@@ -696,7 +696,7 @@ class AutosPage extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+         />
         {shouldRedirect ? <Redirect to={pathName} /> : null}
       </DashboardLayout>
     );
