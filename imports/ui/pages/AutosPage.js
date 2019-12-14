@@ -249,7 +249,7 @@ class AutosPage extends PureComponent {
           traccion,
           year,
           estado,
-          pictures: [...files,...pictures]
+          pictures: [...files, ...pictures],
         });
         this.setState({
           open: true,
@@ -293,8 +293,7 @@ class AutosPage extends PureComponent {
                     color="primary"
                     onClick={() => {
                       this.setState({ shouldRedirect: true, pathName: "agregarAutos" });
-                    }}
-                    >
+                    }}>
                     Agregar otro Auto
                   </Button>
                 </Grid>
@@ -307,8 +306,7 @@ class AutosPage extends PureComponent {
                       this.setState(state => {
                         return { showX: !state.showX };
                       });
-                    }}
-                    >
+                    }}>
                     Eliminar un Auto
                   </Button>
                 </Grid>
@@ -326,8 +324,8 @@ class AutosPage extends PureComponent {
                           filteredCars: autos.filter(car => {
                             console.log(
                               car.marca.toLowerCase().includes(value) ||
-                              car.modelo.toLowerCase().includes(value) ||
-                              Estados[car.estado].toLowerCase().includes(value)
+                                car.modelo.toLowerCase().includes(value) ||
+                                Estados[car.estado].toLowerCase().includes(value)
                             );
                             return (
                               car.marca.toLowerCase().includes(value) ||
@@ -337,12 +335,12 @@ class AutosPage extends PureComponent {
                           }),
                         });
                       }}
-                      endAdornment={(
+                      endAdornment={
                         <InputAdornment position="end">
                           <span className="fas fa-search" />
                         </InputAdornment>
-                      )}
-                      />
+                      }
+                    />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -366,7 +364,7 @@ class AutosPage extends PureComponent {
                       return undefined;
                     }
                   })()}
-                  action1={() => { }}
+                  action1={() => {}}
                   action2={() => {
                     this.setState({ shouldRender: true, dialogCar: auto, ...auto });
                   }}
@@ -377,7 +375,7 @@ class AutosPage extends PureComponent {
                   action4={() => {
                     this.setState({ shouldRenderFull: true, dialogCar: auto });
                   }}
-                  />
+                />
               </Grid>
             ))}
           </Grid>
@@ -398,7 +396,7 @@ class AutosPage extends PureComponent {
                     autoFocus
                     value={marca}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -410,7 +408,7 @@ class AutosPage extends PureComponent {
                     autoFocus
                     value={modelo}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -422,7 +420,7 @@ class AutosPage extends PureComponent {
                     autoFocus
                     value={tipo}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Select
@@ -430,8 +428,7 @@ class AutosPage extends PureComponent {
                     name="transmision"
                     value={transmision}
                     onChange={handleTextChange}
-                    variant="outlined"
-                    >
+                    variant="outlined">
                     {Transmision.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -447,7 +444,7 @@ class AutosPage extends PureComponent {
                     autoFocus
                     value={color}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <MaskedTextField
@@ -456,7 +453,7 @@ class AutosPage extends PureComponent {
                     name="placa"
                     onChange={handleTextChange}
                     label="Placa"
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Select
@@ -464,8 +461,7 @@ class AutosPage extends PureComponent {
                     name="traccion"
                     value={traccion}
                     onChange={handleTextChange}
-                    variant="outlined"
-                    >
+                    variant="outlined">
                     {Traccion.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -478,7 +474,7 @@ class AutosPage extends PureComponent {
                     name="year"
                     onChange={handleTextChange}
                     label="Año"
-                    />
+                  />
                 </Grid>
                 <Grid item sm={12}>
                   <Select
@@ -486,8 +482,7 @@ class AutosPage extends PureComponent {
                     name="estado"
                     value={estado}
                     onChange={handleTextChange}
-                    variant="outlined"
-                    >
+                    variant="outlined">
                     {Estados.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -518,7 +513,7 @@ class AutosPage extends PureComponent {
                     name="vin"
                     onChange={handleTextChange}
                     label="VIN"
-                    />
+                  />
                 </Grid>
               </Grid>
               <Box paddingY="1rem">
@@ -530,42 +525,38 @@ class AutosPage extends PureComponent {
                 Imagenes del auto
               </Grid>
               <Grid container>
-                {
-                  pictures.map(imageId => {
-                    try {
-                      return (
-                        <Grid key={imageId} item xs={12} md={6}>
-                          <Box padding="1rem" width="100%" style={{ textAlign: 'right' }}>
-                            <img
-                              src={AutosFiles.findOne({ _id: imageId }).link()}
-                              alt="Auto"
-                              style={{ width: '100%', objectFit: 'contain' }}
-                              />
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => {
-                                Meteor.call('deleteAutoPicture', imageId);
-                              }}
-                              >
-                              Eliminar
-                            </Button>
-                          </Box>
-                        </Grid>
-                      );
-                    } catch (error) {
-                      return undefined;
-                    }
-                  })
-                }
+                {pictures.map(imageId => {
+                  try {
+                    return (
+                      <Grid key={imageId} item xs={12} md={6}>
+                        <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
+                          <img
+                            src={AutosFiles.findOne({ _id: imageId }).link()}
+                            alt="Auto"
+                            style={{ width: "100%", objectFit: "contain" }}
+                          />
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              Meteor.call("deleteAutoPicture", imageId);
+                            }}>
+                            Eliminar
+                          </Button>
+                        </Box>
+                      </Grid>
+                    );
+                  } catch (error) {
+                    return undefined;
+                  }
+                })}
               </Grid>
               <Button
                 disabled={!uploaded}
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleCreate}
-                >
+                onClick={handleCreate}>
                 Actualizar
               </Button>
             </form>
@@ -617,25 +608,25 @@ class AutosPage extends PureComponent {
                 <Title>Año: </Title>
                 <Typography>{`${dialogCar.year}`}</Typography>
               </Grid>
-              {
-                  dialogCar && dialogCar.pictures && dialogCar.pictures.map(imageId => {
-                    try {
-                      return (
-                        <Grid key={imageId} item xs={12} md={6}>
-                          <Box padding="1rem" width="100%" style={{ textAlign: 'right' }}>
-                            <img
-                              src={AutosFiles.findOne({ _id: imageId }).link()}
-                              alt="Auto"
-                              style={{ width: '100%', objectFit: 'contain' }}
-                              />
-                          </Box>
-                        </Grid>
-                      );
-                    } catch (error) {
-                      return undefined;
-                    }
-                  })
-                }
+              {dialogCar &&
+                dialogCar.pictures &&
+                dialogCar.pictures.map(imageId => {
+                  try {
+                    return (
+                      <Grid key={imageId} item xs={12} md={6}>
+                        <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
+                          <img
+                            src={AutosFiles.findOne({ _id: imageId }).link()}
+                            alt="Auto"
+                            style={{ width: "100%", objectFit: "contain" }}
+                          />
+                        </Box>
+                      </Grid>
+                    );
+                  } catch (error) {
+                    return undefined;
+                  }
+                })}
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -661,7 +652,7 @@ class AutosPage extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-          />
+        />
         {shouldRedirect ? <Redirect to={pathName} /> : null}
       </DashboardLayout>
     );
