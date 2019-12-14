@@ -22,7 +22,7 @@ import {
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { withTracker } from "meteor/react-meteor-data";
-import validator from "validator";
+import { validator, validatorjs } from "validator";
 import Piezas from "../../api/collections/Piezas/Piezas";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
@@ -66,6 +66,7 @@ class PiezasPage extends PureComponent {
     super(props);
     this.state = {
       shouldRender: false,
+      showPiezasDialog: false,
       dialogPiece: {},
       marca: "",
       vendedor: "",
@@ -165,6 +166,46 @@ class PiezasPage extends PureComponent {
     }
   };
 
+  renderPiezasDialog = () => {
+    const {
+      showPiezasDialog,
+      marca,
+      /*
+      vendedor,
+      precio,
+      numeroDeSerie,
+      tipo,
+      cantidad,
+      dialogPiece,
+      */
+    } = this.state;
+    return (
+      <Dialog
+        open={showPiezasDialog}
+        onClose={() => { this.setState({ showPiezasDialog: false }) }}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth
+      >
+        <form>
+          <Grid>
+            <TextField
+              label="Marca"
+              onInput={event => {
+                this.handleTextInput(event, 'marca', text => {
+                  return validatorjs.isAlpha(text, 'es-ES')
+                })
+              }}
+              value={marca}
+              required
+              fullWidth
+            />
+          </Grid>
+        </form>
+      </Dialog>
+    );
+  }
+
   render() {
     const { classes, piezas, tipos } = this.props;
     const {
@@ -225,6 +266,15 @@ class PiezasPage extends PureComponent {
                       Eliminar una Pieza
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => { this.setState({ shouldRender: true, showPiezasDialog: true }) }}
+                    >
+                      Modificar una Pieza
+                    </Button>
+                  </Grid>
                   <Grid item xs={12}>
                     <FormControl fullWidth>
                       <InputLabel htmlFor="standard-adornment-amount">Busqueda</InputLabel>
@@ -264,7 +314,7 @@ class PiezasPage extends PureComponent {
                     showX={showX}
                     title={`Tipo: ${pieza.tipo}`}
                     body={`Vendedor: ${pieza.vendedor}`}
-                    action1={() => {}}
+                    action1={() => { }}
                     action2={() => {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
                     }}
@@ -276,7 +326,6 @@ class PiezasPage extends PureComponent {
                       this.setState({ shouldRenderFull: true, dialogPiece: pieza });
                     }}
                   />
-
                 </Grid>
               ))}
             </Grid>
