@@ -26,7 +26,7 @@ module.exports = {
     env: {
       // TODO: Change to your app's url
       // If you are using ssl, it needs to start with https://
-      ROOT_URL: 'ec2-54-234-48-190.compute-1.amazonaws.com',
+      ROOT_URL: 'http://ec2-54-234-48-190.compute-1.amazonaws.com',
       MONGO_URL: 'mongodb://mongodb/meteor',
       MONGO_OPLOG_URL: 'mongodb://mongodb/local',
     },
