@@ -176,25 +176,24 @@ class CreateAutos extends PureComponent {
           message: alert,
         });
       } else {
-
-        piezas.map((pieza) => {
+        piezas.map(pieza => {
           Meteor.call("updatePieza", {
-            _id:pieza._id,
-            $set:{
-              cantidad: pieza.cantidad
-            }
+            _id: pieza._id,
+            $set: {
+              cantidad: pieza.cantidad,
+            },
           });
-        })
+        });
         Meteor.call("addAuto", {
           marca,
           modelo,
           tipo,
-          transmision: Transmision[transmision],
+          transmision,
           color,
           placa,
-          traccion: Traccion[traccion],
+          traccion,
           year,
-          estado: Estados[estado],
+          estado,
           autoPiezas,
           vin,
           pictures: files,
@@ -231,26 +230,28 @@ class CreateAutos extends PureComponent {
             action2={() => {
               let contains = false;
               let indexAuto = 0;
-              for(let i=0; i<list1.length; i++){
-                  if (list1[i].marca === pieza.marca &&
-                    list1[i].vendedor === pieza.vendedor &&
-                    list1[i].precio === pieza.precio &&
-                    list1[i].numeroDeSerie === pieza.numeroDeSerie &&
-                    list1[i].tipo === pieza.tipo){
-                    contains = true; 
-                    indexAuto = i;
-                  }
+              for (let i = 0; i < list1.length; i++) {
+                if (
+                  list1[i].marca === pieza.marca &&
+                  list1[i].vendedor === pieza.vendedor &&
+                  list1[i].precio === pieza.precio &&
+                  list1[i].numeroDeSerie === pieza.numeroDeSerie &&
+                  list1[i].tipo === pieza.tipo
+                ) {
+                  contains = true;
+                  indexAuto = i;
+                }
               }
               if (contains) {
                 pieza.cantidad -= 1;
-                list1[indexAuto].cantidad +=1;
+                list1[indexAuto].cantidad += 1;
                 if (pieza.cantidad === 0) {
                   if (index > -1) {
                     list2.splice(index, 1);
                   }
                 }
               } else {
-                list1.push({...pieza,cantidad:1});
+                list1.push({ ...pieza, cantidad: 1 });
                 pieza.cantidad -= 1;
               }
               this.forceUpdate();

@@ -305,7 +305,7 @@ class AutosPage extends PureComponent {
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
-                  description={`Estado: ${Status(auto.estado)}`}
+                  description={`Estado: ${Estados[0]}`}
                   labelButton="Modificar"
                   image={(() => {
                     try {
@@ -509,7 +509,7 @@ class AutosPage extends PureComponent {
               </Grid>
               <Grid item xs={6}>
                 <Title>Transmision: </Title>
-                <Typography>{`${dialogCar.transmision}`}</Typography>
+                <Typography>{`${Transmision[dialogCar.transmision]}`}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Title>Color: </Title>
@@ -522,7 +522,7 @@ class AutosPage extends PureComponent {
               </Grid>
               <Grid item xs={6}>
                 <Title>Traccion: </Title>
-                <Typography>{`${dialogCar.traccion}`}</Typography>
+                <Typography>{`${Traccion[dialogCar.traccion]}`}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Title>Año: </Title>
