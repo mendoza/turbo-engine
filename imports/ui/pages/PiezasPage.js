@@ -266,15 +266,6 @@ class PiezasPage extends PureComponent {
                       Eliminar una Pieza
                     </Button>
                   </Grid>
-                  <Grid item>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => { this.setState({ shouldRender: true, showPiezasDialog: true }) }}
-                    >
-                      Modificar una Pieza
-                    </Button>
-                  </Grid>
                   <Grid item xs={12}>
                     <FormControl fullWidth>
                       <InputLabel htmlFor="standard-adornment-amount">Busqueda</InputLabel>
