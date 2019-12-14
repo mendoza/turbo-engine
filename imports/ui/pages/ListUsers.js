@@ -202,7 +202,7 @@ class ListUsers extends PureComponent {
                   <Title>Rol: </Title>
                   <p>{dialogUser.profile.role}</p>
                   <Title>Fecha de nacimiento: </Title>
-                  <p> nel </p>
+                  <p> N/A </p>
                   <Title>Correos: </Title>
                   <p>{dialogUser.emails[0].address}</p>
                 </DialogContent>
