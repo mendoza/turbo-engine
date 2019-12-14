@@ -244,11 +244,11 @@ class PiezasPage extends PureComponent {
                             }),
                           });
                         }}
-                        endAdornment={(
+                        endAdornment={
                           <InputAdornment position="end">
                             <span className="fas fa-search" />
                           </InputAdornment>
-                        )}
+                        }
                       />
                     </FormControl>
                   </Grid>
@@ -264,6 +264,7 @@ class PiezasPage extends PureComponent {
                     showX={showX}
                     title={`Tipo: ${pieza.tipo}`}
                     body={`Vendedor: ${pieza.vendedor}`}
+                    labelButton="Modificar"
                     action1={() => {}}
                     action2={() => {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
@@ -276,7 +277,6 @@ class PiezasPage extends PureComponent {
                       this.setState({ shouldRenderFull: true, dialogPiece: pieza });
                     }}
                   />
-
                 </Grid>
               ))}
             </Grid>

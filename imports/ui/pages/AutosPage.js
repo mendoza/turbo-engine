@@ -208,10 +208,6 @@ class AutosPage extends PureComponent {
         alert = "El campo tipo es requerido";
       }
 
-      if (validator.isEmpty(transmision)) {
-        alert = "El campo transmision es requerido";
-      }
-
       if (validator.isEmpty(color)) {
         alert = "El campo color es requerido";
       }
@@ -220,16 +216,8 @@ class AutosPage extends PureComponent {
         alert = "El campo placa es requerido";
       }
 
-      if (validator.isEmpty(traccion)) {
-        alert = "El campo traccion es requerido";
-      }
-
       if (validator.isEmpty(String(year))) {
         alert = "El campo año es requerido";
-      }
-
-      if (validator.isEmpty(String(estado))) {
-        alert = "El campo estado es requerido";
       }
 
       if (alert) {
