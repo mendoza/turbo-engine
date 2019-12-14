@@ -20,6 +20,11 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
@@ -170,6 +175,7 @@ class AutosPage extends PureComponent {
       shouldRedirect,
       vin,
       pictures,
+      piezas,
       shouldRenderFull,
       filteredCars,
       uploaded,
@@ -351,6 +357,7 @@ class AutosPage extends PureComponent {
           <Grid container spacing={4}>
             {filteredCars.map(auto => (
               <Grid item key={auto._id} xs={12} sm={6} md={4}>
+                {console.log(auto.piezas)}
                 <ItemCard
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
@@ -627,6 +634,43 @@ class AutosPage extends PureComponent {
                     return undefined;
                   }
                 })}
+            </Grid>
+            <Title>Piezas: </Title>
+            <Grid containers>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="right">Marca</TableCell>
+                    <TableCell align="right">Vendedor</TableCell>
+                    <TableCell align="right">Tipo</TableCell>
+                    <TableCell align="right">Número de serie</TableCell>
+                    <TableCell align="right">Cantidad</TableCell>
+                    <TableCell align="right">Precio</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dialogCar &&
+                    dialogCar.piezas &&
+                    dialogCar.piezas.map(pieza => {
+                    try{
+                      return (
+                        <TableRow key={pieza.marca}>
+                          <TableCell component="th" scope="row">
+                            {pieza.marca}
+                          </TableCell>
+                          <TableCell align="right">{pieza.vendedor}</TableCell>
+                          <TableCell align="right">{pieza.tipo}</TableCell>
+                          <TableCell align="right">{pieza.numeroDeSerie}</TableCell>
+                          <TableCell align="right">{pieza.cantidad}</TableCell>
+                          <TableCell align="right">{pieza.precio}</TableCell>
+                        </TableRow>
+                      )
+                    }catch (error){
+                      return undefined;
+                    }
+                })}
+                </TableBody>
+              </Table>
             </Grid>
           </DialogContent>
           <DialogActions>
