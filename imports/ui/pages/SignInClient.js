@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -83,7 +84,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
-            />
+              />
             <TextField
               variant="outlined"
               margin="normal"
@@ -94,18 +95,18 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
-            />
+              />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Recuérdame"
-            />
+              />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-            >
+              >
               Iniciar Sesión
             </Button>
             <Grid container>
@@ -116,7 +117,7 @@ export default function SignInSide() {
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
-                  {"No tienes cuenta? Registrate"}
+                  No tienes cuenta? Registrate
                 </Link>
               </Grid>
             </Grid>

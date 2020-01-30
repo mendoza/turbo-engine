@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -71,7 +72,7 @@ export default function SignUp() {
                 id="firstName"
                 label="Nombre"
                 autoFocus
-              />
+                />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -82,7 +83,7 @@ export default function SignUp() {
                 label="Apellido"
                 name="lastName"
                 autoComplete="lname"
-              />
+                />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -93,7 +94,7 @@ export default function SignUp() {
                 label="Correo Electronico"
                 name="email"
                 autoComplete="email"
-              />
+                />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -105,13 +106,13 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
+                />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="Acepto crear mi cuenta, para evaluaciones"
-              />
+                />
             </Grid>
           </Grid>
           <Button
@@ -120,7 +121,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-          >
+            >
             Crear Cuenta
           </Button>
           <Grid container justify="flex-end">
