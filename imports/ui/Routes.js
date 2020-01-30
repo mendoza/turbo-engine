@@ -15,9 +15,6 @@ import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Checkout from "./pages/Checkout";
-import PaymentForm from "./pages/PaymentForm";
-import Review from "./pages/Review";
-import AddressForm from "./pages/AddressForm";
 
 export const Routes = [
   {
@@ -106,9 +103,14 @@ export const Routes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/actualizarTipos",
+    path: "/actualizarTipos",
     name: "ActualizarT ",
     component: UpdateTypes,
+  },
+  {
+    path: "/factura",
+    name: "Checkout",
+    component: Checkout,
   },
 ];
 
