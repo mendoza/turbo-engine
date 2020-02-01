@@ -28,6 +28,7 @@ import MaskedTextField from "../components/MaskedTextField";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import ItemCard from "../components/ItemCard";
 import Title from "../components/Title";
+import Autos from "../../api/collections/Autos/Autos";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
@@ -130,7 +131,6 @@ class CreateAutos extends PureComponent {
 
     const handleTextChange = event => {
       event.persist();
-      console.log(`${[event.target.name]}: ${event.target.value}`);
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -139,8 +139,6 @@ class CreateAutos extends PureComponent {
     const handleCreate = () => {
       const { files } = this.state;
       let alert;
-
-      console.log(this.state);
       if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
       }
@@ -157,7 +155,7 @@ class CreateAutos extends PureComponent {
         alert = "El campo color es requerido";
       }
 
-      /*validator.isEmpty(placa)*/
+      /* validator.isEmpty(placa) */
       if (false) {
         alert = "El campo placa es requerido";
       }
@@ -168,6 +166,15 @@ class CreateAutos extends PureComponent {
 
       if (validator.isEmpty(vin)) {
         alert = "El campo vin es requerido";
+      }
+
+      if (year > new Date().getFullYear() + 1) {
+        alert = "El año no puede ser mayor al año actual";
+      }
+      
+      console.log(Autos.find({ placa }).count());
+      if (Autos.find({ placa }).count() > 0) {
+        alert = "La placa debe ser unica para este auto";
       }
 
       if (alert) {
@@ -212,6 +219,7 @@ class CreateAutos extends PureComponent {
           year: "",
           estado: 0,
           open: true,
+          vin: "",
           message: "Auto agregado exitosamente",
         });
       }
@@ -493,6 +501,7 @@ class CreateAutos extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("Piezas.all");
+  Meteor.subscribe("Autos.all");
   return {
     piezas: Piezas.find().fetch(),
   };
