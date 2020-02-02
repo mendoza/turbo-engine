@@ -158,7 +158,7 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/ms",
+    pathName: "/maquinaria",
     name: "Maquinaria",
     icon: "fas fa-cogs",
     permission: "superAdmin",
