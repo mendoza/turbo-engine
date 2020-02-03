@@ -108,7 +108,7 @@ export const Routes = [
     component: UpdateTypes,
   },
   {
-    pathName: "/maquinaria",
+    path: "/maquinaria",
     name: "Maquinaria ",
     component: Maquinaria,
   },
