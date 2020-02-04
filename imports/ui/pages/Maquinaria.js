@@ -64,14 +64,13 @@ class Maquinaria extends Component {
     event.preventDefault();
     const { Tipo, Marca, Cantidad, Especificaciones, cantidadError } = this.state;
     const newMaquina = {
-      _id: editId,
       tipo: Tipo,
       marca: Marca,
       cantidad: Cantidad,
       especificaciones: Especificaciones,
     };
     let methodName;
-    if (editId) {
+    if (_id) {
       methodName = "handleEditMaquina";
     } else {
       methodName = "handleCreateMaquina";
@@ -127,6 +126,7 @@ class Maquinaria extends Component {
       Cantidad,
       Especificaciones,
       editId,
+      // eslint-disable-next-line no-unused-vars
       cantidadError,
     } = this.state;
     return (
@@ -137,7 +137,8 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <form onSubmit={this.handleCreateMaquina}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
@@ -148,54 +149,38 @@ class Maquinaria extends Component {
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Tipo"
-                  onInput={event => {
-                    this.handleTextInput(event, "Tipo", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
-                    });
-                  }}
+                  onInput={event => this.handleTextInput(event, "Tipo")}
                   value={Tipo}
                   required
                   autoFocus
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Marca"
-                  onInput={event => {
-                    this.handleTextInput(event, "Marca", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
-                    });
-                  }}
+                  onInput={event => this.handleTextInput(event, "Marca")}
                   value={Marca}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Cantidad"
-                  onInput={event => {
-                    this.handleTextInput(event, "Cantidad", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
-                    });
-                  }}
+                  onInput={event => this.handleTextInput(event, "Cantidad")}
                   value={Cantidad}
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Especificaciones"
-                  onInput={event => {
-                    this.handleTextInput(event, "Especificaciones", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
-                    });
-                  }}
+                  onInput={event => this.handleTextInput(event, "Especificaciones")}
                   value={Especificaciones}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
             </Grid>
           </DialogContent>
@@ -205,10 +190,15 @@ class Maquinaria extends Component {
                 this.setState({ showMaquinariaDialog: false });
               }}
               color="primary"
-              variant="contained">
+              variant="contained"
+              >
               Cancelar
             </Button>
-            <Button color="primary" variant="contained" type="submit">
+            <Button 
+              color="primary" 
+              variant="contained" 
+              onClick={this.handleCreateMaquina}
+              >
               Guardar
             </Button>
           </DialogActions>
@@ -227,7 +217,8 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este elemento?
         </DialogTitle>
@@ -244,7 +235,8 @@ class Maquinaria extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteMaquina}>
@@ -300,7 +292,8 @@ class Maquinaria extends Component {
                               Especificaciones: maquina.especificaciones,
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -311,7 +304,8 @@ class Maquinaria extends Component {
                               editId: maquina._id,
                               showDeleteDialog: true,
                             });
-                          }}>
+                          }}
+                          >
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -351,11 +345,12 @@ class Maquinaria extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}>
+            }}
+            >
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-      />
+        />
     );
   };
 
@@ -369,7 +364,8 @@ class Maquinaria extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showMaquinariaDialog: true, editId: undefined });
-              }}>
+              }}
+              >
               Agregar Elemento
             </Button>
           </Grid>
