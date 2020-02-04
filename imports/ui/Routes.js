@@ -13,6 +13,7 @@ import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
 import SignUpClient from "./pages/SignUpClient"
 import SignInClient from "./pages/SignInClient"
+import Encuesta from "./pages/Encuesta"
 
 export const Routes = [
   {
@@ -98,6 +99,11 @@ export const Routes = [
     path: "/InicioSesionClientes",
     name: "Inicio Sesion CLientes",
     component: SignInClient,
+  },
+  {
+    path: "/Encuesta",
+    name: "Encuesta",
+    component: Encuesta,
   },
 ];
 
