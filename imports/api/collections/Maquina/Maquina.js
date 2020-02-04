@@ -4,10 +4,10 @@ import SimpleSchema from "simpl-schema";
 const Maquina = new Mongo.Collection("Maquina");
 
 Maquina.schema = new SimpleSchema({
-  Tipo: { type: String },
-  Marca: { type: String },
-  Cantidad: { type: Number },
-  Especificaciones: { type: String },
+  tipo: { type: String },
+  marca: { type: String },
+  cantidad: { type: Number },
+  especificaciones: { type: String },
 });
 
 export default Maquina;

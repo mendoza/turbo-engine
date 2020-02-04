@@ -103,7 +103,7 @@ export const Routes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/actualizarTipos",
+    path: "/actualizarTipos",
     name: "ActualizarT ",
     component: UpdateTypes,
   },
