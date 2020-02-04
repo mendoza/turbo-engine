@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import {Meteor} from 'meteor/meteor';
 import validatorjs from "validator";
+
 import {
   Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Grid, Snackbar, IconButton, Table, TableRow, TableHead, TableCell, TableBody
 } from '@material-ui/core';
@@ -8,6 +10,21 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import { withTracker } from 'meteor/react-meteor-data';
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from '../../api/collections/Cliente/Cliente';
+import Autos from '../../api/collections/Autos/Autos';
+
+const CeldaAuto = ({autos}) => (
+  <TableCell component="th" scope="row">
+    {autos.map(auto =>{
+      {}
+    })}
+  </TableCell>
+)
+withTracker((clientesAutos)=> {
+  Meteor.subscribe('Autos.cliente', clientesAutos);
+  return {
+    autos: Autos.find().fetch()
+  }
+})(CeldaAuto)
 
 class Clientes extends Component {
   constructor(props) {
@@ -25,6 +42,7 @@ class Clientes extends Component {
       Telefono2: '',
       Company: '',
       email: '',
+      autos: [],
     }
   }
 
@@ -54,7 +72,7 @@ class Clientes extends Component {
     const { emailError } = this.state;
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId,
+      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId, Autos
     } = this.state;
     const newClient = {
       _id: editId,
@@ -65,6 +83,7 @@ class Clientes extends Component {
       telefonoTrabajo: Telefono2,
       compania: Company,
       email,
+      autos: Autos
     };
     let methodName;
     if (editId) {
@@ -130,6 +149,7 @@ class Clientes extends Component {
       email,
       editId,
       emailError,
+      autos,
     } = this.state;
     return (
       <Dialog
@@ -231,6 +251,15 @@ class Clientes extends Component {
                   fullWidth
                   />
               </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Autos"
+                  onInput={event => { this.handleTextInput(event, 'autos') }}
+                  value={autos}
+                  required
+                  fullWidth
+                  />
+              </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -287,7 +316,7 @@ class Clientes extends Component {
   }
 
   renderClientTable = () => {
-    const { clients } = this.props;
+    const { clients, autos } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -299,6 +328,7 @@ class Clientes extends Component {
             <TableCell>Teléfono de Trabajo</TableCell>
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
+            <TableCell>Autos</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
@@ -328,6 +358,9 @@ class Clientes extends Component {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {client.email}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {CeldaAuto}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
