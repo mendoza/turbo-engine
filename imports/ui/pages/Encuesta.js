@@ -59,6 +59,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor:
       theme.palette.type === "dark" ? theme.palette.grey[700] : theme.palette.grey[200],
   },
+  acceptButton: {
+    paddingTop: "20px",
+    marginTop: "20px",
+  },
   cardEncuestilla: {
     display: "flex",
     justifyContent: "center",
@@ -138,7 +142,7 @@ export default function Encuestilla() {
         </Toolbar>
       </AppBar>
       {/* Hero unit */}
-      <Container maxWidth="sm" component="main" className={classes.heroContent}>
+      <Container component="main" className={classes.heroContent}>
         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
           Encuesta
         </Typography>
@@ -148,7 +152,8 @@ export default function Encuestilla() {
         </Typography>
       </Container>
       {/* End hero unit */}
-      <Container maxWidth="md" component="main">
+
+      <Container component="main">
         <Grid container spacing={5} alignItems="flex-end">
           {tiers.map(tier => (
             // Enterprise card is full width at sm breakpoint
@@ -188,7 +193,8 @@ export default function Encuestilla() {
             </Grid>
           ))}
         </Grid>
-        <Grid container spacing={5} alignItems="flex-end">
+
+        <Grid container spacing={5} xs={12} className={classes.acceptButton}>
           <FormControl fullWidth className={classes.margin}>
             <InputLabel htmlFor="standard-adornment-amount">
               Agrege sugerencias o un comentario
@@ -198,12 +204,11 @@ export default function Encuestilla() {
               multiline
               /* El valor value es el que se tiene que guardar */
               // value={values.amount}}
-              // startAdornment={<InputAdornment position="start">$</InputAdornment>}
             />
           </FormControl>
         </Grid>
-        <Grid container spacing={5} alignItems="flex-end">
-          {/*
+
+        <Grid container xs={6} spacing={5} className={classes.acceptButton}>
           <Button
             type="submit"
             fullWidth
@@ -211,9 +216,10 @@ export default function Encuestilla() {
             color="primary"
             className={classes.submit}>
             Terminar encuesta
-          </Button>*/}
+          </Button>
         </Grid>
       </Container>
+
       {/* Footer */}
       <Container maxWidth="md" component="footer" className={classes.footer}>
         <Grid container spacing={4} justify="space-evenly">
