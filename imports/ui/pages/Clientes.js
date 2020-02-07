@@ -19,10 +19,7 @@ import {
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import { withTracker } from 'meteor/react-meteor-data';
-import Select from 'react-select'
+import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
@@ -73,7 +70,15 @@ class Clientes extends Component {
     const { emailError } = this.state;
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId, clientType
+      Nombre,
+      Apellido,
+      RTN,
+      Telefono,
+      Telefono2,
+      Company,
+      email,
+      editId,
+      clientType,
     } = this.state;
 
     const newClient = {
@@ -152,12 +157,12 @@ class Clientes extends Component {
       editId,
       emailError,
       clientType,
-      clientTypeLabel
+      clientTypeLabel,
     } = this.state;
     const options = [
-      { value: 'Empresarial', label: 'Empresarial' },
-      { value: 'Personal', label: 'Personal' },
-    ]
+      { value: "Empresarial", label: "Empresarial" },
+      { value: "Personal", label: "Personal" },
+    ];
     return (
       <Dialog
         open={showClientDialog}
@@ -280,18 +285,18 @@ class Clientes extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <InputLabel>
-                  Tipo de Cliente
-                </InputLabel>
+                <InputLabel>Tipo de Cliente</InputLabel>
                 <Select
-                  style={{ width: '100%', position: 'absolute' }}
+                  style={{ width: "100%", position: "absolute" }}
                   options={options}
-                  onChange={ev => this.setState({
-                    clientType: ev.value,
-                    clientTypeLabel: ev.label,
-                  })}
+                  onChange={ev =>
+                    this.setState({
+                      clientType: ev.value,
+                      clientTypeLabel: ev.label,
+                    })
+                  }
                   value={{ value: clientType, label: clientTypeLabel }}
-                  />
+                />
               </Grid>
             </Grid>
           </DialogContent>
