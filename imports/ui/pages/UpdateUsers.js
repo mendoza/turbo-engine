@@ -124,7 +124,8 @@ class UpdateUsers extends PureComponent {
                   label="Id"
                   id="id"
                   value={id}
-                  onChange={event => this.handleChange(event, "id")}>
+                  onChange={event => this.handleChange(event, "id")}
+                  >
                   {users.map(user => {
                     if (user) {
                       return (
@@ -149,7 +150,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={nombre}
                   onInput={event => this.handleTextChange(event, "nombre")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -163,7 +164,7 @@ class UpdateUsers extends PureComponent {
                   autoFocus
                   value={apellido}
                   onInput={event => this.handleTextChange(event, "apellido")}
-                />
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -176,14 +177,15 @@ class UpdateUsers extends PureComponent {
                   autoComplete="email"
                   value={correo}
                   onInput={event => this.handleTextChange(event, "correo")}
-                />
+                  />
               </Grid>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={this.handleClick}>
+                onClick={this.handleClick}
+                >
                 Actualizar
               </Button>
             </Grid>
@@ -206,7 +208,7 @@ class UpdateUsers extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }
