@@ -139,6 +139,12 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
+    pathName: "/actualizarTipos",
+    name: "Tipos",
+    icon: "fas fa-wrench",
+    permission: "superAdmin",
+  },
+  {
     pathName: "/clientes",
     name: "Clientes",
     icon: "fas fa-user-tie",

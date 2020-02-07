@@ -28,13 +28,14 @@ import MaskedTextField from "../components/MaskedTextField";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import ItemCard from "../components/ItemCard";
 import Title from "../components/Title";
+import Autos from "../../api/collections/Autos/Autos";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       shouldOpen: false,
-      marca: "",
+      marca: 0,
       modelo: "",
       tipo: "",
       transmision: 0,
@@ -49,8 +50,21 @@ class CreateAutos extends PureComponent {
       message: "",
       vin: "",
       files: [],
+      nombresMarcas: [],
       uploaded: true,
     };
+
+    fetch("https://private-anon-03fe86f6b5-carsapi1.apiary-mock.com/manufacturers")
+      .then(res => res.json())
+      .then(json => {
+        const names = Object.values(json).map(manu => {
+          return manu.name;
+        });
+        console.log(names);
+        names.sort((a, b) => a > b);
+        console.log(names);
+        this.setState({ nombresMarcas: names });
+      });
   }
 
   setFiles = event => {
@@ -126,11 +140,12 @@ class CreateAutos extends PureComponent {
       showX,
       autoPiezas,
       vin,
+      nombresMarcas,
     } = this.state;
 
     const handleTextChange = event => {
       event.persist();
-      console.log(`${[event.target.name]}: ${event.target.value}`);
+      console.log({ [event.target.name]: event.target.value });
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -139,8 +154,6 @@ class CreateAutos extends PureComponent {
     const handleCreate = () => {
       const { files } = this.state;
       let alert;
-
-      console.log(this.state);
       if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
       }
@@ -157,7 +170,7 @@ class CreateAutos extends PureComponent {
         alert = "El campo color es requerido";
       }
 
-      /*validator.isEmpty(placa)*/
+      /* validator.isEmpty(placa) */
       if (false) {
         alert = "El campo placa es requerido";
       }
@@ -168,6 +181,15 @@ class CreateAutos extends PureComponent {
 
       if (validator.isEmpty(vin)) {
         alert = "El campo vin es requerido";
+      }
+
+      if (year > new Date().getFullYear() + 1) {
+        alert = "El año no puede ser mayor al año actual";
+      }
+
+      console.log(Autos.find({ placa }).count());
+      if (Autos.find({ placa }).count() > 0) {
+        alert = "La placa debe ser unica para este auto";
       }
 
       if (alert) {
@@ -185,7 +207,7 @@ class CreateAutos extends PureComponent {
           });
         });
         Meteor.call("addAuto", {
-          marca,
+          marca: nombresMarcas[marca],
           modelo,
           tipo,
           transmision,
@@ -202,7 +224,7 @@ class CreateAutos extends PureComponent {
         this.setState({
           autoPiezas: [],
           shouldOpen: false,
-          marca: "",
+          marca: 0,
           modelo: "",
           tipo: "",
           transmision: 0,
@@ -212,6 +234,7 @@ class CreateAutos extends PureComponent {
           year: "",
           estado: 0,
           open: true,
+          vin: "",
           message: "Auto agregado exitosamente",
         });
       }
@@ -230,7 +253,7 @@ class CreateAutos extends PureComponent {
             action2={() => {
               let contains = false;
               let indexAuto = 0;
-              for (let i = 0; i < list1.length; i++) {
+              for (let i = 0; i < list1.length; i += 1) {
                 if (
                   list1[i].marca === pieza.marca &&
                   list1[i].vendedor === pieza.vendedor &&
@@ -277,16 +300,17 @@ class CreateAutos extends PureComponent {
             <form id="formUserLogin" noValidate>
               <Grid container spacing={2} style={{ marginBottom: "5px" }}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="marca"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Marca"
-                    autoFocus
                     value={marca}
-                    onInput={handleTextChange}
-                  />
+                    name="marca"
+                    onChange={handleTextChange}
+                    label="Marca"
+                    variant="outlined">
+                    {nombresMarcas.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -493,6 +517,7 @@ class CreateAutos extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("Piezas.all");
+  Meteor.subscribe("Autos.all");
   return {
     piezas: Piezas.find().fetch(),
   };
