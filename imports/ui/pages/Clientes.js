@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import validatorjs from "validator";
 import {
-  Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Grid, Snackbar, IconButton, Table, TableRow, TableHead, TableCell, TableBody
+  Dialog, DialogTitle,
+  DialogContent, TextField,
+  DialogActions, Button, Grid, Snackbar, IconButton,
+  Table, TableRow, TableHead, TableCell, TableBody, InputLabel
 } from '@material-ui/core';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import { withTracker } from 'meteor/react-meteor-data';
+import Select from 'react-select'
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from '../../api/collections/Cliente/Cliente';
 
@@ -25,6 +29,8 @@ class Clientes extends Component {
       Telefono2: '',
       Company: '',
       email: '',
+      clientType: 'enterprise',
+      clientTypeLabel: 'Empresarial',
     }
   }
 
@@ -54,7 +60,7 @@ class Clientes extends Component {
     const { emailError } = this.state;
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId,
+      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId, clientType
     } = this.state;
     const newClient = {
       _id: editId,
@@ -65,6 +71,7 @@ class Clientes extends Component {
       telefonoTrabajo: Telefono2,
       compania: Company,
       email,
+      clientType,
     };
     let methodName;
     if (editId) {
@@ -130,7 +137,13 @@ class Clientes extends Component {
       email,
       editId,
       emailError,
+      clientType,
+      clientTypeLabel
     } = this.state;
+    const options = [
+      { value: 'enterprise', label: 'Empresarial' },
+      { value: 'personal', label: 'Personal' },
+    ]
     return (
       <Dialog
         open={showClientDialog}
@@ -229,6 +242,20 @@ class Clientes extends Component {
                   helperText={emailError || ''}
                   required
                   fullWidth
+                  />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>
+                  Tipo de Cliente
+                </InputLabel>
+                <Select
+                  style={{ width: '100%', position: 'absolute' }}
+                  options={options}
+                  onChange={ev => this.setState({
+                    clientType: ev.value,
+                    clientTypeLabel: ev.label,
+                  })}
+                  value={{ value: clientType, label: clientTypeLabel }}
                   />
               </Grid>
             </Grid>
