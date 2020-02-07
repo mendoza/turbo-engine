@@ -77,19 +77,10 @@ class Maquinaria extends Component {
     };
     let methodName;
     if (editId) {
-      methodName = "handleEditMaquina";
+      methodName = "editMaquina";
     } else {
-      methodName = "handleCreateMaquina";
+      methodName = "addMaquina";
     }
-    
-      /*
-      if (Meteor.call("")) {
-        methodName = "editMaquina";
-      } else {
-        methodName = "addMaquina";
-      }
-    */
-
     if (cantidadError) {
       this.setState({
         showSnackbar: true,
@@ -152,7 +143,7 @@ class Maquinaria extends Component {
 
   handleDeleteMaquina = () => {
     const { editId } = this.state;
-    Meteor.call("handleDeleteMaquina", editId, error => {
+    Meteor.call("deleteMaquina", editId, error => {
       if (error) {
         this.setState({
           showSnackbar: true,
@@ -334,7 +325,7 @@ class Maquinaria extends Component {
                     {maquina.cantidad}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {maquina.especificaciones}
+                    {maquina.descripcion}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
@@ -437,7 +428,7 @@ class Maquinaria extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe("maquinas.all");
+  Meteor.subscribe("Maquinas.all");
   const maquinas = Maquinas.find().fetch();
   return {
     maquinas: maquinas && maquinas.reverse(),

@@ -1,21 +1,13 @@
-import { Meteor } from "meteor/meteor";
 import Maquinas from "./Maquinas";
 
 Meteor.methods({
   addMaquina(payload) {
-    return Maquinas.insert(payload);
+    Maquinas.insert(payload);
   },
-  getMaquinas() {
-    return Maquinas.find().fetch();
-  },
-  updateMaquina(payload) {
-    const selector = { _id: payload._id };
-    delete payload._id;
-    const modifier = payload;
-    return Maquinas.update(selector, modifier) > 0;
+  editMaquina(payload) {
+    Maquinas.update({ _id: payload._id }, { ...payload, ...{ _id: undefined } })
   },
   deleteMaquina(payload) {
-    const selector = { _id: payload._id };
-    return Maquinas.remove(selector) > 0;
-  },
+    Maquinas.remove({ _id: payload });
+  }
 });
