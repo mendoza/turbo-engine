@@ -29,7 +29,7 @@ class Clientes extends Component {
       Telefono2: '',
       Company: '',
       email: '',
-      clientType: 'enterprise',
+      clientType: 'Empresarial',
       clientTypeLabel: 'Empresarial',
     }
   }
@@ -141,8 +141,8 @@ class Clientes extends Component {
       clientTypeLabel
     } = this.state;
     const options = [
-      { value: 'enterprise', label: 'Empresarial' },
-      { value: 'personal', label: 'Personal' },
+      { value: 'Empresarial', label: 'Empresarial' },
+      { value: 'Personal', label: 'Personal' },
     ]
     return (
       <Dialog
@@ -326,6 +326,7 @@ class Clientes extends Component {
             <TableCell>Teléfono de Trabajo</TableCell>
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
+            <TableCell>Tipo</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
@@ -355,6 +356,9 @@ class Clientes extends Component {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {client.email}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {client.clientType}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
