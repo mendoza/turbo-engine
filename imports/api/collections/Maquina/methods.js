@@ -1,13 +1,13 @@
 import Maquina from "./Maquina";
 
 Meteor.methods({
-  handleCreateClient(payload) {
+  addMaquina(payload) {
     Maquina.insert(payload);
   },
-  handleEditClient(payload) {
+  editMaquina(payload) {
     Maquina.update({ _id: payload._id }, { ...payload, ...{ _id: undefined } })
   },
-  handleDeleteClient(payload) {
+  deleteMaquina(payload) {
     Maquina.remove({ _id: payload });
   }
 });

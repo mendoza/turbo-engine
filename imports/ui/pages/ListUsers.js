@@ -111,7 +111,8 @@ class ListUsers extends PureComponent {
                 variant="contained"
                 onClick={() => {
                   this.setState({ shouldRedirectAdd: true, pathname: "/crearUsuarios" });
-                }}>
+                }}
+                >
                 <i className="fas fa-user-pen" />
                 Agregar Usuarios
               </Button>
@@ -153,7 +154,8 @@ class ListUsers extends PureComponent {
                               onClick={() => {
                                 this.setState({ shouldRender: true, dialogUser: user });
                               }}
-                              aria-label="left aligned">
+                              aria-label="left aligned"
+                              >
                               <i className="fas fa-address-card" />
                             </ToggleButton>
                             <ToggleButton
@@ -221,7 +223,8 @@ class ListUsers extends PureComponent {
           open={showDeleteDialog}
           onClose={this.handleCloseDelete}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description">
+          aria-describedby="alert-dialog-description"
+          >
           <DialogTitle id="alert-dialog-title">
             ¿Esta seguro que desea eliminar este usuario?
           </DialogTitle>
@@ -256,11 +259,12 @@ class ListUsers extends PureComponent {
               key="close"
               aria-label="close"
               color="inherit"
-              onClick={this.handleCloseSnackbar}>
+              onClick={this.handleCloseSnackbar}
+              >
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }

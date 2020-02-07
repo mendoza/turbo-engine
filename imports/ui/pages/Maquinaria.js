@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import validatorjs from "validator";
+import { validator, validatorjs } from "validator";
 import {
   Dialog,
   DialogTitle,
@@ -31,6 +31,8 @@ class Maquinaria extends Component {
       showDeleteDialog: false,
       editId: undefined,
       snackbarText: "",
+      open: false,
+      message: "",
       Tipo: "",
       Marca: "",
       Cantidad: "",
@@ -38,7 +40,7 @@ class Maquinaria extends Component {
     };
   }
 
-  handleTextInput = (event, stateName, validator) => {
+  handleTextInput = (event, stateName ) => {
     let error;
     if (stateName === 'cantidad') {
       error = !validatorjs.isNumeric(event.target.value);
@@ -55,11 +57,10 @@ class Maquinaria extends Component {
     } else {
       this.setState({
         [stateName]: event.target.value,
-        cantidadError: error,
       });
     }
   };
-
+/*
   handleCreateMaquina = event => {
     event.preventDefault();
     const { Tipo, Marca, Cantidad, Especificaciones, cantidadError } = this.state;
@@ -70,10 +71,10 @@ class Maquinaria extends Component {
       especificaciones: Especificaciones,
     };
     let methodName;
-    if (_id) {
-      methodName = "handleEditMaquina";
+    if (Meteor.call("")) {
+      methodName = "editMaquina";
     } else {
-      methodName = "handleCreateMaquina";
+      methodName = "addMaquina";
     }
     if (cantidadError) {
       this.setState({
@@ -89,14 +90,48 @@ class Maquinaria extends Component {
           });
         } else {
           this.setState({
-            showMaquinariaDialog: false,
             Tipo: "",
             Marca: "",
             Cantidad: "",
             Especificaciones: "",
+            showMaquinariaDialog: false,
           });
         }
       });
+    }
+  };
+*/
+
+  handleCreateMaquina = () => {
+    const { Tipo, Marca, Cantidad, Especificaciones} = this.state;
+    let alert;
+    if (validator.isEmpty(Tipo)) {
+      alert = "El campo Tipo es requerido";
+    }
+    if (validator.isEmpty(Marca)) {
+      alert = "El campo Marca es requerido";
+    }
+    if (validator.isEmpty(Cantidad)) {
+      alert = "El campo Cantidad es requerido";
+    }
+    if (validator.isEmpty(Especificaciones)) {
+      alert = "El campo Especificaciones es requerido";
+    }
+    if (alert) {
+      this.setState({
+        open: true,
+        message: alert,
+      });
+    } else {
+      Meteor.call(
+        "addMaquina",
+        {
+          tipo: Tipo,
+          marca: Marca,
+          cantidad: Cantidad,
+          especificaciones: Especificaciones,
+        }
+      );
     }
   };
 
@@ -119,15 +154,7 @@ class Maquinaria extends Component {
   };
 
   renderMaquinaDialog = () => {
-    const {
-      showMaquinariaDialog,
-      Tipo,
-      Marca,
-      Cantidad,
-      Especificaciones,
-      editId,
-      // eslint-disable-next-line no-unused-vars
-      cantidadError,
+    const { showMaquinariaDialog, Tipo, Marca, Cantidad, Especificaciones, editId, open, message 
     } = this.state;
     return (
       <Dialog
