@@ -107,7 +107,7 @@ export default function Checkout() {
                     <div className={classes.buttons}>
                       {activeStep !== 0 && (
                         <Button onClick={handleBack} className={classes.button}>
-                          Back
+                          Atras
                         </Button>
                       )}
                       <Button
@@ -117,7 +117,7 @@ export default function Checkout() {
                         className={classes.button} 
                       // eslint-disable-next-line react/jsx-closing-bracket-location
                       >
-                        {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                        {activeStep === steps.length - 1 ? 'Guardar Datos' : 'Siguiente'}
                       </Button>
                     </div>
                   </>
