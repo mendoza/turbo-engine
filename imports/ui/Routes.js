@@ -14,6 +14,7 @@ import EstadoAutos from "./pages/EstadoAutos";
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
+import Maquinaria from "./pages/Maquinaria";
 
 export const Routes = [
   {
@@ -106,6 +107,11 @@ export const Routes = [
     name: "ActualizarT ",
     component: UpdateTypes,
   },
+  {
+    pathName: "/maquinaria",
+    name: "Maquinaria ",
+    component: Maquinaria,
+  },
 ];
 
 export const dashboardRoutes = [
@@ -155,6 +161,12 @@ export const dashboardRoutes = [
     pathName: "/restablecerContra",
     name: "Modificar contraseña",
     icon: "fas fa-edit",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/maquinaria",
+    name: "Maquinaria",
+    icon: "fas fa-cogs",
     permission: "superAdmin",
   },
 ];

@@ -19,6 +19,10 @@ import {
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import { withTracker } from 'meteor/react-meteor-data';
+import Select from 'react-select'
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
@@ -68,7 +72,10 @@ class Clientes extends Component {
   handleCreateClient = event => {
     const { emailError } = this.state;
     event.preventDefault();
-    const { Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId } = this.state;
+    const {
+      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId, clientType
+    } = this.state;
+
     const newClient = {
       _id: editId,
       nombre: Nombre,
@@ -78,6 +85,7 @@ class Clientes extends Component {
       telefonoTrabajo: Telefono2,
       compania: Company,
       email,
+      clientType,
     };
     let methodName;
     if (editId) {
@@ -143,7 +151,13 @@ class Clientes extends Component {
       email,
       editId,
       emailError,
+      clientType,
+      clientTypeLabel
     } = this.state;
+    const options = [
+      { value: 'Empresarial', label: 'Empresarial' },
+      { value: 'Personal', label: 'Personal' },
+    ]
     return (
       <Dialog
         open={showClientDialog}
@@ -265,6 +279,20 @@ class Clientes extends Component {
                   fullWidth
                 />
               </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>
+                  Tipo de Cliente
+                </InputLabel>
+                <Select
+                  style={{ width: '100%', position: 'absolute' }}
+                  options={options}
+                  onChange={ev => this.setState({
+                    clientType: ev.value,
+                    clientTypeLabel: ev.label,
+                  })}
+                  value={{ value: clientType, label: clientTypeLabel }}
+                  />
+              </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -336,6 +364,7 @@ class Clientes extends Component {
             <TableCell>Teléfono de Trabajo</TableCell>
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
+            <TableCell>Tipo</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
@@ -365,6 +394,9 @@ class Clientes extends Component {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {client.email}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {client.clientType}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
