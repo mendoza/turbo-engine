@@ -1,41 +1,54 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import validatorjs from "validator";
 import {
-  Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Grid, Snackbar, IconButton, Table, TableRow, TableHead, TableCell, TableBody
-} from '@material-ui/core';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import { withTracker } from 'meteor/react-meteor-data';
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Button,
+  Grid,
+  Snackbar,
+  IconButton,
+  Table,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+} from "@material-ui/core";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Empleados from '../../api/collections/Empleados/Empleados';
+import Empleados from "../../api/collections/Empleados/Empleados";
 
 class Empleado extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       showEmpleadoDialog: false,
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
-      snackbarText: '',
-      Nombre: '',
-      Apellido: '',
-      RTN: '',
-      Telefono: '',
-      email: '',
-    }
+      snackbarText: "",
+      Nombre: "",
+      Apellido: "",
+      RTN: "",
+      Telefono: "",
+      email: "",
+    };
   }
 
   handleTextInput = (event, stateName, validator) => {
     let error;
-    if (stateName === 'email') {
+    if (stateName === "email") {
       error = !validatorjs.isEmail(event.target.value);
       if (error) {
-        error = 'Correo no válido';
+        error = "Correo no válido";
       }
     }
     if (validator) {
-      if (validator(event.target.value) || event.target.value === '') {
+      if (validator(event.target.value) || event.target.value === "") {
         this.setState({
           [stateName]: event.target.value,
         });
@@ -46,13 +59,11 @@ class Empleado extends Component {
         emailError: error,
       });
     }
-  }
+  };
 
   handleCreateEmpleado = event => {
     event.preventDefault();
-    const {
-      Nombre, Apellido, RTN, Telefono, email, editId, emailError,
-    } = this.state;
+    const { Nombre, Apellido, RTN, Telefono, email, editId, emailError } = this.state;
     const newEmpleado = {
       _id: editId,
       nombre: Nombre,
@@ -63,53 +74,53 @@ class Empleado extends Component {
     };
     let methodName;
     if (editId) {
-      methodName = 'handleEditEmpleado';
+      methodName = "handleEditEmpleado";
     } else {
-      methodName = 'handleCreateEmpleado';
+      methodName = "handleCreateEmpleado";
     }
     if (emailError) {
       this.setState({
         showSnackbar: true,
-        snackbarText: 'Por favor llene el campo de Correo Electrónico',
+        snackbarText: "Por favor llene el campo de Correo Electrónico",
       });
     } else {
       Meteor.call(methodName, newEmpleado, error => {
         if (error) {
           this.setState({
             showSnackbar: true,
-            snackbarText: 'Ha ocurrido un error al intentar guardar el empleado'
+            snackbarText: "Ha ocurrido un error al intentar guardar el empleado",
           });
         } else {
           this.setState({
             showEmpleadoDialog: false,
-            Nombre: '',
-            Apellido: '',
-            RTN: '',
-            Telefono: '',
-            email: '',
+            Nombre: "",
+            Apellido: "",
+            RTN: "",
+            Telefono: "",
+            email: "",
           });
         }
       });
     }
-  }
+  };
 
   handleDeleteEmpleado = () => {
     const { editId } = this.state;
-    Meteor.call('handleDeleteEmpleado', editId, error => {
+    Meteor.call("handleDeleteEmpleado", editId, error => {
       if (error) {
         this.setState({
           showSnackbar: true,
-          snackbarText: 'Ha ocurrido un error al eliminar el empleado'
+          snackbarText: "Ha ocurrido un error al eliminar el empleado",
         });
       } else {
         this.setState({
           showDeleteDialog: false,
           showSnackbar: true,
-          snackbarText: 'Empleado eliminado exitosamente'
+          snackbarText: "Empleado eliminado exitosamente",
         });
       }
     });
-  }
+  };
 
   renderEmpleadoDialog = () => {
     const {
@@ -125,14 +136,15 @@ class Empleado extends Component {
     return (
       <Dialog
         open={showEmpleadoDialog}
-        onClose={() => { this.setState({ showEmpleadoDialog: false }) }}
+        onClose={() => {
+          this.setState({ showEmpleadoDialog: false });
+        }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
+        fullWidth>
         <form onSubmit={this.handleCreateEmpleado}>
           <DialogTitle id="form-dialog-title">
-            {editId ? 'Editar ' : 'Agregar '}
+            {editId ? "Editar " : "Agregar "}
             empleado
           </DialogTitle>
           <DialogContent>
@@ -141,73 +153,76 @@ class Empleado extends Component {
                 <TextField
                   label="Nombre"
                   onInput={event => {
-                    this.handleTextInput(event, 'Nombre', text => {
-                      return validatorjs.isAlpha(text, 'es-ES')
-                    })
+                    this.handleTextInput(event, "Nombre", text => {
+                      return validatorjs.isAlpha(text, "es-ES");
+                    });
                   }}
                   value={Nombre}
                   required
                   autoFocus
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Apellido"
                   onInput={event => {
-                    this.handleTextInput(event, 'Apellido', text => {
-                      return validatorjs.isAlpha(text, 'es-ES')
-                    })
+                    this.handleTextInput(event, "Apellido", text => {
+                      return validatorjs.isAlpha(text, "es-ES");
+                    });
                   }}
                   value={Apellido}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="RTN"
                   onInput={event => {
-                    this.handleTextInput(event, 'RTN', text => {
+                    this.handleTextInput(event, "RTN", text => {
                       return validatorjs.isNumeric(text, { no_symbols: true });
-                    })
+                    });
                   }}
                   value={RTN}
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Teléfono"
                   onInput={event => {
-                    this.handleTextInput(event, 'Telefono', text => {
+                    this.handleTextInput(event, "Telefono", text => {
                       return validatorjs.isNumeric(text, { no_symbols: true });
-                    })
+                    });
                   }}
                   value={Telefono}
                   fullWidth
                   required
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Correo Electrónico"
-                  onInput={event => { this.handleTextInput(event, 'email') }}
+                  onInput={event => {
+                    this.handleTextInput(event, "email");
+                  }}
                   value={email}
                   error={!!emailError}
-                  helperText={emailError || ''}
+                  helperText={emailError || ""}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={() => { this.setState({ showEmpleadoDialog: false }) }}
+              onClick={() => {
+                this.setState({ showEmpleadoDialog: false });
+              }}
               color="primary"
-              variant="contained"
-              >
+              variant="contained">
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
@@ -217,18 +232,19 @@ class Empleado extends Component {
         </form>
       </Dialog>
     );
-  }
+  };
 
   renderDeleteDialog = () => {
     const { showDeleteDialog } = this.state;
     return (
       <Dialog
         open={showDeleteDialog}
-        onClose={() => { this.setState({ showDeleteDialog: false }) }}
+        onClose={() => {
+          this.setState({ showDeleteDialog: false });
+        }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth
-        >
+        fullWidth>
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este empleado?
         </DialogTitle>
@@ -241,10 +257,11 @@ class Empleado extends Component {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={() => { this.setState({ showDeleteDialog: false }) }}
+            onClick={() => {
+              this.setState({ showDeleteDialog: false });
+            }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteEmpleado}>
@@ -253,7 +270,7 @@ class Empleado extends Component {
         </DialogActions>
       </Dialog>
     );
-  }
+  };
 
   renderEmpleadoTable = () => {
     const { empleados } = this.props;
@@ -303,11 +320,10 @@ class Empleado extends Component {
                               Apellido: empleado.apellido,
                               RTN: empleado.rtn,
                               Telefono: empleado.telefono,
-                              email: empleado.email
+                              email: empleado.email,
                             });
                           }}
-                          aria-label="centered"
-                          >
+                          aria-label="centered">
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -317,9 +333,8 @@ class Empleado extends Component {
                             this.setState({
                               editId: empleado._id,
                               showDeleteDialog: true,
-                            })
-                          }}
-                          >
+                            });
+                          }}>
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -333,7 +348,7 @@ class Empleado extends Component {
         </TableBody>
       </Table>
     );
-  }
+  };
 
   renderSnackbar = () => {
     const { showSnackbar, snackbarText } = this.state;
@@ -345,9 +360,9 @@ class Empleado extends Component {
         }}
         open={showSnackbar}
         autoHideDuration={6000}
-        onClose={
-          () => { this.setState({ showSnackbar: false }) }
-        }
+        onClose={() => {
+          this.setState({ showSnackbar: false });
+        }}
         ContentProps={{
           "aria-describedby": "message-id",
         }}
@@ -357,25 +372,27 @@ class Empleado extends Component {
             key="close"
             aria-label="close"
             color="inherit"
-            onClick={() => { this.setState({ showSnackbar: false }) }}
-            >
+            onClick={() => {
+              this.setState({ showSnackbar: false });
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
-  }
+  };
 
   render() {
     return (
-      <DashboardLayout style={{ height: '100vh' }}>
+      <DashboardLayout style={{ height: "100vh" }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Button
               variant="contained"
               color="primary"
-              onClick={() => { this.setState({ showEmpleadoDialog: true, editId: undefined }) }}
-              >
+              onClick={() => {
+                this.setState({ showEmpleadoDialog: true, editId: undefined });
+              }}>
               Agregar Empleado
             </Button>
           </Grid>
@@ -387,14 +404,14 @@ class Empleado extends Component {
         {this.renderSnackbar()}
         {this.renderDeleteDialog()}
       </DashboardLayout>
-    )
+    );
   }
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('empleados.all');
+  Meteor.subscribe("empleados.all");
   const empleados = Empleados.find().fetch();
   return {
     empleados: empleados && empleados.reverse(),
-  }
+  };
 })(Empleado);

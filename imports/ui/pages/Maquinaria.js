@@ -20,7 +20,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Maquina from "../../api/collections/Maquina/Maquina";
+import Maquinas from "../../api/collections/Maquinas/Maquinas";
 
 class Maquinaria extends Component {
   constructor(props) {
@@ -29,27 +29,29 @@ class Maquinaria extends Component {
       showMaquinariaDialog: false,
       showSnackbar: false,
       showDeleteDialog: false,
-      editId: undefined,
       snackbarText: "",
-      open: false,
-      message: "",
+
+      editId: undefined,
       Tipo: "",
       Marca: "",
       Cantidad: "",
-      Especificaciones: "",
+      Descripcion: "",
     };
   }
 
-  handleTextInput = (event, stateName ) => {
+  // Acá es donde tiene que haber máscara para cantidad
+  // También mascara para cuando estén vacios
+  handleTextInput = (event, stateName) => {
     let error;
-    if (stateName === 'cantidad') {
+    if (stateName === "cantidad") {
+      // Acá meron
       error = !validatorjs.isNumeric(event.target.value);
       if (error) {
-        error = 'cantidad no válida';
+        error = "cantidad no válida";
       }
     }
     if (validator) {
-      if (validator(event.target.value) || event.target.value === '') {
+      if (validator(event.target.value) || event.target.value === "") {
         this.setState({
           [stateName]: event.target.value,
         });
@@ -57,25 +59,37 @@ class Maquinaria extends Component {
     } else {
       this.setState({
         [stateName]: event.target.value,
+        cantidadError: error
       });
     }
   };
-/*
+
+  /* Se crea el nuevo objeto máquina */
   handleCreateMaquina = event => {
     event.preventDefault();
-    const { Tipo, Marca, Cantidad, Especificaciones, cantidadError } = this.state;
+    const { Tipo, Marca, Cantidad, Descripcion, editId, cantidadError } = this.state;
     const newMaquina = {
+      _id: editId,
       tipo: Tipo,
       marca: Marca,
       cantidad: Cantidad,
-      especificaciones: Especificaciones,
+      descripcion: Descripcion,
     };
     let methodName;
-    if (Meteor.call("")) {
-      methodName = "editMaquina";
+    if (editId) {
+      methodName = "handleEditMaquina";
     } else {
-      methodName = "addMaquina";
+      methodName = "handleCreateMaquina";
     }
+    
+      /*
+      if (Meteor.call("")) {
+        methodName = "editMaquina";
+      } else {
+        methodName = "addMaquina";
+      }
+    */
+
     if (cantidadError) {
       this.setState({
         showSnackbar: true,
@@ -93,15 +107,15 @@ class Maquinaria extends Component {
             Tipo: "",
             Marca: "",
             Cantidad: "",
-            Especificaciones: "",
+            Descripcion: "",
             showMaquinariaDialog: false,
           });
         }
       });
     }
   };
-*/
 
+  /*
   handleCreateMaquina = () => {
     const { Tipo, Marca, Cantidad, Especificaciones} = this.state;
     let alert;
@@ -134,6 +148,7 @@ class Maquinaria extends Component {
       );
     }
   };
+*/
 
   handleDeleteMaquina = () => {
     const { editId } = this.state;
@@ -154,8 +169,7 @@ class Maquinaria extends Component {
   };
 
   renderMaquinaDialog = () => {
-    const { showMaquinariaDialog, Tipo, Marca, Cantidad, Especificaciones, editId, open, message 
-    } = this.state;
+    const { showMaquinariaDialog, Tipo, Marca, Cantidad, Descripcion, editId } = this.state;
     return (
       <Dialog
         open={showMaquinariaDialog}
@@ -164,8 +178,7 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
+        fullWidth>
         <form onSubmit={this.handleCreateMaquina}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
@@ -176,38 +189,64 @@ class Maquinaria extends Component {
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Tipo"
+                  onInput={event => {
+                    this.handleTextInput(event, "Tipo", text => {
+                      return validatorjs.isAlpha(text, "es-ES");
+                    });
+                  }}
+                  value={Tipo}
+                  required
+                  autoFocus
+                  fullWidth
+                />
+              </Grid>
+              {/*<Grid item xs={12} md={6}>
+                <TextField
+                  label="Tipo"
                   onInput={event => this.handleTextInput(event, "Tipo")}
                   value={Tipo}
                   required
                   autoFocus
                   fullWidth
-                  />
-              </Grid>
+                />
+                </Grid>*/}
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Marca"
-                  onInput={event => this.handleTextInput(event, "Marca")}
+                  onInput={event => {
+                    this.handleTextInput(event, "Marca", text => {
+                      return validatorjs.isAlpha(text, "es-ES");
+                    });
+                  }}
                   value={Marca}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Cantidad"
-                  onInput={event => this.handleTextInput(event, "Cantidad")}
+                  onInput={event => {
+                    this.handleTextInput(event, "Cantidad", text => {
+                      return validatorjs.isNumeric(text, { no_symbols: true });
+                    });
+                  }}
                   value={Cantidad}
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Especificaciones"
-                  onInput={event => this.handleTextInput(event, "Especificaciones")}
-                  value={Especificaciones}
+                  label="Descripción"
+                  onInput={event => {
+                    this.handleTextInput(event, "Descripcion", text => {
+                      return validatorjs.isAlpha(text, "es-ES");
+                    });
+                  }}
+                  value={Descripcion}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
             </Grid>
           </DialogContent>
@@ -217,15 +256,10 @@ class Maquinaria extends Component {
                 this.setState({ showMaquinariaDialog: false });
               }}
               color="primary"
-              variant="contained"
-              >
+              variant="contained">
               Cancelar
             </Button>
-            <Button 
-              color="primary" 
-              variant="contained" 
-              onClick={this.handleCreateMaquina}
-              >
+            <Button color="primary" variant="contained" onClick={this.handleCreateMaquina}>
               Guardar
             </Button>
           </DialogActions>
@@ -244,8 +278,7 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth
-        >
+        fullWidth>
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este elemento?
         </DialogTitle>
@@ -262,8 +295,7 @@ class Maquinaria extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteMaquina}>
@@ -275,7 +307,7 @@ class Maquinaria extends Component {
   };
 
   renderMaquinaTable = () => {
-    const { maquinaria } = this.props;
+    const { maquinas } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -283,11 +315,11 @@ class Maquinaria extends Component {
             <TableCell>Tipo</TableCell>
             <TableCell>Marca</TableCell>
             <TableCell>Cantidad</TableCell>
-            <TableCell>Especificaciones</TableCell>
+            <TableCell>Descripción</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {maquinaria.map(maquina => {
+          {maquinas.map(maquina => {
             if (maquina) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -316,11 +348,10 @@ class Maquinaria extends Component {
                               Tipo: maquina.tipo,
                               Marca: maquina.marca,
                               Cantidad: maquina.cantidad,
-                              Especificaciones: maquina.especificaciones,
+                              Descripcion: maquina.descripcion,
                             });
                           }}
-                          aria-label="centered"
-                          >
+                          aria-label="centered">
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -331,8 +362,7 @@ class Maquinaria extends Component {
                               editId: maquina._id,
                               showDeleteDialog: true,
                             });
-                          }}
-                          >
+                          }}>
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -372,12 +402,11 @@ class Maquinaria extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}
-            >
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
   };
 
@@ -391,8 +420,7 @@ class Maquinaria extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showMaquinariaDialog: true, editId: undefined });
-              }}
-              >
+              }}>
               Agregar Elemento
             </Button>
           </Grid>
@@ -409,9 +437,9 @@ class Maquinaria extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe("maquinaria.all");
-  const maquinaria = Maquina.find().fetch();
+  Meteor.subscribe("maquinas.all");
+  const maquinas = Maquinas.find().fetch();
   return {
-    maquinaria: maquinaria && maquinaria.reverse(),
+    maquinas: maquinas && maquinas.reverse(),
   };
 })(Maquinaria);
