@@ -8,6 +8,8 @@ import "../imports/api/collections/Usuarios/methods";
 import "../imports/api/collections/Piezas/methods";
 import "../imports/api/collections/Autos/methods";
 import "../imports/api/collections/AutosFiles/publications";
+import "../imports/api/collections/Encuestas/Encuestas";
+import "../imports/api/collections/Encuestas/methods";
 
 Meteor.startup(() => {
   if (Empresa.find().count() === 0) {

@@ -159,7 +159,7 @@ export default function Encuestilla() {
       {ended ? (
         <Box>
           <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
-            Muchas gracias por haber finalizado la encuesta de satisfacción
+            ¡Muchas gracias por haber finalizado la encuesta de satisfacción!
           </Typography>
         </Box>
       ) : (
@@ -179,7 +179,6 @@ export default function Encuestilla() {
                         className={Score === index ? classes.cardHeaderSuccess : classes.cardHeader}
                         action={Score === index ? (
                           <Checkbox
-                            color="white"
                             disableRipple
                             checked
                             style={{ color: 'white' }}
