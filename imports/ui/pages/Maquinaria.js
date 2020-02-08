@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { validator, validatorjs } from "validator";
+import validator from "validator";
 import {
   Dialog,
   DialogTitle,
@@ -25,6 +25,7 @@ import Maquinas from "../../api/collections/Maquinas/Maquinas";
 class Maquinaria extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       showMaquinariaDialog: false,
       showSnackbar: false,
@@ -46,13 +47,13 @@ class Maquinaria extends Component {
 
     if (stateName === "cantidad") {
       // Acá meron
-      error = !validatorjs.isNumeric(event.target.value);
+      error = !validator.isNumeric(event.target.value);
       if (error) {
         error = "cantidad no válida";
       }
     }
-    if (validator) {
-      if (validator(event.target.value) || event.target.value === "") {
+    if (error) {
+      if (validator.isEmpty(event.target.value) || event.target.value === "") {
         this.setState({
           [stateName]: event.target.value,
         });
@@ -210,7 +211,7 @@ class Maquinaria extends Component {
                   label="Tipo"
                   onInput={event => {
                     this.handleTextInput(event, "Tipo", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
                   value={Tipo}
@@ -224,7 +225,7 @@ class Maquinaria extends Component {
                   label="Marca"
                   onInput={event => {
                     this.handleTextInput(event, "Marca", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
                   value={Marca}
@@ -237,7 +238,7 @@ class Maquinaria extends Component {
                   label="Cantidad"
                   onInput={event => {
                     this.handleTextInput(event, "Cantidad", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                      return validator.isNumeric(text, { no_symbols: true });
                     });
                   }}
                   value={Cantidad}
@@ -249,7 +250,7 @@ class Maquinaria extends Component {
                   label="Descripción"
                   onInput={event => {
                     this.handleTextInput(event, "Descripcion", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
                   value={Descripcion}
