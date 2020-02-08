@@ -112,8 +112,9 @@ export const Routes = [
     path: "/factura",
     name: "Checkout",
     component: Checkout,
-  },{
-    pathName: "/maquinaria",
+  },
+  {
+    path: "/maquinaria",
     name: "Maquinaria ",
     component: Maquinaria,
   },

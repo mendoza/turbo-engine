@@ -281,7 +281,7 @@ class CreateAutos extends PureComponent {
               this.setState({ showX: false });
             }}
             action3={() => {}}
-          />
+            />
         </Grid>
       );
     };
@@ -303,14 +303,8 @@ class CreateAutos extends PureComponent {
                   <Select
                     fullWidth
                     value={marca}
-                    name="marca"
-                    onChange={handleTextChange}
-                    label="Marca"
-                    variant="outlined">
-                    {nombresMarcas.map((dato, index) => {
-                      return <MenuItem value={index}>{dato}</MenuItem>;
-                    })}
-                  </Select>
+                    onInput={handleTextChange}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -322,7 +316,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={modelo}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -334,7 +328,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={tipo}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Select
@@ -342,7 +336,8 @@ class CreateAutos extends PureComponent {
                     name="transmision"
                     value={transmision}
                     onChange={handleTextChange}
-                    variant="outlined">
+                    variant="outlined"
+                    >
                     {Transmision.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -358,7 +353,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={color}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <MaskedTextField
@@ -367,7 +362,7 @@ class CreateAutos extends PureComponent {
                     name="placa"
                     onChange={handleTextChange}
                     label="Placa"
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Select
@@ -375,7 +370,8 @@ class CreateAutos extends PureComponent {
                     name="traccion"
                     value={traccion}
                     onChange={handleTextChange}
-                    variant="outlined">
+                    variant="outlined"
+                    >
                     {Traccion.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -388,7 +384,7 @@ class CreateAutos extends PureComponent {
                     name="year"
                     onChange={handleTextChange}
                     label="Año"
-                  />
+                    />
                 </Grid>
                 <Grid item sm={12}>
                   <Select
@@ -396,7 +392,8 @@ class CreateAutos extends PureComponent {
                     name="estado"
                     value={estado}
                     onChange={handleTextChange}
-                    variant="outlined">
+                    variant="outlined"
+                    >
                     {Estados.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -427,7 +424,7 @@ class CreateAutos extends PureComponent {
                     name="vin"
                     onChange={handleTextChange}
                     label="VIN"
-                  />
+                    />
                 </Grid>
               </Grid>
               <Box paddingY="1rem">
@@ -440,7 +437,8 @@ class CreateAutos extends PureComponent {
                   this.setState({
                     shouldOpen: true,
                   });
-                }}>
+                }}
+                >
                 Agregar piezas
               </Button>
               <Dialog fullScreen open={shouldOpen} onClose={this.handleClose}>
@@ -450,7 +448,8 @@ class CreateAutos extends PureComponent {
                       edge="start"
                       color="inherit"
                       onClick={this.handleClose}
-                      aria-label="close">
+                      aria-label="close"
+                      >
                       <i className="fas fa-times-circle" />
                     </IconButton>
                     <Typography variant="h6">Piezas</Typography>
@@ -486,7 +485,8 @@ class CreateAutos extends PureComponent {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleCreate}>
+                onClick={handleCreate}
+                >
                 Crear
               </Button>
             </form>
@@ -509,7 +509,7 @@ class CreateAutos extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }

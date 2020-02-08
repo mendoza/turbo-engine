@@ -14,6 +14,8 @@ import "../imports/api/collections/Cliente/pubications";
 import "../imports/api/collections/Cliente/methods";
 import "../imports/api/collections/Empleados/publications";
 import "../imports/api/collections/Empleados/methods";
+import "../imports/api/collections/Maquinas/methods"
+import "../imports/api/collections/Maquinas/publications"
 
 Meteor.startup(() => {
   if (Empresa.find().count() === 0) {

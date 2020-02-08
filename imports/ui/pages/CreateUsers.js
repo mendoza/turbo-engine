@@ -119,7 +119,7 @@ class CreateUsers extends React.Component {
                     autoFocus
                     value={nombre}
                     onInput={event => this.handleTextChange(event, "nombre")}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -132,7 +132,7 @@ class CreateUsers extends React.Component {
                     autoComplete="lname"
                     value={apellido}
                     onInput={event => this.handleTextChange(event, "apellido")}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -145,7 +145,7 @@ class CreateUsers extends React.Component {
                     autoComplete="email"
                     value={correo}
                     onInput={event => this.handleTextChange(event, "correo")}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -159,7 +159,7 @@ class CreateUsers extends React.Component {
                     autoComplete="current-password"
                     value={password}
                     onInput={event => this.handleTextChange(event, "password")}
-                  />
+                    />
                 </Grid>
               </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={this.handleCreate}>
@@ -186,7 +186,7 @@ class CreateUsers extends React.Component {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }
