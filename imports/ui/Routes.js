@@ -19,7 +19,6 @@ import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
 import Checkout from "./pages/Checkout";
-import Maquinaria from "./pages/Maquinaria";
 
 export const Routes = [
   {
@@ -128,11 +127,11 @@ export const Routes = [
     name: "ActualizarT ",
     component: UpdateTypes,
   },
-  // {
-  //   path: "/factura",
-  //   name: "Checkout",
-  //   component: Checkout,
-  // },
+  {
+     path: "/factura",
+     name: "Checkout",
+     component: Checkout,
+   },
   {
     path: "/maquinaria",
     name: "Maquinaria ",
@@ -193,6 +192,12 @@ export const dashboardRoutes = [
     pathName: "/maquinaria",
     name: "Maquinaria",
     icon: "fas fa-cogs",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/factura",
+    name: "Factura",
+    icon: "fas fa-receipt",
     permission: "superAdmin",
   },
 ];
