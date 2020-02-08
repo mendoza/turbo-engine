@@ -104,6 +104,7 @@ export const Routes = [
     path: "/Encuesta",
     name: "Encuesta",
     component: Encuesta,
+    permission: 'none',
   },
 ];
 

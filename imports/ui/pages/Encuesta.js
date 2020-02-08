@@ -125,6 +125,15 @@ export default function Encuestilla() {
   const classes = useStyles();
   const [Score, setScore] = useState(1);
   const [Comment, setComment] = useState('');
+  const [ended, setEnded] = useState(false);
+
+  const insertEncuesta = () => {
+    Meteor.call('insertEncuesta', { score: Score, comment: Comment }, err => {
+      if (!err) {
+        setEnded(true);
+      }
+    })
+  }
   return (
     <>
       <CssBaseline />
@@ -137,7 +146,6 @@ export default function Encuestilla() {
           </nav>
         </Toolbar>
       </AppBar>
-      {/* Hero unit */}
       <Container component="main" className={classes.heroContent}>
         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
           Encuesta de Calificación de nuestros servicios
@@ -148,75 +156,88 @@ export default function Encuestilla() {
           nuestro servicio.
         </Typography>
       </Container>
-      {/* End hero unit */}
-
-      <Container component="main">
-        <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier, index) => (
-            // Enterprise card is full width at sm breakpoint
-            <Grid item key={tier.title} xs={12} md={4}>
-              <ButtonBase style={{ width: '100%' }} onClick={() => setScore(index)}>
-                <Card style={{ width: '100%' }}>
-                  <CardHeader
-                    title={tier.title}
-                    subheader={tier.subheader}
-                    titleTypographyProps={{ align: "center" }}
-                    subheaderTypographyProps={{ align: "center" }}
-                    className={Score === index ? classes.cardHeaderSuccess : classes.cardHeader}
-                    action={Score === index ? (
-                      <Checkbox
-                        color="white"
-                        disableRipple
-                        checked
-                        style={{ color: 'white' }}
-                        />
-                    ) : <></>}
-                    />
-                  <CardContent>
-                    <ul>
-                      {tier.description.map(line => (
-                        <Typography component="li" variant="subtitle1" align="center" key={line}>
-                          {line}
-                        </Typography>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </ButtonBase>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-
-      <Container>
-        <Box margin="2rem">
-          <Grid container spacing={5} className={classes.acceptButton}>
-            <FormControl fullWidth className={classes.margin}>
-              <InputLabel htmlFor="standard-adornment-amount">
-                Espacio para sugerencias y comentarios
-              </InputLabel>
-              <Input
-                id="standard-adornment-amount"
-                multiline
-                onInput={input => setComment(input.target.value)}
-                />
-              {Comment}
-            </FormControl>
-          </Grid>
-
-          <Grid container spacing={5} className={classes.acceptButton}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              >
-              Finalizar Encuesta
-            </Button>
-          </Grid>
+      {ended ? (
+        <Box>
+          <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
+            Muchas gracias por haber finalizado la encuesta de satisfacción
+          </Typography>
         </Box>
-      </Container>
+      ) : (
+        <>
+          <Container component="main">
+            <Grid container spacing={5} alignItems="flex-end">
+              {tiers.map((tier, index) => (
+                  // Enterprise card is full width at sm breakpoint
+                <Grid item key={tier.title} xs={12} md={4}>
+                  <ButtonBase style={{ width: '100%' }} onClick={() => setScore(index)}>
+                    <Card style={{ width: '100%' }}>
+                      <CardHeader
+                        title={tier.title}
+                        subheader={tier.subheader}
+                        titleTypographyProps={{ align: "center" }}
+                        subheaderTypographyProps={{ align: "center" }}
+                        className={Score === index ? classes.cardHeaderSuccess : classes.cardHeader}
+                        action={Score === index ? (
+                          <Checkbox
+                            color="white"
+                            disableRipple
+                            checked
+                            style={{ color: 'white' }}
+                            />
+                          ) : <></>}
+                        />
+                      <CardContent>
+                        <ul>
+                          {tier.description.map(line => (
+                            <Typography
+                              component="li"
+                              variant="subtitle1"
+                              align="center"
+                              key={line}
+                              >
+                              {line}
+                            </Typography>
+                            ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  </ButtonBase>
+                </Grid>
+                ))}
+            </Grid>
+          </Container>
+
+          <Container>
+            <Box margin="2rem">
+              <Grid container spacing={5} className={classes.acceptButton}>
+                <FormControl fullWidth className={classes.margin}>
+                  <InputLabel htmlFor="standard-adornment-amount">
+                      Espacio para sugerencias y comentarios
+                  </InputLabel>
+                  <Input
+                    id="standard-adornment-amount"
+                    multiline
+                    onInput={input => setComment(input.target.value)}
+                    />
+                </FormControl>
+              </Grid>
+
+              <Grid container spacing={5} className={classes.acceptButton}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={insertEncuesta}
+                  >
+                    Finalizar Encuesta
+                </Button>
+              </Grid>
+            </Box>
+          </Container>
+        </>
+        )}
 
       {/* Footer */}
       <Container maxWidth="md" component="footer" className={classes.footer}>

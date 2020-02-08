@@ -50,6 +50,9 @@ class Index extends PureComponent {
       <BrowserRouter>
         <Switch>
           {Routes.map(route => {
+            if (route.permission === "none") {
+              return <Route exact key={route.name} path={route.path} component={route.component} />;
+            }
             if (route.permission === "superAdmin") {
               return isSuperAdmin(route);
             }
