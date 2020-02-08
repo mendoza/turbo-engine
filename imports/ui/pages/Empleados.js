@@ -203,7 +203,7 @@ class Empleado extends Component {
                   }}
                   value={Telefono}
                   fullWidth
-                  required
+                  //required
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -215,7 +215,7 @@ class Empleado extends Component {
                   value={email}
                   error={!!emailError}
                   helperText={emailError || ""}
-                  required
+                  //required
                   fullWidth
                 />
               </Grid>
