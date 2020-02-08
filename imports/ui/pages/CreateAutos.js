@@ -154,7 +154,7 @@ class CreateAutos extends PureComponent {
     const handleCreate = () => {
       const { files } = this.state;
       let alert;
-      if (validator.isEmpty(nombresMarcas[marca])) {
+      if (validator.isEmpty(marca)) {
         alert = "El campo marca es requerido";
       }
 
@@ -303,8 +303,14 @@ class CreateAutos extends PureComponent {
                   <Select
                     fullWidth
                     value={marca}
-                    onInput={handleTextChange}
-                    />
+                    name="marca"
+                    onChange={handleTextChange}
+                    label="Marca"
+                    variant="outlined">
+                    {nombresMarcas.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField

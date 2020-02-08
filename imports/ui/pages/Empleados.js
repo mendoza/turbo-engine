@@ -88,7 +88,7 @@ class Empleado extends Component {
         if (error) {
           this.setState({
             showSnackbar: true,
-            snackbarText: "Ha ocurrido un error al intentar guardar el empleado",
+            snackbarText: 'Ha ocurrido un error al intentar guardar el empleado'
           });
         } else if (received) {
             this.setState({

@@ -17,6 +17,7 @@ import Encuesta from "./pages/Encuesta"
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
+import Maquinaria from "./pages/Maquinaria";
 import Checkout from "./pages/Checkout";
 import Maquinaria from "./pages/Maquinaria";
 
@@ -114,7 +115,7 @@ export const Routes = [
   {
     path: "/clientes",
     name: "Clientes",
-    component: Clientes
+    component: Clientes,
   },
   {
     path: "/empleados",
@@ -127,11 +128,11 @@ export const Routes = [
     name: "ActualizarT ",
     component: UpdateTypes,
   },
-  {
-    path: "/factura",
-    name: "Checkout",
-    component: Checkout,
-  },
+  // {
+  //   path: "/factura",
+  //   name: "Checkout",
+  //   component: Checkout,
+  // },
   {
     path: "/maquinaria",
     name: "Maquinaria ",
@@ -143,7 +144,7 @@ export const dashboardRoutes = [
   {
     pathName: "/",
     name: "Inicio",
-    icon: "fas fa-tachometer-alt"
+    icon: "fas fa-tachometer-alt",
   },
   {
     pathName: "/listarUsuarios",
@@ -173,14 +174,14 @@ export const dashboardRoutes = [
     pathName: "/clientes",
     name: "Clientes",
     icon: "fas fa-user-tie",
-    component: Clientes
+    component: Clientes,
   },
   {
     pathName: "/empleados",
     name: "Empleados",
     icon: "fas fa-people-carry",
     permission: "superAdmin",
-    component: Clientes
+    component: Clientes,
   },
   {
     pathName: "/restablecerContra",

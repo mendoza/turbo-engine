@@ -757,6 +757,43 @@ class AutosPage extends PureComponent {
                   }
                 })}
             </Grid>
+            <Title>Piezas: </Title>
+            <Grid containers>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="right">Marca</TableCell>
+                    <TableCell align="right">Vendedor</TableCell>
+                    <TableCell align="right">Tipo</TableCell>
+                    <TableCell align="right">Número de serie</TableCell>
+                    <TableCell align="right">Cantidad</TableCell>
+                    <TableCell align="right">Precio</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dialogCar &&
+                    dialogCar.piezas &&
+                    dialogCar.piezas.map(pieza => {
+                      try {
+                        return (
+                          <TableRow key={pieza.marca}>
+                            <TableCell component="th" scope="row">
+                              {pieza.marca}
+                            </TableCell>
+                            <TableCell align="right">{pieza.vendedor}</TableCell>
+                            <TableCell align="right">{pieza.tipo}</TableCell>
+                            <TableCell align="right">{pieza.numeroDeSerie}</TableCell>
+                            <TableCell align="right">{pieza.cantidad}</TableCell>
+                            <TableCell align="right">{pieza.precio}</TableCell>
+                          </TableRow>
+                        );
+                      } catch (error) {
+                        return undefined;
+                      }
+                    })}
+                </TableBody>
+              </Table>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseFullDialog} color="primary">
