@@ -459,7 +459,7 @@ class CreateAutos extends PureComponent {
                   </Toolbar>
                 </AppBar>
                 <DialogContent container>
-                  <Title>Piezas Disponibles</Title>
+                  <Title>  </Title>
                   <Grid container spacing={4}>
                     {piezas.map((pieza, index) =>
                       pieza.cantidad > 0
