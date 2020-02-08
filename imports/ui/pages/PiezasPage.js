@@ -22,7 +22,7 @@ import {
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { withTracker } from "meteor/react-meteor-data";
-import validator from "validator";
+import { validator, validatorjs } from "validator";
 import Piezas from "../../api/collections/Piezas/Piezas";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
@@ -66,6 +66,7 @@ class PiezasPage extends PureComponent {
     super(props);
     this.state = {
       shouldRender: false,
+      showPiezasDialog: false,
       dialogPiece: {},
       marca: "",
       vendedor: "",
@@ -184,6 +185,46 @@ class PiezasPage extends PureComponent {
       });
     }
   };
+
+  renderPiezasDialog = () => {
+    const {
+      showPiezasDialog,
+      marca,
+      /*
+      vendedor,
+      precio,
+      numeroDeSerie,
+      tipo,
+      cantidad,
+      dialogPiece,
+      */
+    } = this.state;
+    return (
+      <Dialog
+        open={showPiezasDialog}
+        onClose={() => { this.setState({ showPiezasDialog: false }) }}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth
+      >
+        <form>
+          <Grid>
+            <TextField
+              label="Marca"
+              onInput={event => {
+                this.handleTextInput(event, 'marca', text => {
+                  return validatorjs.isAlpha(text, 'es-ES')
+                })
+              }}
+              value={marca}
+              required
+              fullWidth
+            />
+          </Grid>
+        </form>
+      </Dialog>
+    );
+  }
 
   render() {
     const { classes, piezas, tipos } = this.props;
