@@ -1,28 +1,28 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import AddressForm from "./AddressForm";
+import PaymentForm from "./PaymentForm";
+import Review from "./Review";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    position: 'relative',
+    position: "relative",
   },
   layout: {
-    width: 'auto',
+    width: "auto",
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto',
+      marginLeft: "auto",
+      marginRight: "auto",
     },
   },
   paper: {
@@ -39,8 +39,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 0, 5),
   },
   buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end",
   },
   button: {
     marginTop: theme.spacing(3),
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const steps = ['Direccion de Envio', 'Detalles de Pago', 'Revision de Orden'];
+const steps = ["Direccion de Envio", "Detalles de Pago", "Revision de Orden"];
 
 function getStepContent(step) {
   switch (step) {
@@ -59,7 +59,7 @@ function getStepContent(step) {
     case 2:
       return <Review />;
     default:
-      throw new Error('Unknown step');
+      throw new Error("Unknown step");
   }
 }
 
@@ -76,56 +76,52 @@ export default function Checkout() {
   };
 
   return (
-    <>
-      <DashboardLayout>
-        <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h4" align="center">
-              Checkout
-            </Typography>
-            <Stepper activeStep={activeStep} className={classes.stepper}>
-              {steps.map(label => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            <>
-              {activeStep === steps.length ? (
-                <>
-                  <Typography variant="h5" gutterBottom>
-                    Gracias por su pedido
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    EL numero de su orden es el #2001539.
-                  </Typography>
-                </>
-              ) : (
-                  // eslint-disable-next-line react/jsx-indent
-                  <>
-                    {getStepContent(activeStep)}
-                    <div className={classes.buttons}>
-                      {activeStep !== 0 && (
-                        <Button onClick={handleBack} className={classes.button}>
-                          Atras
-                        </Button>
-                      )}
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleNext}
-                        className={classes.button} 
-                      // eslint-disable-next-line react/jsx-closing-bracket-location
-                      >
-                        {activeStep === steps.length - 1 ? 'Guardar Datos' : 'Siguiente'}
-                      </Button>
-                    </div>
-                  </>
-                )}
-            </>
-          </Paper>
-        </main>
-      </DashboardLayout>
-    </>
+    <DashboardLayout>
+      <main className={classes.layout}>
+        <Paper className={classes.paper}>
+          <Typography component="h1" variant="h4" align="center">
+            Checkout
+          </Typography>
+          <Stepper activeStep={activeStep} className={classes.stepper}>
+            {steps.map(label => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <>
+            {activeStep === steps.length ? (
+              <>
+                <Typography variant="h5" gutterBottom>
+                  Gracias por su pedido
+                </Typography>
+                <Typography variant="subtitle1">EL numero de su orden es el #2001539.</Typography>
+              </>
+            ) : (
+              // eslint-disable-next-line react/jsx-indent
+              <>
+                {getStepContent(activeStep)}
+                <div className={classes.buttons}>
+                  {activeStep !== 0 && (
+                    <Button onClick={handleBack} className={classes.button}>
+                      Atras
+                    </Button>
+                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                    // eslint-disable-next-line react/jsx-closing-bracket-location
+                  >
+                    {activeStep === steps.length - 1 ? "Guardar Datos" : "Siguiente"}
+                  </Button>
+                </div>
+              </>
+            )}
+          </>
+        </Paper>
+      </main>
+    </DashboardLayout>
   );
 }
