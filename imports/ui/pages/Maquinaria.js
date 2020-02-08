@@ -43,6 +43,7 @@ class Maquinaria extends Component {
   // También mascara para cuando estén vacios
   handleTextInput = (event, stateName) => {
     let error;
+
     if (stateName === "cantidad") {
       // Acá meron
       error = !validatorjs.isNumeric(event.target.value);
@@ -76,6 +77,7 @@ class Maquinaria extends Component {
       descripcion: Descripcion,
     };
     let methodName;
+    let error;
     if (editId) {
       methodName = "editMaquina";
     } else {
@@ -87,8 +89,25 @@ class Maquinaria extends Component {
         snackbarText: "Por favor ingrese una cantidad correcta",
       });
     } else {
-      Meteor.call(methodName, newMaquina, error => {
-        if (error) {
+      if (validator.isEmpty(Tipo)) {
+        error = "El campo Tipo es requerido";
+      }
+      if (validator.isEmpty(Marca)) {
+        error = "El campo Marca es requerido";
+      }
+      if (validator.isEmpty(Cantidad)) {
+        error = "El campo Cantidad es requerido";
+      }
+      if (validator.isEmpty(Descripcion)) {
+        error = "El campo Descripción es requerido";
+      }
+      if (!validator.isNumeric(Cantidad)) {
+        error = "El campo cantidad solo debe contener números";
+      } else if (Cantidad < 1) {
+        error = "La cantidad no puede ser cero o un número negativo";
+      }
+      Meteor.call(methodName, newMaquina, err => {
+        if (err) {
           this.setState({
             showSnackbar: true,
             snackbarText: "Ha ocurrido un error al intentar guardar el elemento",
@@ -169,7 +188,8 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <form onSubmit={this.handleCreateMaquina}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
@@ -189,18 +209,8 @@ class Maquinaria extends Component {
                   required
                   autoFocus
                   fullWidth
-                />
+                  />
               </Grid>
-              {/*<Grid item xs={12} md={6}>
-                <TextField
-                  label="Tipo"
-                  onInput={event => this.handleTextInput(event, "Tipo")}
-                  value={Tipo}
-                  required
-                  autoFocus
-                  fullWidth
-                />
-                </Grid>*/}
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Marca"
@@ -212,7 +222,7 @@ class Maquinaria extends Component {
                   value={Marca}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -224,7 +234,7 @@ class Maquinaria extends Component {
                   }}
                   value={Cantidad}
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -237,7 +247,7 @@ class Maquinaria extends Component {
                   value={Descripcion}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
             </Grid>
           </DialogContent>
@@ -247,10 +257,15 @@ class Maquinaria extends Component {
                 this.setState({ showMaquinariaDialog: false });
               }}
               color="primary"
-              variant="contained">
+              variant="contained"
+              >
               Cancelar
             </Button>
-            <Button color="primary" variant="contained" onClick={this.handleCreateMaquina}>
+            <Button 
+              color="primary" 
+              variant="contained" 
+              onClick={this.handleCreateMaquina}
+              >
               Guardar
             </Button>
           </DialogActions>
@@ -269,7 +284,8 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este elemento?
         </DialogTitle>
@@ -286,7 +302,8 @@ class Maquinaria extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteMaquina}>
@@ -342,7 +359,8 @@ class Maquinaria extends Component {
                               Descripcion: maquina.descripcion,
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -353,7 +371,8 @@ class Maquinaria extends Component {
                               editId: maquina._id,
                               showDeleteDialog: true,
                             });
-                          }}>
+                          }}
+                          >
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -393,11 +412,12 @@ class Maquinaria extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}>
+            }}
+            >
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-      />
+        />
     );
   };
 
@@ -411,7 +431,8 @@ class Maquinaria extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showMaquinariaDialog: true, editId: undefined });
-              }}>
+              }}
+              >
               Agregar Elemento
             </Button>
           </Grid>
