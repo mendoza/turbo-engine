@@ -9,7 +9,7 @@ export default function AddressForm() {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-      Dirección de Envío
+      Datos Generales
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -17,7 +17,7 @@ export default function AddressForm() {
             required
             id="firstName"
             name="firstName"
-            label="Primer Nombre"
+            label="Nombres"
             fullWidth
             autoComplete="fname"
             />
@@ -27,7 +27,7 @@ export default function AddressForm() {
             required
             id="lastName"
             name="lastName"
-            label="Apellido"
+            label="Apellidos"
             fullWidth
             autoComplete="lname"
             />
@@ -35,18 +35,18 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <TextField
             required
-            id="address1"
-            name="address1"
-            label="Direccion 1"
+            id="rtn"
+            name="rtn"
+            label="RTN"
             fullWidth
             autoComplete="billing address-line1"
             />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="address2"
-            name="address2"
-            label="Direccion 2"
+            id="num"
+            name="num"
+            label="Numero de Telefono"
             fullWidth
             autoComplete="billing address-line2"
             />
@@ -54,32 +54,21 @@ export default function AddressForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="city"
-            name="city"
-            label="Ciudad"
+            id="id"
+            name="id"
+            label="Identidad"
             fullWidth
             autoComplete="billing address-level2"
             />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField id="state" name="state" label="State/Province/Region" fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="zip"
-            name="zip"
-            label="Zip / Codigo Postal"
-            fullWidth
-            autoComplete="billing postal-code"
-            />
-        </Grid>
+        
+        
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="country"
-            name="country"
-            label="Pais"
+            id="fecha"
+            name="fecha"
+            label="Fecha"
             fullWidth
             autoComplete="billing country"
             />
@@ -87,7 +76,7 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <FormControlLabel
             control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Use esta dirección para detalles de pago"
+            //label="Use esta dirección para detalles de pago"
             />
         </Grid>
       </Grid>
