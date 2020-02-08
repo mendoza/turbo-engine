@@ -200,4 +200,10 @@ export const dashboardRoutes = [
     icon: "fas fa-receipt",
     permission: "superAdmin",
   },
+  {
+    pathName: "/Encuesta",
+    name: "Encuesta",
+    icon: "fas fa-question-circle",
+    permission: 'none',
+  }
 ];
