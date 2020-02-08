@@ -25,6 +25,7 @@ class UpdateTypes extends PureComponent {
     super(props);
     this.state = {
       nombre: "",
+      name: "",
       open: false,
       message: "",
       id: "",
@@ -88,6 +89,9 @@ class UpdateTypes extends PureComponent {
     if (validator.isEmpty(nombre) === true) {
       alert = "El campo nombre es requerido";
     }
+    if (Tipos.find({ nombre }).count() > 0) {
+      alert = "El tipo ingresado ya existe";
+    }
     if (alert) {
       this.setState({
         open: true,
@@ -107,15 +111,65 @@ class UpdateTypes extends PureComponent {
     }
   };
 
+  handleAdd = () => {
+    const { name } = this.state;
+    let alert;
+
+    if (validator.isEmpty(name)) {
+      alert = "El campo nombre es requerido";
+    }
+    if (Tipos.find({ nombre: name }).count() > 0) {
+      alert = "El tipo ingresado ya existe";
+    }
+    if (alert) {
+      this.setState({
+        open: true,
+        message: alert,
+      });
+    } else {
+      Meteor.call("addTipo", {
+        nombre: name,
+      });
+      this.setState({
+        open: true,
+        message: "Tipo agregado exitosamente",
+        name: "",
+        shouldRender: false,
+      });
+    }
+  };
+
   render() {
-    const { nombre, open, message, id, shouldRender } = this.state;
+    const { nombre, open, message, id, shouldRender, name } = this.state;
     const { tipos } = this.props;
     return (
       <DashboardLayout>
         <Container>
-          <Title>Actualizar Tipos</Title>
           <form onSubmit={this.handleSubmit}>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Title>Crear Tipo</Title>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="Name"
+                  name="name"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="Name"
+                  label="Nombre"
+                  autoFocus
+                  value={name}
+                  onInput={event => this.handleTextChange(event, "name")}
+                />
+              </Grid>
+              <Button fullWidth variant="contained" color="primary" onClick={this.handleAdd}>
+                Crear
+              </Button>
+              <Grid item xs={12}>
+                <Title>Actualizar Tipos</Title>
+              </Grid>
               <Grid item xs={12} sm={10}>
                 <Select
                   name="id"
@@ -159,7 +213,6 @@ class UpdateTypes extends PureComponent {
                   fullWidth
                   id="Name"
                   label="Nuevo tipo"
-                  autoFocus
                   value={nombre}
                   onInput={event => this.handleTextChange(event, "nombre")}
                 />

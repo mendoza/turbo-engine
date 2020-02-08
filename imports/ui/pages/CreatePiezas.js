@@ -20,11 +20,13 @@ import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Tipos from "../../api/collections/Tipos/Tipos";
+import Piezas from "../../api/collections/Piezas/Piezas";
 
 class CreatePiezas extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      moneda: "",
       marca: "",
       vendedor: "",
       precio: "",
@@ -55,7 +57,7 @@ class CreatePiezas extends PureComponent {
   };
 
   handleClick = () => {
-    const { marca, vendedor, precio, numeroDeSerie, tipo, cantidad } = this.state;
+    const { moneda, marca, vendedor, precio, numeroDeSerie, tipo, cantidad } = this.state;
     let alert;
 
     if (validator.isEmpty(marca)) {
@@ -70,6 +72,11 @@ class CreatePiezas extends PureComponent {
     if (validator.isEmpty(numeroDeSerie)) {
       alert = "El numero de serie es requerido";
     }
+
+    if (Piezas.find({ numeroDeSerie }).count() > 0) {
+      alert = "El numero de serie debe ser unico para esta pieza";
+    }
+
     if (validator.isEmpty(vendedor)) {
       alert = "El campo vendedor es requerido";
     }
@@ -86,6 +93,9 @@ class CreatePiezas extends PureComponent {
     } else if (cantidad < 1) {
       alert = "La cantidad no puede ser cero o un número negativo";
     }
+    if (validator.isEmpty(moneda)) {
+      alert = "Debe seleccionar tipo de moneda";
+    }
     if (alert) {
       this.setState({
         open: true,
@@ -99,6 +109,7 @@ class CreatePiezas extends PureComponent {
         numeroDeSerie,
         tipo,
         cantidad,
+        moneda,
       });
       this.setState({
         open: true,
@@ -109,6 +120,7 @@ class CreatePiezas extends PureComponent {
         numeroDeSerie: "",
         tipo: "",
         cantidad: "",
+        moneda: "",
       });
     }
   };
@@ -139,6 +151,7 @@ class CreatePiezas extends PureComponent {
 
   render() {
     const {
+      moneda,
       marca,
       vendedor,
       precio,
@@ -197,7 +210,24 @@ class CreatePiezas extends PureComponent {
                   onInput={event => this.handleTextChange(event, "numeroDeSerie")}
                   />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={2} sm={2}>
+                <Select
+                  fullWidth
+                  required
+                  label="Moneda"
+                  id="currency"
+                  value={moneda}
+                  defaultValue="0"
+                  onChange={event => this.handleTextChange(event, "moneda")}>
+                  <MenuItem key={0} value="$">
+                    Dolar
+                  </MenuItem>
+                  <MenuItem key={1} value="L.">
+                    Lempira
+                  </MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={4} sm={4}>
                 <TextField
                   autoComplete="price"
                   name="precio"
@@ -320,6 +350,7 @@ class CreatePiezas extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("Tipos.all");
+  Meteor.subscribe("Piezas.all");
   return {
     tipos: Tipos.find().fetch(),
   };

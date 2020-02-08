@@ -14,6 +14,7 @@ import EstadoAutos from "./pages/EstadoAutos";
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
+import Checkout from "./pages/Checkout";
 import Maquinaria from "./pages/Maquinaria";
 
 export const Routes = [
@@ -108,6 +109,11 @@ export const Routes = [
     component: UpdateTypes,
   },
   {
+    path: "/factura",
+    name: "Checkout",
+    component: Checkout,
+  },
+  {
     path: "/maquinaria",
     name: "Maquinaria ",
     component: Maquinaria,
@@ -136,6 +142,12 @@ export const dashboardRoutes = [
     pathName: "/seccionPiezas",
     name: "Piezas",
     icon: "fas fa-puzzle-piece",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/actualizarTipos",
+    name: "Tipos",
+    icon: "fas fa-wrench",
     permission: "superAdmin",
   },
   {

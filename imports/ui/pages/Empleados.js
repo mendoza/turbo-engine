@@ -84,22 +84,27 @@ class Empleado extends Component {
         snackbarText: "Por favor llene el campo de Correo Electrónico",
       });
     } else {
-      Meteor.call(methodName, newEmpleado, error => {
+      Meteor.call(methodName, newEmpleado, (error, received) => {
         if (error) {
           this.setState({
             showSnackbar: true,
             snackbarText: "Ha ocurrido un error al intentar guardar el empleado",
           });
-        } else {
-          this.setState({
-            showEmpleadoDialog: false,
-            Nombre: "",
-            Apellido: "",
-            RTN: "",
-            Telefono: "",
-            email: "",
-          });
-        }
+        } else if (received) {
+            this.setState({
+              showEmpleadoDialog: false,
+              Nombre: '',
+              Apellido: '',
+              RTN: '',
+              Telefono: '',
+              email: '',
+            });
+          } else {
+            this.setState({
+              showSnackbar: true,
+              snackbarText: 'El RTN ya existe'
+            });
+          }
       });
     }
   };
