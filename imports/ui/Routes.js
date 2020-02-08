@@ -113,11 +113,11 @@ export const Routes = [
     name: "Maquinaria ",
     component: Maquinaria,
   },
-  {
-    path: "/factura",
-    name: "Checkout",
-    component: Checkout,
-  },
+  // {
+  //   path: "/factura",
+  //   name: "Checkout",
+  //   component: Checkout,
+  // },
 ];
 
 export const dashboardRoutes = [
