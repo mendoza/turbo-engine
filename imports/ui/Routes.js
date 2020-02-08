@@ -14,6 +14,11 @@ import EstadoAutos from "./pages/EstadoAutos";
 import SignUpClient from "./pages/SignUpClient"
 import SignInClient from "./pages/SignInClient"
 import Encuesta from "./pages/Encuesta"
+import Clientes from "./pages/Clientes";
+import Empleados from "./pages/Empleados";
+import UpdateTypes from "./pages/UpdateTypes";
+import Checkout from "./pages/Checkout";
+import Maquinaria from "./pages/Maquinaria";
 
 export const Routes = [
   {
@@ -106,10 +111,37 @@ export const Routes = [
     component: Encuesta,
     permission: 'none',
   },
+  {
+    path: "/clientes",
+    name: "Clientes",
+    component: Clientes
+  },
+  {
+    path: "/empleados",
+    name: "Empleados",
+    component: Empleados,
+    permission: "superAdmin",
+  },
+  {
+    path: "/actualizarTipos",
+    name: "ActualizarT ",
+    component: UpdateTypes,
+  },
+  {
+    path: "/factura",
+    name: "Checkout",
+    component: Checkout,
+  },
+  {
+    path: "/maquinaria",
+    name: "Maquinaria ",
+    component: Maquinaria,
+  },
 ];
 
 export const dashboardRoutes = [
-  { pathName: "/",
+  {
+    pathName: "/",
     name: "Inicio",
     icon: "fas fa-tachometer-alt"
   },
@@ -132,9 +164,34 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
+    pathName: "/actualizarTipos",
+    name: "Tipos",
+    icon: "fas fa-wrench",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/clientes",
+    name: "Clientes",
+    icon: "fas fa-user-tie",
+    component: Clientes
+  },
+  {
+    pathName: "/empleados",
+    name: "Empleados",
+    icon: "fas fa-people-carry",
+    permission: "superAdmin",
+    component: Clientes
+  },
+  {
     pathName: "/restablecerContra",
     name: "Modificar contraseña",
     icon: "fas fa-edit",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/maquinaria",
+    name: "Maquinaria",
+    icon: "fas fa-cogs",
     permission: "superAdmin",
   },
 ];

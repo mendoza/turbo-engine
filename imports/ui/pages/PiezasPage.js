@@ -12,6 +12,12 @@ import {
   TextField,
   Snackbar,
   IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  Input,
+  InputLabel,
+  InputAdornment,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -20,6 +26,8 @@ import validator from "validator";
 import Piezas from "../../api/collections/Piezas/Piezas";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
+import Tipos from "../../api/collections/Tipos/Tipos";
+import Title from "../components/Title";
 
 const useStyles = theme => ({
   icon: {
@@ -59,20 +67,35 @@ class PiezasPage extends PureComponent {
     this.state = {
       shouldRender: false,
       dialogPiece: {},
+      marca: "",
       vendedor: "",
       precio: "",
       numeroDeSerie: "",
       tipo: "",
+      cantidad: "",
+      moneda: "",
       open: false,
       message: "",
       showX: false,
       pathName: "",
       shoudlRedirect: false,
+      shouldRenderFull: false,
+      filteredPieces: [],
     };
   }
 
+  componentWillReceiveProps = props => {
+    if (props.piezas) {
+      this.setState({ filteredPieces: props.piezas });
+    }
+  };
+
   handleClose = () => {
     this.setState({ shouldRender: false });
+  };
+
+  handleCloseFullDialog = () => {
+    this.setState({ shouldRenderFull: false });
   };
 
   handleBar = () => {
@@ -82,15 +105,30 @@ class PiezasPage extends PureComponent {
   };
 
   handleTextChange = event => {
+    console.log({
+      [event.target.name]: event.target.value,
+    })
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
 
   handleClick = () => {
-    const { vendedor, precio, numeroDeSerie, tipo, dialogPiece } = this.state;
+    const {
+      marca,
+      vendedor,
+      precio,
+      numeroDeSerie,
+      tipo,
+      cantidad,
+      moneda,
+      dialogPiece,
+    } = this.state;
     let alert;
 
+    if (validator.isEmpty(marca)) {
+      alert = "El campo marca es requerido";
+    }
     if (validator.isEmpty(tipo)) {
       alert = "El campo tipo es requerido";
     }
@@ -100,8 +138,27 @@ class PiezasPage extends PureComponent {
     if (validator.isEmpty(numeroDeSerie)) {
       alert = "El numero de serie es requerido";
     }
+    if (Piezas.find({ numeroDeSerie }).count() > 0) {
+      alert = "El numero de serie debe ser unico para esta pieza";
+    }
     if (validator.isEmpty(vendedor)) {
       alert = "El campo vendedor es requerido";
+    }
+    if (validator.isEmpty(cantidad)) {
+      alert = "El campo cantidad es requerido";
+    }
+    if (!validator.isNumeric(precio)) {
+      alert = "El campo precio solo debe contener números";
+    } else if (precio < 1) {
+      alert = "El precio no puede ser cero o un número negativo";
+    }
+    if (!validator.isNumeric(cantidad)) {
+      alert = "El campo cantidad solo debe contener números";
+    } else if (cantidad < 1) {
+      alert = "La cantidad no puede ser cero o un número negativo";
+    }
+    if (validator.isEmpty(cantidad)) {
+      alert = "La seleccion de moneda es requerida";
     }
 
     if (alert) {
@@ -112,10 +169,13 @@ class PiezasPage extends PureComponent {
     } else {
       Meteor.call("updatePieza", {
         _id: dialogPiece._id,
+        marca,
         vendedor,
         precio,
         numeroDeSerie,
         tipo,
+        cantidad,
+        moneda,
       });
       this.setState({
         open: true,
@@ -126,19 +186,24 @@ class PiezasPage extends PureComponent {
   };
 
   render() {
-    const { classes, piezas } = this.props;
+    const { classes, piezas, tipos } = this.props;
     const {
       shouldRender,
       dialogPiece,
+      marca,
       vendedor,
       precio,
       numeroDeSerie,
       tipo,
+      cantidad,
+      moneda,
       open,
       message,
       showX,
       pathName,
       shoudlRedirect,
+      shouldRenderFull,
+      filteredPieces,
     } = this.state;
 
     return (
@@ -181,18 +246,46 @@ class PiezasPage extends PureComponent {
                       Eliminar una Pieza
                     </Button>
                   </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="standard-adornment-amount">Busqueda</InputLabel>
+                      <Input
+                        id="standard-adornment-amount"
+                        onChange={event => {
+                          event.preventDefault();
+                          let { value } = event.target;
+                          value = value.toLowerCase();
+                          this.setState({ filteredPieces: piezas });
+                          this.setState({
+                            filteredPieces: piezas.filter(piece => {
+                              return (
+                                piece.tipo.toLowerCase().includes(value) ||
+                                piece.vendedor.toLowerCase().includes(value)
+                              );
+                            }),
+                          });
+                        }}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <span className="fas fa-search" />
+                          </InputAdornment>
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
               </div>
             </Container>
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
-              {piezas.map((pieza, index) => (
-                <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+              {filteredPieces.map(pieza => (
+                <Grid item key={pieza._id} xs={12} sm={6} md={4}>
                   <ItemCard
                     showX={showX}
                     title={`Tipo: ${pieza.tipo}`}
                     body={`Vendedor: ${pieza.vendedor}`}
+                    labelButton="Modificar"
                     action1={() => {}}
                     action2={() => {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
@@ -200,6 +293,9 @@ class PiezasPage extends PureComponent {
                     action3={() => {
                       Meteor.call("deletePieza", { ...pieza });
                       this.setState({ showX: false });
+                    }}
+                    action4={() => {
+                      this.setState({ shouldRenderFull: true, dialogPiece: pieza });
                     }}
                   />
                 </Grid>
@@ -212,7 +308,21 @@ class PiezasPage extends PureComponent {
             <DialogContent dividers>
               <form id="formUserLogin" noValidate>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      autoComplete="brand"
+                      name="marca"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="Brand"
+                      label="Marca"
+                      autoFocus
+                      value={marca}
+                      onInput={event => this.handleTextChange(event, "marca")}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       autoComplete="seller"
                       name="vendedor"
@@ -221,7 +331,6 @@ class PiezasPage extends PureComponent {
                       fullWidth
                       id="Seller"
                       label="Vendedor"
-                      autoFocus
                       value={vendedor}
                       onInput={event => this.handleTextChange(event)}
                     />
@@ -239,7 +348,24 @@ class PiezasPage extends PureComponent {
                       onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={2} sm={2}>
+                    <Select
+                      fullWidth
+                      required
+                      name="moneda"
+                      label="Moneda"
+                      id="currency"
+                      value={moneda}
+                      onChange={event => this.handleTextChange(event)}>
+                      <MenuItem key={0} value="$">
+                        $
+                      </MenuItem>
+                      <MenuItem key={1} value="L.">
+                        L.
+                      </MenuItem>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={4} sm={4}>
                     <TextField
                       autoComplete="price"
                       name="precio"
@@ -254,16 +380,37 @@ class PiezasPage extends PureComponent {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      autoComplete="type"
-                      name="tipo"
+                      autoComplete="quantity"
+                      name="cantidad"
                       variant="outlined"
                       required
                       fullWidth
-                      id="Type"
-                      label="tipo"
-                      value={tipo}
-                      onInput={event => this.handleTextChange(event)}
+                      id="Quantity"
+                      label="cantidad"
+                      value={cantidad}
+                      onInput={event => this.handleTextChange(event, "cantidad")}
                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Select
+                      name="tipo"
+                      fullWidth
+                      required
+                      label="Tipo"
+                      id="type"
+                      value={tipo}
+                      onChange={event => this.handleTextChange(event, "tipo")}>
+                      {tipos.map(tipoMap => {
+                        if (tipoMap) {
+                          return (
+                            <MenuItem key={tipoMap._id} value={tipoMap.nombre}>
+                              {tipoMap.nombre}
+                            </MenuItem>
+                          );
+                        }
+                        return <></>;
+                      })}
+                    </Select>
                   </Grid>
                   <Button fullWidth variant="contained" color="primary" onClick={this.handleClick}>
                     Modificar
@@ -273,6 +420,44 @@ class PiezasPage extends PureComponent {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
+                Cerrar
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog open={shouldRenderFull} onClose={this.handleCloseFullDialog} maxWidth="lg">
+            <DialogTitle>Pieza</DialogTitle>
+            <Divider />
+            <DialogContent dividers>
+              <Grid container>
+                <Grid item sm={6}>
+                  <Title>Marca: </Title>
+                  <Typography>{`${dialogPiece.marca}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Vendedor: </Title>
+                  <Typography>{`${dialogPiece.vendedor}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Precio: </Title>
+                  <Typography>{`${dialogPiece.precio}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Numero de Serie: </Title>
+                  <Typography>{`${dialogPiece.numeroDeSerie}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Tipo: </Title>
+                  <Typography>{`${dialogPiece.tipo}`}</Typography>
+                </Grid>
+                <Grid item sm={6}>
+                  <Title>Cantidad: </Title>
+                  <Typography>{`${dialogPiece.cantidad}`}</Typography>
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCloseFullDialog} color="primary">
                 Cerrar
               </Button>
             </DialogActions>
@@ -305,8 +490,10 @@ class PiezasPage extends PureComponent {
 export default withStyles(useStyles)(
   withTracker(() => {
     Meteor.subscribe("Piezas.all");
+    Meteor.subscribe("Tipos.all");
     return {
       piezas: Piezas.find().fetch(),
+      tipos: Tipos.find().fetch(),
     };
   })(PiezasPage)
 );

@@ -9,7 +9,7 @@ export default function AddressForm() {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Shipping address
+      Dirección de Envío
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -17,7 +17,7 @@ export default function AddressForm() {
             required
             id="firstName"
             name="firstName"
-            label="Primer Nombres"
+            label="Primer Nombre"
             fullWidth
             autoComplete="fname"
             />
@@ -62,7 +62,7 @@ export default function AddressForm() {
             />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField id="state" name="state" label="Estado/Provincia/Region" fullWidth />
+          <TextField id="state" name="state" label="State/Province/Region" fullWidth />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -87,7 +87,7 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <FormControlLabel
             control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Usar para detalles de pago"
+            label="Use esta dirección para detalles de pago"
             />
         </Grid>
       </Grid>

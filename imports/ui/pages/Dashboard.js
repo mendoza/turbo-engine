@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Grid } from "@material-ui/core";
 import {
+  ResponsiveContainer,
   Legend,
   Tooltip,
   Bar,
@@ -19,10 +20,18 @@ class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      widthChart: 0,
+    };
   }
 
+  componentDidMount = () => {
+    this.setState({ widthChart: window.innerWidth });
+  };
+
   render() {
+    const { widthChart } = this.state;
+
     // Linechart
     const data = [
       { name: "Pagina A", uv: 400, pv: 2400, amt: 2400 },
@@ -50,27 +59,32 @@ class Dashboard extends PureComponent {
     return (
       <DashboardLayout Routes={[]}>
         <Grid container className="gridRoot" item xs={12} spacing={1}>
-          <Grid item xs={6}>
-            <Title>Gráfico</Title>
-            <LineChart width={500} height={230} data={data}>
-              <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-              <CartesianGrid stroke="#ccc" />
-              <XAxis dataKey="name" />
-              <YAxis />
-            </LineChart>
+          <Grid item xs={12} sm={6}>
+            <ResponsiveContainer width="100%">
+              <div>
+                <LineChart width={500} height={230} data={data}>
+                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                </LineChart>
+              </div>
+            </ResponsiveContainer>
           </Grid>
-
-          <Grid item xs={6}>
-            <Title>Gráfico 2</Title>
-            <BarChart width={610} height={250} data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
+          <Grid item xs={12} sm={6}>
+            <ResponsiveContainer width="100%">
+              <div>
+                <BarChart width={500} height={230} data={data}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="pv" fill="#8884d8" />
+                  <Bar dataKey="uv" fill="#82ca9d" />
+                </BarChart>
+              </div>
+            </ResponsiveContainer>
           </Grid>
         </Grid>
 

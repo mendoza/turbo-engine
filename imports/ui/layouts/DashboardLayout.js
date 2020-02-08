@@ -24,7 +24,6 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { dashboardRoutes } from "../Routes";
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -150,7 +149,8 @@ class DashboardLayout extends PureComponent {
           <MenuItem
             onClick={() => {
               RedirectTo("empresa");
-            }}>
+            }}
+            >
             <ListItemIcon>
               <i style={{ fontSize: "24px" }} className="fas fa-cog" />
             </ListItemIcon>
@@ -168,7 +168,9 @@ class DashboardLayout extends PureComponent {
             button
             onClick={() => {
               RedirectTo(route.pathName);
-            }}>
+            }}
+            key={route.name}
+            >
             <ListItemIcon>
               <i style={{ fontSize: "24px" }} className={route.icon} />
             </ListItemIcon>
@@ -185,7 +187,9 @@ class DashboardLayout extends PureComponent {
           button
           onClick={() => {
             RedirectTo(route.pathName);
-          }}>
+          }}
+          key={route.name}
+          >
           <ListItemIcon>
             <i style={{ fontSize: "24px" }} className={route.icon} />
           </ListItemIcon>
@@ -224,7 +228,8 @@ class DashboardLayout extends PureComponent {
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+              >
               <i className="fas fa-bars" />
             </IconButton>
             <Typography
@@ -232,7 +237,8 @@ class DashboardLayout extends PureComponent {
               variant="h6"
               color="inherit"
               noWrap
-              className={classes.title}>
+              className={classes.title}
+              >
               {`${empresa.name}`}
             </Typography>
             <IconButton color="inherit">
@@ -244,7 +250,8 @@ class DashboardLayout extends PureComponent {
               aria-controls="simple-menu"
               aria-haspopup="true"
               color="inherit"
-              onClick={handleMoreClick}>
+              onClick={handleMoreClick}
+              >
               <i className="fas fa-ellipsis-v" />
             </IconButton>
             <Menu
@@ -262,7 +269,8 @@ class DashboardLayout extends PureComponent {
                 horizontal: "center",
               }}
               elevation={0}
-              getContentAnchorEl={null}>
+              getContentAnchorEl={null}
+              >
               {currentUser && currentUser.profile.role === "superAdmin"
                 ? isSuperAdminLayout()
                 : null}
@@ -280,7 +288,8 @@ class DashboardLayout extends PureComponent {
           classes={{
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
-          open={open}>
+          open={open}
+          >
           <div className={classes.toolbarIcon}>
             <center>
               <img src="/imagenes/Favicon.png" width="65" height="35" />

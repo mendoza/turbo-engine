@@ -9,33 +9,62 @@ import {
   Container,
   Snackbar,
   IconButton,
+  Select,
+  MenuItem,
   Box,
+  Dialog,
+  DialogContent,
+  Divider,
+  AppBar,
+  Toolbar,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Piezas from "../../api/collections/Piezas/Piezas";
+import { Estados, Traccion, Transmision } from "../Constants";
+import MaskedTextField from "../components/MaskedTextField";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
+import ItemCard from "../components/ItemCard";
+import Title from "../components/Title";
+import Autos from "../../api/collections/Autos/Autos";
 
 class CreateAutos extends PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {
-      marca: "",
+      shouldOpen: false,
+      marca: 0,
       modelo: "",
       tipo: "",
-      transmision: "",
+      transmision: 0,
       color: "",
       placa: "",
-      traccion: "",
-      year: 0,
-      piezas: [],
+      traccion: 0,
+      year: "",
+      autoPiezas: [],
       estado: 0,
       open: false,
+      showX: false,
       message: "",
+      vin: "",
       files: [],
+      nombresMarcas: [],
       uploaded: true,
     };
+
+    fetch("https://private-anon-03fe86f6b5-carsapi1.apiary-mock.com/manufacturers")
+      .then(res => res.json())
+      .then(json => {
+        const names = Object.values(json).map(manu => {
+          return manu.name;
+        });
+        console.log(names);
+        names.sort((a, b) => a > b);
+        console.log(names);
+        this.setState({ nombresMarcas: names });
+      });
   }
 
   setFiles = event => {
@@ -88,32 +117,44 @@ class CreateAutos extends PureComponent {
   handleClose = () => {
     this.setState({
       open: false,
+      shouldOpen: false,
     });
   };
 
   render() {
+    const { piezas } = this.props;
+    const {
+      marca,
+      modelo,
+      tipo,
+      transmision,
+      color,
+      placa,
+      traccion,
+      shouldOpen,
+      year,
+      estado,
+      message,
+      open,
+      uploaded,
+      showX,
+      autoPiezas,
+      vin,
+      nombresMarcas,
+    } = this.state;
+
     const handleTextChange = event => {
+      event.persist();
+      console.log({ [event.target.name]: event.target.value });
       this.setState({
         [event.target.name]: event.target.value,
       });
     };
 
     const handleCreate = () => {
-      const {
-        marca,
-        modelo,
-        tipo,
-        transmision,
-        color,
-        placa,
-        traccion,
-        year,
-        estado,
-        files,
-      } = this.state;
+      const { files } = this.state;
       let alert;
-
-      if (validator.isEmpty(marca)) {
+      if (validator.isEmpty(nombresMarcas[marca])) {
         alert = "El campo marca es requerido";
       }
 
@@ -125,28 +166,30 @@ class CreateAutos extends PureComponent {
         alert = "El campo tipo es requerido";
       }
 
-      if (validator.isEmpty(transmision)) {
-        alert = "El campo transmision es requerido";
-      }
-
       if (validator.isEmpty(color)) {
         alert = "El campo color es requerido";
       }
 
-      if (validator.isEmpty(placa)) {
+      /* validator.isEmpty(placa) */
+      if (false) {
         alert = "El campo placa es requerido";
-      }
-
-      if (validator.isEmpty(traccion)) {
-        alert = "El campo traccion es requerido";
       }
 
       if (validator.isEmpty(String(year))) {
         alert = "El campo año es requerido";
       }
 
-      if (validator.isEmpty(String(estado))) {
-        alert = "El campo estado es requerido";
+      if (validator.isEmpty(vin)) {
+        alert = "El campo vin es requerido";
+      }
+
+      if (year > new Date().getFullYear() + 1) {
+        alert = "El año no puede ser mayor al año actual";
+      }
+
+      console.log(Autos.find({ placa }).count());
+      if (Autos.find({ placa }).count() > 0) {
+        alert = "La placa debe ser unica para este auto";
       }
 
       if (alert) {
@@ -155,8 +198,16 @@ class CreateAutos extends PureComponent {
           message: alert,
         });
       } else {
+        piezas.map(pieza => {
+          Meteor.call("updatePieza", {
+            _id: pieza._id,
+            $set: {
+              cantidad: pieza.cantidad,
+            },
+          });
+        });
         Meteor.call("addAuto", {
-          marca,
+          marca: nombresMarcas[marca],
           modelo,
           tipo,
           transmision,
@@ -165,30 +216,75 @@ class CreateAutos extends PureComponent {
           traccion,
           year,
           estado,
-          piezas: [],
+          autoPiezas,
+          vin,
           pictures: files,
+          piezas,
         });
         this.setState({
+          autoPiezas: [],
+          shouldOpen: false,
+          marca: 0,
+          modelo: "",
+          tipo: "",
+          transmision: 0,
+          color: "",
+          placa: "",
+          traccion: 0,
+          year: "",
+          estado: 0,
           open: true,
+          vin: "",
           message: "Auto agregado exitosamente",
         });
       }
     };
 
-    const {
-      marca,
-      modelo,
-      tipo,
-      transmision,
-      color,
-      placa,
-      traccion,
-      year,
-      estado,
-      message,
-      open,
-      uploaded,
-    } = this.state;
+    const shouldRenderCard = (label, list1, list2, pieza, index) => {
+      return (
+        <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+          <ItemCard
+            labelButton={label}
+            showX={showX}
+            title={`Tipo: ${pieza.tipo}`}
+            body={`Vendedor: ${pieza.vendedor}`}
+            description={`Cantidad: ${pieza.cantidad}`}
+            action1={() => {}}
+            action2={() => {
+              let contains = false;
+              let indexAuto = 0;
+              for (let i = 0; i < list1.length; i += 1) {
+                if (
+                  list1[i].marca === pieza.marca &&
+                  list1[i].vendedor === pieza.vendedor &&
+                  list1[i].precio === pieza.precio &&
+                  list1[i].numeroDeSerie === pieza.numeroDeSerie &&
+                  list1[i].tipo === pieza.tipo
+                ) {
+                  contains = true;
+                  indexAuto = i;
+                }
+              }
+              if (contains) {
+                pieza.cantidad -= 1;
+                list1[indexAuto].cantidad += 1;
+                if (pieza.cantidad === 0) {
+                  if (index > -1) {
+                    list2.splice(index, 1);
+                  }
+                }
+              } else {
+                list1.push({ ...pieza, cantidad: 1 });
+                pieza.cantidad -= 1;
+              }
+              this.forceUpdate();
+              this.setState({ showX: false });
+            }}
+            action3={() => {}}
+            />
+        </Grid>
+      );
+    };
 
     return (
       <DashboardLayout>
@@ -196,24 +292,19 @@ class CreateAutos extends PureComponent {
           <CssBaseline />
           <div>
             <Avatar>
-              <i className="fas fa-lock" />
+              <i className="fas fa-car" />
             </Avatar>
             <Typography component="h1" variant="h5">
               Crear Autos
             </Typography>
             <form id="formUserLogin" noValidate>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} style={{ marginBottom: "5px" }}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="marca"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Marca"
-                    autoFocus
                     value={marca}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -225,7 +316,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={modelo}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -237,19 +328,20 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={tipo}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="transmision"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Transmision"
-                    autoFocus
+                    name="transmision"
                     value={transmision}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined"
+                    >
+                    {Transmision.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -261,55 +353,78 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={color}
                     onInput={handleTextChange}
-                  />
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="placa"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Placa"
-                    autoFocus
+                  <MaskedTextField
+                    mask={[/[A-Z]/, /[A-Z]/, /[A-Z]/, " ", /\d/, /\d/, /\d/, /\d/]}
                     value={placa}
-                    onInput={handleTextChange}
-                  />
+                    name="placa"
+                    onChange={handleTextChange}
+                    label="Placa"
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <Select
+                    fullWidth
                     name="traccion"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Traccion"
-                    autoFocus
                     value={traccion}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined"
+                    >
+                    {Traccion.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="year"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Año"
-                    autoFocus
+                  <MaskedTextField
+                    mask={[/\d/, /\d/, /\d/, /\d/]}
                     value={year}
-                    onInput={handleTextChange}
-                  />
+                    name="year"
+                    onChange={handleTextChange}
+                    label="Año"
+                    />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="estado"
-                    variant="outlined"
-                    required
+                <Grid item sm={12}>
+                  <Select
                     fullWidth
-                    label="Estado"
-                    autoFocus
+                    name="estado"
                     value={estado}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined"
+                    >
+                    {Estados.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
+                </Grid>
+                <Grid item sm={12}>
+                  <MaskedTextField
+                    mask={[
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                    ]}
+                    value={vin}
+                    name="vin"
+                    onChange={handleTextChange}
+                    label="VIN"
+                    />
                 </Grid>
               </Grid>
               <Box paddingY="1rem">
@@ -318,11 +433,60 @@ class CreateAutos extends PureComponent {
                 <input type="file" onChange={this.setFiles} multiple />
               </Box>
               <Button
+                onClick={() => {
+                  this.setState({
+                    shouldOpen: true,
+                  });
+                }}
+                >
+                Agregar piezas
+              </Button>
+              <Dialog fullScreen open={shouldOpen} onClose={this.handleClose}>
+                <AppBar>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={this.handleClose}
+                      aria-label="close"
+                      >
+                      <i className="fas fa-times-circle" />
+                    </IconButton>
+                    <Typography variant="h6">Piezas</Typography>
+                    <Button autoFocus color="inherit" onClick={this.handleClose}>
+                      Guardar
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+                <DialogContent container>
+                  <Title>Piezas Disponibles</Title>
+                  <Grid container spacing={4}>
+                    {piezas.map((pieza, index) =>
+                      pieza.cantidad > 0
+                        ? shouldRenderCard("Agregar", autoPiezas, piezas, pieza, index)
+                        : null
+                    )}
+                  </Grid>
+                </DialogContent>
+                <Divider />
+                <DialogContent>
+                  <Title>Piezas agregadas</Title>
+                  <Grid container spacing={4}>
+                    {autoPiezas.map((pieza, index) =>
+                      pieza.cantidad > 0
+                        ? shouldRenderCard("Eliminar", piezas, autoPiezas, pieza, index)
+                        : null
+                    )}
+                  </Grid>
+                </DialogContent>
+              </Dialog>
+              <Button
                 disabled={!uploaded}
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleCreate}>
+                onClick={handleCreate}
+                >
                 Crear
               </Button>
             </form>
@@ -345,10 +509,16 @@ class CreateAutos extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }
 }
 
-export default CreateAutos;
+export default withTracker(() => {
+  Meteor.subscribe("Piezas.all");
+  Meteor.subscribe("Autos.all");
+  return {
+    piezas: Piezas.find().fetch(),
+  };
+})(CreateAutos);

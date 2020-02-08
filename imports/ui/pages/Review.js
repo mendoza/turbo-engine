@@ -7,18 +7,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 
 const products = [
-  { name: 'Producto 1', desc: 'Algo cool', price: 'L.9.99' },
-  { name: 'Producto 2', desc: 'Otra cosa', price: 'L.3.45' },
-  { name: 'Producto 3', desc: 'Algo mas', price: 'L.6.51' },
-  { name: 'Producto 4', desc: 'Lo mejor de todo', price: 'L.14.11' },
-  { name: 'Envío', desc: '', price: 'Pos Gratis' },
+  { name: 'Producto 1', desc: 'Algo genial', price: 'L9.99' },
+  { name: 'Producto 2', desc: 'Otra cosa', price: 'L3.45' },
+  { name: 'Producto 3', desc: 'Algo mas', price: 'L6.51' },
+  { name: 'Producto 4', desc: 'Lo mejor de todo', price: 'L14.11' },
+  { name: 'Envío', desc: '', price: 'Libre' },
 ];
 const addresses = ['1 Material-UI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
 const payments = [
-  { name: 'Tipo de Tarjeta', detail: 'Visa' },
-  { name: 'Titular de tarjeta', detail: 'Crys Apas' },
+  { name: 'Tipo de Card', detail: 'Visa' },
+  { name: 'Titular de tarjeta', detail: 'Crysthel Aparicio' },
   { name: 'Numero de Tarjeta', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Fecha de Caducidad', detail: '04/2020' },
+  { name: 'Fecha de Caducidad', detail: '04/2024' },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +39,7 @@ export default function Review() {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Resumen del pedido
+        Resumen del Pedido
       </Typography>
       <List disablePadding>
         {products.map(product => (
@@ -51,7 +51,7 @@ export default function Review() {
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-            L.34.06
+            L34.06
           </Typography>
         </ListItem>
       </List>
@@ -60,7 +60,7 @@ export default function Review() {
           <Typography variant="h6" gutterBottom className={classes.title}>
             Envío
           </Typography>
-          <Typography gutterBottom>Crys Apa</Typography>
+          <Typography gutterBottom>Crysthel Aparicio</Typography>
           <Typography gutterBottom>{addresses.join(', ')}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>

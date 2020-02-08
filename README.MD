@@ -70,6 +70,8 @@ Thanks to the following people who have contributed to this project:
 
 - @CrysthelAparicio💻 👩‍💻
 
+- @noheliaeuceda💻 👩‍💻
+
 - @Dmendoza99 💻 👨‍💻
 
 - @jalvarez1994💻 👨‍💻

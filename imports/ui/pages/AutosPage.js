@@ -14,15 +14,29 @@ import {
   Snackbar,
   IconButton,
   Box,
+  FormControl,
+  Input,
+  InputAdornment,
+  InputLabel,
+  Select,
+  MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
+import MaskedTextField from "../components/MaskedTextField";
 import Autos from "../../api/collections/Autos/Autos";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
+import Title from "../components/Title";
+import { Estados, Traccion, Transmision } from "../Constants";
 
 const useStyles = theme => ({
   icon: {
@@ -72,15 +86,72 @@ class AutosPage extends PureComponent {
       year: 0,
       piezas: [],
       estado: 0,
-      _id: "",
       open: false,
       message: "",
       showX: false,
       pathName: "",
       shouldRedirect: false,
+      shouldRenderFull: false,
       pictures: [],
+      filteredCars: [],
+      uploaded: true,
+      vin: "",
+      files: [],
     };
   }
+
+  setFiles = event => {
+    const { files } = event.target;
+    let uploaded = 0;
+    const fileIds = [];
+    Object.keys(files).forEach(key => {
+      const uploadFile = files[key];
+      if (uploadFile) {
+        // We upload only one file, in case
+        // multiple files were selected
+        const upload = AutosFiles.insert(
+          {
+            file: uploadFile,
+            streams: "dynamic",
+            chunkSize: "dynamic",
+          },
+          false
+        );
+        upload.on("start", () => {
+          this.setState({
+            uploaded: false,
+          });
+        });
+        upload.on("end", (error, fileObj) => {
+          if (error) {
+            uploaded += 1;
+            if (uploaded === files.length) {
+              this.setState({
+                uploaded: true,
+              });
+            }
+            console.log(error);
+          } else {
+            uploaded += 1;
+            fileIds.push(fileObj._id);
+            if (uploaded === files.length) {
+              this.setState({
+                uploaded: true,
+                files: fileIds,
+              });
+            }
+          }
+        });
+        upload.start();
+      }
+    });
+  };
+
+  componentWillReceiveProps = props => {
+    if (props.autos) {
+      this.setState({ filteredCars: props.autos });
+    }
+  };
 
   render() {
     const { classes, autos, autosFiles } = this.props;
@@ -102,13 +173,22 @@ class AutosPage extends PureComponent {
       message,
       pathName,
       shouldRedirect,
+      vin,
       pictures,
+      piezas,
+      shouldRenderFull,
+      filteredCars,
+      uploaded,
+      files,
     } = this.state;
 
     const handleCloseDialog = () => {
       this.setState({ shouldRender: false });
     };
 
+    const handleCloseFullDialog = () => {
+      this.setState({ shouldRenderFull: false });
+    };
     const handleCloseSnack = () => {
       this.setState({ open: false });
     };
@@ -134,10 +214,6 @@ class AutosPage extends PureComponent {
         alert = "El campo tipo es requerido";
       }
 
-      if (validator.isEmpty(transmision)) {
-        alert = "El campo transmision es requerido";
-      }
-
       if (validator.isEmpty(color)) {
         alert = "El campo color es requerido";
       }
@@ -146,16 +222,16 @@ class AutosPage extends PureComponent {
         alert = "El campo placa es requerido";
       }
 
-      if (validator.isEmpty(traccion)) {
-        alert = "El campo traccion es requerido";
-      }
-
       if (validator.isEmpty(String(year))) {
         alert = "El campo año es requerido";
       }
 
-      if (validator.isEmpty(String(estado))) {
-        alert = "El campo estado es requerido";
+      if (year > new Date().getFullYear() + 1) {
+        alert = "El año no puede ser mayor al año actual";
+      }
+
+      if (Autos.find({ placa }).count() > 0) {
+        alert = "La placa debe ser unica para este auto";
       }
 
       if (alert) {
@@ -175,6 +251,7 @@ class AutosPage extends PureComponent {
           traccion,
           year,
           estado,
+          pictures: [...files, ...pictures],
         });
         this.setState({
           open: true,
@@ -226,6 +303,7 @@ class AutosPage extends PureComponent {
                   <Button
                     variant="outlined"
                     color="primary"
+                    Toolbar
                     onClick={() => {
                       this.setState(state => {
                         return { showX: !state.showX };
@@ -234,19 +312,54 @@ class AutosPage extends PureComponent {
                     Eliminar un Auto
                   </Button>
                 </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="standard-adornment-amount">Busqueda</InputLabel>
+                    <Input
+                      id="standard-adornment-amount"
+                      onChange={event => {
+                        event.preventDefault();
+                        let { value } = event.target;
+                        value = value.toLowerCase();
+                        this.setState({ filteredCars: autos });
+                        this.setState({
+                          filteredCars: autos.filter(car => {
+                            console.log(
+                              car.marca.toLowerCase().includes(value) ||
+                                car.modelo.toLowerCase().includes(value) ||
+                                Estados[car.estado].toLowerCase().includes(value)
+                            );
+                            return (
+                              car.marca.toLowerCase().includes(value) ||
+                              car.modelo.toLowerCase().includes(value) ||
+                              Estados[car.estado].toLowerCase().includes(value)
+                            );
+                          }),
+                        });
+                      }}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <span className="fas fa-search" />
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
             </div>
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            {autos.map(auto => (
+            {filteredCars.map(auto => (
               <Grid item key={auto._id} xs={12} sm={6} md={4}>
+                {console.log(auto.piezas)}
                 <ItemCard
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
-                  description={`Estado: ${Status(auto.estado)}`}
+                  description={`Estado: ${Estados[0]}`}
+                  labelButton="Modificar"
                   image={(() => {
                     try {
                       return AutosFiles.findOne({ _id: auto.pictures[0] }).link();
@@ -262,17 +375,20 @@ class AutosPage extends PureComponent {
                     Meteor.call("deleteAuto", { ...auto });
                     this.setState({ showX: false });
                   }}
+                  action4={() => {
+                    this.setState({ shouldRenderFull: true, dialogCar: auto });
+                  }}
                 />
               </Grid>
             ))}
           </Grid>
         </Container>
-        <Dialog open={shouldRender} onClose={handleCloseDialog} style={{ width: "80%" }}>
+        <Dialog open={shouldRender} onClose={handleCloseDialog} maxWidth="lg">
           <DialogTitle>Modificar Auto</DialogTitle>
           <Divider />
           <DialogContent dividers>
             <form id="formUserLogin" noValidate>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} style={{ marginBottom: "5px" }}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     name="marca"
@@ -310,16 +426,16 @@ class AutosPage extends PureComponent {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="transmision"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Transmision"
-                    autoFocus
+                    name="transmision"
                     value={transmision}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Transmision.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -334,75 +450,227 @@ class AutosPage extends PureComponent {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="placa"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Placa"
-                    autoFocus
+                  <MaskedTextField
+                    mask={[/[A-Z]/, /[A-Z]/, /[A-Z]/, " ", /\d/, /\d/, /\d/, /\d/]}
                     value={placa}
-                    onInput={handleTextChange}
+                    name="placa"
+                    onChange={handleTextChange}
+                    label="Placa"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <Select
+                    fullWidth
                     name="traccion"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Traccion"
-                    autoFocus
                     value={traccion}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Traccion.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="year"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    label="Año"
-                    autoFocus
+                  <MaskedTextField
+                    mask={[/\d/, /\d/, /\d/, /\d/]}
                     value={year}
-                    onInput={handleTextChange}
+                    name="year"
+                    onChange={handleTextChange}
+                    label="Año"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="estado"
-                    variant="outlined"
-                    required
+                <Grid item sm={12}>
+                  <Select
                     fullWidth
-                    label="Estado"
-                    autoFocus
+                    name="estado"
                     value={estado}
-                    onInput={handleTextChange}
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Estados.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
+                </Grid>
+                <Grid item sm={12}>
+                  <MaskedTextField
+                    mask={[
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                      /[A-Z1-9]/,
+                    ]}
+                    value={vin}
+                    name="vin"
+                    onChange={handleTextChange}
+                    label="VIN"
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  Imagenes del auto
-                </Grid>
-                {pictures.map(imageId => (
-                  <Grid key={imageId} item xs={12} md={6}>
-                    <Box padding="1rem" width="100%">
-                      <img
-                        src={AutosFiles.findOne({ _id: imageId }).link()}
-                        alt="Auto"
-                        style={{ width: "100%", objectFit: "contain" }}
-                      />
-                    </Box>
-                  </Grid>
-                ))}
               </Grid>
-              <Button fullWidth variant="contained" color="primary" onClick={handleCreate}>
-                Modificar
+              <Box paddingY="1rem">
+                Agregar imagenes
+                <br />
+                <input type="file" onChange={this.setFiles} multiple />
+              </Box>
+              <Grid item xs={12}>
+                Imagenes del auto
+              </Grid>
+              <Grid container>
+                {pictures.map(imageId => {
+                  try {
+                    return (
+                      <Grid key={imageId} item xs={12} md={6}>
+                        <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
+                          <img
+                            src={AutosFiles.findOne({ _id: imageId }).link()}
+                            alt="Auto"
+                            style={{ width: "100%", objectFit: "contain" }}
+                          />
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              Meteor.call("deleteAutoPicture", imageId);
+                            }}>
+                            Eliminar
+                          </Button>
+                        </Box>
+                      </Grid>
+                    );
+                  } catch (error) {
+                    return undefined;
+                  }
+                })}
+              </Grid>
+              <Button
+                disabled={!uploaded}
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleCreate}>
+                Actualizar
               </Button>
             </form>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog} color="primary">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={shouldRenderFull} onClose={handleCloseFullDialog} maxWidth="lg">
+          <DialogTitle>Auto</DialogTitle>
+          <Divider />
+          <DialogContent dividers>
+            <Grid container>
+              <Grid item sm={6}>
+                <Title>Marca: </Title>
+                <Typography>{`${dialogCar.marca}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Modelo: </Title>
+
+                <Typography>{` ${dialogCar.modelo}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Tipo: </Title>
+
+                <Typography>{` ${dialogCar.tipo}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Transmision: </Title>
+                <Typography>{`${Transmision[dialogCar.transmision]}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Color: </Title>
+
+                <Typography>{`${dialogCar.color}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Placa: </Title>
+                <Typography>{`${dialogCar.placa}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Traccion: </Title>
+                <Typography>{`${Traccion[dialogCar.traccion]}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Title>Año: </Title>
+                <Typography>{`${dialogCar.year}`}</Typography>
+              </Grid>
+              {dialogCar &&
+                dialogCar.pictures &&
+                dialogCar.pictures.map(imageId => {
+                  try {
+                    return (
+                      <Grid key={imageId} item xs={12} md={6}>
+                        <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
+                          <img
+                            src={AutosFiles.findOne({ _id: imageId }).link()}
+                            alt="Auto"
+                            style={{ width: "100%", objectFit: "contain" }}
+                          />
+                        </Box>
+                      </Grid>
+                    );
+                  } catch (error) {
+                    return undefined;
+                  }
+                })}
+            </Grid>
+            <Title>Piezas: </Title>
+            <Grid containers>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="right">Marca</TableCell>
+                    <TableCell align="right">Vendedor</TableCell>
+                    <TableCell align="right">Tipo</TableCell>
+                    <TableCell align="right">Número de serie</TableCell>
+                    <TableCell align="right">Cantidad</TableCell>
+                    <TableCell align="right">Precio</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dialogCar &&
+                    dialogCar.piezas &&
+                    dialogCar.piezas.map(pieza => {
+                      try {
+                        return (
+                          <TableRow key={pieza.marca}>
+                            <TableCell component="th" scope="row">
+                              {pieza.marca}
+                            </TableCell>
+                            <TableCell align="right">{pieza.vendedor}</TableCell>
+                            <TableCell align="right">{pieza.tipo}</TableCell>
+                            <TableCell align="right">{pieza.numeroDeSerie}</TableCell>
+                            <TableCell align="right">{pieza.cantidad}</TableCell>
+                            <TableCell align="right">{pieza.precio}</TableCell>
+                          </TableRow>
+                        );
+                      } catch (error) {
+                        return undefined;
+                      }
+                    })}
+                </TableBody>
+              </Table>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseFullDialog} color="primary">
               Cerrar
             </Button>
           </DialogActions>
