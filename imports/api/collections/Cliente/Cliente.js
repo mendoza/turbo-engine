@@ -11,6 +11,8 @@ Cliente.schema = new SimpleSchema({
   telefonoTrabajo: { type: Number },
   compania: { type: String },
   email: { type: String },
+  autosComprados: { type: Array },
+  "autosComprados.$": { type: String },
 });
 
 export default Cliente;

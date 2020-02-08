@@ -15,6 +15,7 @@ import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Checkout from "./pages/Checkout";
+import Maquinaria from "./pages/Maquinaria";
 
 export const Routes = [
   {
@@ -111,6 +112,10 @@ export const Routes = [
     path: "/factura",
     name: "Checkout",
     component: Checkout,
+  },{
+    pathName: "/maquinaria",
+    name: "Maquinaria ",
+    component: Maquinaria,
   },
 ];
 
@@ -139,6 +144,12 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
+    pathName: "/actualizarTipos",
+    name: "Tipos",
+    icon: "fas fa-wrench",
+    permission: "superAdmin",
+  },
+  {
     pathName: "/clientes",
     name: "Clientes",
     icon: "fas fa-user-tie",
@@ -155,6 +166,12 @@ export const dashboardRoutes = [
     pathName: "/restablecerContra",
     name: "Modificar contraseña",
     icon: "fas fa-edit",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/maquinaria",
+    name: "Maquinaria",
+    icon: "fas fa-cogs",
     permission: "superAdmin",
   },
 ];

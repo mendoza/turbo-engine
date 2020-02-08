@@ -7,7 +7,6 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 
 export const mainListItems = (
   <div>
-
   </div>
 );
 
