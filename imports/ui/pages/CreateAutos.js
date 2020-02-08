@@ -154,7 +154,7 @@ class CreateAutos extends PureComponent {
     const handleCreate = () => {
       const { files } = this.state;
       let alert;
-      if (validator.isEmpty(marca)) {
+      if (validator.isEmpty(nombresMarcas[marca])) {
         alert = "El campo marca es requerido";
       }
 
