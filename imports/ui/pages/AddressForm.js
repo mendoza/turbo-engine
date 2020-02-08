@@ -8,14 +8,14 @@ export default function AddressForm() {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Datos Generales
+        Datos
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="firstName"
-            name="firstName"
+            id="nombres"
+            name="nombres"
             label="Nombres"
             fullWidth
             autoComplete="fname"
@@ -24,8 +24,8 @@ export default function AddressForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="lastName"
-            name="lastName"
+            id="apellidos"
+            name="apellidos"
             label="Apellidos"
             fullWidth
             autoComplete="lname"
@@ -74,6 +74,36 @@ export default function AddressForm() {
             fullWidth
             autoComplete="billing address-line2"
           />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="direccion1"
+            name="direccion1"
+            label="Dirección 1"
+            fullWidth
+            autoComplete="billing address-line1"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="direccion2"
+            name="direccion2"
+            label="Dirección 2"
+            fullWidth
+            autoComplete="billing address-line2"
+            />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="pais"
+            name="pais"
+            label="País"
+            fullWidth
+            autoComplete="country"
+            />
         </Grid>
         <Grid item xs={12} sm={6}>
           <MaskedTextField
