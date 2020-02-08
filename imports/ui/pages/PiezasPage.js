@@ -74,6 +74,7 @@ class PiezasPage extends PureComponent {
       numeroDeSerie: "",
       tipo: "",
       cantidad: "",
+      moneda: "",
       open: false,
       message: "",
       showX: false,
@@ -105,13 +106,25 @@ class PiezasPage extends PureComponent {
   };
 
   handleTextChange = event => {
+    console.log({
+      [event.target.name]: event.target.value,
+    })
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
 
   handleClick = () => {
-    const { marca, vendedor, precio, numeroDeSerie, tipo, cantidad, dialogPiece } = this.state;
+    const {
+      marca,
+      vendedor,
+      precio,
+      numeroDeSerie,
+      tipo,
+      cantidad,
+      moneda,
+      dialogPiece,
+    } = this.state;
     let alert;
 
     if (validator.isEmpty(marca)) {
@@ -125,6 +138,9 @@ class PiezasPage extends PureComponent {
     }
     if (validator.isEmpty(numeroDeSerie)) {
       alert = "El numero de serie es requerido";
+    }
+    if (Piezas.find({ numeroDeSerie }).count() > 0) {
+      alert = "El numero de serie debe ser unico para esta pieza";
     }
     if (validator.isEmpty(vendedor)) {
       alert = "El campo vendedor es requerido";
@@ -142,6 +158,9 @@ class PiezasPage extends PureComponent {
     } else if (cantidad < 1) {
       alert = "La cantidad no puede ser cero o un número negativo";
     }
+    if (validator.isEmpty(cantidad)) {
+      alert = "La seleccion de moneda es requerida";
+    }
 
     if (alert) {
       this.setState({
@@ -157,6 +176,7 @@ class PiezasPage extends PureComponent {
         numeroDeSerie,
         tipo,
         cantidad,
+        moneda,
       });
       this.setState({
         open: true,
@@ -217,6 +237,7 @@ class PiezasPage extends PureComponent {
       numeroDeSerie,
       tipo,
       cantidad,
+      moneda,
       open,
       message,
       showX,
@@ -285,11 +306,11 @@ class PiezasPage extends PureComponent {
                             }),
                           });
                         }}
-                        endAdornment={(
+                        endAdornment={
                           <InputAdornment position="end">
                             <span className="fas fa-search" />
                           </InputAdornment>
-                        )}
+                        }
                       />
                     </FormControl>
                   </Grid>
@@ -305,7 +326,8 @@ class PiezasPage extends PureComponent {
                     showX={showX}
                     title={`Tipo: ${pieza.tipo}`}
                     body={`Vendedor: ${pieza.vendedor}`}
-                    action1={() => { }}
+                    labelButton="Modificar"
+                    action1={() => {}}
                     action2={() => {
                       this.setState({ shouldRender: true, dialogPiece: pieza, ...pieza });
                     }}
@@ -367,7 +389,24 @@ class PiezasPage extends PureComponent {
                       onInput={event => this.handleTextChange(event)}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={2} sm={2}>
+                    <Select
+                      fullWidth
+                      required
+                      name="moneda"
+                      label="Moneda"
+                      id="currency"
+                      value={moneda}
+                      onChange={event => this.handleTextChange(event)}>
+                      <MenuItem key={0} value="$">
+                        $
+                      </MenuItem>
+                      <MenuItem key={1} value="L.">
+                        L.
+                      </MenuItem>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={4} sm={4}>
                     <TextField
                       autoComplete="price"
                       name="precio"

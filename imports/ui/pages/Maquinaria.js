@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import validatorjs from "validator";
+import validator from "validator";
 import {
   Dialog,
   DialogTitle,
@@ -20,35 +20,40 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Empleados from "../../api/collections/Empleados/Empleados";
+import Maquinas from "../../api/collections/Maquinas/Maquinas";
 
-class Empleado extends Component {
+class Maquinaria extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      showEmpleadoDialog: false,
+      showMaquinariaDialog: false,
       showSnackbar: false,
       showDeleteDialog: false,
-      editId: undefined,
       snackbarText: "",
-      Nombre: "",
-      Apellido: "",
-      RTN: "",
-      Telefono: "",
-      email: "",
+
+      editId: undefined,
+      Tipo: "",
+      Marca: "",
+      Cantidad: "",
+      Descripcion: "",
     };
   }
 
-  handleTextInput = (event, stateName, validator) => {
+  // Acá es donde tiene que haber máscara para cantidad
+  // También mascara para cuando estén vacios
+  handleTextInput = (event, stateName) => {
     let error;
-    if (stateName === "email") {
-      error = !validatorjs.isEmail(event.target.value);
+
+    if (stateName === "cantidad") {
+      // Acá meron
+      error = !validator.isNumeric(event.target.value);
       if (error) {
-        error = "Correo no válido";
+        error = "cantidad no válida";
       }
     }
-    if (validator) {
-      if (validator(event.target.value) || event.target.value === "") {
+    if (error) {
+      if (validator.isEmpty(event.target.value) || event.target.value === "") {
         this.setState({
           [stateName]: event.target.value,
         });
@@ -56,113 +61,160 @@ class Empleado extends Component {
     } else {
       this.setState({
         [stateName]: event.target.value,
-        emailError: error,
+        cantidadError: error,
       });
     }
   };
 
-  handleCreateEmpleado = event => {
+  /* Se crea el nuevo objeto máquina */
+  handleCreateMaquina = event => {
     event.preventDefault();
-    const { Nombre, Apellido, RTN, Telefono, email, editId, emailError } = this.state;
-    const newEmpleado = {
+    const { Tipo, Marca, Cantidad, Descripcion, editId, cantidadError } = this.state;
+    const newMaquina = {
       _id: editId,
-      nombre: Nombre,
-      apellido: Apellido,
-      rtn: RTN,
-      telefono: Telefono,
-      email,
+      tipo: Tipo,
+      marca: Marca,
+      cantidad: Cantidad,
+      descripcion: Descripcion,
     };
     let methodName;
+    let error;
     if (editId) {
-      methodName = "handleEditEmpleado";
+      methodName = "editMaquina";
     } else {
-      methodName = "handleCreateEmpleado";
+      methodName = "addMaquina";
     }
-    if (emailError) {
+    if (cantidadError) {
       this.setState({
         showSnackbar: true,
-        snackbarText: "Por favor llene el campo de Correo Electrónico",
+        snackbarText: "Por favor ingrese una cantidad correcta",
       });
     } else {
-      Meteor.call(methodName, newEmpleado, (error, received) => {
-        if (error) {
-          this.setState({
-            showSnackbar: true,
-            snackbarText: "Ha ocurrido un error al intentar guardar el empleado",
-          });
-        } else if (received) {
-            this.setState({
-              showEmpleadoDialog: false,
-              Nombre: '',
-              Apellido: '',
-              RTN: '',
-              Telefono: '',
-              email: '',
-            });
-          } else {
-            this.setState({
-              showSnackbar: true,
-              snackbarText: 'El RTN ya existe'
-            });
-          }
-      });
-    }
-  };
+      if (validator.isEmpty(Tipo)) {
+        error = "El campo Tipo es requerido";
+      }
+      if (validator.isEmpty(Marca)) {
+        error = "El campo Marca es requerido";
+      }
+      if (validator.isEmpty(Cantidad)) {
+        error = "El campo Cantidad es requerido";
+      }
+      if (validator.isEmpty(Descripcion)) {
+        error = "El campo Descripción es requerido";
+      }
+      if (!validator.isNumeric(Cantidad)) {
+        error = "El campo cantidad solo debe contener números";
+      } else if (Cantidad < 1) {
+        error = "La cantidad no puede ser cero o un número negativo";
+      }
 
-  handleDeleteEmpleado = () => {
-    const { editId } = this.state;
-    Meteor.call("handleDeleteEmpleado", editId, error => {
       if (error) {
         this.setState({
           showSnackbar: true,
-          snackbarText: "Ha ocurrido un error al eliminar el empleado",
+          snackbarText: error,
+        });
+        return;
+      }
+
+      Meteor.call(methodName, newMaquina, err => {
+        if (err) {
+          this.setState({
+            showSnackbar: true,
+            snackbarText: "Ha ocurrido un error al intentar guardar el elemento",
+          });
+        } else {
+          this.setState({
+            Tipo: "",
+            Marca: "",
+            Cantidad: "",
+            Descripcion: "",
+            showMaquinariaDialog: false,
+          });
+        }
+      });
+    }
+  };
+
+  /*
+  handleCreateMaquina = () => {
+    const { Tipo, Marca, Cantidad, Especificaciones} = this.state;
+    let alert;
+    if (validator.isEmpty(Tipo)) {
+      alert = "El campo Tipo es requerido";
+    }
+    if (validator.isEmpty(Marca)) {
+      alert = "El campo Marca es requerido";
+    }
+    if (validator.isEmpty(Cantidad)) {
+      alert = "El campo Cantidad es requerido";
+    }
+    if (validator.isEmpty(Especificaciones)) {
+      alert = "El campo Especificaciones es requerido";
+    }
+    if (alert) {
+      this.setState({
+        open: true,
+        message: alert,
+      });
+    } else {
+      Meteor.call(
+        "addMaquina",
+        {
+          tipo: Tipo,
+          marca: Marca,
+          cantidad: Cantidad,
+          especificaciones: Especificaciones,
+        }
+      );
+    }
+  };
+*/
+
+  handleDeleteMaquina = () => {
+    const { editId } = this.state;
+    Meteor.call("deleteMaquina", editId, error => {
+      if (error) {
+        this.setState({
+          showSnackbar: true,
+          snackbarText: "Ha ocurrido un error al eliminar el elemento",
         });
       } else {
         this.setState({
           showDeleteDialog: false,
           showSnackbar: true,
-          snackbarText: "Empleado eliminado exitosamente",
+          snackbarText: "Elemento eliminado exitosamente",
         });
       }
     });
   };
 
-  renderEmpleadoDialog = () => {
-    const {
-      showEmpleadoDialog,
-      Nombre,
-      Apellido,
-      RTN,
-      Telefono,
-      email,
-      editId,
-      emailError,
-    } = this.state;
+  renderMaquinaDialog = () => {
+    const { showMaquinariaDialog, Tipo, Marca, Cantidad, Descripcion, editId } = this.state;
     return (
       <Dialog
-        open={showEmpleadoDialog}
+        open={showMaquinariaDialog}
         onClose={() => {
-          this.setState({ showEmpleadoDialog: false });
+          this.setState({ showMaquinariaDialog: false });
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
         fullWidth>
-        <form onSubmit={this.handleCreateEmpleado}>
+        <form onSubmit={this.handleCreateMaquina}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
-            empleado
+            Maquina
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Nombre"
+                  label="Tipo"
                   onInput={event => {
-                    this.handleTextInput(event, "Nombre", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                    this.handleTextInput(event, "Tipo", text => {
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
-                  value={Nombre}
+                  value={Tipo}
                   required
                   autoFocus
                   fullWidth
@@ -170,51 +222,38 @@ class Empleado extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Apellido"
+                  label="Marca"
                   onInput={event => {
-                    this.handleTextInput(event, "Apellido", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                    this.handleTextInput(event, "Marca", text => {
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
-                  value={Apellido}
+                  value={Marca}
                   required
                   fullWidth
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="RTN"
+                  label="Cantidad"
                   onInput={event => {
-                    this.handleTextInput(event, "RTN", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                    this.handleTextInput(event, "Cantidad", text => {
+                      return validator.isNumeric(text, { no_symbols: true });
                     });
                   }}
-                  value={RTN}
+                  value={Cantidad}
                   fullWidth
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Teléfono"
+                  label="Descripción"
                   onInput={event => {
-                    this.handleTextInput(event, "Telefono", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                    this.handleTextInput(event, "Descripcion", text => {
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
-                  value={Telefono}
-                  fullWidth
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Correo Electrónico"
-                  onInput={event => {
-                    this.handleTextInput(event, "email");
-                  }}
-                  value={email}
-                  error={!!emailError}
-                  helperText={emailError || ""}
+                  value={Descripcion}
                   required
                   fullWidth
                 />
@@ -224,13 +263,13 @@ class Empleado extends Component {
           <DialogActions>
             <Button
               onClick={() => {
-                this.setState({ showEmpleadoDialog: false });
+                this.setState({ showMaquinariaDialog: false });
               }}
               color="primary"
               variant="contained">
               Cancelar
             </Button>
-            <Button color="primary" variant="contained" type="submit">
+            <Button color="primary" variant="contained" onClick={this.handleCreateMaquina}>
               Guardar
             </Button>
           </DialogActions>
@@ -251,7 +290,7 @@ class Empleado extends Component {
         maxWidth="sm"
         fullWidth>
         <DialogTitle id="form-dialog-title">
-          ¿Está seguro que desea eliminar este empleado?
+          ¿Está seguro que desea eliminar este elemento?
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
@@ -269,7 +308,7 @@ class Empleado extends Component {
             variant="contained">
             Cancelar
           </Button>
-          <Button color="primary" variant="contained" onClick={this.handleDeleteEmpleado}>
+          <Button color="primary" variant="contained" onClick={this.handleDeleteMaquina}>
             Eliminar
           </Button>
         </DialogActions>
@@ -277,40 +316,35 @@ class Empleado extends Component {
     );
   };
 
-  renderEmpleadoTable = () => {
-    const { empleados } = this.props;
+  renderMaquinaTable = () => {
+    const { maquinas } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
           <TableRow>
-            <TableCell>Nombre</TableCell>
-            <TableCell>Apellido</TableCell>
-            <TableCell>RTN</TableCell>
-            <TableCell>Teléfono</TableCell>
-            <TableCell>Correo Electrónico</TableCell>
-            <TableCell>Opciones</TableCell>
+            <TableCell>Tipo</TableCell>
+            <TableCell>Marca</TableCell>
+            <TableCell>Cantidad</TableCell>
+            <TableCell>Descripción</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {empleados.map(empleado => {
-            if (empleado) {
+          {maquinas.map(maquina => {
+            if (maquina) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
-                <TableRow key={empleado.nombre}>
+                <TableRow key={maquina.tipo}>
                   <TableCell component="th" scope="row">
-                    {empleado.nombre}
+                    {maquina.tipo}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {empleado.apellido}
+                    {maquina.marca}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {empleado.rtn}
+                    {maquina.cantidad}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {empleado.telefono}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {empleado.email}
+                    {maquina.descripcion}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
@@ -319,13 +353,12 @@ class Empleado extends Component {
                           value="center"
                           onClick={() => {
                             this.setState({
-                              editId: empleado._id,
-                              showEmpleadoDialog: true,
-                              Nombre: empleado.nombre,
-                              Apellido: empleado.apellido,
-                              RTN: empleado.rtn,
-                              Telefono: empleado.telefono,
-                              email: empleado.email,
+                              editId: maquina._id,
+                              showMaquinariaDialog: true,
+                              Tipo: maquina.tipo,
+                              Marca: maquina.marca,
+                              Cantidad: maquina.cantidad,
+                              Descripcion: maquina.descripcion,
                             });
                           }}
                           aria-label="centered">
@@ -336,7 +369,7 @@ class Empleado extends Component {
                           aria-label="right aligned"
                           onClick={() => {
                             this.setState({
-                              editId: empleado._id,
+                              editId: maquina._id,
                               showDeleteDialog: true,
                             });
                           }}>
@@ -396,16 +429,16 @@ class Empleado extends Component {
               variant="contained"
               color="primary"
               onClick={() => {
-                this.setState({ showEmpleadoDialog: true, editId: undefined });
+                this.setState({ showMaquinariaDialog: true, editId: undefined });
               }}>
-              Agregar Empleado
+              Agregar Elemento
             </Button>
           </Grid>
           <Grid item xs={12}>
-            {this.renderEmpleadoTable()}
+            {this.renderMaquinaTable()}
           </Grid>
         </Grid>
-        {this.renderEmpleadoDialog()}
+        {this.renderMaquinaDialog()}
         {this.renderSnackbar()}
         {this.renderDeleteDialog()}
       </DashboardLayout>
@@ -414,9 +447,9 @@ class Empleado extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe("empleados.all");
-  const empleados = Empleados.find().fetch();
+  Meteor.subscribe("Maquinas.all");
+  const maquinas = Maquinas.find().fetch();
   return {
-    empleados: empleados && empleados.reverse(),
+    maquinas: maquinas && maquinas.reverse(),
   };
-})(Empleado);
+})(Maquinaria);

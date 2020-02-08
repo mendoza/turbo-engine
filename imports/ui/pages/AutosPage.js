@@ -22,6 +22,11 @@ import {
   MenuItem,
   AppBar,
   Toolbar,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
@@ -220,10 +225,6 @@ class AutosPage extends PureComponent {
         alert = "El campo tipo es requerido";
       }
 
-      if (validator.isEmpty(transmision)) {
-        alert = "El campo transmision es requerido";
-      }
-
       if (validator.isEmpty(color)) {
         alert = "El campo color es requerido";
       }
@@ -232,16 +233,16 @@ class AutosPage extends PureComponent {
         alert = "El campo placa es requerido";
       }
 
-      if (validator.isEmpty(traccion)) {
-        alert = "El campo traccion es requerido";
-      }
-
       if (validator.isEmpty(String(year))) {
         alert = "El campo año es requerido";
       }
 
-      if (validator.isEmpty(String(estado))) {
-        alert = "El campo estado es requerido";
+      if (year > new Date().getFullYear() + 1) {
+        alert = "El año no puede ser mayor al año actual";
+      }
+
+      if (Autos.find({ placa }).count() > 0) {
+        alert = "La placa debe ser unica para este auto";
       }
 
       if (alert) {
@@ -420,11 +421,12 @@ class AutosPage extends PureComponent {
           <Grid container spacing={4}>
             {filteredCars.map(auto => (
               <Grid item key={auto._id} xs={12} sm={6} md={4}>
+                {console.log(auto.piezas)}
                 <ItemCard
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
-                  description={`Estado: ${Status(auto.estado)}`}
+                  description={`Estado: ${Estados[0]}`}
                   labelButton="Modificar"
                   image={(() => {
                     try {
@@ -716,7 +718,7 @@ class AutosPage extends PureComponent {
               </Grid>
               <Grid item xs={6}>
                 <Title>Transmision: </Title>
-                <Typography>{`${dialogCar.transmision}`}</Typography>
+                <Typography>{`${Transmision[dialogCar.transmision]}`}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Title>Color: </Title>
@@ -729,7 +731,7 @@ class AutosPage extends PureComponent {
               </Grid>
               <Grid item xs={6}>
                 <Title>Traccion: </Title>
-                <Typography>{`${dialogCar.traccion}`}</Typography>
+                <Typography>{`${Traccion[dialogCar.traccion]}`}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Title>Año: </Title>
