@@ -16,6 +16,7 @@ import {
   TableCell,
   TableBody,
   InputLabel,
+  MenuItem
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -24,6 +25,14 @@ import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
+
+function UserGreeting(props) {
+  return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+  return <h1>Please sign up.</h1>;
+}
 
 class Clientes extends Component {
   constructor(props) {
@@ -44,6 +53,7 @@ class Clientes extends Component {
     };
   }
 
+ 
   handleTextInput = (event, stateName, validator) => {
     let error;
     if (stateName === "email") {
@@ -65,6 +75,12 @@ class Clientes extends Component {
         emailError: error,
       });
     }
+  };
+  clienteEmpresario = (event) => {
+    let error;
+    //if (stateName === "email") {
+      
+    //}
   };
 
   handleCreateClient = event => {
@@ -159,8 +175,9 @@ class Clientes extends Component {
       emailError,
       clientType,
       clientTypeLabel,
+      flagCliente
     } = this.state;
-    const options = [
+    const options1 = [
       { value: "Empresarial", label: "Empresarial" },
       { value: "Personal", label: "Personal" },
     ];
@@ -263,17 +280,6 @@ class Clientes extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Compañía"
-                  onInput={event => {
-                    this.handleTextInput(event, "Company");
-                  }}
-                  value={Company}
-                  required
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
                   label="Correo Electrónico"
                   onInput={event => {
                     this.handleTextInput(event, "email");
@@ -289,14 +295,35 @@ class Clientes extends Component {
                 <InputLabel>Tipo de Cliente</InputLabel>
                 <Select
                   style={{ width: "100%", position: "absolute" }}
-                  options={options}
+                  options={[
+                    { value: "Empresarial", label: "Empresarial" },
+                    { value: "Personal", label: "Personal" },
+                  ]}
                   onChange={ev =>
                     this.setState({
                       clientType: ev.value,
                       clientTypeLabel: ev.label,
-                    })
+                      flagCliente: ev.value,
+                    }),
+                    this.clienteEmpresario(flagCliente)
                   }
-                  value={{ value: clientType, label: clientTypeLabel }}
+                  value={clientType}
+
+                >
+                  <MenuItem value={"Empresarial"}>Natural</MenuItem>
+                  <MenuItem value={"Personal"}>Ejecutivo</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                {}
+                <TextField
+                  label="Compañía"
+                  onInput={event => {
+                    this.handleTextInput(event, "Company");
+                  }}
+                  value={Company}
+                  required
+                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -356,6 +383,7 @@ class Clientes extends Component {
       </Dialog>
     );
   };
+
 
   renderClientTable = () => {
     const { clients } = this.props;
@@ -420,6 +448,7 @@ class Clientes extends Component {
                               Telefono2: client.telefonoTrabajo,
                               Company: client.compania,
                               email: client.email,
+                              clientType:client.clientType,
                             });
                           }}
                           aria-label="centered">
