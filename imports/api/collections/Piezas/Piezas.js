@@ -10,6 +10,7 @@ Piezas.schema = new SimpleSchema({
   numeroDeSerie: { type: String, optional: true },
   tipo: { type: String },
   cantidad: {type: Number},
+  moneda: {type: String},
 });
 
 export default Piezas;

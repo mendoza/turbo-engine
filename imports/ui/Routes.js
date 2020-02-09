@@ -11,10 +11,14 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
+import SignUpClient from "./pages/SignUpClient"
+import SignInClient from "./pages/SignInClient"
+import Encuesta from "./pages/Encuesta"
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
+import Checkout from "./pages/Checkout";
 
 export const Routes = [
   {
@@ -92,9 +96,25 @@ export const Routes = [
     component: CreateAutos,
   },
   {
+    path: "/RegistroClientes",
+    name: "Registro CLientes",
+    component: SignUpClient,
+  },
+  {
+    path: "/InicioSesionClientes",
+    name: "Inicio Sesion CLientes",
+    component: SignInClient,
+  },
+  {
+    path: "/Encuesta",
+    name: "Encuesta",
+    component: Encuesta,
+    permission: 'none',
+  },
+  {
     path: "/clientes",
     name: "Clientes",
-    component: Clientes
+    component: Clientes,
   },
   {
     path: "/empleados",
@@ -103,12 +123,17 @@ export const Routes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/actualizarTipos",
+    path: "/actualizarTipos",
     name: "ActualizarT ",
     component: UpdateTypes,
   },
   {
-    pathName: "/maquinaria",
+     path: "/factura",
+     name: "Checkout",
+     component: Checkout,
+   },
+  {
+    path: "/maquinaria",
     name: "Maquinaria ",
     component: Maquinaria,
   },
@@ -118,7 +143,7 @@ export const dashboardRoutes = [
   {
     pathName: "/",
     name: "Inicio",
-    icon: "fas fa-tachometer-alt"
+    icon: "fas fa-tachometer-alt",
   },
   {
     pathName: "/listarUsuarios",
@@ -139,17 +164,23 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
+    pathName: "/actualizarTipos",
+    name: "Tipos",
+    icon: "fas fa-wrench",
+    permission: "superAdmin",
+  },
+  {
     pathName: "/clientes",
     name: "Clientes",
     icon: "fas fa-user-tie",
-    component: Clientes
+    component: Clientes,
   },
   {
     pathName: "/empleados",
     name: "Empleados",
     icon: "fas fa-people-carry",
     permission: "superAdmin",
-    component: Clientes
+    component: Clientes,
   },
   {
     pathName: "/restablecerContra",
@@ -163,4 +194,16 @@ export const dashboardRoutes = [
     icon: "fas fa-cogs",
     permission: "superAdmin",
   },
+  {
+    pathName: "/factura",
+    name: "Factura",
+    icon: "fas fa-receipt",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/Encuesta",
+    name: "Encuesta",
+    icon: "fas fa-question-circle",
+    permission: 'none',
+  }
 ];

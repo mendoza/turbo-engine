@@ -3,7 +3,6 @@ import SimpleSchema from "simpl-schema";
 
 const Autos = new Mongo.Collection("Autos");
 
-
 Autos.schema = new SimpleSchema({
   marca: { type: String },
   modelo: { type: String },
@@ -17,7 +16,7 @@ Autos.schema = new SimpleSchema({
   "piezas.$": { type: String },
   estado: { type: SimpleSchema.Integer },
   pictures: { type: Array },
-  'pictures.$': { type: String },
+  "pictures.$": { type: String },
 });
 
 export default Autos;

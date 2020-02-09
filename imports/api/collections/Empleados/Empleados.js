@@ -8,6 +8,7 @@ Empleados.schema = new SimpleSchema({
   apellido: { type: String },
   telefono: { type: Number },
   email: { type: String },
+  rtn: { type: String }
 });
 
 export default Empleados;
