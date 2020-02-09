@@ -21,8 +21,10 @@ import { ButtonBase, Checkbox } from "@material-ui/core";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
+      <img src="/imagenes/Logoblack.png" width="8%" height="8%" />
+      <br/>
       <Link color="inherit" href="https://material-ui.com/">
-        Kike Autos
+        Kike's Autos
       </Link>
       {" "}
       {new Date().getFullYear()}
@@ -141,12 +143,15 @@ export default function Encuestilla() {
         <Toolbar className={classes.toolbar}>
           <nav>
             <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-              Kikes Auto&apos;s
+              Kike&apos;s Autos
             </Typography>
           </nav>
         </Toolbar>
       </AppBar>
       <Container component="main" className={classes.heroContent}>
+        <center>
+          <img src="/imagenes/Logoblack.png" width="20%" height="20%"/>
+        </center>
         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
           Encuesta de Calificación de nuestros servicios
         </Typography>
