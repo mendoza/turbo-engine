@@ -48,6 +48,9 @@ class RestorePass extends PureComponent {
     if (validator.isEmpty(password) === true) {
       alert = "El campo contraseña es requerido";
     }
+    if (password.length < 8) {
+      alert = "El campo contraseña debe tener al menos 8 caracteres"
+    }
 
     if (alert) {
       this.setState({
