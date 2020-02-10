@@ -22,7 +22,7 @@ import {
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { withTracker } from "meteor/react-meteor-data";
-import { validator, validatorjs } from "validator";
+import validator from "validator";
 import Piezas from "../../api/collections/Piezas/Piezas";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
@@ -139,7 +139,7 @@ class PiezasPage extends PureComponent {
     if (validator.isEmpty(numeroDeSerie)) {
       alert = "El numero de serie es requerido";
     }
-    if (Piezas.find({ numeroDeSerie }).count() > 0) {
+    if (Piezas.find({ numeroDeSerie }).count() >= 1) {
       alert = "El numero de serie debe ser unico para esta pieza";
     }
     if (validator.isEmpty(vendedor)) {
