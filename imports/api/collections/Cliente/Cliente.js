@@ -1,5 +1,6 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
+import Autos from "../Autos/Autos";
 
 const Cliente = new Mongo.Collection("Cliente");
 
@@ -13,6 +14,8 @@ Cliente.schema = new SimpleSchema({
   email: { type: String },
   autosComprados: { type: Array },
   "autosComprados.$": { type: String },
+  autos: {type: Array},
+  'autos.$':{type: String}
 });
 
 export default Cliente;

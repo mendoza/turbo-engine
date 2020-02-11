@@ -1,5 +1,8 @@
+
 import React, { Component } from "react";
+import {Meteor} from 'meteor/meteor';
 import validatorjs from "validator";
+
 import {
   Dialog,
   DialogTitle,
@@ -25,14 +28,24 @@ import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
+import Autos from '../../api/collections/Autos/Autos';
 
-function UserGreeting(props) {
-  return <h1>Welcome back!</h1>;
-}
 
-function GuestGreeting(props) {
-  return <h1>Please sign up.</h1>;
-}
+
+const CeldaAuto = ({autos}) => (
+  <TableCell component="th" scope="row">
+    {autos.map(auto =>{
+      {}
+    })}
+  </TableCell>
+)
+withTracker((clientesAutos)=> {
+  Meteor.subscribe('Autos.cliente', clientesAutos);
+  return {
+    autos: Autos.find().fetch()
+  }
+})(CeldaAuto)
+
 
 class Clientes extends Component {
   constructor(props) {
@@ -42,15 +55,18 @@ class Clientes extends Component {
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
-      snackbarText: "",
-      Nombre: "",
-      Apellido: "",
-      RTN: "",
-      Telefono: "",
-      Telefono2: "",
-      Company: "",
-      email: "",
-    };
+
+      snackbarText: '',
+      Nombre: '',
+      Apellido: '',
+      RTN: '',
+      Telefono: '',
+      Telefono2: '',
+      Company: '',
+      email: '',
+      autos: [],
+    }
+
   }
 
  
@@ -87,15 +103,7 @@ class Clientes extends Component {
     const { emailError } = this.state;
     event.preventDefault();
     const {
-      Nombre,
-      Apellido,
-      RTN,
-      Telefono,
-      Telefono2,
-      Company,
-      email,
-      editId,
-      clientType,
+      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId, Autos,clientType,
     } = this.state;
 
     const newClient = {
@@ -108,6 +116,7 @@ class Clientes extends Component {
       compania: Company,
       email,
       clientType,
+      autos: Autos
     };
     let methodName;
     if (editId) {
@@ -175,7 +184,8 @@ class Clientes extends Component {
       emailError,
       clientType,
       clientTypeLabel,
-      flagCliente
+      flagCliente,
+      autos,
     } = this.state;
     const options1 = [
       { value: "Empresarial", label: "Empresarial" },
@@ -326,6 +336,15 @@ class Clientes extends Component {
                   fullWidth
                 />
               </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Autos"
+                  onInput={event => { this.handleTextInput(event, 'autos') }}
+                  value={autos}
+                  required
+                  fullWidth
+                  />
+              </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -386,7 +405,7 @@ class Clientes extends Component {
 
 
   renderClientTable = () => {
-    const { clients } = this.props;
+    const { clients, autos } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -399,6 +418,7 @@ class Clientes extends Component {
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
             <TableCell>Tipo</TableCell>
+            <TableCell>Autos</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
@@ -431,6 +451,9 @@ class Clientes extends Component {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {client.clientType}
+                    {CeldaAuto}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
