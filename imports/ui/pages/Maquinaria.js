@@ -107,7 +107,10 @@ class Maquinaria extends Component {
       } else if (Cantidad < 1) {
         error = "La cantidad no puede ser cero o un número negativo";
       }
-
+      if (Maquinas.find({Tipo}).count()>0 &&  Maquinas.find({Marca}).count()>0){
+        // Autos.find({ placa }).count() > 0
+        error = "Este elemento ya ha sido agregado con anterioridad"
+      }
       if (error) {
         this.setState({
           showSnackbar: true,
