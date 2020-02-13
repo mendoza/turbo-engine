@@ -19,6 +19,7 @@ import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
 import Checkout from "./pages/Checkout";
+import Proveedores from "./pages/Proveedores";
 
 export const Routes = [
   {
@@ -117,6 +118,11 @@ export const Routes = [
     component: Clientes,
   },
   {
+    path: "/proveedores",
+    name: "Proveedores",
+    component: Proveedores,
+  },
+  {
     path: "/empleados",
     name: "Empleados",
     component: Empleados,
@@ -174,6 +180,12 @@ export const dashboardRoutes = [
     name: "Clientes",
     icon: "fas fa-user-tie",
     component: Clientes,
+  },
+  {
+    pathName: "/proveedores",
+    name: "Proveedores",
+    icon: "fas fa-user-tie",
+    component: Proveedores,
   },
   {
     pathName: "/empleados",
