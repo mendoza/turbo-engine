@@ -99,7 +99,7 @@ class Proveedores extends Component {
     //}
   };
 
-  handleCreateClient = event => {
+  handleCreateProvider = event => {
     const { emailError } = this.state;
     event.preventDefault();
     const {
@@ -122,7 +122,7 @@ class Proveedores extends Component {
     if (editId) {
       methodName = "handleEditClient";
     } else {
-      methodName = "handleCreateClient";
+      methodName = "handleCreateProvider";
     }
     if (emailError) {
       this.setState({
@@ -200,7 +200,7 @@ class Proveedores extends Component {
         aria-labelledby="form-dialog-title"
         maxWidth="md"
         fullWidth>
-        <form onSubmit={this.handleCreateClient}>
+        <form onSubmit={this.handleCreateProvider}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
             Proveedor
@@ -377,7 +377,7 @@ class Proveedores extends Component {
         maxWidth="sm"
         fullWidth>
         <DialogTitle id="form-dialog-title">
-          ¿Está seguro que desea eliminar este cliente?
+          ¿Está seguro que desea eliminar este proveedor?
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
@@ -404,7 +404,7 @@ class Proveedores extends Component {
   };
 
 
-  renderClientTable = () => {
+  renderProviderTable = () => {
     const { clients, autos } = this.props;
     return (
       <Table aria-label="users table">
@@ -423,34 +423,34 @@ class Proveedores extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {clients.map(client => {
-            if (client) {
+          {clients.map(provider => {
+            if (provider) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
-                <TableRow key={client.nombre}>
+                <TableRow key={provider.nombre}>
                   <TableCell component="th" scope="row">
-                    {client.nombre}
+                    {provider.nombre}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.apellido}
+                    {provider.apellido}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.codigo}
+                    {provider.codigo}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.telefono}
+                    {provider.telefono}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.telefonoTrabajo}
+                    {provider.telefonoTrabajo}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.compania}
+                    {provider.compania}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.email}
+                    {provider.email}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.clientType}
+                    {provider.clientType}
                     {CeldaAuto}
                   </TableCell>
                   <TableCell component="th" scope="row">
@@ -462,16 +462,16 @@ class Proveedores extends Component {
                           value="center"
                           onClick={() => {
                             this.setState({
-                              editId: client._id,
+                              editId: provider._id,
                               showClientDialog: true,
-                              Nombre: client.nombre,
-                              Apellido: client.apellido,
-                              Codigo: client.codigo,
-                              Telefono: client.telefono,
-                              Telefono2: client.telefonoTrabajo,
-                              Company: client.compania,
-                              email: client.email,
-                              clientType:client.clientType,
+                              Nombre: provider.nombre,
+                              Apellido: provider.apellido,
+                              Codigo: provider.codigo,
+                              Telefono: provider.telefono,
+                              Telefono2: provider.telefonoTrabajo,
+                              Company: provider.compania,
+                              email: provider.email,
+                              clientType:provider.clientType,
                             });
                           }}
                           aria-label="centered">
@@ -482,7 +482,7 @@ class Proveedores extends Component {
                           aria-label="right aligned"
                           onClick={() => {
                             this.setState({
-                              editId: client._id,
+                              editId: provider._id,
                               showDeleteDialog: true,
                             });
                           }}>
@@ -548,7 +548,7 @@ class Proveedores extends Component {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            {this.renderClientTable()}
+            {this.renderProviderTable()}
           </Grid>
         </Grid>
         {this.renderClientDialog()}
