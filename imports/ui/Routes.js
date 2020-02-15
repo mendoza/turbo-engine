@@ -15,6 +15,7 @@ import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
+import Historial from "./pages/Historial";
 
 export const Routes = [
   {
@@ -103,14 +104,19 @@ export const Routes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/actualizarTipos",
+    path: "/actualizarTipos",
     name: "ActualizarT ",
     component: UpdateTypes,
   },
   {
-    pathName: "/maquinaria",
+    path: "/maquinaria",
     name: "Maquinaria ",
     component: Maquinaria,
+  },
+  {
+    path: "/historial",
+    name: "Historial ",
+    component: Historial,
   },
 ];
 
