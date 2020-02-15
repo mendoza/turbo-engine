@@ -1,7 +1,7 @@
 import Cliente from "./Cliente";
 
 Meteor.methods({
-  handleCreateClient(payload) {
+  handleCreateProvider(payload) {
     Cliente.insert(payload);
   },
   handleEditClient(payload) {

@@ -26,7 +26,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
 import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Cliente from "../../api/collections/Cliente/Cliente";
+import Proveedor from "../../api/collections/Proveedor/Proveedor";
 import MaskedTextField from "../components/MaskedTextField";
 import Autos from '../../api/collections/Autos/Autos';
 
@@ -51,7 +51,7 @@ class Proveedores extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showClientDialog: false,
+      showProviderDialog: false,
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
@@ -106,8 +106,8 @@ class Proveedores extends Component {
       Nombre, Apellido, Codigo, Telefono, Telefono2, Company, email, editId, Autos,clientType,
     } = this.state;
 
-    const newClient = {
-      _id: editId,
+    const newProvider = {
+      id: editId,
       nombre: Nombre,
       apellido: Apellido,
       codigo: Codigo,
@@ -120,7 +120,7 @@ class Proveedores extends Component {
     };
     let methodName;
     if (editId) {
-      methodName = "handleEditClient";
+      methodName = "handleEditProvider";
     } else {
       methodName = "handleCreateProvider";
     }
@@ -130,7 +130,7 @@ class Proveedores extends Component {
         snackbarText: "Por favor llene el campo de Correo Electrónico",
       });
     } else {
-      Meteor.call(methodName, newClient, error => {
+      Meteor.call(methodName, newProvider, error => {
         if (error) {
           this.setState({
             showSnackbar: true,
@@ -138,7 +138,7 @@ class Proveedores extends Component {
           });
         } else {
           this.setState({
-            showClientDialog: false,
+            showProviderDialog: false,
             Nombre: "",
             Apellido: "",
             Codigo: "",
@@ -152,9 +152,9 @@ class Proveedores extends Component {
     }
   };
 
-  handleDeleteClient = () => {
+  handleDeleteProvider = () => {
     const { editId } = this.state;
-    Meteor.call("handleDeleteClient", editId, error => {
+    Meteor.call("handleDeleteProvider", editId, error => {
       if (error) {
         this.setState({
           showSnackbar: true,
@@ -170,9 +170,9 @@ class Proveedores extends Component {
     });
   };
 
-  renderClientDialog = () => {
+  renderProviderDialog = () => {
     const {
-      showClientDialog,
+      showProviderDialog,
       Nombre,
       Apellido,
       Codigo,
@@ -193,9 +193,9 @@ class Proveedores extends Component {
     ];
     return (
       <Dialog
-        open={showClientDialog}
+        open={showProviderDialog}
         onClose={() => {
-          this.setState({ showClientDialog: false });
+          this.setState({ showProviderDialog: false });
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
@@ -350,7 +350,7 @@ class Proveedores extends Component {
           <DialogActions>
             <Button
               onClick={() => {
-                this.setState({ showClientDialog: false });
+                this.setState({ showProviderDialog: false });
               }}
               color="primary"
               variant="contained">
@@ -395,7 +395,7 @@ class Proveedores extends Component {
             variant="contained">
             Cancelar
           </Button>
-          <Button color="primary" variant="contained" onClick={this.handleDeleteClient}>
+          <Button color="primary" variant="contained" onClick={this.handleDeleteProvider}>
             Eliminar
           </Button>
         </DialogActions>
@@ -405,7 +405,7 @@ class Proveedores extends Component {
 
 
   renderProviderTable = () => {
-    const { clients, autos } = this.props;
+    const { providers, autos } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -423,7 +423,7 @@ class Proveedores extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {clients.map(provider => {
+          {providers.map(provider => {
             if (provider) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -463,7 +463,7 @@ class Proveedores extends Component {
                           onClick={() => {
                             this.setState({
                               editId: provider._id,
-                              showClientDialog: true,
+                              showProviderDialog: true,
                               Nombre: provider.nombre,
                               Apellido: provider.apellido,
                               Codigo: provider.codigo,
@@ -542,7 +542,7 @@ class Proveedores extends Component {
               variant="contained"
               color="primary"
               onClick={() => {
-                this.setState({ showClientDialog: true, editId: undefined });
+                this.setState({ showProviderDialog: true, editId: undefined });
               }}>
               Agregar Proveedores
             </Button>
@@ -551,7 +551,7 @@ class Proveedores extends Component {
             {this.renderProviderTable()}
           </Grid>
         </Grid>
-        {this.renderClientDialog()}
+        {this.renderProviderDialog()}
         {this.renderSnackbar()}
         {this.renderDeleteDialog()}
       </DashboardLayout>
@@ -561,8 +561,8 @@ class Proveedores extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe("proveedores.all");
-  const clients = Cliente.find().fetch();
+  const providers = Proveedor.find().fetch();
   return {
-    clients: clients && clients.reverse(),
+    providers: providers && providers.reverse(),
   };
 })(Proveedores);
