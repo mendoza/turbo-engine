@@ -1,22 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import {
-  Grid, 
-  Snackbar, 
-  IconButton, 
-  Table, 
-  TableRow, 
-  TableHead, 
-  TableCell, 
-  Title
-} from '@material-ui/core';
-import { withTracker } from 'meteor/react-meteor-data';
+  Grid,
+  Snackbar,
+  IconButton,
+  Table,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@material-ui/core";
+import { withTracker } from "meteor/react-meteor-data";
+import Title from "../components/Title";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 class Historial extends Component {
   constructor(props) {
-    super(props)
-    this.state = {
-    }
+    super(props);
+    this.state = { showSnackbar: false, snackbarText: "" };
   }
 
   renderHistorialTable = () => {
@@ -24,7 +23,7 @@ class Historial extends Component {
       <Table aria-label="history table">
         <TableHead>
           <TableRow>
-            <TableCell>Cliente</TableCell>      
+            <TableCell>Cliente</TableCell>
             <TableCell>Producto</TableCell>
             <TableCell>Tipo</TableCell>
             <TableCell>Descripción</TableCell>
@@ -35,7 +34,7 @@ class Historial extends Component {
         </TableHead>
       </Table>
     );
-  }
+  };
 
   renderSnackbar = () => {
     const { showSnackbar, snackbarText } = this.state;
@@ -47,9 +46,9 @@ class Historial extends Component {
         }}
         open={showSnackbar}
         autoHideDuration={6000}
-        onClose={
-          () => { this.setState({ showSnackbar: false }) }
-        }
+        onClose={() => {
+          this.setState({ showSnackbar: false });
+        }}
         ContentProps={{
           "aria-describedby": "message-id",
         }}
@@ -59,21 +58,20 @@ class Historial extends Component {
             key="close"
             aria-label="close"
             color="inherit"
-            onClick={() => { this.setState({ showSnackbar: false }) }}
-            >
+            onClick={() => {
+              this.setState({ showSnackbar: false });
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
-  }
+  };
 
   render() {
     return (
-      <DashboardLayout style={{ height: '100vh' }}>
-        <Title>
-            Historial de Ventas
-        </Title>
+      <DashboardLayout style={{ height: "100vh" }}>
+        <Title>Historial de Ventas</Title>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             {this.renderHistorialTable()}
@@ -81,9 +79,10 @@ class Historial extends Component {
         </Grid>
         {this.renderSnackbar()}
       </DashboardLayout>
-    )
+    );
   }
 }
 
 export default withTracker(() => {
+  return {};
 })(Historial);
