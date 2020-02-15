@@ -66,6 +66,7 @@ class PiezasPage extends PureComponent {
     super(props);
     this.state = {
       shouldRender: false,
+      showPiezasDialog: false,
       dialogPiece: {},
       marca: "",
       vendedor: "",
@@ -138,7 +139,7 @@ class PiezasPage extends PureComponent {
     if (validator.isEmpty(numeroDeSerie)) {
       alert = "El numero de serie es requerido";
     }
-    if (Piezas.find({ numeroDeSerie }).count() > 0) {
+    if (Piezas.find({ numeroDeSerie }).count() >= 1) {
       alert = "El numero de serie debe ser unico para esta pieza";
     }
     if (validator.isEmpty(vendedor)) {
@@ -184,6 +185,46 @@ class PiezasPage extends PureComponent {
       });
     }
   };
+
+  renderPiezasDialog = () => {
+    const {
+      showPiezasDialog,
+      marca,
+      /*
+      vendedor,
+      precio,
+      numeroDeSerie,
+      tipo,
+      cantidad,
+      dialogPiece,
+      */
+    } = this.state;
+    return (
+      <Dialog
+        open={showPiezasDialog}
+        onClose={() => { this.setState({ showPiezasDialog: false }) }}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth
+      >
+        <form>
+          <Grid>
+            <TextField
+              label="Marca"
+              onInput={event => {
+                this.handleTextInput(event, 'marca', text => {
+                  return validatorjs.isAlpha(text, 'es-ES')
+                })
+              }}
+              value={marca}
+              required
+              fullWidth
+            />
+          </Grid>
+        </form>
+      </Dialog>
+    );
+  }
 
   render() {
     const { classes, piezas, tipos } = this.props;

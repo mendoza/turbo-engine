@@ -20,6 +20,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  AppBar,
+  Toolbar,
   Table,
   TableBody,
   TableCell,
@@ -36,6 +38,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import Title from "../components/Title";
+import Piezas from "../../api/collections/Piezas/Piezas";
 import { Estados, Traccion, Transmision } from "../Constants";
 
 const useStyles = theme => ({
@@ -74,6 +77,7 @@ class AutosPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      shouldOpen: false,
       shouldRender: false,
       dialogCar: {},
       marca: "",
@@ -153,10 +157,17 @@ class AutosPage extends PureComponent {
     }
   };
 
+  handleClose = () => {
+    this.setState({
+      shouldOpen: false,
+    });
+  };
+
   render() {
-    const { classes, autos, autosFiles } = this.props;
+    const { classes, autos, autosFiles, allPiezas } = this.props;
 
     const {
+      shouldOpen,
       shouldRender,
       dialogCar,
       marca,
@@ -230,7 +241,7 @@ class AutosPage extends PureComponent {
         alert = "El año no puede ser mayor al año actual";
       }
 
-      if (Autos.find({ placa }).count() > 0) {
+      if (Autos.find({ placa }).count() >= 1) {
         alert = "La placa debe ser unica para este auto";
       }
 
@@ -240,6 +251,15 @@ class AutosPage extends PureComponent {
           message: alert,
         });
       } else {
+        // Falta agregar las piezas actualizadas al carro, piezas está vacio
+        allPiezas.map((pieza) => {
+          Meteor.call("updatePieza", {
+            _id:pieza._id,
+            $set:{
+              cantidad: pieza.cantidad
+            }
+          });
+        })
         Meteor.call("updateAuto", {
           _id: dialogCar._id,
           marca,
@@ -251,12 +271,14 @@ class AutosPage extends PureComponent {
           traccion,
           year,
           estado,
+          piezas,
           pictures: [...files, ...pictures],
         });
         this.setState({
           open: true,
           message: "Auto Actualizado exitosamente",
           shouldRender: false,
+          shouldOpen: false,
         });
       }
     };
@@ -275,6 +297,52 @@ class AutosPage extends PureComponent {
         return "Vendido";
       }
       return "Sin especificar";
+    };
+
+    const shouldRenderCard = (label, list1, list2, pieza, index) => {
+      return (
+        <Grid item key={pieza.vendedor + pieza.tipo + index} xs={12} sm={6} md={4}>
+          <ItemCard
+            labelButton={label}
+            showX={showX}
+            title={`Tipo: ${pieza.tipo}`}
+            body={`Vendedor: ${pieza.vendedor}`}
+            description={`Cantidad: ${pieza.cantidad}`}
+            action1={() => {}}
+            action2={() => {
+              let contains = false;
+              let indexAuto = 0;
+              for (let i = 0; i < list1.length; i++) {
+                if (
+                  list1[i].marca === pieza.marca &&
+                  list1[i].vendedor === pieza.vendedor &&
+                  list1[i].precio === pieza.precio &&
+                  list1[i].numeroDeSerie === pieza.numeroDeSerie &&
+                  list1[i].tipo === pieza.tipo
+                ) {
+                  contains = true;
+                  indexAuto = i;
+                }
+              }
+              if (contains) {
+                pieza.cantidad -= 1;
+                list1[indexAuto].cantidad += 1;
+                if (pieza.cantidad === 0) {
+                  if (index > -1) {
+                    list2.splice(index, 1);
+                  }
+                }
+              } else {
+                list1.push({ ...pieza, cantidad: 1 });
+                pieza.cantidad -= 1;
+              }
+              this.forceUpdate();
+              this.setState({ showX: false });
+            }}
+            action3={() => {}}
+          />
+        </Grid>
+      );
     };
 
     return (
@@ -519,6 +587,14 @@ class AutosPage extends PureComponent {
                   />
                 </Grid>
               </Grid>
+              <Button
+                onClick={() => {
+                  this.setState({
+                    shouldOpen: true,
+                  });
+                }}>
+                Cambiar piezas
+              </Button>
               <Box paddingY="1rem">
                 Agregar imagenes
                 <br />
@@ -569,6 +645,56 @@ class AutosPage extends PureComponent {
               Cerrar
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog fullScreen open={shouldOpen} onClose={this.handleClose}>
+          <AppBar>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.handleClose}
+                aria-label="close">
+                <i className="fas fa-times-circle" />
+              </IconButton>
+              <Typography variant="h6">Piezas</Typography>
+              <Button autoFocus color="inherit" onClick={this.handleClose}>
+                Guardar
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <DialogContent container>
+            <Title> </Title>
+            <Grid container spacing={4}>
+              {dialogCar &&
+              dialogCar.piezas &&
+              allPiezas.map((pieza, index) =>{
+                try {
+                  return pieza.cantidad > 0
+                  ? shouldRenderCard("Agregar", dialogCar.piezas , allPiezas, pieza, index)
+                  : null
+                } catch (error) {
+                  return undefined;
+                }
+              })}
+            </Grid>
+          </DialogContent>
+          <Divider />
+          <DialogContent>
+            <Title>Piezas agregadas</Title>
+            <Grid container spacing={4}>
+              {dialogCar &&
+                dialogCar.piezas &&
+                dialogCar.piezas .map((pieza, index) => {
+                  try {
+                    return pieza.cantidad > 0
+                      ? shouldRenderCard("Eliminar", allPiezas, dialogCar.piezas , pieza, index)
+                      : null;
+                  } catch (error) {
+                    return undefined;
+                  }
+                })}
+            </Grid>
+          </DialogContent>
         </Dialog>
 
         <Dialog open={shouldRenderFull} onClose={handleCloseFullDialog} maxWidth="lg">
@@ -702,8 +828,10 @@ class AutosPage extends PureComponent {
 export default withTracker(() => {
   Meteor.subscribe("Autos.all");
   Meteor.subscribe("AutosFiles.all");
+  Meteor.subscribe("Piezas.all");
   return {
     autos: Autos.find().fetch(),
     autosFiles: AutosFiles.find().fetch(),
+    allPiezas: Piezas.find().fetch(),
   };
 })(withStyles(useStyles)(AutosPage));

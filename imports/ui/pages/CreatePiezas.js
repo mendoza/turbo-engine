@@ -39,7 +39,7 @@ class CreatePiezas extends PureComponent {
       name: "",
     };
   }
-
+  
   handleDialog = () => {
     this.setState({ shouldRender: false });
   };
@@ -182,7 +182,7 @@ class CreatePiezas extends PureComponent {
                   autoFocus
                   value={marca}
                   onInput={event => this.handleTextChange(event, "marca")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -195,7 +195,7 @@ class CreatePiezas extends PureComponent {
                   label="Vendedor"
                   value={vendedor}
                   onInput={event => this.handleTextChange(event, "vendedor")}
-                />
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -208,7 +208,7 @@ class CreatePiezas extends PureComponent {
                   label="NumeroDeSerie"
                   value={numeroDeSerie}
                   onInput={event => this.handleTextChange(event, "numeroDeSerie")}
-                />
+                  />
               </Grid>
               <Grid item xs={2} sm={2}>
                 <Select
@@ -238,7 +238,7 @@ class CreatePiezas extends PureComponent {
                   label="precio"
                   value={precio}
                   onInput={event => this.handleTextChange(event, "precio")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -251,7 +251,7 @@ class CreatePiezas extends PureComponent {
                   label="cantidad"
                   value={cantidad}
                   onInput={event => this.handleTextChange(event, "cantidad")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={10}>
                 <Select
@@ -260,7 +260,8 @@ class CreatePiezas extends PureComponent {
                   label="Tipo"
                   id="type"
                   value={tipo}
-                  onChange={event => this.handleTextChange(event, "tipo")}>
+                  onChange={event => this.handleTextChange(event, "tipo")}
+                  >
                   {tipos.map(tipoMap => {
                     if (tipoMap) {
                       return (
@@ -281,7 +282,8 @@ class CreatePiezas extends PureComponent {
                   // size="large"
                   onClick={() => {
                     this.setState({ shouldRender: true });
-                  }}>
+                  }}
+                  >
                   Agregar Tipo
                 </Button>
               </Grid>
@@ -309,7 +311,7 @@ class CreatePiezas extends PureComponent {
                     autoFocus
                     value={name}
                     onInput={event => this.handleTextChange(event, "name")}
-                  />
+                    />
                 </Grid>
                 <Button fullWidth variant="contained" color="primary" onClick={this.handleAdd}>
                   Crear
@@ -340,7 +342,7 @@ class CreatePiezas extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }
