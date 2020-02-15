@@ -1,6 +1,5 @@
-
 import React, { Component } from "react";
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from "meteor/meteor";
 import validatorjs from "validator";
 
 import {
@@ -19,6 +18,7 @@ import {
   TableCell,
   TableBody,
   InputLabel,
+  MenuItem,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -27,24 +27,22 @@ import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
-import Autos from '../../api/collections/Autos/Autos';
+import Autos from "../../api/collections/Autos/Autos";
 
-
-
-const CeldaAuto = ({autos}) => (
+const CeldaAuto = ({ autos }) => (
   <TableCell component="th" scope="row">
-    {autos.map(auto =>{
-      {}
+    {autos.map(auto => {
+      {
+      }
     })}
   </TableCell>
-)
-withTracker((clientesAutos)=> {
-  Meteor.subscribe('Autos.cliente', clientesAutos);
+);
+withTracker(clientesAutos => {
+  Meteor.subscribe("Autos.cliente", clientesAutos);
   return {
-    autos: Autos.find().fetch()
-  }
-})(CeldaAuto)
-
+    autos: Autos.find().fetch(),
+  };
+})(CeldaAuto);
 
 class Clientes extends Component {
   constructor(props) {
@@ -55,20 +53,18 @@ class Clientes extends Component {
       showDeleteDialog: false,
       editId: undefined,
 
-      snackbarText: '',
-      Nombre: '',
-      Apellido: '',
-      RTN: '',
-      Telefono: '',
-      Telefono2: '',
-      Company: '',
-      email: '',
+      snackbarText: "",
+      Nombre: "",
+      Apellido: "",
+      RTN: "",
+      Telefono: "",
+      Telefono2: "",
+      Company: "",
+      email: "",
       autos: [],
-    }
-
+    };
   }
 
- 
   handleTextInput = (event, stateName, validator) => {
     let error;
     if (stateName === "email") {
@@ -91,10 +87,10 @@ class Clientes extends Component {
       });
     }
   };
-  clienteEmpresario = (event) => {
+  clienteEmpresario = event => {
     let error;
     //if (stateName === "email") {
-      
+
     //}
   };
 
@@ -110,6 +106,7 @@ class Clientes extends Component {
       Company,
       email,
       editId,
+      Autos,
       clientType,
     } = this.state;
 
@@ -123,7 +120,7 @@ class Clientes extends Component {
       compania: Company,
       email,
       clientType,
-      autos: Autos
+      autos: Autos,
     };
     let methodName;
     if (editId) {
@@ -191,8 +188,10 @@ class Clientes extends Component {
       emailError,
       clientType,
       clientTypeLabel,
+      flagCliente,
+      autos,
     } = this.state;
-    const options = [
+    const options1 = [
       { value: "Empresarial", label: "Empresarial" },
       { value: "Personal", label: "Personal" },
     ];
@@ -314,17 +313,16 @@ class Clientes extends Component {
                     { value: "Empresarial", label: "Empresarial" },
                     { value: "Personal", label: "Personal" },
                   ]}
-                  onChange={ev =>
-                    this.setState({
-                      clientType: ev.value,
-                      clientTypeLabel: ev.label,
-                      flagCliente: ev.value,
-                    }),
-                    this.clienteEmpresario(flagCliente)
+                  onChange={
+                    (ev =>
+                      this.setState({
+                        clientType: ev.value,
+                        clientTypeLabel: ev.label,
+                        flagCliente: ev.value,
+                      }),
+                    this.clienteEmpresario(flagCliente))
                   }
-                  value={clientType}
-
-                >
+                  value={clientType}>
                   <MenuItem value={"Empresarial"}>Natural</MenuItem>
                   <MenuItem value={"Personal"}>Ejecutivo</MenuItem>
                 </Select>
@@ -342,19 +340,15 @@ class Clientes extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <InputLabel>Tipo de Cliente</InputLabel>
-                <Select
-                  style={{ width: "100%", position: "absolute" }}
-                  options={options}
-                  onChange={ev =>
-                    this.setState({
-                      clientType: ev.value,
-                      clientTypeLabel: ev.label,
-                    })
-                  }
-                  value={{ value: clientType, label: clientTypeLabel }}
+                <TextField
+                  label="Autos"
+                  onInput={event => {
+                    this.handleTextInput(event, "autos");
+                  }}
+                  value={autos}
+                  required
+                  fullWidth
                 />
-
               </Grid>
             </Grid>
           </DialogContent>
@@ -414,7 +408,6 @@ class Clientes extends Component {
     );
   };
 
-
   renderClientTable = () => {
     const { clients, autos } = this.props;
     return (
@@ -464,8 +457,7 @@ class Clientes extends Component {
                     {client.clientType}
                     {CeldaAuto}
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                  </TableCell>
+                  <TableCell component="th" scope="row"></TableCell>
                   <TableCell component="th" scope="row">
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
@@ -482,7 +474,7 @@ class Clientes extends Component {
                               Telefono2: client.telefonoTrabajo,
                               Company: client.compania,
                               email: client.email,
-                              clientType:client.clientType,
+                              clientType: client.clientType,
                             });
                           }}
                           aria-label="centered">
