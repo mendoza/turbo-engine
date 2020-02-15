@@ -19,7 +19,6 @@ import {
   TableCell,
   TableBody,
   InputLabel,
-  MenuItem
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -103,7 +102,15 @@ class Clientes extends Component {
     const { emailError } = this.state;
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId, Autos,clientType,
+      Nombre,
+      Apellido,
+      RTN,
+      Telefono,
+      Telefono2,
+      Company,
+      email,
+      editId,
+      clientType,
     } = this.state;
 
     const newClient = {
@@ -184,10 +191,8 @@ class Clientes extends Component {
       emailError,
       clientType,
       clientTypeLabel,
-      flagCliente,
-      autos,
     } = this.state;
-    const options1 = [
+    const options = [
       { value: "Empresarial", label: "Empresarial" },
       { value: "Personal", label: "Personal" },
     ];
@@ -337,13 +342,19 @@ class Clientes extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  label="Autos"
-                  onInput={event => { this.handleTextInput(event, 'autos') }}
-                  value={autos}
-                  required
-                  fullWidth
-                  />
+                <InputLabel>Tipo de Cliente</InputLabel>
+                <Select
+                  style={{ width: "100%", position: "absolute" }}
+                  options={options}
+                  onChange={ev =>
+                    this.setState({
+                      clientType: ev.value,
+                      clientTypeLabel: ev.label,
+                    })
+                  }
+                  value={{ value: clientType, label: clientTypeLabel }}
+                />
+
               </Grid>
             </Grid>
           </DialogContent>
