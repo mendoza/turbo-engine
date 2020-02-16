@@ -1,8 +1,5 @@
-
 import React, { Component } from "react";
-import {Meteor} from 'meteor/meteor';
 import validatorjs from "validator";
-
 import {
   Dialog,
   DialogTitle,
@@ -18,34 +15,12 @@ import {
   TableHead,
   TableCell,
   TableBody,
-  InputLabel,
-  MenuItem
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
-import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Proveedor from "../../api/collections/Proveedor/Proveedor";
-import MaskedTextField from "../components/MaskedTextField";
-import Autos from '../../api/collections/Autos/Autos';
-
-
-
-const CeldaAuto = ({autos}) => (
-  <TableCell component="th" scope="row">
-    {autos.map(auto =>{
-      {}
-    })}
-  </TableCell>
-)
-withTracker((clientesAutos)=> {
-  Meteor.subscribe('Autos.cliente', clientesAutos);
-  return {
-    autos: Autos.find().fetch()
-  }
-})(CeldaAuto)
-
 
 class Proveedores extends Component {
   constructor(props) {
@@ -59,17 +34,15 @@ class Proveedores extends Component {
       snackbarText: '',
       Nombre: '',
       Apellido: '',
-      Codigo: '',
+      Direccion: '',
       Telefono: '',
       Telefono2: '',
       Company: '',
       email: '',
-      autos: [],
     }
 
   }
 
- 
   handleTextInput = (event, stateName, validator) => {
     let error;
     if (stateName === "email") {
@@ -92,31 +65,23 @@ class Proveedores extends Component {
       });
     }
   };
-  clienteEmpresario = (event) => {
-    let error;
-    //if (stateName === "email") {
-      
-    //}
-  };
 
   handleCreateProvider = event => {
     const { emailError } = this.state;
     event.preventDefault();
     const {
-      Nombre, Apellido, Codigo, Telefono, Telefono2, Company, email, editId, Autos,clientType,
+      Nombre, Apellido, Direccion, Telefono, Telefono2, Company, email, editId
     } = this.state;
 
     const newProvider = {
       id: editId,
       nombre: Nombre,
       apellido: Apellido,
-      codigo: Codigo,
+      direccion: Direccion,
       telefono: Telefono,
       telefonoTrabajo: Telefono2,
       compania: Company,
       email,
-      clientType,
-      autos: Autos
     };
     let methodName;
     if (editId) {
@@ -141,7 +106,7 @@ class Proveedores extends Component {
             showProviderDialog: false,
             Nombre: "",
             Apellido: "",
-            Codigo: "",
+            Direccion: "",
             Telefono: "",
             Telefono2: "",
             Company: "",
@@ -175,22 +140,14 @@ class Proveedores extends Component {
       showProviderDialog,
       Nombre,
       Apellido,
-      Codigo,
+      Direccion,
       Telefono,
       Telefono2,
       Company,
       email,
       editId,
       emailError,
-      clientType,
-      clientTypeLabel,
-      flagCliente,
-      autos,
     } = this.state;
-    const options1 = [
-      { value: "Empresarial", label: "Empresarial" },
-      { value: "Personal", label: "Personal" },
-    ];
     return (
       <Dialog
         open={showProviderDialog}
@@ -235,31 +192,16 @@ class Proveedores extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <MaskedTextField
-                  mask={[
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                  ]}
-                  value={Codigo}
-                  name="Codigo"
-                  onChange={event => {Codigo
-                    this.handleTextInput(event, "Codigo", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                <TextField
+                  label="Dirección"
+                  onInput={event => {
+                    this.handleTextInput(event, "Dirección", text => {
+                      return validatorjs.isAlpha(text, "es-ES");
                     });
                   }}
-                  label="Codigo"
+                  value={Direccion}
+                  required
+                  fullWidth
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -277,7 +219,7 @@ class Proveedores extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Teléfono del trabajo"
+                  label="Teléfono secundario"
                   onInput={event => {
                     this.handleTextInput(event, "Telefono2", text => {
                       return validatorjs.isNumeric(text, { no_symbols: true });
@@ -302,29 +244,6 @@ class Proveedores extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <InputLabel>IVA</InputLabel>
-                <Select
-                  style={{ width: "100%", position: "absolute" }}
-                  options={[
-                    { value: "Responsable Inscripto", label: "Responsable Inscripto" },
-                    { value: "Otro/Prengutale a tu hermano", label: "Otro/Prengutale a tu hermano" },
-                  ]}
-                  onChange={ev =>
-                    this.setState({
-                      clientType: ev.value,
-                      clientTypeLabel: ev.label,
-                      flagCliente: ev.value,
-                    }),
-                    this.clienteEmpresario(flagCliente)
-                  }
-                  value={clientType}
-
-                >
-                  <MenuItem value={"Empresarial"}>Natural</MenuItem>
-                  <MenuItem value={"Personal"}>Ejecutivo</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={12} md={6}>
                 {}
                 <TextField
                   label="Compañía"
@@ -335,15 +254,6 @@ class Proveedores extends Component {
                   required
                   fullWidth
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Autos"
-                  onInput={event => { this.handleTextInput(event, 'autos') }}
-                  value={autos}
-                  required
-                  fullWidth
-                  />
               </Grid>
             </Grid>
           </DialogContent>
@@ -405,20 +315,18 @@ class Proveedores extends Component {
 
 
   renderProviderTable = () => {
-    const { providers, autos } = this.props;
+    const { providers } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
           <TableRow>
             <TableCell>Nombre</TableCell>
             <TableCell>Apellido</TableCell>
-            <TableCell>Codigo</TableCell>
+            <TableCell>Dirección</TableCell>
             <TableCell>Teléfono</TableCell>
-            <TableCell>Teléfono de Trabajo</TableCell>
+            <TableCell>Teléfono secundario</TableCell>
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
-            <TableCell>Tipo</TableCell>
-            <TableCell>Autos</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
@@ -435,7 +343,7 @@ class Proveedores extends Component {
                     {provider.apellido}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {provider.codigo}
+                    {provider.direccion}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {provider.telefono}
@@ -450,12 +358,6 @@ class Proveedores extends Component {
                     {provider.email}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {provider.clientType}
-                    {CeldaAuto}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                  </TableCell>
-                  <TableCell component="th" scope="row">
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
                         <ToggleButton
@@ -466,12 +368,11 @@ class Proveedores extends Component {
                               showProviderDialog: true,
                               Nombre: provider.nombre,
                               Apellido: provider.apellido,
-                              Codigo: provider.codigo,
+                              Direccion: provider.direccion,
                               Telefono: provider.telefono,
                               Telefono2: provider.telefonoTrabajo,
                               Company: provider.compania,
                               email: provider.email,
-                              clientType:provider.clientType,
                             });
                           }}
                           aria-label="centered">
