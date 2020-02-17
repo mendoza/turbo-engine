@@ -19,6 +19,7 @@ import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Tipos from "../../api/collections/Tipos/Tipos";
+import Piezas from "../../api/collections/Piezas/Piezas";
 
 class UpdateTypes extends PureComponent {
   constructor(props) {
@@ -57,11 +58,22 @@ class UpdateTypes extends PureComponent {
 
   handleDelete = () => {
     const { nombre, id } = this.state;
-    Meteor.call("deleteTipo", {
-      _id: id,
-      nombre,
+    let alert;
+    const name = Piezas.find({_id: id}).forEach(a=>{
+      console.log(a)
     });
-    this.setState({ shouldRender: false });
+    if (Piezas.find({ tipo: nombre }).count() > 0) {
+      alert = "No se puede eliminar tipos de pieza actualmente en uso";
+    }
+    if (alert) {
+      this.setState({ open: true, message: alert });
+    } else {
+      Meteor.call("deleteTipo", {
+        _id: id,
+        nombre,
+      });
+      this.setState({ shouldRender: false, open: true, message: "Tipo eliminado exitosamente" });
+    }
   };
 
   handleOpen = () => {
@@ -70,6 +82,7 @@ class UpdateTypes extends PureComponent {
     if (validator.isEmpty(id) === true) {
       alert = "La selección del tipo es requerido";
     }
+
     if (alert) {
       this.setState({
         open: true,
@@ -148,7 +161,7 @@ class UpdateTypes extends PureComponent {
           <form onSubmit={this.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Title>Crear Tipo</Title>
+                <Title>Crear Tipos de Piezas</Title>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -168,7 +181,7 @@ class UpdateTypes extends PureComponent {
                 Crear
               </Button>
               <Grid item xs={12}>
-                <Title>Actualizar Tipos</Title>
+                <Title>Actualizar Tipos de Piezas</Title>
               </Grid>
               <Grid item xs={12} sm={10}>
                 <Select
@@ -266,6 +279,7 @@ class UpdateTypes extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("Tipos.all");
+  Meteor.subscribe("Piezas.all");
   return {
     tipos: Tipos.find().fetch(),
   };

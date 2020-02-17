@@ -88,7 +88,7 @@ class Empleado extends Component {
         if (error) {
           this.setState({
             showSnackbar: true,
-            snackbarText: "Ha ocurrido un error al intentar guardar el empleado",
+            snackbarText: 'Ha ocurrido un error al intentar guardar el empleado'
           });
         } else if (received) {
             this.setState({
@@ -203,7 +203,7 @@ class Empleado extends Component {
                   }}
                   value={Telefono}
                   fullWidth
-                  required
+                  //required
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -215,7 +215,7 @@ class Empleado extends Component {
                   value={email}
                   error={!!emailError}
                   helperText={emailError || ""}
-                  required
+                  //required
                   fullWidth
                 />
               </Grid>

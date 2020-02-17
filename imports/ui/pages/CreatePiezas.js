@@ -39,7 +39,7 @@ class CreatePiezas extends PureComponent {
       name: "",
     };
   }
-
+  
   handleDialog = () => {
     this.setState({ shouldRender: false });
   };

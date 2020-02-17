@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
 import validatorjs from "validator";
+
 import {
   Dialog,
   DialogTitle,
@@ -15,6 +17,8 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  InputLabel,
+  MenuItem,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -23,6 +27,22 @@ import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
+import Autos from "../../api/collections/Autos/Autos";
+
+const CeldaAuto = ({ autos }) => (
+  <TableCell component="th" scope="row">
+    {autos.map(auto => {
+      {
+      }
+    })}
+  </TableCell>
+);
+withTracker(clientesAutos => {
+  Meteor.subscribe("Autos.cliente", clientesAutos);
+  return {
+    autos: Autos.find().fetch(),
+  };
+})(CeldaAuto);
 
 class Clientes extends Component {
   constructor(props) {
@@ -32,6 +52,7 @@ class Clientes extends Component {
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
+
       snackbarText: "",
       Nombre: "",
       Apellido: "",
@@ -40,6 +61,7 @@ class Clientes extends Component {
       Telefono2: "",
       Company: "",
       email: "",
+      autos: [],
     };
   }
 
@@ -65,6 +87,12 @@ class Clientes extends Component {
       });
     }
   };
+  clienteEmpresario = event => {
+    let error;
+    //if (stateName === "email") {
+
+    //}
+  };
 
   handleCreateClient = event => {
     const { emailError } = this.state;
@@ -78,6 +106,7 @@ class Clientes extends Component {
       Company,
       email,
       editId,
+      Autos,
       clientType,
     } = this.state;
 
@@ -91,6 +120,7 @@ class Clientes extends Component {
       compania: Company,
       email,
       clientType,
+      autos: Autos,
     };
     let methodName;
     if (editId) {
@@ -158,8 +188,10 @@ class Clientes extends Component {
       emailError,
       clientType,
       clientTypeLabel,
+      flagCliente,
+      autos,
     } = this.state;
-    const options = [
+    const options1 = [
       { value: "Empresarial", label: "Empresarial" },
       { value: "Personal", label: "Personal" },
     ];
@@ -262,17 +294,6 @@ class Clientes extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Compañía"
-                  onInput={event => {
-                    this.handleTextInput(event, "Company");
-                  }}
-                  value={Company}
-                  required
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
                   label="Correo Electrónico"
                   onInput={event => {
                     this.handleTextInput(event, "email");
@@ -288,14 +309,45 @@ class Clientes extends Component {
                 <InputLabel>Tipo de Cliente</InputLabel>
                 <Select
                   style={{ width: "100%", position: "absolute" }}
-                  options={options}
-                  onChange={ev =>
-                    this.setState({
-                      clientType: ev.value,
-                      clientTypeLabel: ev.label,
-                    })
+                  options={[
+                    { value: "Empresarial", label: "Empresarial" },
+                    { value: "Personal", label: "Personal" },
+                  ]}
+                  onChange={
+                    (ev =>
+                      this.setState({
+                        clientType: ev.value,
+                        clientTypeLabel: ev.label,
+                        flagCliente: ev.value,
+                      }),
+                    this.clienteEmpresario(flagCliente))
                   }
-                  value={{ value: clientType, label: clientTypeLabel }}
+                  value={clientType}>
+                  <MenuItem value={"Empresarial"}>Natural</MenuItem>
+                  <MenuItem value={"Personal"}>Ejecutivo</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                {}
+                <TextField
+                  label="Compañía"
+                  onInput={event => {
+                    this.handleTextInput(event, "Company");
+                  }}
+                  value={Company}
+                  required
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Autos"
+                  onInput={event => {
+                    this.handleTextInput(event, "autos");
+                  }}
+                  value={autos}
+                  required
+                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -357,7 +409,7 @@ class Clientes extends Component {
   };
 
   renderClientTable = () => {
-    const { clients } = this.props;
+    const { clients, autos } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -370,6 +422,7 @@ class Clientes extends Component {
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
             <TableCell>Tipo</TableCell>
+            <TableCell>Autos</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
@@ -402,7 +455,9 @@ class Clientes extends Component {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {client.clientType}
+                    {CeldaAuto}
                   </TableCell>
+                  <TableCell component="th" scope="row"></TableCell>
                   <TableCell component="th" scope="row">
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
@@ -419,6 +474,7 @@ class Clientes extends Component {
                               Telefono2: client.telefonoTrabajo,
                               Company: client.compania,
                               email: client.email,
+                              clientType: client.clientType,
                             });
                           }}
                           aria-label="centered">

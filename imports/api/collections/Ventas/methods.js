@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import Ventas from "./Ventas";
 
 Meteor.methods({
-  addTipo(payload) {
+  addVentas(payload) {
     return Ventas.insert(payload);
   },
 });

@@ -7,18 +7,16 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 
 const products = [
-  { name: 'Producto 1', desc: 'Algo genial', price: 'L9.99' },
-  { name: 'Producto 2', desc: 'Otra cosa', price: 'L3.45' },
-  { name: 'Producto 3', desc: 'Algo mas', price: 'L6.51' },
-  { name: 'Producto 4', desc: 'Lo mejor de todo', price: 'L14.11' },
-  { name: 'Envío', desc: '', price: 'Libre' },
+  { name: 'Fecha', price: 'fecha' },
+  { name: 'Comprador', price: 'Nombre del comprador'  },
+  { name: 'Número de identidad', price: 'Identidad' },
+  { name: 'RTN', price: 'rtn' },
 ];
-const addresses = ['1 Material-UI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
+const addresses = ['Dirección 1', 'Dirección 2', 'País'];
+
 const payments = [
-  { name: 'Tipo de Card', detail: 'Visa' },
-  { name: 'Titular de tarjeta', detail: 'Crysthel Aparicio' },
-  { name: 'Numero de Tarjeta', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Fecha de Caducidad', detail: '04/2024' },
+  { name: 'Tipo de pago', detail: 'Efectivo o tarjeta' },
+  { name: 'Total', detail: 'Total' },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -38,9 +36,6 @@ export default function Review() {
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
-        Resumen del Pedido
-      </Typography>
       <List disablePadding>
         {products.map(product => (
           <ListItem className={classes.listItem} key={product.name}>
@@ -48,21 +43,20 @@ export default function Review() {
             <Typography variant="body2">{product.price}</Typography>
           </ListItem>
         ))}
-        <ListItem className={classes.listItem}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" className={classes.total}>
-            L34.06
-          </Typography>
-        </ListItem>
       </List>
+
+
       <Grid container spacing={2}>
+
+
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
-            Envío
+            Dirección
           </Typography>
-          <Typography gutterBottom>Crysthel Aparicio</Typography>
           <Typography gutterBottom>{addresses.join(', ')}</Typography>
         </Grid>
+
+
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
             Detalles de Pago
@@ -80,6 +74,8 @@ export default function Review() {
             ))}
           </Grid>
         </Grid>
+        
+
       </Grid>
     </>
   );

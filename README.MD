@@ -70,15 +70,15 @@ Thanks to the following people who have contributed to this project:
 
 - @CrysthelAparicio💻 👩‍💻
 
-- @noheliaeuceda💻 👩‍💻
+* @Dmendoza99 💻 👨‍💻
 
-- @Dmendoza99 💻 👨‍💻
+* @jalvarez1994💻 👨‍💻
 
-- @jalvarez1994💻 👨‍💻
+* @Leonard1on💻 👨‍💻
 
-- @Leonard1on💻 👨‍💻
+* @MarvinEstrada21💻 👨‍💻
 
-- @MarvinEstrada21💻 👨‍💻
+* @noheliaeuceda💻 👩‍💻
 
 ## Contact
 

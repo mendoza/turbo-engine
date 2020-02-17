@@ -6,7 +6,9 @@ Ventas = new Mongo.Collection("Ventas");
 
 // eslint-disable-next-line no-undef
 Ventas.schema = new SimpleSchema({
-  tipo: { type: String },
+  rtn: { type: String },
+  cai: { type: String },
+  fecha: { type: Date },
 });
 
 // eslint-disable-next-line no-undef
