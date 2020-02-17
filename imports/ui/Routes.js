@@ -16,6 +16,7 @@ import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
 import Historial from "./pages/Historial";
+import Vender from "./pages/Vender";
 
 export const Routes = [
   {
@@ -95,7 +96,7 @@ export const Routes = [
   {
     path: "/clientes",
     name: "Clientes",
-    component: Clientes
+    component: Clientes,
   },
   {
     path: "/empleados",
@@ -105,18 +106,23 @@ export const Routes = [
   },
   {
     path: "/actualizarTipos",
-    name: "ActualizarT ",
+    name: "ActualizarT",
     component: UpdateTypes,
   },
   {
     path: "/maquinaria",
-    name: "Maquinaria ",
+    name: "Maquinaria",
     component: Maquinaria,
   },
   {
     path: "/historial",
-    name: "Historial ",
+    name: "Historial",
     component: Historial,
+  },
+  {
+    path: "/vender",
+    name: "Vender",
+    component: Vender,
   },
 ];
 
@@ -124,7 +130,7 @@ export const dashboardRoutes = [
   {
     pathName: "/",
     name: "Inicio",
-    icon: "fas fa-tachometer-alt"
+    icon: "fas fa-tachometer-alt",
   },
   {
     pathName: "/listarUsuarios",
@@ -148,14 +154,14 @@ export const dashboardRoutes = [
     pathName: "/clientes",
     name: "Clientes",
     icon: "fas fa-user-tie",
-    component: Clientes
+    component: Clientes,
   },
   {
     pathName: "/empleados",
     name: "Empleados",
     icon: "fas fa-people-carry",
     permission: "superAdmin",
-    component: Clientes
+    component: Clientes,
   },
   {
     pathName: "/restablecerContra",

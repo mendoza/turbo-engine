@@ -640,23 +640,23 @@ class AutosPage extends PureComponent {
                   {dialogCar &&
                     dialogCar.piezas &&
                     dialogCar.piezas.map(pieza => {
-                    try{
-                      return (
-                        <TableRow key={pieza.marca}>
-                          <TableCell component="th" scope="row">
-                            {pieza.marca}
-                          </TableCell>
-                          <TableCell align="right">{pieza.vendedor}</TableCell>
-                          <TableCell align="right">{pieza.tipo}</TableCell>
-                          <TableCell align="right">{pieza.numeroDeSerie}</TableCell>
-                          <TableCell align="right">{pieza.cantidad}</TableCell>
-                          <TableCell align="right">{pieza.precio}</TableCell>
-                        </TableRow>
-                      )
-                    }catch (error){
-                      return undefined;
-                    }
-                })}
+                      try {
+                        return (
+                          <TableRow key={pieza.marca}>
+                            <TableCell component="th" scope="row">
+                              {pieza.marca}
+                            </TableCell>
+                            <TableCell align="right">{pieza.vendedor}</TableCell>
+                            <TableCell align="right">{pieza.tipo}</TableCell>
+                            <TableCell align="right">{pieza.numeroDeSerie}</TableCell>
+                            <TableCell align="right">{pieza.cantidad}</TableCell>
+                            <TableCell align="right">{pieza.precio}</TableCell>
+                          </TableRow>
+                        );
+                      } catch (error) {
+                        return undefined;
+                      }
+                    })}
                 </TableBody>
               </Table>
             </Grid>
@@ -684,7 +684,7 @@ class AutosPage extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-         />
+        />
         {shouldRedirect ? <Redirect to={pathName} /> : null}
       </DashboardLayout>
     );
