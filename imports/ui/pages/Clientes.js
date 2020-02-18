@@ -18,8 +18,6 @@ import {
   TableCell,
   TableBody,
   InputLabel,
-  MenuItem,
-  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -28,22 +26,6 @@ import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
-import Autos from "../../api/collections/Autos/Autos";
-
-const CeldaAuto = ({ autos }) => (
-  <TableCell>
-    {autos.map(auto => {
-      {
-      }
-    })}
-  </TableCell>
-);
-withTracker(clientesAutos => {
-  Meteor.subscribe("Autos.cliente", clientesAutos);
-  return {
-    autos: Autos.find().fetch(),
-  };
-})(CeldaAuto);
 
 class Clientes extends Component {
   constructor(props) {
@@ -86,13 +68,6 @@ class Clientes extends Component {
         emailError: error,
       });
     }
-  };
-
-  clienteEmpresario = event => {
-    let error;
-    // if (stateName === "email") {
-
-    // }
   };
 
   handleSearchName = event => {
@@ -192,11 +167,10 @@ class Clientes extends Component {
       editId,
       emailError,
       clientType,
-      clientTypeLabel,
-      flagCliente,
       autos,
+      clientTypeLabel
     } = this.state;
-    const options1 = [
+    const options = [
       { value: "Empresarial", label: "Empresarial" },
       { value: "Personal", label: "Personal" },
     ];
@@ -212,7 +186,7 @@ class Clientes extends Component {
         >
         <form onSubmit={this.handleCreateClient}>
           <DialogTitle id="form-dialog-title">
-            {editId ? "Editar " : "Agregar "}
+            {editId ? "Editar " : "Agregar"}
             cliente
           </DialogTitle>
           <DialogContent>
@@ -315,24 +289,14 @@ class Clientes extends Component {
                 <InputLabel>Tipo de Cliente</InputLabel>
                 <Select
                   style={{ width: "100%", position: "absolute" }}
-                  options={[
-                    { value: "Empresarial", label: "Empresarial" },
-                    { value: "Personal", label: "Personal" },
-                  ]}
-                  onChange={
-                    (ev =>
-                      this.setState({
-                        clientType: ev.value,
-                        clientTypeLabel: ev.label,
-                        flagCliente: ev.value,
-                      }),
-                      this.clienteEmpresario(flagCliente))
-                  }
-                  value={clientType}
-                  >
-                  <MenuItem value="Empresarial">Natural</MenuItem>
-                  <MenuItem value="Personal">Ejecutivo</MenuItem>
-                </Select>
+                  options={options}
+                  onChange={ev =>
+                    this.setState({
+                      clientType: ev.value,
+                      clientTypeLabel: ev.label,
+                    })}
+                  value={{ value: clientType, label: clientTypeLabel }}
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 {}
@@ -419,7 +383,7 @@ class Clientes extends Component {
   };
 
   renderClientTable = () => {
-    const { clients, autos } = this.props;
+    const { clients } = this.props;
     const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
@@ -440,7 +404,7 @@ class Clientes extends Component {
         <TableBody>
           {clients.map(client => {
             const searchRegex = new RegExp(
-              searchByNames.split(/ /).filter(l => l !== '').join('|'),
+              searchByNames.split(/ /).filter(c => c !== '').join('|'),
               'i'
             );
             const r1 = client && client.nombre.search(searchRegex);
@@ -476,7 +440,7 @@ class Clientes extends Component {
                   <TableCell>
                     {client.clientType}
                   </TableCell>
-                  <TableCell  />
+                  <TableCell />
                   <TableCell>
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
@@ -564,7 +528,7 @@ class Clientes extends Component {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              style={{width: '50%'}}
+              style={{ width: '50%' }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
               />
