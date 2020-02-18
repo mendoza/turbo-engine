@@ -18,7 +18,6 @@ import {
   TableCell,
   TableBody,
   InputLabel,
-  MenuItem,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -27,22 +26,6 @@ import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
-import Autos from "../../api/collections/Autos/Autos";
-
-const CeldaAuto = ({ autos }) => (
-  <TableCell component="th" scope="row">
-    {autos.map(auto => {
-      {
-      }
-    })}
-  </TableCell>
-);
-withTracker(clientesAutos => {
-  Meteor.subscribe("Autos.cliente", clientesAutos);
-  return {
-    autos: Autos.find().fetch(),
-  };
-})(CeldaAuto);
 
 class Clientes extends Component {
   constructor(props) {
@@ -52,7 +35,7 @@ class Clientes extends Component {
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
-
+      searchByNames: '',
       snackbarText: "",
       Nombre: "",
       Apellido: "",
@@ -61,7 +44,8 @@ class Clientes extends Component {
       Telefono2: "",
       Company: "",
       email: "",
-      autos: [],
+      clientType: 'Empresarial',
+      clientTypeLabel: 'Empresarial',
     };
   }
 
@@ -73,7 +57,6 @@ class Clientes extends Component {
         error = "Correo no válido";
       }
     }
-    console.log(stateName, validator);
     if (validator) {
       if (validator(event.target.value) || event.target.value === "") {
         this.setState({
@@ -87,12 +70,10 @@ class Clientes extends Component {
       });
     }
   };
-  clienteEmpresario = event => {
-    let error;
-    //if (stateName === "email") {
 
-    //}
-  };
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
+  }
 
   handleCreateClient = event => {
     const { emailError } = this.state;
@@ -106,7 +87,6 @@ class Clientes extends Component {
       Company,
       email,
       editId,
-      Autos,
       clientType,
     } = this.state;
 
@@ -120,7 +100,6 @@ class Clientes extends Component {
       compania: Company,
       email,
       clientType,
-      autos: Autos,
     };
     let methodName;
     if (editId) {
@@ -187,11 +166,9 @@ class Clientes extends Component {
       editId,
       emailError,
       clientType,
-      clientTypeLabel,
-      flagCliente,
-      autos,
+      clientTypeLabel
     } = this.state;
-    const options1 = [
+    const options = [
       { value: "Empresarial", label: "Empresarial" },
       { value: "Personal", label: "Personal" },
     ];
@@ -203,10 +180,11 @@ class Clientes extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <form onSubmit={this.handleCreateClient}>
           <DialogTitle id="form-dialog-title">
-            {editId ? "Editar " : "Agregar "}
+            {editId ? "Editar " : "Agregar"}
             cliente
           </DialogTitle>
           <DialogContent>
@@ -223,7 +201,7 @@ class Clientes extends Component {
                   required
                   autoFocus
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -236,7 +214,7 @@ class Clientes extends Component {
                   value={Apellido}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <MaskedTextField
@@ -264,7 +242,7 @@ class Clientes extends Component {
                     });
                   }}
                   label="RTN"
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -277,7 +255,7 @@ class Clientes extends Component {
                   value={Telefono}
                   fullWidth
                   required
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -290,7 +268,7 @@ class Clientes extends Component {
                   value={Telefono2}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -303,29 +281,20 @@ class Clientes extends Component {
                   helperText={emailError || ""}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <InputLabel>Tipo de Cliente</InputLabel>
                 <Select
                   style={{ width: "100%", position: "absolute" }}
-                  options={[
-                    { value: "Empresarial", label: "Empresarial" },
-                    { value: "Personal", label: "Personal" },
-                  ]}
-                  onChange={
-                    (ev =>
-                      this.setState({
-                        clientType: ev.value,
-                        clientTypeLabel: ev.label,
-                        flagCliente: ev.value,
-                      }),
-                    this.clienteEmpresario(flagCliente))
-                  }
-                  value={clientType}>
-                  <MenuItem value={"Empresarial"}>Natural</MenuItem>
-                  <MenuItem value={"Personal"}>Ejecutivo</MenuItem>
-                </Select>
+                  options={options}
+                  onChange={ev =>
+                    this.setState({
+                      clientType: ev.value,
+                      clientTypeLabel: ev.label,
+                    })}
+                  value={{ value: clientType, label: clientTypeLabel }}
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 {}
@@ -337,18 +306,7 @@ class Clientes extends Component {
                   value={Company}
                   required
                   fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Autos"
-                  onInput={event => {
-                    this.handleTextInput(event, "autos");
-                  }}
-                  value={autos}
-                  required
-                  fullWidth
-                />
+                  />
               </Grid>
             </Grid>
           </DialogContent>
@@ -358,7 +316,8 @@ class Clientes extends Component {
                 this.setState({ showClientDialog: false });
               }}
               color="primary"
-              variant="contained">
+              variant="contained"
+              >
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
@@ -380,7 +339,8 @@ class Clientes extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este cliente?
         </DialogTitle>
@@ -397,7 +357,8 @@ class Clientes extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteClient}>
@@ -409,7 +370,8 @@ class Clientes extends Component {
   };
 
   renderClientTable = () => {
-    const { clients, autos } = this.props;
+    const { clients } = this.props;
+    const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -422,43 +384,50 @@ class Clientes extends Component {
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
             <TableCell>Tipo</TableCell>
-            <TableCell>Autos</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {clients.map(client => {
+            const searchRegex = new RegExp(
+              searchByNames.split(/ /).filter(c => c !== '').join('|'),
+              'i'
+            );
+            const r1 = client && client.nombre.search(searchRegex);
+            const r2 = client && client.apellido.search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+              return <TableRow />;
+            }
             if (client) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
-                <TableRow key={client.nombre}>
-                  <TableCell component="th" scope="row">
+                <TableRow key={client._id}>
+                  <TableCell>
                     {client.nombre}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.apellido}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.rtn}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.telefono}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.telefonoTrabajo}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.compania}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.email}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.clientType}
-                    {CeldaAuto}
                   </TableCell>
-                  <TableCell component="th" scope="row"></TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell />
+                  <TableCell>
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
                         <ToggleButton
@@ -477,7 +446,8 @@ class Clientes extends Component {
                               clientType: client.clientType,
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -488,7 +458,8 @@ class Clientes extends Component {
                               editId: client._id,
                               showDeleteDialog: true,
                             });
-                          }}>
+                          }}
+                          >
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -497,7 +468,7 @@ class Clientes extends Component {
                 </TableRow>
               );
             }
-            return <></>;
+            return <TableRow />;
           })}
         </TableBody>
       </Table>
@@ -528,11 +499,12 @@ class Clientes extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}>
+            }}
+            >
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-      />
+        />
     );
   };
 
@@ -541,12 +513,20 @@ class Clientes extends Component {
       <DashboardLayout style={{ height: "100vh" }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
+            <TextField
+              style={{ width: '50%' }}
+              label="Filtro por Nombre y Apellido"
+              onInput={this.handleSearchName}
+              />
+          </Grid>
+          <Grid item xs={12}>
             <Button
               variant="contained"
               color="primary"
               onClick={() => {
                 this.setState({ showClientDialog: true, editId: undefined });
-              }}>
+              }}
+              >
               Agregar Cliente
             </Button>
           </Grid>
