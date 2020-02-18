@@ -44,7 +44,8 @@ class Clientes extends Component {
       Telefono2: "",
       Company: "",
       email: "",
-      autos: [],
+      clientType: 'Empresarial',
+      clientTypeLabel: 'Empresarial',
     };
   }
 
@@ -86,7 +87,6 @@ class Clientes extends Component {
       Company,
       email,
       editId,
-      Autos,
       clientType,
     } = this.state;
 
@@ -100,7 +100,6 @@ class Clientes extends Component {
       compania: Company,
       email,
       clientType,
-      autos: Autos,
     };
     let methodName;
     if (editId) {
@@ -167,7 +166,6 @@ class Clientes extends Component {
       editId,
       emailError,
       clientType,
-      autos,
       clientTypeLabel
     } = this.state;
     const options = [
@@ -310,17 +308,6 @@ class Clientes extends Component {
                   fullWidth
                   />
               </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Autos"
-                  onInput={event => {
-                    this.handleTextInput(event, "autos");
-                  }}
-                  value={autos}
-                  required
-                  fullWidth
-                  />
-              </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -397,7 +384,6 @@ class Clientes extends Component {
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
             <TableCell>Tipo</TableCell>
-            <TableCell>Autos</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
