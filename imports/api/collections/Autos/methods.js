@@ -22,6 +22,6 @@ Meteor.methods({
     AutosFiles.remove({ _id: payload });
   },
   marcarComprado(payload) {
-    Auto.update({ _id: payload._id }, { $set: { estado: 4 } });
+    Auto.update({ _id: payload._id }, { $set: { estado: 3 } });
   },
 });
