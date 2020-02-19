@@ -195,9 +195,7 @@ class Proveedores extends Component {
                 <TextField
                   label="Dirección"
                   onInput={event => {
-                    this.handleTextInput(event, "Dirección", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
-                    });
+                    this.handleTextInput(event, "Direccion");
                   }}
                   value={Direccion}
                   required
