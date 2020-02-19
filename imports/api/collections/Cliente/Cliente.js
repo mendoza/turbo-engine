@@ -13,6 +13,7 @@ Cliente.schema = new SimpleSchema({
   compania: { type: String },
   email: { type: String },
   autosComprados: { type: Array },
+  tipoCLiente: { type: String },
   "autosComprados.$": { type: String },
   autos: {type: Array},
   'autos.$':{type: String}

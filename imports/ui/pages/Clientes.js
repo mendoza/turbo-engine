@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import validatorjs from "validator";
-
 import {
   Dialog,
   DialogTitle,
@@ -19,6 +18,7 @@ import {
   TableBody,
   InputLabel,
   MenuItem,
+  FormControl
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -29,20 +29,23 @@ import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
 import Autos from "../../api/collections/Autos/Autos";
 
+
+
 const CeldaAuto = ({ autos }) => (
   <TableCell component="th" scope="row">
     {autos.map(auto => {
-      {
-      }
+      { }
     })}
   </TableCell>
-);
-withTracker(clientesAutos => {
-  Meteor.subscribe("Autos.cliente", clientesAutos);
+)
+withTracker((clientesAutos) => {
+  Meteor.subscribe('Autos.cliente', clientesAutos);
   return {
     autos: Autos.find().fetch(),
   };
 })(CeldaAuto);
+
+
 
 class Clientes extends Component {
   constructor(props) {
@@ -62,7 +65,18 @@ class Clientes extends Component {
       Company: "",
       email: "",
       autos: [],
-    };
+      clientType: ''
+    }
+    this.handleClientTypeChange = this.handleClientTypeChange.bind(this);
+
+  }
+  handleClientTypeChange = (event) => {
+    this.setState({
+      clientType: event.value,
+      clientTypeLabel: event.label,
+      flagCliente: event.value,
+    })
+    console.log(event.value)
   }
 
   handleTextInput = (event, stateName, validator) => {
@@ -86,12 +100,6 @@ class Clientes extends Component {
         emailError: error,
       });
     }
-  };
-  clienteEmpresario = event => {
-    let error;
-    //if (stateName === "email") {
-
-    //}
   };
 
   handleCreateClient = event => {
@@ -118,9 +126,9 @@ class Clientes extends Component {
       telefono: Telefono,
       telefonoTrabajo: Telefono2,
       compania: Company,
-      email,
-      clientType,
-      autos: Autos,
+      email: email,
+      clientType: clientType,
+      autos: Autos
     };
     let methodName;
     if (editId) {
@@ -150,6 +158,7 @@ class Clientes extends Component {
             Telefono2: "",
             Company: "",
             email: "",
+            autos: []
           });
         }
       });
@@ -192,11 +201,12 @@ class Clientes extends Component {
       autos,
     } = this.state;
     const options1 = [
-      { value: "Empresarial", label: "Empresarial" },
+      { value: "Juridico", label: "Juridico" },
       { value: "Personal", label: "Personal" },
     ];
     return (
       <Dialog
+      style = {{overflow:'initial'}}
         open={showClientDialog}
         onClose={() => {
           this.setState({ showClientDialog: false });
@@ -305,40 +315,22 @@ class Clientes extends Component {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
-                <InputLabel>Tipo de Cliente</InputLabel>
+              <Grid item select xs={12} md={6}>
                 <Select
+                  label={clientType}
+                  defaultValue={clientType}
                   style={{ width: "100%", position: "absolute" }}
                   options={[
-                    { value: "Empresarial", label: "Empresarial" },
+                    { value: "Juridico", label: "Juridico" },
                     { value: "Personal", label: "Personal" },
                   ]}
-                  onChange={
-                    (ev =>
-                      this.setState({
-                        clientType: ev.value,
-                        clientTypeLabel: ev.label,
-                        flagCliente: ev.value,
-                      }),
-                    this.clienteEmpresario(flagCliente))
-                  }
-                  value={clientType}>
-                  <MenuItem value={"Empresarial"}>Natural</MenuItem>
-                  <MenuItem value={"Personal"}>Ejecutivo</MenuItem>
+
+                  onChange={this.handleClientTypeChange}
+                >
                 </Select>
+
               </Grid>
-              <Grid item xs={12} md={6}>
-                {}
-                <TextField
-                  label="Compañía"
-                  onInput={event => {
-                    this.handleTextInput(event, "Company");
-                  }}
-                  value={Company}
-                  required
-                  fullWidth
-                />
-              </Grid>
+
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Autos"
@@ -350,12 +342,42 @@ class Clientes extends Component {
                   fullWidth
                 />
               </Grid>
+              {
+                clientType == "Juridico" ?
+                  (
+                    <Grid item xs={12} md={6}>
+                      <TextField
+                        label="Compañía"
+                        onInput={event => {
+                          this.handleTextInput(event, "Company");
+                        }}
+                        value={Company}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                  ) : (
+                    <div></div>
+                  )
+              }
             </Grid>
           </DialogContent>
           <DialogActions>
             <Button
               onClick={() => {
                 this.setState({ showClientDialog: false });
+                this.setState({
+                  showClientDialog: false,
+                  Nombre: "",
+                  Apellido: "",
+                  RTN: "",
+                  Telefono: "",
+                  Telefono2: "",
+                  Company: "",
+                  email: "",
+                  clientType: "",
+                  autos: []
+                });
               }}
               color="primary"
               variant="contained">
@@ -475,6 +497,7 @@ class Clientes extends Component {
                               Company: client.compania,
                               email: client.email,
                               clientType: client.clientType,
+                              autos: client.autos
                             });
                           }}
                           aria-label="centered">
@@ -538,12 +561,12 @@ class Clientes extends Component {
 
   render() {
     return (
-      <DashboardLayout style={{ height: "100vh" }}>
+      <DashboardLayout style={{ height: "150vh" }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Button
               variant="contained"
-              color="primary"
+              color="primary" 
               onClick={() => {
                 this.setState({ showClientDialog: true, editId: undefined });
               }}>
