@@ -74,7 +74,7 @@ class Proveedores extends Component {
     } = this.state;
 
     const newProvider = {
-      id: editId,
+      _id: editId,
       nombre: Nombre,
       apellido: Apellido,
       direccion: Direccion,
@@ -160,7 +160,7 @@ class Proveedores extends Component {
         <form onSubmit={this.handleCreateProvider}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
-            Proveedor
+            proveedor
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>
