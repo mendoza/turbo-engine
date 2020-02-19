@@ -109,7 +109,9 @@ class Maquinaria extends Component {
       }
       const maq = Maquinas.find({tipo: Tipo});
       maq.forEach((element)=>{
-        if (element.marca === Marca && element.descripcion === Descripcion){
+        if (element.marca === Marca && 
+          element.descripcion === Descripcion && 
+          methodName === "addMaquina"){
           error = "Este elemento ya ha sido agregado con anterioridad"
         };
       });
