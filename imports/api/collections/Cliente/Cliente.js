@@ -16,7 +16,8 @@ Cliente.schema = new SimpleSchema({
   tipoCLiente: { type: String },
   "autosComprados.$": { type: String },
   autos: {type: Array},
-  'autos.$':{type: String}
+  'autos.$':{type: String},
+  clientType: {type: String}
 });
 
 export default Cliente;
