@@ -15,6 +15,9 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  InputLabel,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -30,7 +33,7 @@ class Proveedores extends Component {
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
-
+      searchByNames: '',
       snackbarText: '',
       Nombre: '',
       Apellido: '',
@@ -65,6 +68,9 @@ class Proveedores extends Component {
       });
     }
   };
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
+  }
 
   handleCreateProvider = event => {
     const { emailError } = this.state;
@@ -314,6 +320,7 @@ class Proveedores extends Component {
 
   renderProviderTable = () => {
     const { providers } = this.props;
+    const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -330,6 +337,15 @@ class Proveedores extends Component {
         </TableHead>
         <TableBody>
           {providers.map(provider => {
+            const searchRegex = new RegExp(
+              searchByNames.split(/ /).filter(l => l !== '').join('|'),
+              'i'
+            );
+            const r1 = provider && provider.nombre.search(searchRegex);
+            const r2 = provider && provider.apellido.search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+              return <TableRow />;
+            }
             if (provider) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -436,6 +452,13 @@ class Proveedores extends Component {
     return (
       <DashboardLayout style={{ height: "100vh" }}>
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              style={{ width: '50%' }}
+              label="Filtro por Nombre y Apellido"
+              onInput={this.handleSearchName}
+            />
+          </Grid>
           <Grid item xs={12}>
             <Button
               variant="contained"
