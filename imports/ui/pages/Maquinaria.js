@@ -107,7 +107,18 @@ class Maquinaria extends Component {
       } else if (Cantidad < 1) {
         error = "La cantidad no puede ser cero o un número negativo";
       }
-
+      const maq = Maquinas.find({tipo: Tipo});
+      maq.forEach((element)=>{
+        if (element.marca === Marca && 
+          element.descripcion === Descripcion && 
+          methodName === "addMaquina"){
+          error = "Este elemento ya ha sido agregado con anterioridad"
+        };
+      });
+      /* if (Maquinas.find({tipo:Tipo}). &&  Maquinas.find({Marca}).count()>0){
+        // Autos.find({ placa }).count() > 0
+        error = "Este elemento ya ha sido agregado con anterioridad"
+      } */
       if (error) {
         this.setState({
           showSnackbar: true,
@@ -134,41 +145,6 @@ class Maquinaria extends Component {
       });
     }
   };
-
-  /*
-  handleCreateMaquina = () => {
-    const { Tipo, Marca, Cantidad, Especificaciones} = this.state;
-    let alert;
-    if (validator.isEmpty(Tipo)) {
-      alert = "El campo Tipo es requerido";
-    }
-    if (validator.isEmpty(Marca)) {
-      alert = "El campo Marca es requerido";
-    }
-    if (validator.isEmpty(Cantidad)) {
-      alert = "El campo Cantidad es requerido";
-    }
-    if (validator.isEmpty(Especificaciones)) {
-      alert = "El campo Especificaciones es requerido";
-    }
-    if (alert) {
-      this.setState({
-        open: true,
-        message: alert,
-      });
-    } else {
-      Meteor.call(
-        "addMaquina",
-        {
-          tipo: Tipo,
-          marca: Marca,
-          cantidad: Cantidad,
-          especificaciones: Especificaciones,
-        }
-      );
-    }
-  };
-*/
 
   handleDeleteMaquina = () => {
     const { editId } = this.state;
