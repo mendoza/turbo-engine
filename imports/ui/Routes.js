@@ -170,9 +170,15 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/ms",
+    pathName: "/maquinaria",
     name: "Maquinaria",
     icon: "fas fa-cogs",
     permission: "superAdmin",
   },
+  {
+    pathName: "/vender",
+    name: "Vender automovil",
+    icon: "fas fa-check-circle",
+    permission: "superAdmin",
+  }
 ];
