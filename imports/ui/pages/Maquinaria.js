@@ -115,10 +115,6 @@ class Maquinaria extends Component {
           error = "Este elemento ya ha sido agregado con anterioridad"
         };
       });
-      /* if (Maquinas.find({tipo:Tipo}). &&  Maquinas.find({Marca}).count()>0){
-        // Autos.find({ placa }).count() > 0
-        error = "Este elemento ya ha sido agregado con anterioridad"
-      } */
       if (error) {
         this.setState({
           showSnackbar: true,

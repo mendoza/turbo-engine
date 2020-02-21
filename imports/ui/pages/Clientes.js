@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
-import validatorjs from "validator";
+import validator from "validator";
 import {
   Dialog,
   DialogTitle,
@@ -16,9 +16,6 @@ import {
   TableHead,
   TableCell,
   TableBody,
-  InputLabel,
-  MenuItem,
-  FormControl,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -29,23 +26,20 @@ import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
 import Autos from "../../api/collections/Autos/Autos";
 
-
-
 const CeldaAuto = ({ autos }) => (
   <TableCell component="th" scope="row">
     {autos.map(auto => {
-      { }
+      {
+      }
     })}
   </TableCell>
-)
-withTracker((clientesAutos) => {
-  Meteor.subscribe('Autos.cliente', clientesAutos);
+);
+withTracker(clientesAutos => {
+  Meteor.subscribe("Autos.cliente", clientesAutos);
   return {
     autos: Autos.find().fetch(),
   };
 })(CeldaAuto);
-
-
 
 class Clientes extends Component {
   constructor(props) {
@@ -55,7 +49,7 @@ class Clientes extends Component {
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
-      searchByNames: '',
+      searchByNames: "",
       snackbarText: "",
       Nombre: "",
       Apellido: "",
@@ -65,30 +59,27 @@ class Clientes extends Component {
       Company: "",
       email: "",
       autos: [],
-      clientType: ''
-    }
-    this.handleClientTypeChange = this.handleClientTypeChange.bind(this);
-
+      clientType: "",
+    };
   }
-  handleClientTypeChange = (event) => {
+
+  handleClientTypeChange = event => {
     this.setState({
       clientType: event.value,
-      clientTypeLabel: event.label,
-      flagCliente: event.value,
-    })
-    console.log(event.value)
-  }
+    });
+    console.log(event.value);
+  };
 
-  handleTextInput = (event, stateName, validator) => {
+  handleTextInput = (event, stateName, validatorjs) => {
     let error;
     if (stateName === "email") {
-      error = !validatorjs.isEmail(event.target.value);
+      error = !validator.isEmail(event.target.value);
       if (error) {
         error = "Correo no válido";
       }
     }
-    if (validator) {
-      if (validator(event.target.value) || event.target.value === "") {
+    if (validatorjs) {
+      if (validatorjs(event.target.value) || event.target.value === "") {
         this.setState({
           [stateName]: event.target.value,
         });
@@ -102,8 +93,8 @@ class Clientes extends Component {
   };
 
   handleSearchName = event => {
-    this.setState({ searchByNames: event.target.value })
-  }
+    this.setState({ searchByNames: event.target.value });
+  };
 
   handleCreateClient = event => {
     const { emailError } = this.state;
@@ -129,13 +120,12 @@ class Clientes extends Component {
       telefono: Telefono,
       telefonoTrabajo: Telefono2,
       compania: Company,
-      email: email,
-      clientType: clientType,
       autos: Autos,
       email,
       clientType,
     };
     let methodName;
+    let error
     if (editId) {
       methodName = "handleEditClient";
     } else {
@@ -147,8 +137,37 @@ class Clientes extends Component {
         snackbarText: "Por favor llene el campo de Correo Electrónico",
       });
     } else {
-      Meteor.call(methodName, newClient, error => {
-        if (error) {
+      if (validator.isEmpty(Nombre)) {
+        error = "El campo Nombre es requerido";
+      }
+      if (validator.isEmpty(Apellido)) {
+        error = "El campo Apellido es requerido";
+      }
+      if (validator.isEmpty(RTN)) {
+        error = "El campo RTN es requerido";
+      }
+      if (validator.isEmpty(Telefono)) {
+        error = "El campo Teléfono es requerido";
+      }
+      if (validator.isEmpty(Telefono2)) {
+        error = "El campo Teléfono de Trabajo es requerido";
+      }
+      const maq = Cliente.find({nombre: Nombre});
+      maq.forEach((element)=>{
+        if (element.rtn === RTN && methodName === "handleCreateClient"){
+          error = "Este elemento ya ha sido agregado con anterioridad"
+        };
+      });
+      if (error) {
+        this.setState({
+          showSnackbar: true,
+          snackbarText: error,
+        });
+        return;
+      }
+
+      Meteor.call(methodName, newClient, err => {
+        if (err) {
           this.setState({
             showSnackbar: true,
             snackbarText: "Ha ocurrido un error al intentar guardar el cliente",
@@ -163,7 +182,7 @@ class Clientes extends Component {
             Telefono2: "",
             Company: "",
             email: "",
-            autos: []
+            autos: [],
           });
         }
       });
@@ -202,7 +221,6 @@ class Clientes extends Component {
       emailError,
       clientType,
       autos,
-      clientTypeLabel
     } = this.state;
     const options = [
       { value: "Empresarial", label: "Empresarial" },
@@ -210,7 +228,7 @@ class Clientes extends Component {
     ];
     return (
       <Dialog
-      style = {{overflow:'initial'}}
+        style={{ overflow: "initial" }}
         open={showClientDialog}
         onClose={() => {
           this.setState({ showClientDialog: false });
@@ -231,7 +249,7 @@ class Clientes extends Component {
                   label="Nombre"
                   onInput={event => {
                     this.handleTextInput(event, "Nombre", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
                   value={Nombre}
@@ -245,7 +263,7 @@ class Clientes extends Component {
                   label="Apellido"
                   onInput={event => {
                     this.handleTextInput(event, "Apellido", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
                   value={Apellido}
@@ -275,7 +293,7 @@ class Clientes extends Component {
                   name="RTN"
                   onChange={event => {
                     this.handleTextInput(event, "RTN", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                      return validator.isNumeric(text, { no_symbols: true });
                     });
                   }}
                   label="RTN"
@@ -286,7 +304,7 @@ class Clientes extends Component {
                   label="Teléfono"
                   onInput={event => {
                     this.handleTextInput(event, "Telefono", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                      return validator.isNumeric(text, { no_symbols: true });
                     });
                   }}
                   value={Telefono}
@@ -299,7 +317,7 @@ class Clientes extends Component {
                   label="Teléfono del trabajo"
                   onInput={event => {
                     this.handleTextInput(event, "Telefono2", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                      return validator.isNumeric(text, { no_symbols: true });
                     });
                   }}
                   value={Telefono2}
@@ -329,14 +347,11 @@ class Clientes extends Component {
                     { value: "Juridico", label: "Juridico" },
                     { value: "Personal", label: "Personal" },
                   ]}
-
                   onChange={this.handleClientTypeChange}
-                >
-                </Select>
-
+                  />
               </Grid>
 
-              {/* <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   label="Autos"
                   onInput={event => {
@@ -345,26 +360,23 @@ class Clientes extends Component {
                   value={autos}
                   required
                   fullWidth
-                />
-              </Grid> */}
-              {
-                clientType == "Juridico" ?
-                  (
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        label="Compañía"
-                        onInput={event => {
-                          this.handleTextInput(event, "Company");
-                        }}
-                        value={Company}
-                        required
-                        fullWidth
-                      />
-                    </Grid>
-                  ) : (
-                    <div></div>
-                  )
-              }
+                  />
+              </Grid>
+              {clientType === "Juridico" ? (
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Compañía"
+                    onInput={event => {
+                      this.handleTextInput(event, "Company");
+                    }}
+                    value={Company}
+                    required
+                    fullWidth
+                    />
+                </Grid>
+              ) : (
+                <div></div>
+              )}
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -381,7 +393,7 @@ class Clientes extends Component {
                   Company: "",
                   email: "",
                   clientType: "",
-                  autos: []
+                  autos: [],
                 });
               }}
               color="primary"
@@ -459,8 +471,11 @@ class Clientes extends Component {
         <TableBody>
           {clients.map(client => {
             const searchRegex = new RegExp(
-              searchByNames.split(/ /).filter(c => c !== '').join('|'),
-              'i'
+              searchByNames
+                .split(/ /)
+                .filter(c => c !== "")
+                .join("|"),
+              "i"
             );
             const r1 = client && client.nombre.search(searchRegex);
             const r2 = client && client.apellido.search(searchRegex);
@@ -471,30 +486,14 @@ class Clientes extends Component {
               return (
                 // eslint-disable-next-line no-underscore-dangle
                 <TableRow key={client._id}>
-                  <TableCell>
-                    {client.nombre}
-                  </TableCell>
-                  <TableCell>
-                    {client.apellido}
-                  </TableCell>
-                  <TableCell>
-                    {client.rtn}
-                  </TableCell>
-                  <TableCell>
-                    {client.telefono}
-                  </TableCell>
-                  <TableCell>
-                    {client.telefonoTrabajo}
-                  </TableCell>
-                  <TableCell>
-                    {client.compania}
-                  </TableCell>
-                  <TableCell>
-                    {client.email}
-                  </TableCell>
-                  <TableCell>
-                    {client.clientType}
-                  </TableCell>
+                  <TableCell>{client.nombre}</TableCell>
+                  <TableCell>{client.apellido}</TableCell>
+                  <TableCell>{client.rtn}</TableCell>
+                  <TableCell>{client.telefono}</TableCell>
+                  <TableCell>{client.telefonoTrabajo}</TableCell>
+                  <TableCell>{client.compania}</TableCell>
+                  <TableCell>{client.email}</TableCell>
+                  <TableCell>{client.clientType}</TableCell>
                   <TableCell />
                   <TableCell>
                     <div>
@@ -513,7 +512,7 @@ class Clientes extends Component {
                               Company: client.compania,
                               email: client.email,
                               clientType: client.clientType,
-                              autos: client.autos
+                              autos: client.autos,
                             });
                           }}
                           aria-label="centered"
@@ -584,7 +583,7 @@ class Clientes extends Component {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              style={{ width: '50%' }}
+              style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
               />
@@ -592,7 +591,7 @@ class Clientes extends Component {
           <Grid item xs={12}>
             <Button
               variant="contained"
-              color="primary" 
+              color="primary"
               onClick={() => {
                 this.setState({ showClientDialog: true, editId: undefined });
               }}
