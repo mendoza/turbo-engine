@@ -10,8 +10,4 @@ Meteor.methods({
   handleDeleteClient(payload) {
     Cliente.remove({ _id: payload });
   },
-  addSoldCar(payload) {
-    const { carId, clientId } = payload;
-    Cliente.update({ _id: clientId }, { $addToSet: { autosComprados: carId } });
-  },
 });

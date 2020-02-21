@@ -20,6 +20,8 @@ import "../imports/api/collections/Historial/methods";
 import "../imports/api/collections/Historial/publications";
 import "../imports/api/collections/Maquinas/methods"
 import "../imports/api/collections/Maquinas/publications"
+import "../imports/api/collections/Proveedor/methods";
+import "../imports/api/collections/Proveedor/publications"
 
 
 Meteor.startup(() => {
