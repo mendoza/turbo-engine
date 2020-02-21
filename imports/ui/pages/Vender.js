@@ -150,7 +150,7 @@ class Vender extends PureComponent {
                 );
               }}
               color="primary"
-              autoFocus>
+               autoFocus>
               Aceptar
             </Button>
           </DialogActions>
