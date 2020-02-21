@@ -13,9 +13,11 @@ Cliente.schema = new SimpleSchema({
   compania: { type: String },
   email: { type: String },
   autosComprados: { type: Array },
-  "autosComprados.$": { type: String },
+  tipoCLiente: { type: String },
+  "autosComprados.$": { typae: String },
   autos: {type: Array},
-  'autos.$':{type: String}
+  'autos.$':{type: String},
+  clientType: {type: String}
 });
 
 export default Cliente;

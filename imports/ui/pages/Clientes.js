@@ -1,8 +1,6 @@
-
 import React, { Component } from "react";
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from "meteor/meteor";
 import validatorjs from "validator";
-
 import {
   Dialog,
   DialogTitle,
@@ -19,7 +17,8 @@ import {
   TableCell,
   TableBody,
   InputLabel,
-  MenuItem
+  MenuItem,
+  FormControl,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -28,23 +27,24 @@ import Select from "react-select";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cliente from "../../api/collections/Cliente/Cliente";
 import MaskedTextField from "../components/MaskedTextField";
-import Autos from '../../api/collections/Autos/Autos';
+import Autos from "../../api/collections/Autos/Autos";
 
 
 
-const CeldaAuto = ({autos}) => (
+const CeldaAuto = ({ autos }) => (
   <TableCell component="th" scope="row">
-    {autos.map(auto =>{
-      {}
+    {autos.map(auto => {
+      { }
     })}
   </TableCell>
 )
-withTracker((clientesAutos)=> {
+withTracker((clientesAutos) => {
   Meteor.subscribe('Autos.cliente', clientesAutos);
   return {
-    autos: Autos.find().fetch()
-  }
-})(CeldaAuto)
+    autos: Autos.find().fetch(),
+  };
+})(CeldaAuto);
+
 
 
 class Clientes extends Component {
@@ -55,21 +55,30 @@ class Clientes extends Component {
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
-
-      snackbarText: '',
-      Nombre: '',
-      Apellido: '',
-      RTN: '',
-      Telefono: '',
-      Telefono2: '',
-      Company: '',
-      email: '',
+      searchByNames: '',
+      snackbarText: "",
+      Nombre: "",
+      Apellido: "",
+      RTN: "",
+      Telefono: "",
+      Telefono2: "",
+      Company: "",
+      email: "",
       autos: [],
+      clientType: ''
     }
+    this.handleClientTypeChange = this.handleClientTypeChange.bind(this);
 
   }
+  handleClientTypeChange = (event) => {
+    this.setState({
+      clientType: event.value,
+      clientTypeLabel: event.label,
+      flagCliente: event.value,
+    })
+    console.log(event.value)
+  }
 
- 
   handleTextInput = (event, stateName, validator) => {
     let error;
     if (stateName === "email") {
@@ -78,7 +87,6 @@ class Clientes extends Component {
         error = "Correo no válido";
       }
     }
-    console.log(stateName, validator);
     if (validator) {
       if (validator(event.target.value) || event.target.value === "") {
         this.setState({
@@ -92,18 +100,25 @@ class Clientes extends Component {
       });
     }
   };
-  clienteEmpresario = (event) => {
-    let error;
-    //if (stateName === "email") {
-      
-    //}
-  };
+
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
+  }
 
   handleCreateClient = event => {
     const { emailError } = this.state;
     event.preventDefault();
     const {
-      Nombre, Apellido, RTN, Telefono, Telefono2, Company, email, editId, Autos,clientType,
+      Nombre,
+      Apellido,
+      RTN,
+      Telefono,
+      Telefono2,
+      Company,
+      email,
+      editId,
+      clientType,
+      Autos,
     } = this.state;
 
     const newClient = {
@@ -114,9 +129,11 @@ class Clientes extends Component {
       telefono: Telefono,
       telefonoTrabajo: Telefono2,
       compania: Company,
+      email: email,
+      clientType: clientType,
+      autos: Autos,
       email,
       clientType,
-      autos: Autos
     };
     let methodName;
     if (editId) {
@@ -146,6 +163,7 @@ class Clientes extends Component {
             Telefono2: "",
             Company: "",
             email: "",
+            autos: []
           });
         }
       });
@@ -183,26 +201,27 @@ class Clientes extends Component {
       editId,
       emailError,
       clientType,
-      clientTypeLabel,
-      flagCliente,
       autos,
+      clientTypeLabel
     } = this.state;
-    const options1 = [
+    const options = [
       { value: "Empresarial", label: "Empresarial" },
       { value: "Personal", label: "Personal" },
     ];
     return (
       <Dialog
+      style = {{overflow:'initial'}}
         open={showClientDialog}
         onClose={() => {
           this.setState({ showClientDialog: false });
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <form onSubmit={this.handleCreateClient}>
           <DialogTitle id="form-dialog-title">
-            {editId ? "Editar " : "Agregar "}
+            {editId ? "Editar " : "Agregar"}
             cliente
           </DialogTitle>
           <DialogContent>
@@ -219,7 +238,7 @@ class Clientes extends Component {
                   required
                   autoFocus
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -232,7 +251,7 @@ class Clientes extends Component {
                   value={Apellido}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <MaskedTextField
@@ -260,7 +279,7 @@ class Clientes extends Component {
                     });
                   }}
                   label="RTN"
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -273,7 +292,7 @@ class Clientes extends Component {
                   value={Telefono}
                   fullWidth
                   required
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -286,7 +305,7 @@ class Clientes extends Component {
                   value={Telefono2}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -299,61 +318,75 @@ class Clientes extends Component {
                   helperText={emailError || ""}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
-              <Grid item xs={12} md={6}>
-                <InputLabel>Tipo de Cliente</InputLabel>
+              <Grid item select xs={12} md={6}>
                 <Select
+                  label={clientType}
+                  defaultValue={clientType}
                   style={{ width: "100%", position: "absolute" }}
                   options={[
-                    { value: "Empresarial", label: "Empresarial" },
+                    { value: "Juridico", label: "Juridico" },
                     { value: "Personal", label: "Personal" },
                   ]}
-                  onChange={ev =>
-                    this.setState({
-                      clientType: ev.value,
-                      clientTypeLabel: ev.label,
-                      flagCliente: ev.value,
-                    }),
-                    this.clienteEmpresario(flagCliente)
-                  }
-                  value={clientType}
 
+                  onChange={this.handleClientTypeChange}
                 >
-                  <MenuItem value={"Empresarial"}>Natural</MenuItem>
-                  <MenuItem value={"Personal"}>Ejecutivo</MenuItem>
                 </Select>
+
               </Grid>
-              <Grid item xs={12} md={6}>
-                {}
-                <TextField
-                  label="Compañía"
-                  onInput={event => {
-                    this.handleTextInput(event, "Company");
-                  }}
-                  value={Company}
-                  required
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
+
+              {/* <Grid item xs={12} md={6}>
                 <TextField
                   label="Autos"
-                  onInput={event => { this.handleTextInput(event, 'autos') }}
+                  onInput={event => {
+                    this.handleTextInput(event, "autos");
+                  }}
                   value={autos}
                   required
                   fullWidth
-                  />
-              </Grid>
+                />
+              </Grid> */}
+              {
+                clientType == "Juridico" ?
+                  (
+                    <Grid item xs={12} md={6}>
+                      <TextField
+                        label="Compañía"
+                        onInput={event => {
+                          this.handleTextInput(event, "Company");
+                        }}
+                        value={Company}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                  ) : (
+                    <div></div>
+                  )
+              }
             </Grid>
           </DialogContent>
           <DialogActions>
             <Button
               onClick={() => {
                 this.setState({ showClientDialog: false });
+                this.setState({
+                  showClientDialog: false,
+                  Nombre: "",
+                  Apellido: "",
+                  RTN: "",
+                  Telefono: "",
+                  Telefono2: "",
+                  Company: "",
+                  email: "",
+                  clientType: "",
+                  autos: []
+                });
               }}
               color="primary"
-              variant="contained">
+              variant="contained"
+              >
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
@@ -375,7 +408,8 @@ class Clientes extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este cliente?
         </DialogTitle>
@@ -392,7 +426,8 @@ class Clientes extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteClient}>
@@ -403,9 +438,9 @@ class Clientes extends Component {
     );
   };
 
-
   renderClientTable = () => {
-    const { clients, autos } = this.props;
+    const { clients } = this.props;
+    const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -418,44 +453,50 @@ class Clientes extends Component {
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
             <TableCell>Tipo</TableCell>
-            <TableCell>Autos</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {clients.map(client => {
+            const searchRegex = new RegExp(
+              searchByNames.split(/ /).filter(c => c !== '').join('|'),
+              'i'
+            );
+            const r1 = client && client.nombre.search(searchRegex);
+            const r2 = client && client.apellido.search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+              return <TableRow />;
+            }
             if (client) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
-                <TableRow key={client.nombre}>
-                  <TableCell component="th" scope="row">
+                <TableRow key={client._id}>
+                  <TableCell>
                     {client.nombre}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.apellido}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.rtn}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.telefono}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.telefonoTrabajo}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.compania}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.email}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>
                     {client.clientType}
-                    {CeldaAuto}
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                  </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell />
+                  <TableCell>
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
                         <ToggleButton
@@ -471,10 +512,12 @@ class Clientes extends Component {
                               Telefono2: client.telefonoTrabajo,
                               Company: client.compania,
                               email: client.email,
-                              clientType:client.clientType,
+                              clientType: client.clientType,
+                              autos: client.autos
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -485,7 +528,8 @@ class Clientes extends Component {
                               editId: client._id,
                               showDeleteDialog: true,
                             });
-                          }}>
+                          }}
+                          >
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -494,7 +538,7 @@ class Clientes extends Component {
                 </TableRow>
               );
             }
-            return <></>;
+            return <TableRow />;
           })}
         </TableBody>
       </Table>
@@ -525,25 +569,34 @@ class Clientes extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}>
+            }}
+            >
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-      />
+        />
     );
   };
 
   render() {
     return (
-      <DashboardLayout style={{ height: "100vh" }}>
+      <DashboardLayout style={{ height: "150vh" }}>
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              style={{ width: '50%' }}
+              label="Filtro por Nombre y Apellido"
+              onInput={this.handleSearchName}
+              />
+          </Grid>
           <Grid item xs={12}>
             <Button
               variant="contained"
-              color="primary"
+              color="primary" 
               onClick={() => {
                 this.setState({ showClientDialog: true, editId: undefined });
-              }}>
+              }}
+              >
               Agregar Cliente
             </Button>
           </Grid>
