@@ -20,11 +20,13 @@ import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Tipos from "../../api/collections/Tipos/Tipos";
+import Piezas from "../../api/collections/Piezas/Piezas";
 
 class CreatePiezas extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      moneda: "",
       marca: "",
       vendedor: "",
       precio: "",
@@ -37,7 +39,7 @@ class CreatePiezas extends PureComponent {
       name: "",
     };
   }
-
+  
   handleDialog = () => {
     this.setState({ shouldRender: false });
   };
@@ -55,7 +57,7 @@ class CreatePiezas extends PureComponent {
   };
 
   handleClick = () => {
-    const { marca, vendedor, precio, numeroDeSerie, tipo, cantidad } = this.state;
+    const { moneda, marca, vendedor, precio, numeroDeSerie, tipo, cantidad } = this.state;
     let alert;
 
     if (validator.isEmpty(marca)) {
@@ -70,6 +72,11 @@ class CreatePiezas extends PureComponent {
     if (validator.isEmpty(numeroDeSerie)) {
       alert = "El numero de serie es requerido";
     }
+
+    if (Piezas.find({ numeroDeSerie }).count() > 0) {
+      alert = "El numero de serie debe ser unico para esta pieza";
+    }
+
     if (validator.isEmpty(vendedor)) {
       alert = "El campo vendedor es requerido";
     }
@@ -86,6 +93,9 @@ class CreatePiezas extends PureComponent {
     } else if (cantidad < 1) {
       alert = "La cantidad no puede ser cero o un número negativo";
     }
+    if (validator.isEmpty(moneda)) {
+      alert = "Debe seleccionar tipo de moneda";
+    }
     if (alert) {
       this.setState({
         open: true,
@@ -99,6 +109,7 @@ class CreatePiezas extends PureComponent {
         numeroDeSerie,
         tipo,
         cantidad,
+        moneda,
       });
       this.setState({
         open: true,
@@ -109,6 +120,7 @@ class CreatePiezas extends PureComponent {
         numeroDeSerie: "",
         tipo: "",
         cantidad: "",
+        moneda: "",
       });
     }
   };
@@ -139,6 +151,7 @@ class CreatePiezas extends PureComponent {
 
   render() {
     const {
+      moneda,
       marca,
       vendedor,
       precio,
@@ -169,7 +182,7 @@ class CreatePiezas extends PureComponent {
                   autoFocus
                   value={marca}
                   onInput={event => this.handleTextChange(event, "marca")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -182,7 +195,7 @@ class CreatePiezas extends PureComponent {
                   label="Vendedor"
                   value={vendedor}
                   onInput={event => this.handleTextChange(event, "vendedor")}
-                />
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -195,9 +208,26 @@ class CreatePiezas extends PureComponent {
                   label="NumeroDeSerie"
                   value={numeroDeSerie}
                   onInput={event => this.handleTextChange(event, "numeroDeSerie")}
-                />
+                  />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={2} sm={2}>
+                <Select
+                  fullWidth
+                  required
+                  label="Moneda"
+                  id="currency"
+                  value={moneda}
+                  defaultValue="0"
+                  onChange={event => this.handleTextChange(event, "moneda")}>
+                  <MenuItem key={0} value="$">
+                    Dolar
+                  </MenuItem>
+                  <MenuItem key={1} value="L.">
+                    Lempira
+                  </MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={4} sm={4}>
                 <TextField
                   autoComplete="price"
                   name="precio"
@@ -208,7 +238,7 @@ class CreatePiezas extends PureComponent {
                   label="precio"
                   value={precio}
                   onInput={event => this.handleTextChange(event, "precio")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -221,7 +251,7 @@ class CreatePiezas extends PureComponent {
                   label="cantidad"
                   value={cantidad}
                   onInput={event => this.handleTextChange(event, "cantidad")}
-                />
+                  />
               </Grid>
               <Grid item xs={12} sm={10}>
                 <Select
@@ -230,7 +260,8 @@ class CreatePiezas extends PureComponent {
                   label="Tipo"
                   id="type"
                   value={tipo}
-                  onChange={event => this.handleTextChange(event, "tipo")}>
+                  onChange={event => this.handleTextChange(event, "tipo")}
+                  >
                   {tipos.map(tipoMap => {
                     if (tipoMap) {
                       return (
@@ -251,7 +282,8 @@ class CreatePiezas extends PureComponent {
                   // size="large"
                   onClick={() => {
                     this.setState({ shouldRender: true });
-                  }}>
+                  }}
+                  >
                   Agregar Tipo
                 </Button>
               </Grid>
@@ -279,7 +311,7 @@ class CreatePiezas extends PureComponent {
                     autoFocus
                     value={name}
                     onInput={event => this.handleTextChange(event, "name")}
-                  />
+                    />
                 </Grid>
                 <Button fullWidth variant="contained" color="primary" onClick={this.handleAdd}>
                   Crear
@@ -310,7 +342,7 @@ class CreatePiezas extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-        />
+          />
       </DashboardLayout>
     );
   }
@@ -318,6 +350,7 @@ class CreatePiezas extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("Tipos.all");
+  Meteor.subscribe("Piezas.all");
   return {
     tipos: Tipos.find().fetch(),
   };

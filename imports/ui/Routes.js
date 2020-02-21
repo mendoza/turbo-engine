@@ -11,6 +11,9 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
+import SignUpClient from "./pages/SignUpClient"
+import SignInClient from "./pages/SignInClient"
+import Encuesta from "./pages/Encuesta"
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
@@ -94,6 +97,22 @@ export const Routes = [
     component: CreateAutos,
   },
   {
+    path: "/RegistroClientes",
+    name: "Registro CLientes",
+    component: SignUpClient,
+  },
+  {
+    path: "/InicioSesionClientes",
+    name: "Inicio Sesion CLientes",
+    component: SignInClient,
+  },
+  {
+    path: "/Encuesta",
+    name: "Encuesta",
+    component: Encuesta,
+    permission: 'none',
+  },
+  {
     path: "/clientes",
     name: "Clientes",
     component: Clientes,
@@ -148,6 +167,12 @@ export const dashboardRoutes = [
     pathName: "/seccionPiezas",
     name: "Piezas",
     icon: "fas fa-puzzle-piece",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/actualizarTipos",
+    name: "Tipos",
+    icon: "fas fa-wrench",
     permission: "superAdmin",
   },
   {

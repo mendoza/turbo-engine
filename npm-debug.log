@@ -1,32 +1,32 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'run', 'start' ]
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'run', 'start' ]
 2 info using npm@3.5.2
-3 info using node@v4.2.6
+3 info using node@v8.10.0
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle turbo-engine@~prestart: turbo-engine@
 6 silly lifecycle turbo-engine@~prestart: no script for prestart, continuing
 7 info lifecycle turbo-engine@~start: turbo-engine@
 8 verbose lifecycle turbo-engine@~start: unsafe-perm in lifecycle true
-9 verbose lifecycle turbo-engine@~start: PATH: /usr/share/npm/bin/node-gyp-bin:/home/carlos/Escritorio/Proyecto Turbo-engine/turbo-engine definitive/turbo-engine/node_modules/.bin:/home/carlos/bin:/home/carlos/.local/bin:/home/carlos/.cabal/bin:/home/carlos/.ghcup/bin:/home/carlos/.cabal/bin:/home/carlos/.ghcup/bin:/home/carlos/bin:/home/carlos/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-10 verbose lifecycle turbo-engine@~start: CWD: /home/carlos/Escritorio/Proyecto Turbo-engine/turbo-engine definitive/turbo-engine
+9 verbose lifecycle turbo-engine@~start: PATH: /usr/share/npm/bin/node-gyp-bin:/home/crysthel/Desktop/turbo-engine/node_modules/.bin:/home/crysthel/bin:/home/crysthel/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-13-oracle/bin:/usr/lib/jvm/java-13-oracle/db/bin:/usr/lib/jvm/java-13-oracle/bin:/usr/lib/jvm/java-13-oracle/db/bin
+10 verbose lifecycle turbo-engine@~start: CWD: /home/crysthel/Desktop/turbo-engine
 11 silly lifecycle turbo-engine@~start: Args: [ '-c', 'meteor run' ]
 12 silly lifecycle turbo-engine@~start: Returned: code: 1  signal: null
 13 info lifecycle turbo-engine@~start: Failed to exec start script
 14 verbose stack Error: turbo-engine@ start: `meteor run`
 14 verbose stack Exit status 1
 14 verbose stack     at EventEmitter.<anonymous> (/usr/share/npm/lib/utils/lifecycle.js:232:16)
-14 verbose stack     at emitTwo (events.js:87:13)
-14 verbose stack     at EventEmitter.emit (events.js:172:7)
+14 verbose stack     at emitTwo (events.js:126:13)
+14 verbose stack     at EventEmitter.emit (events.js:214:7)
 14 verbose stack     at ChildProcess.<anonymous> (/usr/share/npm/lib/utils/spawn.js:24:14)
-14 verbose stack     at emitTwo (events.js:87:13)
-14 verbose stack     at ChildProcess.emit (events.js:172:7)
-14 verbose stack     at maybeClose (internal/child_process.js:821:16)
-14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+14 verbose stack     at emitTwo (events.js:126:13)
+14 verbose stack     at ChildProcess.emit (events.js:214:7)
+14 verbose stack     at maybeClose (internal/child_process.js:925:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
 15 verbose pkgid turbo-engine@
-16 verbose cwd /home/carlos/Escritorio/Proyecto Turbo-engine/turbo-engine definitive/turbo-engine
-17 error Linux 4.13.0-38-generic
-18 error argv "/usr/bin/nodejs" "/usr/bin/npm" "run" "start"
-19 error node v4.2.6
+16 verbose cwd /home/crysthel/Desktop/turbo-engine
+17 error Linux 5.3.0-28-generic
+18 error argv "/usr/bin/node" "/usr/bin/npm" "run" "start"
+19 error node v8.10.0
 20 error npm  v3.5.2
 21 error code ELIFECYCLE
 22 error turbo-engine@ start: `meteor run`
