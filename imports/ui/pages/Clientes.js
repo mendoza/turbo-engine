@@ -118,6 +118,7 @@ class Clientes extends Component {
       email,
       editId,
       clientType,
+      Autos,
     } = this.state;
 
     const newClient = {
@@ -335,7 +336,7 @@ class Clientes extends Component {
 
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <TextField
                   label="Autos"
                   onInput={event => {
@@ -345,7 +346,7 @@ class Clientes extends Component {
                   required
                   fullWidth
                 />
-              </Grid>
+              </Grid> */}
               {
                 clientType == "Juridico" ?
                   (
