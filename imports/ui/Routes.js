@@ -18,7 +18,8 @@ import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
-import Checkout from "./pages/Checkout";
+import Historial from "./pages/Historial";
+import Vender from "./pages/Vender";
 
 export const Routes = [
   {
@@ -124,18 +125,23 @@ export const Routes = [
   },
   {
     path: "/actualizarTipos",
-    name: "ActualizarT ",
+    name: "ActualizarT",
     component: UpdateTypes,
   },
   {
-     path: "/factura",
-     name: "Checkout",
-     component: Checkout,
-   },
-  {
     path: "/maquinaria",
-    name: "Maquinaria ",
+    name: "Maquinaria",
     component: Maquinaria,
+  },
+  {
+    path: "/historial",
+    name: "Historial",
+    component: Historial,
+  },
+  {
+    path: "/vender",
+    name: "Vender",
+    component: Vender,
   },
 ];
 
@@ -195,15 +201,9 @@ export const dashboardRoutes = [
     permission: "superAdmin",
   },
   {
-    pathName: "/factura",
-    name: "Factura",
-    icon: "fas fa-receipt",
+    pathName: "/vender",
+    name: "Vender automovil",
+    icon: "fas fa-check-circle",
     permission: "superAdmin",
-  },
-  {
-    pathName: "/Encuesta",
-    name: "Encuesta",
-    icon: "fas fa-question-circle",
-    permission: 'none',
   }
 ];

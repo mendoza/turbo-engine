@@ -426,7 +426,7 @@ class AutosPage extends PureComponent {
                   showX={showX}
                   title={`Marca: ${auto.marca}`}
                   body={`Modelo: ${auto.modelo}`}
-                  description={`Estado: ${Estados[0]}`}
+                  description={`Estado: ${Estados[auto.estado]}`}
                   labelButton="Modificar"
                   image={(() => {
                     try {
