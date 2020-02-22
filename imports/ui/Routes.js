@@ -191,7 +191,7 @@ export const dashboardRoutes = [
   {
     pathName: "/proveedores",
     name: "Proveedores",
-    icon: "fas fa-user-tie",
+    icon: "fas fa-address-card",
     component: Proveedores,
   },
   {

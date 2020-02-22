@@ -40,13 +40,10 @@ class Maquinaria extends Component {
     };
   }
 
-  // Acá es donde tiene que haber máscara para cantidad
-  // También mascara para cuando estén vacios
   handleTextInput = (event, stateName) => {
     let error;
 
     if (stateName === "cantidad") {
-      // Acá meron
       error = !validator.isNumeric(event.target.value);
       if (error) {
         error = "cantidad no válida";
@@ -170,7 +167,8 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <form onSubmit={this.handleCreateMaquina}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
@@ -190,7 +188,7 @@ class Maquinaria extends Component {
                   required
                   autoFocus
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -203,7 +201,7 @@ class Maquinaria extends Component {
                   value={Marca}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -215,7 +213,7 @@ class Maquinaria extends Component {
                   }}
                   value={Cantidad}
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -228,7 +226,7 @@ class Maquinaria extends Component {
                   value={Descripcion}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
             </Grid>
           </DialogContent>
@@ -238,7 +236,8 @@ class Maquinaria extends Component {
                 this.setState({ showMaquinariaDialog: false });
               }}
               color="primary"
-              variant="contained">
+              variant="contained"
+              >
               Cancelar
             </Button>
             <Button color="primary" variant="contained" onClick={this.handleCreateMaquina}>
@@ -260,7 +259,8 @@ class Maquinaria extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este elemento?
         </DialogTitle>
@@ -277,7 +277,8 @@ class Maquinaria extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteMaquina}>
@@ -333,7 +334,8 @@ class Maquinaria extends Component {
                               Descripcion: maquina.descripcion,
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -344,7 +346,8 @@ class Maquinaria extends Component {
                               editId: maquina._id,
                               showDeleteDialog: true,
                             });
-                          }}>
+                          }}
+                          >
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -384,11 +387,12 @@ class Maquinaria extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}>
+            }}
+            >
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-      />
+        />
     );
   };
 
@@ -402,7 +406,8 @@ class Maquinaria extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showMaquinariaDialog: true, editId: undefined });
-              }}>
+              }}
+              >
               Agregar Elemento
             </Button>
           </Grid>

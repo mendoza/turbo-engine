@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import validatorjs from "validator";
+import validator from "validator";
 import {
   Dialog,
   DialogTitle,
@@ -46,17 +46,17 @@ class Proveedores extends Component {
 
   }
 
-  handleTextInput = (event, stateName, validator) => {
+  handleTextInput = (event, stateName, validatorjs) => {
     let error;
     if (stateName === "email") {
-      error = !validatorjs.isEmail(event.target.value);
+      error = !validator.isEmail(event.target.value);
       if (error) {
         error = "Correo no válido";
       }
     }
     console.log(stateName, validator);
-    if (validator) {
-      if (validator(event.target.value) || event.target.value === "") {
+    if (validatorjs) {
+      if (validatorjs(event.target.value) || event.target.value === "") {
         this.setState({
           [stateName]: event.target.value,
         });
@@ -68,6 +68,7 @@ class Proveedores extends Component {
       });
     }
   };
+
   handleSearchName = event => {
     this.setState({ searchByNames: event.target.value })
   }
@@ -90,6 +91,7 @@ class Proveedores extends Component {
       email,
     };
     let methodName;
+    let error;
     if (editId) {
       methodName = "handleEditProvider";
     } else {
@@ -101,8 +103,41 @@ class Proveedores extends Component {
         snackbarText: "Por favor llene el campo de Correo Electrónico",
       });
     } else {
-      Meteor.call(methodName, newProvider, error => {
-        if (error) {
+      if (validator.isEmpty(Nombre)) {
+        error = "El campo Nombre es requerido";
+      }
+      if (validator.isEmpty(Apellido)) {
+        error = "El campo Apellido es requerido";
+      }
+      if (validator.isEmpty(Direccion)) {
+        error = "El campo Dirección es requerido";
+      }
+      if (validator.isEmpty(Telefono)) {
+        error = "El campo Teléfono es requerido";
+      }
+      if (validator.isEmpty(Telefono2)) {
+        error = "El campo Teléfono del Trabajo es requerido";
+      }
+      if (validator.isEmpty(Company)) {
+        error = "El campo Compañía es requerido";
+      }
+      const maq = Proveedor.find({nombre: Nombre});
+      maq.forEach((element)=>{
+        if (element.telefono === Telefono && 
+          element.email === email && 
+          methodName === "handleCreateProvider"){
+          error = "Este elemento ya ha sido agregado con anterioridad"
+        };
+      });
+      if (error) {
+        this.setState({
+          showSnackbar: true,
+          snackbarText: error,
+        });
+        return;
+      }
+      Meteor.call(methodName, newProvider, err => {
+        if (err) {
           this.setState({
             showSnackbar: true,
             snackbarText: "Ha ocurrido un error al intentar guardar el proveedor",
@@ -162,7 +197,8 @@ class Proveedores extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <form onSubmit={this.handleCreateProvider}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
@@ -175,27 +211,27 @@ class Proveedores extends Component {
                   label="Nombre"
                   onInput={event => {
                     this.handleTextInput(event, "Nombre", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
                   value={Nombre}
                   required
                   autoFocus
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Apellido"
                   onInput={event => {
                     this.handleTextInput(event, "Apellido", text => {
-                      return validatorjs.isAlpha(text, "es-ES");
+                      return validator.isAlpha(text, "es-ES");
                     });
                   }}
                   value={Apellido}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -206,33 +242,33 @@ class Proveedores extends Component {
                   value={Direccion}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Teléfono"
                   onInput={event => {
                     this.handleTextInput(event, "Telefono", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                      return validator.isNumeric(text, { no_symbols: true });
                     });
                   }}
                   value={Telefono}
                   fullWidth
                   required
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Teléfono secundario"
+                  label="Teléfono del Trabajo"
                   onInput={event => {
                     this.handleTextInput(event, "Telefono2", text => {
-                      return validatorjs.isNumeric(text, { no_symbols: true });
+                      return validator.isNumeric(text, { no_symbols: true });
                     });
                   }}
                   value={Telefono2}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -245,7 +281,7 @@ class Proveedores extends Component {
                   helperText={emailError || ""}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
               <Grid item xs={12} md={6}>
                 {}
@@ -257,7 +293,7 @@ class Proveedores extends Component {
                   value={Company}
                   required
                   fullWidth
-                />
+                  />
               </Grid>
             </Grid>
           </DialogContent>
@@ -267,7 +303,8 @@ class Proveedores extends Component {
                 this.setState({ showProviderDialog: false });
               }}
               color="primary"
-              variant="contained">
+              variant="contained"
+              >
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
@@ -289,7 +326,8 @@ class Proveedores extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este proveedor?
         </DialogTitle>
@@ -306,7 +344,8 @@ class Proveedores extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteProvider}>
@@ -389,7 +428,8 @@ class Proveedores extends Component {
                               email: provider.email,
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -400,7 +440,8 @@ class Proveedores extends Component {
                               editId: provider._id,
                               showDeleteDialog: true,
                             });
-                          }}>
+                          }}
+                          >
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -440,11 +481,12 @@ class Proveedores extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}>
+            }}
+            >
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-      />
+        />
     );
   };
 
@@ -457,7 +499,7 @@ class Proveedores extends Component {
               style={{ width: '50%' }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
-            />
+              />
           </Grid>
           <Grid item xs={12}>
             <Button
@@ -465,7 +507,8 @@ class Proveedores extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showProviderDialog: true, editId: undefined });
-              }}>
+              }}
+              >
               Agregar Proveedores
             </Button>
           </Grid>
