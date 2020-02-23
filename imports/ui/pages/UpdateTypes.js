@@ -31,6 +31,7 @@ class UpdateTypes extends PureComponent {
       message: "",
       id: "",
       shouldRender: false,
+      deletePiece: {},
     };
     if (props.location.state !== undefined) {
       const { tipos } = props.location.state;
@@ -57,29 +58,30 @@ class UpdateTypes extends PureComponent {
   };
 
   handleDelete = () => {
-    const { nombre, id } = this.state;
+    const { deletePiece } = this.state;
     let alert;
-    const name = Piezas.find({_id: id}).forEach(a=>{
-      console.log(a)
-    });
-    if (Piezas.find({ tipo: nombre }).count() > 0) {
+    if (Piezas.find({ tipo: deletePiece.nombre }).count() > 0) {
       alert = "No se puede eliminar tipos de pieza actualmente en uso";
     }
     if (alert) {
-      this.setState({ open: true, message: alert });
+      this.setState({ shouldRender:false, open: true, message: alert });
     } else {
       Meteor.call("deleteTipo", {
-        _id: id,
-        nombre,
+        _id: deletePiece._id,
+        nombre: deletePiece.nombre,
       });
       this.setState({ shouldRender: false, open: true, message: "Tipo eliminado exitosamente" });
     }
   };
 
   handleOpen = () => {
-    const { id } = this.state;
+    const { deletePiece } = this.state;
     let alert;
-    if (validator.isEmpty(id) === true) {
+    console.log(deletePiece);
+    if (validator.isEmpty(deletePiece._id) === true) {
+      alert = "La selección del tipo es requerido";
+    }
+    if (validator.isEmpty(deletePiece.nombre) === true) {
       alert = "La selección del tipo es requerido";
     }
 
@@ -153,7 +155,7 @@ class UpdateTypes extends PureComponent {
   };
 
   render() {
-    const { nombre, open, message, id, shouldRender, name } = this.state;
+    const { nombre, open, message, id, shouldRender, name, deletePiece } = this.state;
     const { tipos } = this.props;
     return (
       <DashboardLayout>
@@ -183,7 +185,7 @@ class UpdateTypes extends PureComponent {
               <Grid item xs={12}>
                 <Title>Actualizar Tipos de Piezas</Title>
               </Grid>
-              <Grid item xs={12} sm={10}>
+              <Grid item xs={12} sm={12}>
                 <Select
                   name="id"
                   fullWidth
@@ -204,19 +206,6 @@ class UpdateTypes extends PureComponent {
                   })}
                 </Select>
               </Grid>
-              <Grid item xs={12} sm={2}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  color="default"
-                  // size="large"
-                  // onClick={() => {
-                  //   this.setState({ shouldRender: true });
-                  // }}>
-                  onClick={this.handleOpen}>
-                  Eliminar Tipo
-                </Button>
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="name"
@@ -233,6 +222,39 @@ class UpdateTypes extends PureComponent {
               <Button fullWidth variant="contained" color="primary" onClick={this.handleClick}>
                 Actualizar
               </Button>
+              <Grid item xs={12}>
+                <Title>Eliminar Tipos de Piezas</Title>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Select
+                  name="deletePiece"
+                  fullWidth
+                  required
+                  label="Tipo"
+                  id="type"
+                  value={deletePiece}
+                  onChange={event => this.handleTextChange(event, "deletePiece")}>
+                  {tipos.map(tipoMap => {
+                    if (tipoMap) {
+                      return (
+                        <MenuItem key={tipoMap._id} value={tipoMap}>
+                          {tipoMap.nombre}
+                        </MenuItem>
+                      );
+                    }
+                    return <></>;
+                  })}
+                </Select>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleOpen}>
+                    Eliminar Tipo
+                </Button>
+              </Grid>
             </Grid>
           </form>
         </Container>
