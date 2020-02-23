@@ -241,7 +241,7 @@ class AutosPage extends PureComponent {
         alert = "El año no puede ser mayor al año actual";
       }
 
-      if (Autos.find({ placa }).count() >= 1) {
+      if (Autos.find({ placa }).count() > 1) {
         alert = "La placa debe ser unica para este auto";
       }
 
