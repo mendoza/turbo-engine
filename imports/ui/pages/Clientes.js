@@ -492,7 +492,9 @@ class Clientes extends Component {
                   <TableCell>{client.compania}</TableCell>
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.clientType}</TableCell>
-                  <TableCell>{client.autosComprados.length}</TableCell>
+                  <TableCell>
+                    {client.autosComprados !== undefined ? client.autosComprados.length : 0}
+                  </TableCell>
                   <TableCell />
                   <TableCell>
                     <div>
