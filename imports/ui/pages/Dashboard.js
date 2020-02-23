@@ -21,6 +21,8 @@ import {
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Historial from "../../api/collections/Historial/Historial";
+import Cliente from "../../api/collections/Cliente/Cliente";
+import Autos from "../../api/collections/Autos/Autos";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -31,7 +33,7 @@ class Dashboard extends PureComponent {
     };
   }
 
-  renderHistorialTable = () =>{
+  renderHistorialTable = () => {
     const { historial } = this.props;
     return (
       <Table aria-label="users table">
@@ -44,14 +46,20 @@ class Dashboard extends PureComponent {
           </TableRow>
         </TableHead>
         <TableBody>
-          {historial.map(row => (
-            <TableRow key={row.cliente}>
-              <TableCell>{row.cliente}</TableCell>
-              <TableCell>{row.producto}</TableCell>
-              <TableCell>{row.fecha}</TableCell>
-              <TableCell>{row.comentario}</TableCell>
-            </TableRow>
-          ))}
+          {historial.map(row => {
+            const fecha = new Date(row.fecha);
+            const cliente = Cliente.findOne({ _id: row.cliente });
+            const auto = Autos.findOne({ _id: row.producto });
+            if (cliente !== undefined)
+              return (
+                <TableRow key={row.cliente}>
+                  <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
+                  <TableCell>{`${auto.marca} ${auto.modelo}`}</TableCell>
+                  <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
+                  <TableCell>{row.comentario}</TableCell>
+                </TableRow>
+              );
+          })}
         </TableBody>
       </Table>
     );
@@ -124,7 +132,6 @@ class Dashboard extends PureComponent {
           <Title>Autos vendidos</Title>
           {this.renderHistorialTable()}
         </Grid>
-
       </DashboardLayout>
     );
   }

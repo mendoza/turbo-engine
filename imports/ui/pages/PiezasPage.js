@@ -481,7 +481,7 @@ class PiezasPage extends PureComponent {
                 </Grid>
                 <Grid item sm={6}>
                   <Title>Precio: </Title>
-                  <Typography>{`${dialogPiece.precio}`}</Typography>
+                  <Typography>{`${dialogPiece.precio}`} {`${dialogPiece.moneda}`}</Typography>
                 </Grid>
                 <Grid item sm={6}>
                   <Title>Numero de Serie: </Title>
