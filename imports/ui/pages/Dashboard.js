@@ -54,7 +54,7 @@ class Dashboard extends PureComponent {
               return (
                 <TableRow key={row.cliente}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
-                  <TableCell>{`${auto.marca} ${auto.modelo}`}</TableCell>
+                  <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
                   <TableCell>{row.comentario}</TableCell>
                 </TableRow>
