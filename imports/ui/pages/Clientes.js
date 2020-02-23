@@ -461,10 +461,11 @@ class Clientes extends Component {
             <TableCell>Apellido</TableCell>
             <TableCell>RTN</TableCell>
             <TableCell>Teléfono</TableCell>
-            <TableCell>Teléfono de Trabajo</TableCell>
+            <TableCell>Teléfono secundario</TableCell>
             <TableCell>Compañía</TableCell>
             <TableCell>Correo Electrónico</TableCell>
-            <TableCell>Tipo</TableCell>
+            <TableCell>Tipo de cliente</TableCell>
+            <TableCell>Autos comprados</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
@@ -494,6 +495,7 @@ class Clientes extends Component {
                   <TableCell>{client.compania}</TableCell>
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.clientType}</TableCell>
+                  <TableCell>{client.autosComprados}</TableCell>
                   <TableCell />
                   <TableCell>
                     <div>
