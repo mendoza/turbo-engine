@@ -67,7 +67,6 @@ class Clientes extends Component {
     this.setState({
       clientType: event.value,
     });
-    console.log(event.value);
   };
 
   handleTextInput = (event, stateName, validatorjs) => {
@@ -109,7 +108,7 @@ class Clientes extends Component {
       email,
       editId,
       clientType,
-      Autos,
+      autos,
     } = this.state;
 
     const newClient = {
@@ -120,7 +119,7 @@ class Clientes extends Component {
       telefono: Telefono,
       telefonoTrabajo: Telefono2,
       compania: Company,
-      autos: Autos,
+      autos,
       email,
       clientType,
     };
@@ -222,10 +221,7 @@ class Clientes extends Component {
       clientType,
       autos,
     } = this.state;
-    const options = [
-      { value: "Empresarial", label: "Empresarial" },
-      { value: "Personal", label: "Personal" },
-    ];
+
     return (
       <Dialog
         style={{ overflow: "initial" }}
@@ -354,7 +350,9 @@ class Clientes extends Component {
                 <TextField
                   label="Autos"
                   onInput={event => {
-                    this.handleTextInput(event, "autos");
+                    this.handleTextInput(event, "autos", text => {
+                      return validator.isNumeric(text, { no_symbols: true });
+                    });
                   }}
                   value={autos}
                   required
@@ -492,9 +490,7 @@ class Clientes extends Component {
                   <TableCell>{client.compania}</TableCell>
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.clientType}</TableCell>
-                  <TableCell>
-                    {client.autosComprados !== undefined ? client.autosComprados.length : 0}
-                  </TableCell>
+                  <TableCell>{client.autos}</TableCell>
                   <TableCell />
                   <TableCell>
                     <div>
