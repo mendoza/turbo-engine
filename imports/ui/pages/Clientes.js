@@ -125,7 +125,7 @@ class Clientes extends Component {
       clientType,
     };
     let methodName;
-    let error
+    let error;
     if (editId) {
       methodName = "handleEditClient";
     } else {
@@ -152,11 +152,11 @@ class Clientes extends Component {
       if (validator.isEmpty(Telefono2)) {
         error = "El campo Teléfono de Trabajo es requerido";
       }
-      const maq = Cliente.find({nombre: Nombre});
-      maq.forEach((element)=>{
-        if (element.rtn === RTN && methodName === "handleCreateClient"){
-          error = "Este elemento ya ha sido agregado con anterioridad"
-        };
+      const maq = Cliente.find({ nombre: Nombre });
+      maq.forEach(element => {
+        if (element.rtn === RTN && methodName === "handleCreateClient") {
+          error = "Este elemento ya ha sido agregado con anterioridad";
+        }
       });
       if (error) {
         this.setState({
@@ -235,8 +235,7 @@ class Clientes extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
+        fullWidth>
         <form onSubmit={this.handleCreateClient}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar"}
@@ -256,7 +255,7 @@ class Clientes extends Component {
                   required
                   autoFocus
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -269,7 +268,7 @@ class Clientes extends Component {
                   value={Apellido}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <MaskedTextField
@@ -297,7 +296,7 @@ class Clientes extends Component {
                     });
                   }}
                   label="RTN"
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -310,7 +309,7 @@ class Clientes extends Component {
                   value={Telefono}
                   fullWidth
                   required
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -323,7 +322,7 @@ class Clientes extends Component {
                   value={Telefono2}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -336,7 +335,7 @@ class Clientes extends Component {
                   helperText={emailError || ""}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item select xs={12} md={6}>
                 <Select
@@ -348,7 +347,7 @@ class Clientes extends Component {
                     { value: "Personal", label: "Personal" },
                   ]}
                   onChange={this.handleClientTypeChange}
-                  />
+                />
               </Grid>
 
               <Grid item xs={12} md={6}>
@@ -360,7 +359,7 @@ class Clientes extends Component {
                   value={autos}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               {clientType === "Juridico" ? (
                 <Grid item xs={12} md={6}>
@@ -372,7 +371,7 @@ class Clientes extends Component {
                     value={Company}
                     required
                     fullWidth
-                    />
+                  />
                 </Grid>
               ) : (
                 <div></div>
@@ -397,8 +396,7 @@ class Clientes extends Component {
                 });
               }}
               color="primary"
-              variant="contained"
-              >
+              variant="contained">
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
@@ -420,8 +418,7 @@ class Clientes extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth
-        >
+        fullWidth>
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este cliente?
         </DialogTitle>
@@ -438,8 +435,7 @@ class Clientes extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteClient}>
@@ -484,6 +480,7 @@ class Clientes extends Component {
               return <TableRow />;
             }
             if (client) {
+              console.log(client);
               return (
                 // eslint-disable-next-line no-underscore-dangle
                 <TableRow key={client._id}>
@@ -495,7 +492,7 @@ class Clientes extends Component {
                   <TableCell>{client.compania}</TableCell>
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.clientType}</TableCell>
-                  <TableCell>{client.autosComprados}</TableCell>
+                  <TableCell>{client.autosComprados.length}</TableCell>
                   <TableCell />
                   <TableCell>
                     <div>
@@ -517,8 +514,7 @@ class Clientes extends Component {
                               autos: client.autos,
                             });
                           }}
-                          aria-label="centered"
-                          >
+                          aria-label="centered">
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -529,8 +525,7 @@ class Clientes extends Component {
                               editId: client._id,
                               showDeleteDialog: true,
                             });
-                          }}
-                          >
+                          }}>
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -570,12 +565,11 @@ class Clientes extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}
-            >
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
   };
 
@@ -588,7 +582,7 @@ class Clientes extends Component {
               style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
-              />
+            />
           </Grid>
           <Grid item xs={12}>
             <Button
@@ -596,8 +590,7 @@ class Clientes extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showClientDialog: true, editId: undefined });
-              }}
-              >
+              }}>
               Agregar Cliente
             </Button>
           </Grid>
