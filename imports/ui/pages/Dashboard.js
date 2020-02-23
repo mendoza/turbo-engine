@@ -21,6 +21,8 @@ import {
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Historial from "../../api/collections/Historial/Historial";
+import Autos from "../../api/collections/Autos/Autos";
+import Clientes from "../../api/collections/Cliente/Cliente";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -46,6 +48,7 @@ class Dashboard extends PureComponent {
         <TableBody>
           {historial.map(row => (
             <TableRow key={row.cliente}>
+              <TableCell>{row.cliente}</TableCell>
               <TableCell>{row.producto}</TableCell>
               <TableCell>{row.fecha}</TableCell>
               <TableCell>{row.comentario}</TableCell>
@@ -131,8 +134,14 @@ class Dashboard extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("historial.all");
+  Meteor.subscribe("Autos.all");
+  Meteor.subscribe("clientes.all");
   const historial = Historial.find().fetch();
+  const autos = Autos.find().fetch();
+  const clientes = Clientes.find().fetch();
   return {
     historial: historial && historial.reverse(),
+    autos: autos && autos.reverse(),
+    clientes: clientes && clientes.reverse()
   };
 })(Dashboard);
