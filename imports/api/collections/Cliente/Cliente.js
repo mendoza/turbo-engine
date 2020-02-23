@@ -1,6 +1,5 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
-import Autos from "../Autos/Autos";
 
 const Cliente = new Mongo.Collection("Cliente");
 

@@ -1,5 +1,11 @@
 import React, { PureComponent } from "react";
 import { Grid } from "@material-ui/core";
+import { withTracker } from "meteor/react-meteor-data";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import {
   ResponsiveContainer,
   Legend,
@@ -13,8 +19,8 @@ import {
   YAxis,
 } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Orders from "../components/Orders";
 import Title from "../components/Title";
+import Historial from "../../api/collections/Historial/Historial";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -24,6 +30,31 @@ class Dashboard extends PureComponent {
       widthChart: 0,
     };
   }
+
+  renderHistorialTable = () =>{
+    const { historial } = this.props;
+    return (
+      <Table aria-label="users table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Cliente</TableCell>
+            <TableCell>Producto</TableCell>
+            <TableCell>Fecha</TableCell>
+            <TableCell>Comentario</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {historial.map(row => (
+            <TableRow key={row.cliente}>
+              <TableCell>{row.producto}</TableCell>
+              <TableCell>{row.fecha}</TableCell>
+              <TableCell>{row.comentario}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  };
 
   componentDidMount = () => {
     this.setState({ widthChart: window.innerWidth });
@@ -89,11 +120,19 @@ class Dashboard extends PureComponent {
         </Grid>
 
         <Grid container className="gridRoot" item xs={12} spacing={2}>
-          <Orders />
+          <Title>Autos vendidos</Title>
+          {this.renderHistorialTable()}
         </Grid>
+
       </DashboardLayout>
     );
   }
 }
 
-export default Dashboard;
+export default withTracker(() => {
+  Meteor.subscribe("historial.all");
+  const historial = Historial.find().fetch();
+  return {
+    historial: historial && historial.reverse(),
+  };
+})(Dashboard);
