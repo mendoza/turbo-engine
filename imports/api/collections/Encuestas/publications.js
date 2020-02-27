@@ -1,3 +1,3 @@
-import Autos from "./Autos";
+import Autos from "./Encuestas";
 
-Meteor.publish('Autos.all', () => (Autos.find()));
+Meteor.publish('encuestas.all', () => (Autos.find()));
