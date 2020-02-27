@@ -32,7 +32,7 @@ class EncuestaPage extends Component {
     };
   }
 
-  renderEmpleadoDialog = () => {
+  renderEncuestaDialog = () => {
     const {
       shouldRender,
       Fecha,
@@ -48,48 +48,44 @@ class EncuestaPage extends Component {
         aria-labelledby="form-dialog-title"
         maxWidth="md"
         fullWidth>
-          <DialogTitle id="form-dialog-title">
-            Encuesta
-          </DialogTitle>
-          <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <pTextField
-                  label="Nombre"
-                  value={Fecha}
-                  required
-                  autoFocus
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Apellido"
-                  value={Score}
-                  required
-                  fullWidth
-                />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                
-
-                
-              </Grid>
-
+          
+        <DialogTitle id="form-dialog-title">
+          Encuesta
+        </DialogTitle>
+          
+        <DialogContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <pTextField
+                label="Nombre"
+                value={Fecha}
+                required
+                autoFocus
+                fullWidth
+              />
             </Grid>
-          </DialogContent>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Apellido"
+                value={Score}
+                required
+                fullWidth
+                />
+            </Grid>
 
-          <DialogActions>
-            <Button
-              onClick={() => {
-                this.setState({ shouldRender: false });
-              }}
-              color="primary"
-              variant="contained">
-              Cerrar
-            </Button>
-          </DialogActions>
+          </Grid>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={() => {
+              this.setState({ shouldRender: false });
+            }}
+            color="primary"
+            variant="contained">
+            Cerrar
+          </Button>
+        </DialogActions>
 
       </Dialog>
     );
@@ -164,6 +160,6 @@ export default withTracker(() => {
   Meteor.subscribe("encuestas.all");
   const encuestas = Encuestas.find().fetch();
   return {
-    maquinas: encuestas && encuestas.reverse(),
+    encuestas: encuestas && encuestas.reverse(),
   };
 })(EncuestaPage);

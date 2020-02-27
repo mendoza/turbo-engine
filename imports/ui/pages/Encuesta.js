@@ -130,7 +130,8 @@ export default function Encuestilla() {
   const [ended, setEnded] = useState(false);
 
   const insertEncuesta = () => {
-    Meteor.call('insertEncuesta', { score: Score, comment: Comment }, err => {
+    console.log("Score: ",Score, "Comment: ",Comment)
+    Meteor.call('insertEncuesta', { score: Score, comment: Comment, fecha: ""}, err => {
       if (!err) {
         setEnded(true);
       }
