@@ -26,9 +26,74 @@ class EncuestaPage extends Component {
     this.state = {
       shouldRender: false,
 
+      Fecha: "",
+      Score: "",
+      Comentario: "",
     };
   }
 
+  renderEmpleadoDialog = () => {
+    const {
+      shouldRender,
+      Fecha,
+      Score,
+      Comentario,
+    } = this.state;
+    return (
+      <Dialog
+        open={shouldRender}
+        onClose={() => {
+          this.setState({ shouldRender: false });
+        }}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth>
+          <DialogTitle id="form-dialog-title">
+            Encuesta
+          </DialogTitle>
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <pTextField
+                  label="Nombre"
+                  value={Fecha}
+                  required
+                  autoFocus
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Apellido"
+                  value={Score}
+                  required
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                
+
+                
+              </Grid>
+
+            </Grid>
+          </DialogContent>
+
+          <DialogActions>
+            <Button
+              onClick={() => {
+                this.setState({ shouldRender: false });
+              }}
+              color="primary"
+              variant="contained">
+              Cerrar
+            </Button>
+          </DialogActions>
+
+      </Dialog>
+    );
+  };
 
   renderEncuestasTable = () => {
     const { encuestas } = this.props;
@@ -58,7 +123,12 @@ class EncuestaPage extends Component {
                         <ToggleButton
                           value="left"
                           onClick={() => {
-                            this.setState({ shouldRender: true, dialogUser: user });
+                            this.setState({ 
+                              shouldRender: true,
+                              Fecha: encuesta.fecha,
+                              Score: encuesta.score,
+                              Comentario: encuesta.comment,
+                            });
                           }}
                           aria-label="left aligned">
                           <i className="fas fa-address-card" />
