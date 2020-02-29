@@ -14,6 +14,7 @@
     "react/jsx-filename-extension": ["off"],
     "react/jsx-closing-bracket-location": [1, "props-aligned"],
     "react/prop-types": ["off"],
-    "no-return-assign": ["off"]
+    "no-return-assign": ["off"],
+    "import/no-cycle": ["off"]
   }
 }

@@ -1,24 +1,84 @@
 import React, { PureComponent } from "react";
-import { Container, Grid } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Grid } from "@material-ui/core";
+import { withTracker } from "meteor/react-meteor-data";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import {
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+  Bar,
+  BarChart,
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
-import Orders from "../components/Orders";
+import Historial from "../../api/collections/Historial/Historial";
+import Cliente from "../../api/collections/Cliente/Cliente";
+import Autos from "../../api/collections/Autos/Autos";
 
 class Dashboard extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      widthChart: 0,
+    };
   }
 
+  renderHistorialTable = () => {
+    const { historial } = this.props;
+    return (
+      <Table aria-label="users table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Cliente</TableCell>
+            <TableCell>Producto</TableCell>
+            <TableCell>Fecha</TableCell>
+            <TableCell>Comentario</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {historial.map(row => {
+            const fecha = new Date(row.fecha);
+            const cliente = Cliente.findOne({ _id: row.cliente });
+            const auto = Autos.findOne({ _id: row.producto });
+            if (cliente !== undefined && auto !== undefined && fecha !== undefined)
+              return (
+                <TableRow key={row.cliente}>
+                  <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
+                  <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
+                  <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
+                  <TableCell>{row.comentario}</TableCell>
+                </TableRow>
+              );
+          })}
+        </TableBody>
+      </Table>
+    );
+  };
+
+  componentDidMount = () => {
+    this.setState({ widthChart: window.innerWidth });
+  };
+
   render() {
+    const { widthChart } = this.state;
+
     // Linechart
     const data = [
-      { name: "Page A", uv: 400, pv: 2400, amt: 2400 },
-      { name: "Page B", uv: 100, pv: 2400, amt: 2400 },
-      { name: "Page C", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Pagina A", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Pagina B", uv: 100, pv: 2400, amt: 2400 },
+      { name: "Pagina C", uv: 400, pv: 2400, amt: 2400 },
+      { name: "Pagina D", uv: 300, pv: 2400, amt: 2400 },
+      { name: "Pagina E", uv: 150, pv: 2400, amt: 2400 },
     ];
     // Barchart
     const databar = [
@@ -38,28 +98,51 @@ class Dashboard extends PureComponent {
 
     return (
       <DashboardLayout Routes={[]}>
-        <Container padding="30px">
-          <Grid container spacing={3} direction="row" justify="center" alignItems="center">
-            <Grid>
-              <Title>Ganancias anuales</Title>
-              <LineChart width={500} height={300} data={data}>
-                <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-                <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="name" />
-                <YAxis />
-              </LineChart>
-            </Grid>
-            <Grid item xs={6}></Grid>
+        <Grid container className="gridRoot" item xs={12} spacing={1}>
+          <Grid item xs={12} sm={6}>
+            <ResponsiveContainer width="100%">
+              <div>
+                <LineChart width={500} height={230} data={data}>
+                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                </LineChart>
+              </div>
+            </ResponsiveContainer>
           </Grid>
-          <Grid item xs={12}>
-            <Paper>
-              <Orders />
-            </Paper>
+          <Grid item xs={12} sm={6}>
+            <ResponsiveContainer width="100%">
+              <div>
+                <BarChart width={500} height={230} data={data}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="pv" fill="#8884d8" />
+                  <Bar dataKey="uv" fill="#82ca9d" />
+                </BarChart>
+              </div>
+            </ResponsiveContainer>
           </Grid>
-        </Container>
+        </Grid>
+
+        <Grid container className="gridRoot" item xs={12}>
+          <Title>Autos vendidos</Title>
+          {this.renderHistorialTable()}
+        </Grid>
       </DashboardLayout>
     );
   }
 }
 
-export default Dashboard;
+export default withTracker(() => {
+  Meteor.subscribe("historial.all");
+  Meteor.subscribe("Autos.all");
+  Meteor.subscribe("clientes.all");
+  const historial = Historial.find().fetch();
+  return {
+    historial: historial && historial.reverse(),
+  };
+})(Dashboard);

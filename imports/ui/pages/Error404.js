@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
 import { Container, Paper, Grid, Typography } from "@material-ui/core";
-import { Error } from "@material-ui/icons";
 
 class Error404 extends PureComponent {
   constructor(props) {
@@ -15,11 +14,10 @@ class Error404 extends PureComponent {
         <Paper style={{ padding: "2%" }}>
           <Grid container direction="row" alignItems="center" justify="center">
             <Grid item>
-              <Error
-                className="Error"
+              <i
+                className="fas fa-exclamation-triangle"
                 fontSize="large"
-                style={{ fontSize: "128pt" }}
-                color="error"
+                style={{ fontSize: "128pt", color: "red" }}
               />
             </Grid>
             <Grid item>
