@@ -25,12 +25,17 @@ class EncuestaPage extends Component {
 
     this.state = {
       shouldRender: false,
+      searchByDate: "",
 
       Fecha: "",
       Score: "",
       Comentario: "",
     };
   }
+
+  handleSearchDate = event => {
+    this.setState({ searchByDate: event.target.value });
+  };
 
   renderEncuestaDialog = () => {
     const {
@@ -90,6 +95,7 @@ class EncuestaPage extends Component {
 
   renderEncuestasTable = () => {
     const { encuestas } = this.props;
+    const { searchByDate } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -100,6 +106,18 @@ class EncuestaPage extends Component {
         </TableHead>
         <TableBody>
           {encuestas.map(encuesta => {
+            const searchRegex = new RegExp(
+              searchByDate
+                .split(/ /)
+                .filter(c => c !== "")
+                .join("|"),
+              "i"
+            );
+            const r1 = encuesta && encuesta.score.search(searchRegex);
+            const r2 = encuesta && encuesta.fecha.search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
+              return <TableRow />;
+            }
             if (encuesta) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -143,6 +161,13 @@ class EncuestaPage extends Component {
     return (
       <DashboardLayout style={{ height: "100vh" }}>
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              style={{ width: "50%" }}
+              label="Filtro por puntaje y fecha"
+              onInput={this.handleSearchDate}
+            />
+          </Grid>
           <Grid item xs={12}>
             {this.renderEncuestasTable()}
           </Grid>
