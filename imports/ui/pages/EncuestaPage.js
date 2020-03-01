@@ -48,16 +48,14 @@ class EncuestaPage extends Component {
         aria-labelledby="form-dialog-title"
         maxWidth="md"
         fullWidth>
-          
         <DialogTitle id="form-dialog-title">
           Encuesta
         </DialogTitle>
-          
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <pTextField
-                label="Nombre"
+                label="Fecha"
                 value={Fecha}
                 required
                 autoFocus
@@ -66,13 +64,13 @@ class EncuestaPage extends Component {
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                label="Apellido"
+                label="Score"
                 value={Score}
                 required
                 fullWidth
-                />
+              />
             </Grid>
-
+                
           </Grid>
         </DialogContent>
 
@@ -86,7 +84,6 @@ class EncuestaPage extends Component {
             Cerrar
           </Button>
         </DialogActions>
-
       </Dialog>
     );
   };

@@ -131,9 +131,11 @@ export default function Encuestilla() {
 
   const insertEncuesta = () => {
     console.log("Score: ",Score, "Comment: ",Comment)
-    Meteor.call('insertEncuesta', { score: Score, comment: Comment, fecha: ""}, err => {
+    Meteor.call('insertEncuesta', { score: Score, comment: Comment, fecha: "n"}, err => {
       if (!err) {
         setEnded(true);
+      }else{
+        console.log("Nel, no se guardo");
       }
     })
   }
