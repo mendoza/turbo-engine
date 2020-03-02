@@ -172,7 +172,7 @@ class CreateAutos extends PureComponent {
         alert = "El campo modelo es requerido";
       }
 
-      if (validator.isEmpty(tipo)) {
+      if (validator.isEmpty(Tipo[tipo])) {
         alert = "El campo tipo es requerido";
       }
 
