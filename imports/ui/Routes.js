@@ -11,14 +11,14 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
-import SignUpClient from "./pages/SignUpClient"
-import SignInClient from "./pages/SignInClient"
-import Encuesta from "./pages/Encuesta"
+import SignUpClient from "./pages/SignUpClient";
+import SignInClient from "./pages/SignInClient";
+import Encuesta from "./pages/Encuesta";
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
-import Checkout from "./pages/Checkout";
+import CreateReportes from "./pages/CreateReportes";
 import Proveedores from "./pages/Proveedores";
 import Historial from "./pages/Historial";
 import Vender from "./pages/Vender";
@@ -112,7 +112,7 @@ export const Routes = [
     path: "/Encuesta",
     name: "Encuesta",
     component: Encuesta,
-    permission: 'none',
+    permission: "none",
   },
   {
     path: "/clientes",
@@ -149,6 +149,11 @@ export const Routes = [
     path: "/vender",
     name: "Vender",
     component: Vender,
+  },
+  {
+    path: "/crearreportes",
+    name: "Reportes",
+    component: CreateReportes,
   },
 ];
 
@@ -218,5 +223,5 @@ export const dashboardRoutes = [
     name: "Vender automovil",
     icon: "fas fa-check-circle",
     permission: "superAdmin",
-  }
+  },
 ];
