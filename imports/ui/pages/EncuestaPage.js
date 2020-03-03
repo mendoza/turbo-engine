@@ -38,12 +38,7 @@ class EncuestaPage extends Component {
   };
 
   renderEncuestaDialog = () => {
-    const {
-      shouldRender,
-      Fecha,
-      Score,
-      Comentario,
-    } = this.state;
+    const { shouldRender, Fecha, Score, Comentario } = this.state;
     return (
       <Dialog
         open={shouldRender}
@@ -53,29 +48,15 @@ class EncuestaPage extends Component {
         aria-labelledby="form-dialog-title"
         maxWidth="md"
         fullWidth>
-        <DialogTitle id="form-dialog-title">
-          Encuesta
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">Encuesta</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <pTextField
-                label="Fecha"
-                value={Fecha}
-                required
-                autoFocus
-                fullWidth
-              />
+              <pTextField label="Fecha" value={Fecha} required autoFocus fullWidth />
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField
-                label="Score"
-                value={Score}
-                required
-                fullWidth
-              />
+              <TextField label="Score" value={Score} required fullWidth />
             </Grid>
-                
           </Grid>
         </DialogContent>
 
@@ -106,18 +87,6 @@ class EncuestaPage extends Component {
         </TableHead>
         <TableBody>
           {encuestas.map(encuesta => {
-            const searchRegex = new RegExp(
-              searchByDate
-                .split(/ /)
-                .filter(c => c !== "")
-                .join("|"),
-              "i"
-            );
-            const r1 = encuesta && encuesta.score.search(searchRegex);
-            const r2 = encuesta && encuesta.fecha.search(searchRegex);
-            if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
-              return <TableRow />;
-            }
             if (encuesta) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -134,7 +103,7 @@ class EncuestaPage extends Component {
                         <ToggleButton
                           value="left"
                           onClick={() => {
-                            this.setState({ 
+                            this.setState({
                               shouldRender: true,
                               Fecha: encuesta.fecha,
                               Score: encuesta.score,
@@ -179,9 +148,8 @@ class EncuestaPage extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe("encuestas.all");
-  const encuestas = Encuestas.find().fetch();
+  Meteor.subscribe("Encuestas.all");
   return {
-    encuestas: encuestas && encuestas.reverse(),
+    encuestas: Encuestas.find().fetch(),
   };
 })(EncuestaPage);
