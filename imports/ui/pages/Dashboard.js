@@ -15,9 +15,11 @@ import {
 } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
-import Historial from "../../api/collections/Historial/Historial";
 
+import Historial from "../../api/collections/Historial/Historial";
 import Encuestas from "../../api/collections/Encuestas/Encuestas";
+import Autos from "../../api/collections/Autos/Autos";
+import Cliente from "../../api/collections/Cliente/Cliente"
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -34,7 +36,7 @@ class Dashboard extends PureComponent {
       shouldRender: false,
     };
   }
-
+  
   renderGrafico = () =>{
     return(
       <BarChart 
@@ -103,6 +105,7 @@ class Dashboard extends PureComponent {
 
       </DashboardLayout>
     );
+
   }
 }
 
