@@ -12,6 +12,9 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  InputLabel,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -26,7 +29,6 @@ class EncuestaPage extends Component {
     this.state = {
       shouldRender: false,
       searchByDate: "",
-
       Fecha: "",
       Score: "",
       Comentario: "",
@@ -87,6 +89,15 @@ class EncuestaPage extends Component {
         </TableHead>
         <TableBody>
           {encuestas.map(encuesta => {
+            const searchRegex = new RegExp(
+              searchByDate.split(/ /).filter(l => l !== '').join('|'),
+              'i'
+            );
+            const r1 = encuesta && encuesta.fecha.search(searchRegex);
+            const r2 = encuesta && encuesta.score.search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+              return <TableRow />;
+            }
             if (encuesta) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
