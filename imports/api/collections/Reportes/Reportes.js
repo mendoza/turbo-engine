@@ -4,10 +4,12 @@ import SimpleSchema from "simpl-schema";
 const Reportes = new Mongo.Collection("Reportes");
 
 Reportes.schema = new SimpleSchema({
-    comentario: {type: String},
-    tipoDeReporte: {type: String},
-    idEmpleado: {type: String},
+    prioridad: {type: String},
     fecha: {type: String},
+    empleado: {type: String},
+    tipo: {type: String},
+    marca: {type: String},
+    detalles: {type: String},
 });
 
 export default Reportes;
