@@ -15,10 +15,11 @@ import {
 } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
-import Historial from "../../api/collections/Historial/Historial";
 
+import Historial from "../../api/collections/Historial/Historial";
 import Encuestas from "../../api/collections/Encuestas/Encuestas";
-import { Estados } from "../Constants";
+import Autos from "../../api/collections/Autos/Autos";
+import Cliente from "../../api/collections/Cliente/Cliente"
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -35,7 +36,7 @@ class Dashboard extends PureComponent {
       shouldRender: false,
     };
   }
-
+  
   renderGrafico = () =>{
     return(
       <BarChart 
@@ -104,14 +105,15 @@ class Dashboard extends PureComponent {
 
       </DashboardLayout>
     );
+
   }
 }
 
 export default withTracker(() => {
   Meteor.subscribe("historial.all");
-  // Meteor.subscribe("encuestas.all");
-  const historial = Historial.find().fetch();
+  Meteor.subscribe("Encuestas.all");
   return {
-    historial: historial && historial.reverse(),
+    encuestas: Encuestas.find({ estado: 2 }).fetch(),
+    historial: Historial.find({}).fetch(),
   };
 })(Dashboard);
