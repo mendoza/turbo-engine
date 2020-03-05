@@ -18,7 +18,6 @@ import Title from "../components/Title";
 import Historial from "../../api/collections/Historial/Historial";
 
 import Encuestas from "../../api/collections/Encuestas/Encuestas";
-import { Estados } from "../Constants";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -109,9 +108,9 @@ class Dashboard extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("historial.all");
-  // Meteor.subscribe("encuestas.all");
-  const historial = Historial.find().fetch();
+  Meteor.subscribe("Encuestas.all");
   return {
-    historial: historial && historial.reverse(),
+    encuestas: Encuestas.find({ estado: 2 }).fetch(),
+    historial: Historial.find({}).fetch(),
   };
 })(Dashboard);
