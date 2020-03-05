@@ -94,8 +94,8 @@ class EncuestaPage extends Component {
               'i'
             );
             const r1 = encuesta && encuesta.fecha.search(searchRegex);
-            const r2 = encuesta && encuesta.score.search(searchRegex);
-            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+            const r2 = encuesta && encuesta.score.toString().search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
               return <TableRow />;
             }
             if (encuesta) {
