@@ -16,8 +16,9 @@ import {
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 import Historial from "../../api/collections/Historial/Historial";
-import Cliente from "../../api/collections/Cliente/Cliente";
-import Autos from "../../api/collections/Autos/Autos";
+
+import Encuestas from "../../api/collections/Encuestas/Encuestas";
+import { Estados } from "../Constants";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -30,7 +31,8 @@ class Dashboard extends PureComponent {
         { name: "Mes 3", Malo: 400, Bueno: 2400, Excelente: 2400 },
         { name: "Mes 4", Malo: 300, Bueno: 2400, Excelente: 2400 },
         { name: "Mes 5", Malo: 150, Bueno: 2400, Excelente: 2400 },
-      ]
+      ],
+      shouldRender: false,
     };
   }
 
@@ -107,8 +109,7 @@ class Dashboard extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("historial.all");
-  Meteor.subscribe("Autos.all");
-  Meteor.subscribe("clientes.all");
+  // Meteor.subscribe("encuestas.all");
   const historial = Historial.find().fetch();
   return {
     historial: historial && historial.reverse(),
