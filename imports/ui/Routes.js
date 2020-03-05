@@ -14,11 +14,11 @@ import EstadoAutos from "./pages/EstadoAutos";
 import SignUpClient from "./pages/SignUpClient"
 import SignInClient from "./pages/SignInClient"
 import Encuesta from "./pages/Encuesta"
+import EncuestaPage from "./pages/EncuestaPage"
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
-import Checkout from "./pages/Checkout";
 import Proveedores from "./pages/Proveedores";
 import Historial from "./pages/Historial";
 import Vender from "./pages/Vender";
@@ -113,6 +113,12 @@ export const Routes = [
     name: "Encuesta",
     component: Encuesta,
     permission: 'none',
+  },
+  {
+    path: "/EncuestaPage",
+    name: "Encuestas",
+    component: EncuestaPage,
+    permission: 'superAdmin'
   },
   {
     path: "/clientes",
