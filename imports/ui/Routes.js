@@ -22,6 +22,7 @@ import CreateReportes from "./pages/CreateReportes";
 import Proveedores from "./pages/Proveedores";
 import Historial from "./pages/Historial";
 import Vender from "./pages/Vender";
+import Tickets from "./pages/ListTickets";
 
 export const Routes = [
   {
@@ -154,6 +155,12 @@ export const Routes = [
     path: "/crearreportes",
     name: "Reportes",
     component: CreateReportes,
+  },
+  {
+    path: "/tickets",
+    name: "Tickets",
+    component: Tickets,
+    permission: "superAdmin",
   },
 ];
 

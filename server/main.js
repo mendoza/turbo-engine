@@ -22,6 +22,8 @@ import "../imports/api/collections/Maquinas/methods"
 import "../imports/api/collections/Maquinas/publications"
 import "../imports/api/collections/Proveedor/methods";
 import "../imports/api/collections/Proveedor/publications"
+import "../imports/api/collections/Reportes/publications"
+import "../imports/api/collections/Reportes/methods"
 
 
 Meteor.startup(() => {
