@@ -23,7 +23,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Piezas from "../../api/collections/Piezas/Piezas";
-import { Estados, Traccion, Transmision } from "../Constants";
+import { Estados, Traccion, Transmision, Tipo } from "../Constants";
 import MaskedTextField from "../components/MaskedTextField";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import ItemCard from "../components/ItemCard";
@@ -36,8 +36,8 @@ class CreateAutos extends PureComponent {
     this.state = {
       shouldOpen: false,
       marca: 0,
-      modelo: "",
-      tipo: "",
+      modelo: 0,
+      tipo: 0,
       transmision: 0,
       color: "",
       placa: "",
@@ -51,21 +51,31 @@ class CreateAutos extends PureComponent {
       vin: "",
       files: [],
       nombresMarcas: [],
+      nombreModelos: [],
+      autosCompletos: [],
       uploaded: true,
     };
 
     fetch("https://private-anon-03fe86f6b5-carsapi1.apiary-mock.com/manufacturers")
       .then(res => res.json())
       .then(json => {
-        const names = Object.values(json).map(manu => {
-          return manu.name;
-        });
-        console.log(names);
+        const names = Object.values(json).map(manu => manu.name);
         names.sort((a, b) => a > b);
-        console.log(names);
         this.setState({ nombresMarcas: names });
       });
+    fetch("https://private-anon-03fe86f6b5-carsapi1.apiary-mock.com/cars")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        this.setState({ autosCompletos: data });
+      });
   }
+
+  getCarByManufacter = name => {
+    const { autosCompletos } = this.state;
+    const final = autosCompletos.filter(car => car.make === name);
+    this.setState({ nombreModelos: final });
+  };
 
   setFiles = event => {
     const { files } = event.target;
@@ -141,11 +151,11 @@ class CreateAutos extends PureComponent {
       autoPiezas,
       vin,
       nombresMarcas,
+      nombreModelos,
     } = this.state;
 
     const handleTextChange = event => {
       event.persist();
-      console.log({ [event.target.name]: event.target.value });
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -158,11 +168,11 @@ class CreateAutos extends PureComponent {
         alert = "El campo marca es requerido";
       }
 
-      if (validator.isEmpty(modelo)) {
+      if (validator.isEmpty(nombreModelos[modelo].model)) {
         alert = "El campo modelo es requerido";
       }
 
-      if (validator.isEmpty(tipo)) {
+      if (validator.isEmpty(Tipo[tipo])) {
         alert = "El campo tipo es requerido";
       }
 
@@ -187,7 +197,6 @@ class CreateAutos extends PureComponent {
         alert = "El año no puede ser mayor al año actual";
       }
 
-      console.log(Autos.find({ placa }).count());
       if (Autos.find({ placa }).count() > 0) {
         alert = "La placa debe ser unica para este auto";
       }
@@ -208,7 +217,7 @@ class CreateAutos extends PureComponent {
         });
         Meteor.call("addAuto", {
           marca: nombresMarcas[marca],
-          modelo,
+          modelo: nombreModelos[modelo].model,
           tipo,
           transmision,
           color,
@@ -281,7 +290,7 @@ class CreateAutos extends PureComponent {
               this.setState({ showX: false });
             }}
             action3={() => {}}
-            />
+          />
         </Grid>
       );
     };
@@ -304,7 +313,10 @@ class CreateAutos extends PureComponent {
                     fullWidth
                     value={marca}
                     name="marca"
-                    onChange={handleTextChange}
+                    onChange={e => {
+                      this.setState({ [e.target.name]: e.target.value });
+                      this.getCarByManufacter(nombresMarcas[e.target.value]);
+                    }}
                     label="Marca"
                     variant="outlined">
                     {nombresMarcas.map((dato, index) => {
@@ -313,28 +325,31 @@ class CreateAutos extends PureComponent {
                   </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="modelo"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Modelo"
-                    autoFocus
                     value={modelo}
-                    onInput={handleTextChange}
-                    />
+                    name="modelo"
+                    onChange={e => {
+                      this.setState({ [e.target.name]: e.target.value });
+                    }}
+                    label="Modelo"
+                    variant="outlined">
+                    {nombreModelos.map((dato, index) => {
+                      return <MenuItem value={index}>{dato.model}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="tipo"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Tipo"
-                    autoFocus
+                    name="tipo"
                     value={tipo}
-                    onInput={handleTextChange}
-                    />
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Tipo.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Select
@@ -342,8 +357,7 @@ class CreateAutos extends PureComponent {
                     name="transmision"
                     value={transmision}
                     onChange={handleTextChange}
-                    variant="outlined"
-                    >
+                    variant="outlined">
                     {Transmision.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -359,7 +373,7 @@ class CreateAutos extends PureComponent {
                     autoFocus
                     value={color}
                     onInput={handleTextChange}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <MaskedTextField
@@ -368,7 +382,7 @@ class CreateAutos extends PureComponent {
                     name="placa"
                     onChange={handleTextChange}
                     label="Placa"
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Select
@@ -376,8 +390,7 @@ class CreateAutos extends PureComponent {
                     name="traccion"
                     value={traccion}
                     onChange={handleTextChange}
-                    variant="outlined"
-                    >
+                    variant="outlined">
                     {Traccion.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -390,7 +403,7 @@ class CreateAutos extends PureComponent {
                     name="year"
                     onChange={handleTextChange}
                     label="Año"
-                    />
+                  />
                 </Grid>
                 <Grid item sm={12}>
                   <Select
@@ -398,8 +411,7 @@ class CreateAutos extends PureComponent {
                     name="estado"
                     value={estado}
                     onChange={handleTextChange}
-                    variant="outlined"
-                    >
+                    variant="outlined">
                     {Estados.map((dato, index) => {
                       return <MenuItem value={index}>{dato}</MenuItem>;
                     })}
@@ -430,7 +442,7 @@ class CreateAutos extends PureComponent {
                     name="vin"
                     onChange={handleTextChange}
                     label="VIN"
-                    />
+                  />
                 </Grid>
               </Grid>
               <Box paddingY="1rem">
@@ -443,8 +455,7 @@ class CreateAutos extends PureComponent {
                   this.setState({
                     shouldOpen: true,
                   });
-                }}
-                >
+                }}>
                 Agregar piezas
               </Button>
               <Dialog fullScreen open={shouldOpen} onClose={this.handleClose}>
@@ -454,8 +465,7 @@ class CreateAutos extends PureComponent {
                       edge="start"
                       color="inherit"
                       onClick={this.handleClose}
-                      aria-label="close"
-                      >
+                      aria-label="close">
                       <i className="fas fa-times-circle" />
                     </IconButton>
                     <Typography variant="h6">Piezas</Typography>
@@ -465,7 +475,7 @@ class CreateAutos extends PureComponent {
                   </Toolbar>
                 </AppBar>
                 <DialogContent container>
-                  <Title>  </Title>
+                  <Title> </Title>
                   <Grid container spacing={4}>
                     {piezas.map((pieza, index) =>
                       pieza.cantidad > 0
@@ -491,8 +501,7 @@ class CreateAutos extends PureComponent {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleCreate}
-                >
+                onClick={handleCreate}>
                 Crear
               </Button>
             </form>
@@ -515,7 +524,7 @@ class CreateAutos extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-          />
+        />
       </DashboardLayout>
     );
   }
