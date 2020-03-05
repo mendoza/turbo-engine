@@ -22,6 +22,7 @@ import Checkout from "./pages/Checkout";
 import Proveedores from "./pages/Proveedores";
 import Historial from "./pages/Historial";
 import Vender from "./pages/Vender";
+import Tickets from "./pages/ListTickets";
 
 export const Routes = [
   {
@@ -149,6 +150,12 @@ export const Routes = [
     path: "/vender",
     name: "Vender",
     component: Vender,
+  },
+  {
+    path: "/tickets",
+    name: "Tickets",
+    component: Tickets,
+    permission: "superAdmin",
   },
 ];
 
