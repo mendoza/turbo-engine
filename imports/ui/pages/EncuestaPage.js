@@ -93,7 +93,7 @@ class EncuestaPage extends Component {
               searchByDate.split(/ /).filter(l => l !== '').join('|'),
               'i'
             );
-            const r1 = encuesta && encuesta.fecha.search(searchRegex);
+            const r1 = encuesta && encuesta.fecha.toString().search(searchRegex);
             const r2 = encuesta && encuesta.score.toString().search(searchRegex);
             if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
               return <TableRow />;
