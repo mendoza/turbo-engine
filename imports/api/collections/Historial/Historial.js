@@ -8,6 +8,8 @@ Historial.schema = new SimpleSchema({
   producto: { type: String },
   fecha: { type: String },
   comentario: { type: String },
+  pictures: { type: Array },
+  "pictures.$": { type: String },
 });
 
 export default Historial;

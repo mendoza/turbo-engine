@@ -6,6 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Link from '@material-ui/core/Link';
 import {
   Tooltip,
   Bar,
@@ -15,6 +16,7 @@ import {
 } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
+
 
 import Historial from "../../api/collections/Historial/Historial";
 import Encuestas from "../../api/collections/Encuestas/Encuestas";
@@ -64,7 +66,6 @@ class Dashboard extends PureComponent {
             <TableCell>Cliente</TableCell>
             <TableCell>Producto</TableCell>
             <TableCell>Fecha</TableCell>
-            <TableCell>Comentario</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -78,11 +79,13 @@ class Dashboard extends PureComponent {
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
                   <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
-                  <TableCell>{row.comentario}</TableCell>
                 </TableRow>
               );
           })}
         </TableBody>
+        <Link color="#3b7fed" href="#">
+          Ver más
+        </Link>
       </Table>
     );
   };
