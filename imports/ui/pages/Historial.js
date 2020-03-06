@@ -13,7 +13,10 @@ import {
   TableRow,
   TableHead,
   TableCell,
-  TableBody
+  TableBody,
+  InputLabel,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -32,7 +35,7 @@ class Historial extends Component {
       showSnackbar: false, 
       snackbarText: "",
       showHistorialDialog: false,
-
+      searchByNames: '',
       Cliente: "",
       Producto: "",
       Fecha: "",
@@ -40,7 +43,9 @@ class Historial extends Component {
 
     };
   }
-
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
+  }
 
   renderHistorialDialog = () => {
     const {
@@ -124,6 +129,7 @@ class Historial extends Component {
 
   renderHistorialTable = () => {
     const { historial } = this.props;
+    const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -139,6 +145,15 @@ class Historial extends Component {
             const fecha = new Date(row.fecha);
             const cliente = Clientes.findOne({ _id: row.cliente });
             const auto = Autos.findOne({ _id: row.producto });
+            const searchRegex = new RegExp(
+              searchByNames.split(/ /).filter(l => l !== '').join('|'),
+              'i'
+            );
+            const r1 = row && row.cliente.search(searchRegex);
+            const r2 = row && row.fecha.toString().search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+              return <TableRow />;
+            }
             if (cliente !== undefined && auto !== undefined && fecha !== undefined)
               return (
                 <TableRow key={row.cliente}>
@@ -215,6 +230,11 @@ class Historial extends Component {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             {this.renderHistorialTable()}
+            <TextField
+              style={{ width: '50%' }}
+              label="Filtro por Nombre y Apellido"
+              onInput={this.handleSearchName}
+            />
           </Grid>
         </Grid>
         {this.renderSnackbar()}
