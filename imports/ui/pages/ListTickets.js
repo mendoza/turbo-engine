@@ -7,26 +7,44 @@ import {
   TableRow,
   TableHead,
   TableCell,
+  TableBody,
 } from "@material-ui/core";
-
+import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Reportes from "../../api/collections/Reportes/Reportes";
 
 class ListTickets extends Component {
-
   renderTicketsTable = () => {
+    const { reportes } = this.props;
     return (
       <Table aria-label="users table">
         <TableHead>
           <TableRow>
-            <TableCell>Prioridad</TableCell>
-            <TableCell>Fecha</TableCell>
-            <TableCell>Empleado</TableCell>
-            <TableCell>Tipo</TableCell>
-            <TableCell>Marca</TableCell>
-            <TableCell>Detalles</TableCell>
+            <TableCell align="left">Prioridad</TableCell>
+            <TableCell align="left">Fecha</TableCell>
+            <TableCell align="left">Empleado</TableCell>
+            <TableCell align="left">Tipo</TableCell>
+            <TableCell align="left">Comentario</TableCell>
           </TableRow>
         </TableHead>
+        <TableBody>
+          {reportes.map(row => {
+            console.log(Meteor.users.findOne({ _id: row.empleado }).profile.firstName);
+            const date = new Date(row.fecha);
+            return (
+              <TableRow key={row.name}>
+                <TableCell align="left">{row.prioridad}</TableCell>
+                <TableCell align="left">{`${date.toLocaleDateString()}`}</TableCell>
+                <TableCell align="left">{`${
+                  Meteor.users.findOne({ _id: row.empleado }).profile.firstName
+                }`}</TableCell>
+                <TableCell align="left">{row.tipo}</TableCell>
+                <TableCell align="left">{row.comentario}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
       </Table>
     );
   };
@@ -55,12 +73,11 @@ class ListTickets extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}
-            >
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
   };
 
@@ -77,4 +94,8 @@ class ListTickets extends Component {
   }
 }
 
-export default ListTickets;
+export default withTracker(() => {
+  Meteor.subscribe("Reportes.all");
+  console.log(Reportes.find().fetch());
+  return { reportes: Reportes.find().fetch() };
+})(ListTickets);
