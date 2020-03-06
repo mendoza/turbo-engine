@@ -96,7 +96,7 @@ class Historial extends Component {
               {/* Acá va el comentario */}
             </Grid>
             <Grid item xs={12} md={6}>
-              {/* Acá va el boton de subir las imagenes */}
+              {/* Acá va el boton para mostrar las imagenes */}
             </Grid>
   
           </Grid>
