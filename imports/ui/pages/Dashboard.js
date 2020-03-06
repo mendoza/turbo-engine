@@ -26,24 +26,28 @@ class Dashboard extends PureComponent {
     super(props);
 
     this.state = {
-      datos: [
-        { name: "Mes 1", Malo: 400, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 2", Malo: 100, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 3", Malo: 400, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 4", Malo: 300, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 5", Malo: 150, Bueno: 2400, Excelente: 2400 },
-      ],
-      shouldRender: false,
+      shouldRender: false
     };
   }
-  
+
+  calcularDatos = () =>{
+    const datos = [
+      { name: "Mes 1", Malo: 400, Bueno: 2400, Excelente: 2400 },
+      { name: "Mes 2", Malo: 100, Bueno: 2400, Excelente: 2400 },
+      { name: "Mes 3", Malo: 400, Bueno: 2400, Excelente: 2400 },
+      { name: "Mes 4", Malo: 300, Bueno: 2400, Excelente: 2400 },
+      { name: "Mes 5", Malo: 150, Bueno: 2400, Excelente: 2400 },
+    ];
+    return datos;
+  }
+
   renderGrafico = () =>{
     return(
       <BarChart 
         margin={{top: 20, right: 20, bottom: 20, left: 20,}}
         width={700} 
         height={300} 
-        data={this.state.datos}
+        data={this.calcularDatos()}
         >
         <XAxis dataKey="name" />
         <YAxis />
