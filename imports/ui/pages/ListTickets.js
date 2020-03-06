@@ -26,23 +26,33 @@ class ListTickets extends Component {
             <TableCell align="left">Empleado</TableCell>
             <TableCell align="left">Tipo</TableCell>
             <TableCell align="left">Comentario</TableCell>
+            <TableCell align="left">Abierto</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {reportes.map(row => {
-            console.log(Meteor.users.findOne({ _id: row.empleado }).profile.firstName);
-            const date = new Date(row.fecha);
-            return (
-              <TableRow key={row.name}>
-                <TableCell align="left">{row.prioridad}</TableCell>
-                <TableCell align="left">{`${date.toLocaleDateString()}`}</TableCell>
-                <TableCell align="left">{`${
-                  Meteor.users.findOne({ _id: row.empleado }).profile.firstName
-                }`}</TableCell>
-                <TableCell align="left">{row.tipo}</TableCell>
-                <TableCell align="left">{row.comentario}</TableCell>
-              </TableRow>
-            );
+            if (row.abierto) {
+              const date = new Date(row.fecha);
+              return (
+                <TableRow key={row.name}>
+                  <TableCell align="left">{row.prioridad}</TableCell>
+                  <TableCell align="left">{`${date.toLocaleDateString()}`}</TableCell>
+                  <TableCell align="left">{`${
+                    Meteor.users.findOne({ _id: row.empleado }).profile.firstName
+                  }`}</TableCell>
+                  <TableCell align="left">{row.tipo}</TableCell>
+                  <TableCell align="left">{row.comentario}</TableCell>
+                  <TableCell align="left">
+                    {
+                      <i
+                        className={`fas fa-${row.abierto ? "check" : "times"}`}
+                        style={{ color: row.abierto ? "green" : "red" }}
+                      />
+                    }
+                  </TableCell>
+                </TableRow>
+              );
+            }
           })}
         </TableBody>
       </Table>
