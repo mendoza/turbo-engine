@@ -31,6 +31,7 @@ class CreateReportes extends PureComponent {
       empleado: Meteor.userId(),
       fecha: new Date().getTime(),
       prioridad: Prioridad[prioridad],
+      abierto: true,
     };
     let alert;
     if (validator.isEmpty(comentario)) {

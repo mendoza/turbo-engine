@@ -231,4 +231,10 @@ export const dashboardRoutes = [
     icon: "fas fa-check-circle",
     permission: "superAdmin",
   },
+  {
+    pathName: "/tickets",
+    name: "Tickets",
+    icon: "fas fa-clipboard-list",
+    permission: "superAdmin",
+  },
 ];
