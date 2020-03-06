@@ -20,7 +20,7 @@ import Title from "../components/Title";
 class ListTickets extends Component {
   constructor(props){
     super(props);
-    this.state= { shouldRedirect: false, pathname: "", shouldRender: false,};
+    this.state= { shouldRedirect: false, pathname: "",};
   }
 
   renderTicketsTable = () => {
