@@ -31,12 +31,21 @@ class Dashboard extends PureComponent {
   }
 
   calcularDatos = () =>{
+    
+    /* Este es el formato final que tiene que tener el arreglo, algo así tiene que ser */
     const datos = [
-      { name: "Mes 1", Malo: 400, Bueno: 2400, Excelente: 2400 },
-      { name: "Mes 2", Malo: 100, Bueno: 2400, Excelente: 2400 },
-      { name: "Mes 3", Malo: 400, Bueno: 2400, Excelente: 2400 },
-      { name: "Mes 4", Malo: 300, Bueno: 2400, Excelente: 2400 },
-      { name: "Mes 5", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Enero", Malo: 400, Bueno: 2400, Excelente: 2400 },
+      { name: "Febrero", Malo: 100, Bueno: 2400, Excelente: 2400 },
+      { name: "Marzo", Malo: 400, Bueno: 2400, Excelente: 2400 },
+      { name: "Abril", Malo: 300, Bueno: 2400, Excelente: 2400 },
+      { name: "Mayo", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Junio", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Julio", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Agosto", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Septiembre", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Octubre", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Noviembre", Malo: 150, Bueno: 2400, Excelente: 2400 },
+      { name: "Diciembre", Malo: 150, Bueno: 2400, Excelente: 2400 },
     ];
     return datos;
   }
@@ -45,7 +54,7 @@ class Dashboard extends PureComponent {
     return(
       <BarChart 
         margin={{top: 20, right: 20, bottom: 20, left: 20,}}
-        width={700} 
+        width={900} 
         height={300} 
         data={this.calcularDatos()}
         >
