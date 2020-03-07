@@ -112,14 +112,14 @@ class Historial extends Component {
           {historial.map(row => {
             const fecha = new Date(row.fecha);
             let cliente;
-            console.log(row.cliente);
+            const auto = Autos.find({ _id: row.producto }));
+            console.log(auto);
             if (row.cliente !== "0") {
               cliente = Clientes.findOne({ _id: row.cliente });
             } else {
               console.log("aqui deberia estar");
               cliente = { nombre: "Cliente", apellido: "Final" };
             }
-            const auto = Autos.findOne({ _id: row.producto });
             const searchRegex = new RegExp(
               searchByNames
                 .split(/ /)
