@@ -39,7 +39,7 @@ import ItemCard from "../components/ItemCard";
 import AutosFiles from "../../api/collections/AutosFiles/AutosFiles";
 import Title from "../components/Title";
 import Piezas from "../../api/collections/Piezas/Piezas";
-import { Estados, Traccion, Transmision } from "../Constants";
+import { Estados, Traccion, Transmision, Tipo } from "../Constants";
 
 const useStyles = theme => ({
   icon: {
@@ -221,10 +221,6 @@ class AutosPage extends PureComponent {
         alert = "El campo modelo es requerido";
       }
 
-      if (validator.isEmpty(tipo)) {
-        alert = "El campo tipo es requerido";
-      }
-
       if (validator.isEmpty(color)) {
         alert = "El campo color es requerido";
       }
@@ -252,14 +248,14 @@ class AutosPage extends PureComponent {
         });
       } else {
         // Falta agregar las piezas actualizadas al carro, piezas está vacio
-        allPiezas.map((pieza) => {
+        allPiezas.map(pieza => {
           Meteor.call("updatePieza", {
-            _id:pieza._id,
-            $set:{
-              cantidad: pieza.cantidad
-            }
+            _id: pieza._id,
+            $set: {
+              cantidad: pieza.cantidad,
+            },
           });
-        })
+        });
         Meteor.call("updateAuto", {
           _id: dialogCar._id,
           marca,
@@ -482,16 +478,16 @@ class AutosPage extends PureComponent {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="tipo"
-                    variant="outlined"
-                    required
+                  <Select
                     fullWidth
-                    label="Tipo"
-                    autoFocus
+                    name="tipo"
                     value={tipo}
-                    onInput={handleTextChange}
-                  />
+                    onChange={handleTextChange}
+                    variant="outlined">
+                    {Tipo.map((dato, index) => {
+                      return <MenuItem value={index}>{dato}</MenuItem>;
+                    })}
+                  </Select>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Select
@@ -666,16 +662,16 @@ class AutosPage extends PureComponent {
             <Title> </Title>
             <Grid container spacing={4}>
               {dialogCar &&
-              dialogCar.piezas &&
-              allPiezas.map((pieza, index) =>{
-                try {
-                  return pieza.cantidad > 0
-                  ? shouldRenderCard("Agregar", dialogCar.piezas , allPiezas, pieza, index)
-                  : null
-                } catch (error) {
-                  return undefined;
-                }
-              })}
+                dialogCar.piezas &&
+                allPiezas.map((pieza, index) => {
+                  try {
+                    return pieza.cantidad > 0
+                      ? shouldRenderCard("Agregar", dialogCar.piezas, allPiezas, pieza, index)
+                      : null;
+                  } catch (error) {
+                    return undefined;
+                  }
+                })}
             </Grid>
           </DialogContent>
           <Divider />
@@ -684,10 +680,10 @@ class AutosPage extends PureComponent {
             <Grid container spacing={4}>
               {dialogCar &&
                 dialogCar.piezas &&
-                dialogCar.piezas .map((pieza, index) => {
+                dialogCar.piezas.map((pieza, index) => {
                   try {
                     return pieza.cantidad > 0
-                      ? shouldRenderCard("Eliminar", allPiezas, dialogCar.piezas , pieza, index)
+                      ? shouldRenderCard("Eliminar", allPiezas, dialogCar.piezas, pieza, index)
                       : null;
                   } catch (error) {
                     return undefined;
