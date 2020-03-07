@@ -14,9 +14,6 @@ import {
   TableHead,
   TableCell,
   TableBody,
-  InputLabel,
-  MenuItem,
-  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -43,6 +40,7 @@ class Historial extends Component {
 
     };
   }
+
   handleSearchName = event => {
     this.setState({ searchByNames: event.target.value })
   }
@@ -65,43 +63,31 @@ class Historial extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">
           Venta
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <TextField
-                label="Cliente"
-                value={Cliente}
-                required
-                autoFocus
-                fullWidth
-               />
+              <Title>Cliente</Title>
+              {Cliente}
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField
-                label="Producto"
-                value={Producto}
-                required
-                fullWidth
-                />
+              <Title>Producto</Title>
+              {Producto}
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField
-                label="Fecha"
-                value={Fecha}
-                fullWidth
-                required
-                />
+              <Title>Fecha</Title>
+              {Fecha}
             </Grid>
             <Grid item xs={12} md={6}>
-                
-              {/* Acá va el comentario */}
+              <Title>Comentario</Title>
+              {Comentario}
             </Grid>
             <Grid item xs={12} md={6}>
-              {/* Acá va el boton para mostrar las imagenes */}
+              <Title>Imágenes</Title>
             </Grid>
   
           </Grid>
@@ -110,16 +96,10 @@ class Historial extends Component {
           <Button
             onClick={() => {
               this.setState({ showHistorialDialog: false });
-              this.setState({
-                showHistorialDialog: false,
-                Cliente: "",
-                Producto: "",
-                Fecha: "",
-                Comentario: "",
-              });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cerrar
           </Button>
         </DialogActions>
@@ -175,7 +155,8 @@ class Historial extends Component {
                               Comentario: row.comentario,
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-info" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -215,11 +196,12 @@ class Historial extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}>
+            }}
+            >
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-      />
+        />
     );
   };
 
@@ -234,7 +216,7 @@ class Historial extends Component {
               style={{ width: '50%' }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
-            />
+              />
           </Grid>
         </Grid>
         {this.renderSnackbar()}

@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Grid } from "@material-ui/core";
 import { withTracker } from "meteor/react-meteor-data";
+import { Redirect } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -16,6 +17,7 @@ import {
 } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
+
 
 
 import Historial from "../../api/collections/Historial/Historial";
@@ -35,7 +37,6 @@ class Dashboard extends PureComponent {
         { name: "Mes 4", Malo: 300, Bueno: 2400, Excelente: 2400 },
         { name: "Mes 5", Malo: 150, Bueno: 2400, Excelente: 2400 },
       ],
-      shouldRender: false,
     };
   }
   
@@ -83,7 +84,7 @@ class Dashboard extends PureComponent {
               );
           })}
         </TableBody>
-        <Link color="#3b7fed" href="#">
+        <Link color="#3b7fed" href="/historial">
           Ver más
         </Link>
       </Table>
