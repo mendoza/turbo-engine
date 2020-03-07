@@ -21,38 +21,31 @@ import { withTracker } from "meteor/react-meteor-data";
 import Title from "../components/Title";
 import DashboardLayout from "../layouts/DashboardLayout";
 
-import Clientes from "../../api/collections/Cliente/Cliente"
+import Clientes from "../../api/collections/Cliente/Cliente";
 import Autos from "../../api/collections/Autos/Autos";
-import Historiales from "../../api/collections/Historial/Historial"
+import Historiales from "../../api/collections/Historial/Historial";
 
 class Historial extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      showSnackbar: false, 
+    this.state = {
+      showSnackbar: false,
       snackbarText: "",
       showHistorialDialog: false,
-      searchByNames: '',
+      searchByNames: "",
       Cliente: "",
       Producto: "",
       Fecha: "",
       Comentario: "",
-
     };
   }
 
   handleSearchName = event => {
-    this.setState({ searchByNames: event.target.value })
-  }
+    this.setState({ searchByNames: event.target.value });
+  };
 
   renderHistorialDialog = () => {
-    const {
-      showHistorialDialog,
-      Cliente,
-      Producto,
-      Fecha,
-      Comentario,
-    } = this.state;
+    const { showHistorialDialog, Cliente, Producto, Fecha, Comentario } = this.state;
 
     return (
       <Dialog
@@ -63,11 +56,8 @@ class Historial extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
-        <DialogTitle id="form-dialog-title">
-          Venta
-        </DialogTitle>
+        fullWidth>
+        <DialogTitle id="form-dialog-title">Venta</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -89,7 +79,6 @@ class Historial extends Component {
             <Grid item xs={12} md={6}>
               <Title>Imágenes</Title>
             </Grid>
-  
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -98,8 +87,7 @@ class Historial extends Component {
               this.setState({ showHistorialDialog: false });
             }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cerrar
           </Button>
         </DialogActions>
@@ -123,23 +111,33 @@ class Historial extends Component {
         <TableBody>
           {historial.map(row => {
             const fecha = new Date(row.fecha);
-            const cliente = Clientes.findOne({ _id: row.cliente });
+            let cliente;
+            console.log(row.cliente);
+            if (row.cliente !== "0") {
+              cliente = Clientes.findOne({ _id: row.cliente });
+            } else {
+              console.log("aqui deberia estar");
+              cliente = { nombre: "Cliente", apellido: "Final" };
+            }
             const auto = Autos.findOne({ _id: row.producto });
             const searchRegex = new RegExp(
-              searchByNames.split(/ /).filter(l => l !== '').join('|'),
-              'i'
+              searchByNames
+                .split(/ /)
+                .filter(l => l !== "")
+                .join("|"),
+              "i"
             );
             const r1 = row && row.cliente.search(searchRegex);
             const r2 = row && row.fecha.toString().search(searchRegex);
             if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
               return <TableRow />;
             }
-            if (row){
+            if (row) {
               return (
                 <TableRow key={row._id}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
                   <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
-                  <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>                  
+                  <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
 
                   <TableCell>
                     <div>
@@ -155,8 +153,7 @@ class Historial extends Component {
                               Comentario: row.comentario,
                             });
                           }}
-                          aria-label="centered"
-                          >
+                          aria-label="centered">
                           <i className="fas fa-info" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -164,7 +161,7 @@ class Historial extends Component {
                   </TableCell>
                 </TableRow>
               );
-            } 
+            }
             return <></>;
           })}
         </TableBody>
@@ -196,12 +193,11 @@ class Historial extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}
-            >
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
   };
 
@@ -213,10 +209,10 @@ class Historial extends Component {
           <Grid item xs={12}>
             {this.renderHistorialTable()}
             <TextField
-              style={{ width: '50%' }}
+              style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
-              />
+            />
           </Grid>
         </Grid>
         {this.renderSnackbar()}

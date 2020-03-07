@@ -126,7 +126,7 @@ class Vender extends PureComponent {
                 Meteor.call(
                   "addHistorial",
                   {
-                    cliente: ,
+                    cliente,
                     producto: selectedCar._id,
                     fecha: new Date().getTime(),
                     comentario: comment,
@@ -150,7 +150,7 @@ class Vender extends PureComponent {
                 );
               }}
               color="primary"
-               autoFocus>
+              autoFocus>
               Aceptar
             </Button>
           </DialogActions>
