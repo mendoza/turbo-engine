@@ -126,7 +126,7 @@ class Vender extends PureComponent {
                 Meteor.call(
                   "addHistorial",
                   {
-                    cliente,
+                    cliente: ,
                     producto: selectedCar._id,
                     fecha: new Date().getTime(),
                     comentario: comment,
@@ -163,6 +163,7 @@ class Vender extends PureComponent {
 export default withTracker(() => {
   Meteor.subscribe("Autos.all");
   Meteor.subscribe("clientes.all");
+  Meteor.subscribe("historial.all");
   return {
     autos: Autos.find({ estado: 2 }).fetch(),
     clientes: Cliente.find({}).fetch(),

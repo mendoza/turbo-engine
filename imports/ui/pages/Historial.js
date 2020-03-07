@@ -134,9 +134,9 @@ class Historial extends Component {
             if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
               return <TableRow />;
             }
-            if (cliente !== undefined && auto !== undefined && fecha !== undefined)
+            if (row){
               return (
-                <TableRow key={row.cliente}>
+                <TableRow key={row._id}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
                   <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>                  
@@ -162,10 +162,10 @@ class Historial extends Component {
                       </ToggleButtonGroup>
                     </div>
                   </TableCell>
-
-
                 </TableRow>
               );
+            } 
+            return <></>;
           })}
         </TableBody>
       </Table>

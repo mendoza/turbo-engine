@@ -74,6 +74,9 @@ class Dashboard extends PureComponent {
             const fecha = new Date(row.fecha);
             const cliente = Cliente.findOne({ _id: row.cliente });
             const auto = Autos.findOne({ _id: row.producto });
+            console.log(row);
+            console.log("Fecha: ",fecha, "Cliente: ",cliente, "Auto: ",auto);
+
             if (cliente !== undefined && auto !== undefined && fecha !== undefined)
               return (
                 <TableRow key={row.cliente}>
