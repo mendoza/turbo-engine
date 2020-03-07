@@ -91,6 +91,7 @@ class EncuestaPage extends Component {
           <TableRow>
             <TableCell>Fecha</TableCell>
             <TableCell>Puntuación</TableCell>
+            <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -128,7 +129,7 @@ class EncuestaPage extends Component {
                             });
                           }}
                           aria-label="left aligned">
-                          <i className="fas fa-address-card" />
+                          <i className="fas fa-info" />
                         </ToggleButton>
                       </ToggleButtonGroup>
                     </div>
