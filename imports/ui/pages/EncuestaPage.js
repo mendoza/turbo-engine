@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Divider,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -12,15 +13,13 @@ import {
   TableHead,
   TableCell,
   TableBody,
-  InputLabel,
-  MenuItem,
-  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Encuestas from "../../api/collections/Encuestas/Encuestas";
+import Title from "../components/Title";
 
 class EncuestaPage extends Component {
   constructor(props) {
@@ -51,13 +50,20 @@ class EncuestaPage extends Component {
         maxWidth="md"
         fullWidth>
         <DialogTitle id="form-dialog-title">Encuesta</DialogTitle>
+        <Divider />
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <pTextField label="Fecha" value={Fecha} required autoFocus fullWidth />
+              <Title>Fecha</Title>
+              {Fecha}
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField label="Score" value={Score} required fullWidth />
+              <Title>Score</Title>
+              {Score}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Title>Comentario</Title>
+              {Comentario}
             </Grid>
           </Grid>
         </DialogContent>
