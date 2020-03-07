@@ -112,13 +112,12 @@ class Historial extends Component {
           {historial.map(row => {
             const fecha = new Date(row.fecha);
             let cliente;
-            console.log(row.cliente);
             if (row.cliente !== "0") {
               cliente = Clientes.findOne({ _id: row.cliente });
             } else {
-              console.log("aqui deberia estar");
               cliente = { nombre: "Cliente", apellido: "Final" };
             }
+            console.log(Autos.findOne({ _id: row.producto }))
             const auto = Autos.findOne({ _id: row.producto });
             const searchRegex = new RegExp(
               searchByNames
@@ -223,6 +222,7 @@ class Historial extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe("historial.all");
+  Meteor.subscribe("Autos.all");
   return {
     historial: Historiales.find({}).fetch(),
   };
