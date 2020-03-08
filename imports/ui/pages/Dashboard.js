@@ -23,7 +23,7 @@ import Title from "../components/Title";
 import Historial from "../../api/collections/Historial/Historial";
 import Encuestas from "../../api/collections/Encuestas/Encuestas";
 import Autos from "../../api/collections/Autos/Autos";
-import Cliente from "../../api/collections/Cliente/Cliente"
+import Clientes from "../../api/collections/Cliente/Cliente"
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -72,25 +72,30 @@ class Dashboard extends PureComponent {
         <TableBody>
           {historial.map(row => {
             const fecha = new Date(row.fecha);
-            const cliente = Cliente.findOne({ _id: row.cliente });
+            let cliente;
             const auto = Autos.findOne({ _id: row.producto });
-            console.log(row);
-            console.log("Fecha: ",fecha, "Cliente: ",cliente, "Auto: ",auto);
-
-            if (cliente !== undefined && auto !== undefined && fecha !== undefined)
+            if (row.cliente !== "0") {
+              cliente = Clientes.findOne({ _id: row.cliente });
+            } else {
+              cliente = { nombre: "Cliente", apellido: "Final" };
+            }
+            if (row) {
               return (
-                <TableRow key={row.cliente}>
+                <TableRow key={row._id}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
-                  <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
+                  {/* <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell> */}
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
                 </TableRow>
               );
+            }
+            return <></>;
           })}
         </TableBody>
         <Link color="#3b7fed" href="/historial">
-          Ver más
+            Ver más
         </Link>
       </Table>
+        
     );
   };
 

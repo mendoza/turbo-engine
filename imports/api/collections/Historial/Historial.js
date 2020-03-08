@@ -8,6 +8,8 @@ Historial.schema = new SimpleSchema({
   producto: { type: String },
   fecha: { type: Date },
   comentario: { type: String },
+  monto: {type: Number},
+  tipo: {type: String},
   pictures: { type: Array },
   "pictures.$": { type: String },
 });

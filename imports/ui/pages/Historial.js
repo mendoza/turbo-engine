@@ -7,8 +7,7 @@ import {
   Button,
   TextField,
   Grid,
-  Snackbar,
-  IconButton,
+  Divider,
   Table,
   TableRow,
   TableHead,
@@ -29,14 +28,14 @@ class Historial extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showSnackbar: false,
-      snackbarText: "",
       showHistorialDialog: false,
       searchByNames: "",
       Cliente: "",
       Producto: "",
       Fecha: "",
       Comentario: "",
+      Monto: "",
+      tipoPago: "",
     };
   }
 
@@ -45,7 +44,7 @@ class Historial extends Component {
   };
 
   renderHistorialDialog = () => {
-    const { showHistorialDialog, Cliente, Producto, Fecha, Comentario } = this.state;
+    const { showHistorialDialog, Cliente, Producto, Fecha, Comentario, Monto, tipoPago } = this.state;
 
     return (
       <Dialog
@@ -58,6 +57,7 @@ class Historial extends Component {
         maxWidth="md"
         fullWidth>
         <DialogTitle id="form-dialog-title">Venta</DialogTitle>
+        <Divider />
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -73,11 +73,16 @@ class Historial extends Component {
               {Fecha}
             </Grid>
             <Grid item xs={12} md={6}>
-              <Title>Comentario</Title>
-              {Comentario}
+              <Title>Monto</Title>
+              {Monto}
             </Grid>
             <Grid item xs={12} md={6}>
-              <Title>Imágenes</Title>
+              <Title>Tipo de pago</Title>
+              {tipoPago}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Title>Comentario</Title>
+              {Comentario}
             </Grid>
           </Grid>
         </DialogContent>
@@ -110,6 +115,7 @@ class Historial extends Component {
         </TableHead>
         <TableBody>
           {historial.map(row => {
+            console.log(row);
             const fecha = new Date(row.fecha);
             let cliente;
             const auto = Autos.findOne({ _id: row.producto });
@@ -135,6 +141,7 @@ class Historial extends Component {
                 <TableRow key={row._id}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
                   <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
+                  <TableCell>Error</TableCell>
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
 
                   <TableCell>
@@ -148,7 +155,7 @@ class Historial extends Component {
                               Cliente: `${cliente.nombre} ${cliente.apellido}`,
                               Producto: `${auto.marca} ${auto.modelo} con placa ${auto.placa}`,
                               Fecha: fecha.toLocaleDateString("en-US"),
-                              Comentario: row.comentario,
+                              Comentario: row.comentario
                             });
                           }}
                           aria-label="centered">
@@ -167,53 +174,21 @@ class Historial extends Component {
     );
   };
 
-  renderSnackbar = () => {
-    const { showSnackbar, snackbarText } = this.state;
-    return (
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        open={showSnackbar}
-        autoHideDuration={6000}
-        onClose={() => {
-          this.setState({ showSnackbar: false });
-        }}
-        ContentProps={{
-          "aria-describedby": "message-id",
-        }}
-        message={<span id="message-id">{snackbarText}</span>}
-        action={[
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            onClick={() => {
-              this.setState({ showSnackbar: false });
-            }}>
-            <i className="fas fa-times" />
-          </IconButton>,
-        ]}
-      />
-    );
-  };
-
   render() {
     return (
       <DashboardLayout style={{ height: "100vh" }}>
         <Title>Historial de Ventas de autos</Title>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            {this.renderHistorialTable()}
             <TextField
               style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
             />
+            {this.renderHistorialTable()}
           </Grid>
         </Grid>
-        {this.renderSnackbar()}
+        {this.renderHistorialDialog()}
       </DashboardLayout>
     );
   }

@@ -10,6 +10,7 @@ import {
   MenuItem,
   InputLabel,
   TextareaAutosize,
+  TextField
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
@@ -30,21 +31,31 @@ class Vender extends PureComponent {
       selectedCar: {},
       cliente: "",
       comment: "",
+      montoTotal: "",
+      tipoPago: ""
     };
   }
+  
+  handleTextChange = (event, stateVariable) => {
+    this.setState({
+      [stateVariable]: event.target.value,
+    });
+  };
 
   render() {
     const { autos, clientes } = this.props;
-    const { dialogOpen, selectedCar, cliente, comment } = this.state;
+    const { dialogOpen, selectedCar, cliente, comment, montoTotal, tipoPago} = this.state;
     const handleClose = () => {
       this.setState(state => ({ dialogOpen: !state.dialogOpen }));
     };
-    const handleTextChange = event => {
+
+    /* const handleTextChange = event => {
       event.persist();
       this.setState({
         [event.target.name]: event.target.value,
       });
-    };
+    }; */
+
     return (
       <DashboardLayout>
         <Title>Vender</Title>
@@ -83,39 +94,68 @@ class Vender extends PureComponent {
           aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">{`Seguro quiere comprar el auto marca: ${selectedCar.marca}`}</DialogTitle>
           <DialogContent>
-            <Grid container xs={12}>
-              <Grid item xs={12}>
-                <InputLabel htmlFor="selectCliente">Cliente</InputLabel>
-                <Select
-                  id="selectCliente"
-                  fullWidth
-                  name="cliente"
-                  value={cliente}
-                  onChange={handleTextChange}
-                  variant="outlined">
-                  <MenuItem value="0">Consumidor Final</MenuItem>
-                  {clientes.map(clienteact => {
-                    return (
-                      <MenuItem value={clienteact._id}>
-                        {`${clienteact.nombre} ${clienteact.apellido}`}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
+            <form id="formUserLogin" noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <InputLabel htmlFor="selectCliente">Cliente</InputLabel>
+                  <Select
+                    id="selectCliente"
+                    fullWidth
+                    name="cliente"
+                    value={cliente}
+                    onChange={event => this.handleTextChange(event, "cliente")}
+                    variant="outlined">
+                    <MenuItem value="0">Consumidor Final</MenuItem>
+                    {clientes.map(clienteact => {
+                      return (
+                        <MenuItem value={clienteact._id}>
+                          {`${clienteact.nombre} ${clienteact.apellido}`}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </Grid>
+                <Grid item xs={12}>
+                  <InputLabel htmlFor="selectPayment">Tipo de pago</InputLabel>
+                  <Select
+                    id="selectPayment"
+                    fullWidth
+                    name="selectPayment"
+                    value={tipoPago}
+                    onChange={event => this.handleTextChange(event, "tipoPago")}
+                    variant="outlined">
+                    <MenuItem value="Credito">Crédito</MenuItem>
+                    <MenuItem value="Efectivo">Efectivo</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="brand"
+                    name="monto"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="Brand"
+                    label="Monto"
+                    autoFocus
+                    value={montoTotal}
+                    onInput={event => this.handleTextChange(event, "montoTotal")}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                  <InputLabel htmlFor="comment">Comentario</InputLabel>
+                  <TextareaAutosize
+                    id="comment"
+                    name="comment"
+                    variant="outlined"
+                    aria-label="minimum height"
+                    rowsMin={4}
+                    placeholder="Minimum 3 rows"
+                    onChange={event => this.handleTextChange(event, "comentario")}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <InputLabel htmlFor="comment">Comentario</InputLabel>
-                <TextareaAutosize
-                  id="comment"
-                  name="comment"
-                  variant="outlined"
-                  aria-label="minimum height"
-                  rowsMin={4}
-                  placeholder="Minimum 3 rows"
-                  onChange={handleTextChange}
-                />
-              </Grid>
-            </Grid>
+            </form>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
@@ -130,6 +170,8 @@ class Vender extends PureComponent {
                     producto: selectedCar._id,
                     fecha: new Date().getTime(),
                     comentario: comment,
+                    monto: montoTotal,
+                    tipo: tipoPago
                   },
                   err => {
                     console.log(err);
