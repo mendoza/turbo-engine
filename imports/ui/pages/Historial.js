@@ -44,7 +44,15 @@ class Historial extends Component {
   };
 
   renderHistorialDialog = () => {
-    const { showHistorialDialog, Cliente, Producto, Fecha, Comentario, Monto, tipoPago } = this.state;
+    const {
+      showHistorialDialog,
+      Cliente,
+      Producto,
+      Fecha,
+      Comentario,
+      Monto,
+      tipoPago,
+    } = this.state;
 
     return (
       <Dialog
@@ -155,7 +163,7 @@ class Historial extends Component {
                               Cliente: `${cliente.nombre} ${cliente.apellido}`,
                               Producto: `${auto.marca} ${auto.modelo} con placa ${auto.placa}`,
                               Fecha: fecha.toLocaleDateString("en-US"),
-                              Comentario: row.comentario
+                              Comentario: row.comentario,
                             });
                           }}
                           aria-label="centered">
@@ -197,6 +205,7 @@ class Historial extends Component {
 export default withTracker(() => {
   Meteor.subscribe("historial.all");
   Meteor.subscribe("Autos.all");
+  Meteor.subscribe("clientes.all");
   return {
     historial: Historiales.find({}).fetch(),
   };
