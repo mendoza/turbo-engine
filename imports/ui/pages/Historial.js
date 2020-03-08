@@ -149,7 +149,6 @@ class Historial extends Component {
                 <TableRow key={row._id}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
                   <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
-                  <TableCell>Error</TableCell>
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
 
                   <TableCell>
@@ -164,6 +163,8 @@ class Historial extends Component {
                               Producto: `${auto.marca} ${auto.modelo} con placa ${auto.placa}`,
                               Fecha: fecha.toLocaleDateString("en-US"),
                               Comentario: row.comentario,
+                              Monto: row.monto,
+                              tipoPago: row.tipo
                             });
                           }}
                           aria-label="centered">
