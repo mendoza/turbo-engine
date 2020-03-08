@@ -139,7 +139,7 @@ class Historial extends Component {
                 .join("|"),
               "i"
             );
-            const r1 = row && row.cliente.search(searchRegex);
+            const r1 = row && cliente.nombre.search(searchRegex);
             const r2 = row && row.fecha.toString().search(searchRegex);
             if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
               return <TableRow />;
