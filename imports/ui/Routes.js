@@ -19,9 +19,11 @@ import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
+import CreateReportes from "./pages/CreateReportes";
 import Proveedores from "./pages/Proveedores";
 import Historial from "./pages/Historial";
 import Vender from "./pages/Vender";
+import Tickets from "./pages/ListTickets";
 
 export const Routes = [
   {
@@ -112,7 +114,7 @@ export const Routes = [
     path: "/Encuesta",
     name: "Encuesta",
     component: Encuesta,
-    permission: 'none',
+    permission: "none",
   },
   {
     path: "/EncuestaPage",
@@ -155,6 +157,17 @@ export const Routes = [
     path: "/vender",
     name: "Vender",
     component: Vender,
+  },
+  {
+    path: "/crearreportes",
+    name: "Reportes",
+    component: CreateReportes,
+  },
+  {
+    path: "/tickets",
+    name: "Tickets",
+    component: Tickets,
+    permission: "superAdmin",
   },
 ];
 
@@ -224,5 +237,11 @@ export const dashboardRoutes = [
     name: "Vender automovil",
     icon: "fas fa-check-circle",
     permission: "superAdmin",
-  }
+  },
+  {
+    pathName: "/tickets",
+    name: "Tickets",
+    icon: "fas fa-clipboard-list",
+    permission: "superAdmin",
+  },
 ];
