@@ -87,11 +87,11 @@ class EncuestaPage extends Component {
     ];
     encuestas.map(encuesta => {
       if(encuesta.score === 0){
-        datos[1].value += 1;
+        datos[0].value += 1;
       } else if(encuesta.score === 1){
-        datos[2].value += 1;
+        datos[1].value += 1;
       } else {
-        datos[3].value += 1;
+        datos[2].value += 1;
       }
     }); 
     return datos;
