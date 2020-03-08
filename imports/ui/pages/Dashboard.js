@@ -1,11 +1,13 @@
 import React, { PureComponent } from "react";
 import { Grid } from "@material-ui/core";
 import { withTracker } from "meteor/react-meteor-data";
+import { Redirect } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Link from '@material-ui/core/Link';
 import {
   Tooltip,
   Bar,
@@ -16,10 +18,12 @@ import {
 import DashboardLayout from "../layouts/DashboardLayout";
 import Title from "../components/Title";
 
+
+
 import Historial from "../../api/collections/Historial/Historial";
 import Encuestas from "../../api/collections/Encuestas/Encuestas";
 import Autos from "../../api/collections/Autos/Autos";
-import Cliente from "../../api/collections/Cliente/Cliente"
+import Clientes from "../../api/collections/Cliente/Cliente"
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -87,26 +91,35 @@ class Dashboard extends PureComponent {
             <TableCell>Cliente</TableCell>
             <TableCell>Producto</TableCell>
             <TableCell>Fecha</TableCell>
-            <TableCell>Comentario</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {historial.map(row => {
             const fecha = new Date(row.fecha);
-            const cliente = Cliente.findOne({ _id: row.cliente });
+            let cliente;
             const auto = Autos.findOne({ _id: row.producto });
-            if (cliente !== undefined && auto !== undefined && fecha !== undefined)
+            if (row.cliente !== "0") {
+              cliente = Clientes.findOne({ _id: row.cliente });
+            } else {
+              cliente = { nombre: "Cliente", apellido: "Final" };
+            }
+            if (row) {
               return (
-                <TableRow key={row.cliente}>
+                <TableRow key={row._id}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
-                  <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
+                  {/* <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell> */}
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
-                  <TableCell>{row.comentario}</TableCell>
                 </TableRow>
               );
+            }
+            return <></>;
           })}
         </TableBody>
+        <Link color="#3b7fed" href="/historial">
+            Ver más
+        </Link>
       </Table>
+        
     );
   };
 
