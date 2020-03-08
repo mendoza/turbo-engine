@@ -247,7 +247,7 @@ export const dashboardRoutes = [
   {
     pathName: "/encuestapage",
     name: "Gestionar encuestas",
-    icon: "fas fa-scroll",
+    icon: "fas fa-chart-bar",
     permission: "superAdmin",
   },
 ];
