@@ -26,24 +26,47 @@ class Dashboard extends PureComponent {
     super(props);
 
     this.state = {
-      datos: [
-        { name: "Mes 1", Malo: 400, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 2", Malo: 100, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 3", Malo: 400, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 4", Malo: 300, Bueno: 2400, Excelente: 2400 },
-        { name: "Mes 5", Malo: 150, Bueno: 2400, Excelente: 2400 },
-      ],
-      shouldRender: false,
+      shouldRender: false
     };
   }
-  
+
+  calcularDatos = () =>{
+    const {encuestas} = this.props;
+    const datos = [
+      { name: "Enero", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Febrero", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Marzo", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Abril", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Mayo", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Junio", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Julio", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Agosto", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Septiembre", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Octubre", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Noviembre", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Diciembre", Malo: 0, Bueno: 0, Excelente: 0 },
+    ];
+    encuestas.map(encuesta => {
+      const date = new Date(encuesta.fecha);
+      const month = date.getMonth();
+      if(encuesta.score === 0){
+        datos[month].Malo +=1
+      } else if(encuesta.score === 1){
+        datos[month].Bueno +=1
+      } else {
+        datos[month].Excelente +=1
+      }
+    }); 
+    return datos;
+  }
+
   renderGrafico = () =>{
     return(
       <BarChart 
         margin={{top: 20, right: 20, bottom: 20, left: 20,}}
-        width={700} 
+        width={1000} 
         height={300} 
-        data={this.state.datos}
+        data={this.calcularDatos()}
         >
         <XAxis dataKey="name" />
         <YAxis />
@@ -113,7 +136,7 @@ export default withTracker(() => {
   Meteor.subscribe("historial.all");
   Meteor.subscribe("Encuestas.all");
   return {
-    encuestas: Encuestas.find({ estado: 2 }).fetch(),
+    encuestas: Encuestas.find({}).fetch(),
     historial: Historial.find({}).fetch(),
   };
 })(Dashboard);
