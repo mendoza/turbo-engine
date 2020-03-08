@@ -29,7 +29,7 @@ class CreateReportes extends PureComponent {
       comentario,
       tipo: TipoDeReportes[tipo],
       empleado: Meteor.userId(),
-      fecha: new Date().getTime(),
+      fecha: new Date().toLocaleDateString(),
       prioridad: Prioridad[prioridad],
       abierto: true,
     };

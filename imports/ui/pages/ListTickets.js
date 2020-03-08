@@ -78,6 +78,19 @@ class ListTickets extends Component {
       })
     }
   }
+  handleButtonReporteExcel(){
+      const { reportes } = this.props;
+      console.log(reportes);
+      var csv = Papa.unparse(reportes);
+      var blob = new Blob([csv]);
+		  var a = window.document.createElement("a");
+	    a.href = window.URL.createObjectURL(blob, {type: "text/plain"});
+      a.download = "reportes.csv";
+      document.body.appendChild(a);
+	    a.click();
+	    document.body.removeChild(a);
+    
+  }
 
   renderTicketsTable = () => {
     const { reportes } = this.props;
@@ -185,7 +198,7 @@ class ListTickets extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => {this.handleButton()}}>
+              onClick={() => {this.handleButtonReporteExcel()}}>
               Exportar a Excel
             </Button>
           </Grid>
