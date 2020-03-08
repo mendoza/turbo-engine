@@ -10,10 +10,13 @@ import {
   MenuItem,
   InputLabel,
   TextareaAutosize,
-  TextField
+  TextField,
+  Snackbar,
+  IconButton
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
+import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ItemCard from "../components/ItemCard";
 import Title from "../components/Title";
@@ -27,34 +30,132 @@ class Vender extends PureComponent {
     super(props);
 
     this.state = {
+      open: false,
       dialogOpen: false,
       selectedCar: {},
       cliente: "",
       comment: "",
       montoTotal: "",
-      tipoPago: ""
+      tipoPago: "",
+      message: "",
     };
   }
   
+  handleCreate = () =>{
+    const {cliente, comment, montoTotal, tipoPago, selectedCar} = this.state;
+    let alert;
+    if (validator.isEmpty(cliente) === true) {
+      alert = "El campo cliente es requerido";
+    }
+    if (validator.isEmpty(montoTotal) === true) {
+      alert = "El campo monto es requerido";
+    }
+    if (!validator.isNumeric(montoTotal)) {
+      alert = "El monto solo debe contener números";
+    } else if (montoTotal < 1) {
+      alert = "El monto no puede ser cero o un número negativo";
+    }
+    if (validator.isEmpty(tipoPago) === true) {
+      alert = "El campo tipo de pago es requerido";
+    }
+    if (alert) {
+      this.setState({
+        open: true,
+        message: alert,
+      });
+    } else {
+      Meteor.call(
+        "addHistorial",
+        {
+          cliente,
+          producto: selectedCar._id,
+          fecha: new Date().getTime(),
+          comentario: comment,
+          monto: montoTotal,
+          tipo: tipoPago
+        },
+        err => {
+          console.log(err);
+          Meteor.call("marcarComprado", selectedCar, error => {
+            console.log(error);
+
+            if (cliente !== "0") {  
+              Meteor.call(
+                "addSoldCar",
+                { carId: selectedCar._id, clientId: cliente },
+                () => {
+                  this.setState({
+                    open: true, 
+                    message: "Se creo la compra exitosamente", 
+                    dialogOpen: false, 
+                    selectedCar: {} });
+                }
+              );
+            } else {
+              this.setState({
+                open: true, 
+                message: "El cliente 0 hizo la compra exitosamente", 
+                dialogOpen: false, 
+                selectedCar: {} });
+            }
+
+          });
+        }
+      );
+    }
+  }
+
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  handleCloseDialog = () => {
+    this.setState(state => ({ dialogOpen: !state.dialogOpen }));
+  };
+
   handleTextChange = (event, stateVariable) => {
     this.setState({
       [stateVariable]: event.target.value,
     });
   };
 
+  renderSnackbar = () =>{
+    const { open, message } = this.state;
+    return(
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={this.handleClose}
+        ContentProps={{
+          "aria-describedby": "message-id",
+        }}
+        message={<span id="message-id">{message}</span>}
+        action={[
+          <IconButton key="close" aria-label="close" color="inherit" onClick={this.handleClose}>
+            <i className="fas fa-times" />
+          </IconButton>,
+        ]}
+        />
+    );
+  };
+
   render() {
     const { autos, clientes } = this.props;
-    const { dialogOpen, selectedCar, cliente, comment, montoTotal, tipoPago} = this.state;
-    const handleClose = () => {
-      this.setState(state => ({ dialogOpen: !state.dialogOpen }));
-    };
 
-    /* const handleTextChange = event => {
-      event.persist();
-      this.setState({
-        [event.target.name]: event.target.value,
-      });
-    }; */
+    const { 
+      dialogOpen, 
+      selectedCar, 
+      cliente, 
+      comment, 
+      montoTotal, 
+      tipoPago, 
+    } = this.state;
 
     return (
       <DashboardLayout>
@@ -82,17 +183,21 @@ class Vender extends PureComponent {
                   action2={() => {
                     this.setState(state => ({ dialogOpen: !state.dialogOpen, selectedCar: auto }));
                   }}
-                />
+                  />
               </Grid>
             );
           })}
         </Grid>
         <Dialog
           open={dialogOpen}
-          onClose={handleClose}
+          onClose={this.handleCloseDialog}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description">
-          <DialogTitle id="alert-dialog-title">{`Seguro quiere comprar el auto marca: ${selectedCar.marca}`}</DialogTitle>
+          aria-describedby="alert-dialog-description"
+          >
+          <DialogTitle id="alert-dialog-title">
+            {`Seguro quiere comprar el auto marca: ${selectedCar.marca}`}
+          </DialogTitle>
+
           <DialogContent>
             <form id="formUserLogin" noValidate>
               <Grid container spacing={2}>
@@ -104,7 +209,8 @@ class Vender extends PureComponent {
                     name="cliente"
                     value={cliente}
                     onChange={event => this.handleTextChange(event, "cliente")}
-                    variant="outlined">
+                    variant="outlined"
+                    >
                     <MenuItem value="0">Consumidor Final</MenuItem>
                     {clientes.map(clienteact => {
                       return (
@@ -123,7 +229,8 @@ class Vender extends PureComponent {
                     name="selectPayment"
                     value={tipoPago}
                     onChange={event => this.handleTextChange(event, "tipoPago")}
-                    variant="outlined">
+                    variant="outlined"
+                    >
                     <MenuItem value="Credito">Crédito</MenuItem>
                     <MenuItem value="Efectivo">Efectivo</MenuItem>
                   </Select>
@@ -150,53 +257,24 @@ class Vender extends PureComponent {
                     variant="outlined"
                     aria-label="minimum height"
                     rowsMin={4}
-                    placeholder="Minimum 3 rows"
-                    onChange={event => this.handleTextChange(event, "comentario")}
-                  />
+                    placeholder="Escriba un comentario..."
+                    value={comment}
+                    onChange={event => this.handleTextChange(event, "comment")}
+                    />
                 </Grid>
               </Grid>
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={this.handleCloseDialog} color="primary">
               Cancelar
             </Button>
-            <Button
-              onClick={() => {
-                Meteor.call(
-                  "addHistorial",
-                  {
-                    cliente,
-                    producto: selectedCar._id,
-                    fecha: new Date().getTime(),
-                    comentario: comment,
-                    monto: montoTotal,
-                    tipo: tipoPago
-                  },
-                  err => {
-                    console.log(err);
-                    Meteor.call("marcarComprado", selectedCar, error => {
-                      if (cliente !== "0") {
-                        Meteor.call(
-                          "addSoldCar",
-                          { carId: selectedCar._id, clientId: cliente },
-                          error2 => {
-                            this.setState({ dialogOpen: false, selectedCar: {} });
-                          }
-                        );
-                      } else {
-                        this.setState({ dialogOpen: false, selectedCar: {} });
-                      }
-                    });
-                  }
-                );
-              }}
-              color="primary"
-              autoFocus>
+            <Button onClick={this.handleCreate} color="primary" autoFocus>
               Aceptar
             </Button>
           </DialogActions>
         </Dialog>
+        {this.renderSnackbar()}
       </DashboardLayout>
     );
   }
