@@ -244,4 +244,10 @@ export const dashboardRoutes = [
     icon: "fas fa-clipboard-list",
     permission: "superAdmin",
   },
+  {
+    pathName: "/encuestapage",
+    name: "Gestionar encuestas",
+    icon: "fas fa-scroll",
+    permission: "superAdmin",
+  },
 ];

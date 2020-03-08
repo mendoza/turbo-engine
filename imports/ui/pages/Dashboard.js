@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import { Grid } from "@material-ui/core";
 import { withTracker } from "meteor/react-meteor-data";
-import { Redirect } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -107,7 +106,7 @@ class Dashboard extends PureComponent {
               return (
                 <TableRow key={row._id}>
                   <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
-                  {/* <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell> */}
+                  <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
                 </TableRow>
               );
@@ -148,6 +147,8 @@ class Dashboard extends PureComponent {
 export default withTracker(() => {
   Meteor.subscribe("historial.all");
   Meteor.subscribe("Encuestas.all");
+  Meteor.subscribe("clientes.all");
+  Meteor.subscribe("Autos.all");
   return {
     encuestas: Encuestas.find({}).fetch(),
     historial: Historial.find({}).fetch(),
