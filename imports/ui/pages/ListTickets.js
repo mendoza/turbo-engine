@@ -181,6 +181,14 @@ class ListTickets extends Component {
               Cerrar Tickets Seleccionados
             </Button>
           </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {this.handleButton()}}>
+              Exportar a Excel
+            </Button>
+          </Grid>
         </Grid>
         <Grid container spacing={2}>
           <Grid item xs={12}>
