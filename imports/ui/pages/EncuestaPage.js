@@ -149,7 +149,7 @@ class EncuestaPage extends Component {
         <TableHead>
           <TableRow>
             <TableCell>Fecha</TableCell>
-            <TableCell>Scoreión</TableCell>
+            <TableCell>Puntuación</TableCell>
             <TableCell>Opciones</TableCell>
           </TableRow>
         </TableHead>
