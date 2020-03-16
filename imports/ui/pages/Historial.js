@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
+import Link from '@material-ui/core/Link';
 import { withTracker } from "meteor/react-meteor-data";
 import Title from "../components/Title";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -63,7 +64,8 @@ class Historial extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">Venta</DialogTitle>
         <Divider />
         <DialogContent>
@@ -100,7 +102,8 @@ class Historial extends Component {
               this.setState({ showHistorialDialog: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cerrar
           </Button>
         </DialogActions>
@@ -123,6 +126,7 @@ class Historial extends Component {
         </TableHead>
         <TableBody>
           {historial.map(row => {
+            // eslint-disable-next-line no-console
             console.log(row);
             const fecha = new Date(row.fecha);
             let cliente;
@@ -147,8 +151,16 @@ class Historial extends Component {
             if (row) {
               return (
                 <TableRow key={row._id}>
-                  <TableCell>{`${cliente.nombre} ${cliente.apellido}`}</TableCell>
-                  <TableCell>{`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}</TableCell>
+                  <TableCell>
+                    <Link color="#3b7fed" href="/clientes">
+                      {`${cliente.nombre} ${cliente.apellido}`}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link color="#3b7fed" href="/seccionAutos">
+                      {`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}
+                    </Link>
+                  </TableCell>
                   <TableCell>{fecha.toLocaleDateString("en-US")}</TableCell>
 
                   <TableCell>
@@ -167,7 +179,8 @@ class Historial extends Component {
                               tipoPago: row.tipo
                             });
                           }}
-                          aria-label="centered">
+                          aria-label="centered"
+                          >
                           <i className="fas fa-info" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -193,7 +206,7 @@ class Historial extends Component {
               style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
-            />
+              />
             {this.renderHistorialTable()}
           </Grid>
         </Grid>
