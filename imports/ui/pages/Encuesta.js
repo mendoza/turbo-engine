@@ -156,7 +156,7 @@ export default function Encuestilla() {
           <img src="/imagenes/Logoblack.png" width="20%" height="20%"/>
         </center>
         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-          Encuesta de Calificación de nuestros servicios
+          Encuesta de Satisfacción de nuestros servicios
         </Typography>
         <Typography variant="h5" align="center" color="textSecondary" component="p">
           Gracias por ser cliente de Kike&apos;s Autos,

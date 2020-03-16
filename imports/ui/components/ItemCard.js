@@ -61,9 +61,9 @@ class ItemCard extends PureComponent {
           <Hidden xlDown={hidden}>
             <CardMedia
               component="img"
-              alt="Contemplative Reptile"
+              alt="Imagen"
               height="140"
-              image={image || "https://source.unsplash.com/random"}
+              image={image || "/imagenes/Logoblack.png"}
               title="Image title"
             />
           </Hidden>

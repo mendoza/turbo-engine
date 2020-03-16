@@ -11,17 +11,19 @@ import CreatePiezas from "./pages/CreatePiezas";
 import PiezasPage from "./pages/PiezasPage";
 import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
-import SignUpClient from "./pages/SignUpClient"
-import SignInClient from "./pages/SignInClient"
-import Encuesta from "./pages/Encuesta"
-import EncuestaPage from "./pages/EncuestaPage"
+import SignUpClient from "./pages/SignUpClient";
+import SignInClient from "./pages/SignInClient";
+import Encuesta from "./pages/Encuesta";
+import EncuestaPage from "./pages/EncuestaPage";
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
 import UpdateTypes from "./pages/UpdateTypes";
 import Maquinaria from "./pages/Maquinaria";
+import CreateReportes from "./pages/CreateReportes";
 import Proveedores from "./pages/Proveedores";
 import Historial from "./pages/Historial";
 import Vender from "./pages/Vender";
+import Tickets from "./pages/ListTickets";
 
 export const Routes = [
   {
@@ -109,16 +111,10 @@ export const Routes = [
     component: SignInClient,
   },
   {
-    path: "/Encuesta",
-    name: "Encuesta",
-    component: Encuesta,
-    permission: 'none',
-  },
-  {
     path: "/EncuestaPage",
     name: "Encuestas",
     component: EncuestaPage,
-    permission: 'superAdmin'
+    permission: "superAdmin",
   },
   {
     path: "/clientes",
@@ -155,6 +151,17 @@ export const Routes = [
     path: "/vender",
     name: "Vender",
     component: Vender,
+  },
+  {
+    path: "/crearreportes",
+    name: "Reportes",
+    component: CreateReportes,
+  },
+  {
+    path: "/tickets",
+    name: "Tickets",
+    component: Tickets,
+    permission: "superAdmin",
   },
 ];
 
@@ -224,5 +231,17 @@ export const dashboardRoutes = [
     name: "Vender automovil",
     icon: "fas fa-check-circle",
     permission: "superAdmin",
-  }
+  },
+  {
+    pathName: "/tickets",
+    name: "Tickets",
+    icon: "fas fa-clipboard-list",
+    permission: "superAdmin",
+  },
+  {
+    pathName: "/encuestapage",
+    name: "Gestionar encuestas",
+    icon: "fas fa-chart-bar",
+    permission: "superAdmin",
+  },
 ];
