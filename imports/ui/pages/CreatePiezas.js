@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React, { PureComponent } from "react";
 import {
   Container,
@@ -13,6 +14,10 @@ import {
   DialogActions,
   Select,
   MenuItem,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Typography,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
@@ -37,9 +42,10 @@ class CreatePiezas extends PureComponent {
       message: "",
       shouldRender: false,
       name: "",
+      selectedValue: "",
     };
   }
-  
+
   handleDialog = () => {
     this.setState({ shouldRender: false });
   };
@@ -126,10 +132,13 @@ class CreatePiezas extends PureComponent {
   };
 
   handleAdd = () => {
-    const { name } = this.state;
+    const { name, selectedValue } = this.state;
     let alert;
     if (validator.isEmpty(name)) {
       alert = "El campo nombre es requerido";
+    }
+    if (validator.isEmpty(selectedValue)) {
+      alert = "La seleccion de icono es requerido";
     }
     if (alert) {
       this.setState({
@@ -139,11 +148,13 @@ class CreatePiezas extends PureComponent {
     } else {
       Meteor.call("addTipo", {
         nombre: name,
+        icono: selectedValue,
       });
       this.setState({
         open: true,
         message: "Tipo agregado exitosamente",
         name: "",
+        selectedValue: "",
         shouldRender: false,
       });
     }
@@ -162,6 +173,7 @@ class CreatePiezas extends PureComponent {
       message,
       shouldRender,
       name,
+      selectedValue,
     } = this.state;
     const { tipos } = this.props;
     return (
@@ -182,7 +194,7 @@ class CreatePiezas extends PureComponent {
                   autoFocus
                   value={marca}
                   onInput={event => this.handleTextChange(event, "marca")}
-                  />
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -195,7 +207,7 @@ class CreatePiezas extends PureComponent {
                   label="Vendedor"
                   value={vendedor}
                   onInput={event => this.handleTextChange(event, "vendedor")}
-                  />
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -208,7 +220,7 @@ class CreatePiezas extends PureComponent {
                   label="NumeroDeSerie"
                   value={numeroDeSerie}
                   onInput={event => this.handleTextChange(event, "numeroDeSerie")}
-                  />
+                />
               </Grid>
               <Grid item xs={2} sm={2}>
                 <Select
@@ -238,7 +250,7 @@ class CreatePiezas extends PureComponent {
                   label="precio"
                   value={precio}
                   onInput={event => this.handleTextChange(event, "precio")}
-                  />
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -251,7 +263,7 @@ class CreatePiezas extends PureComponent {
                   label="cantidad"
                   value={cantidad}
                   onInput={event => this.handleTextChange(event, "cantidad")}
-                  />
+                />
               </Grid>
               <Grid item xs={12} sm={10}>
                 <Select
@@ -260,8 +272,7 @@ class CreatePiezas extends PureComponent {
                   label="Tipo"
                   id="type"
                   value={tipo}
-                  onChange={event => this.handleTextChange(event, "tipo")}
-                  >
+                  onChange={event => this.handleTextChange(event, "tipo")}>
                   {tipos.map(tipoMap => {
                     if (tipoMap) {
                       return (
@@ -282,8 +293,7 @@ class CreatePiezas extends PureComponent {
                   // size="large"
                   onClick={() => {
                     this.setState({ shouldRender: true });
-                  }}
-                  >
+                  }}>
                   Agregar Tipo
                 </Button>
               </Grid>
@@ -311,7 +321,73 @@ class CreatePiezas extends PureComponent {
                     autoFocus
                     value={name}
                     onInput={event => this.handleTextChange(event, "name")}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography>Seleccione un icono* </Typography>
+                  <RadioGroup
+                    aria-label="position"
+                    name="selectedValue"
+                    value={selectedValue}
+                    onChange={event => this.handleTextChange(event, "selectedValue")}
+                    row>
+                    <FormControlLabel
+                      value="fas fa-car"
+                      control={<Radio color="primary" />}
+                      label={
+                        <span style={{ fontSize: 20 }}>
+                          <i className="fas fa-car" />
+                        </span>
+                      }
+                      labelPlacement="end"
                     />
+                    <FormControlLabel
+                      value="fas fa-compact-disc"
+                      control={<Radio color="primary" />}
+                      label={
+                        <span style={{ fontSize: 20 }}>
+                          <i className="fas fa-compact-disc" />
+                        </span>
+                      }
+                      labelPlacement="end"
+                    />
+                    <FormControlLabel
+                      value="fas fa-lightbulb"
+                      control={<Radio color="primary" />}
+                      label={
+                        <span style={{ fontSize: 20 }}>
+                          <i className="fas fa-lightbulb" />
+                        </span>
+                      }
+                      labelPlacement="end"
+                    />
+                    <FormControlLabel
+                      value="fas fa-gas-pump"
+                      control={<Radio color="primary" />}
+                      label={
+                        <span style={{ fontSize: 20 }}>
+                          <i className="fas fa-gas-pump" />
+                        </span>
+                      }
+                      labelPlacement="end"
+                    />
+                    <FormControlLabel
+                      value="fas fa-toolbox"
+                      control={<Radio color="primary" />}
+                      label={
+                        <span style={{ fontSize: 20 }}>
+                          <i className="fas fa-toolbox" />
+                        </span>
+                      }
+                      labelPlacement="end"
+                    />
+                    <FormControlLabel
+                      value="fas fa-tachometer-alt"
+                      control={<Radio color="primary" />}
+                      label={<i className="fas fa-tachometer-alt" />}
+                      labelPlacement="end"
+                    />
+                  </RadioGroup>
                 </Grid>
                 <Button fullWidth variant="contained" color="primary" onClick={this.handleAdd}>
                   Crear
@@ -342,7 +418,7 @@ class CreatePiezas extends PureComponent {
               <i className="fas fa-times" />
             </IconButton>,
           ]}
-          />
+        />
       </DashboardLayout>
     );
   }
