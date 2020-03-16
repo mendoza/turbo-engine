@@ -92,22 +92,29 @@ class ListTickets extends Component {
   handleButtonReporteExcel = () => {
     const { reportes } = this.props;
     const realdata = reportes.map(reporte => {
-      const { _id, comentario, tipo, empleado, fecha, prioridad, abierto } = reporte;
+      const { comentario, tipo, empleado, fecha, prioridad, abierto } = reporte;
+      var estado;
+      if(abierto == true){
+        estado = "Abierto"
+      }else{
+        estado = "Cerrado"
+      }
       return {
-        _id,
         comentario,
         tipo,
-        empleado: Empleados.findOne({ _id: empleado }),
+        empleado: Meteor.users.findOne({ _id: reporte.empleado }).profile.firstName,
         fecha,
         prioridad,
-        abierto,
+        estado,
       };
     });
+    var fechaHoy = "reporte_al_" + new Date().toLocaleDateString()+ ".csv";
+    console.log(fechaHoy);
     var csv = Papa.unparse(realdata);
     var blob = new Blob([csv]);
     var a = window.document.createElement("a");
     a.href = window.URL.createObjectURL(blob, { type: "text/plain" });
-    a.download = "reportes.csv";
+    a.download = fechaHoy.toString();
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
