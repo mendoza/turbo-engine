@@ -9,6 +9,7 @@ import {
   Typography,
   CardHeader,
   IconButton,
+  Hidden,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -33,6 +34,8 @@ class ItemCard extends PureComponent {
       title,
       body,
       description,
+      icon,
+      hidden,
       action1,
       action2,
       action3,
@@ -55,14 +58,19 @@ class ItemCard extends PureComponent {
           />
         ) : null}
         <CardActionArea onClick={action4}>
-          <CardMedia
-            component="img"
-            alt="Imagen"
-            height="140"
-            image={image || "/imagenes/Logoblack.png"}
-            title="Image title"
-          />
+          <Hidden xlDown={hidden}>
+            <CardMedia
+              component="img"
+              alt="Imagen"
+              height="140"
+              image={image || "/imagenes/Logoblack.png"}
+              title="Image title"
+            />
+          </Hidden>
           <CardContent>
+            <span style={{ fontSize: 64 }}>
+              <i className={icon} />
+            </span>
             <Typography gutterBottom variant="h5" component="h2">
               {title}
             </Typography>
