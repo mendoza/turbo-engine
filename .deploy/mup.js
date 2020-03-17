@@ -10,6 +10,14 @@ module.exports = {
     },
   },
 
+  proxy: {
+    domains: "turboengine.tk",
+    ssl: {
+      forceSSL: true,
+      letsEncryptEmail: "ingenieria@ingenieria.com",
+    },
+  },
+
   app: {
     // TODO: change app name and path
     name: "app",
@@ -26,7 +34,7 @@ module.exports = {
     env: {
       // TODO: Change to your app's url
       // If you are using ssl, it needs to start with https://
-      ROOT_URL: "http://18.209.157.164",
+      ROOT_URL: "https://turboengine.tk",
       MONGO_URL: "mongodb://mongodb/meteor",
       MONGO_OPLOG_URL: "mongodb://mongodb/local",
     },
