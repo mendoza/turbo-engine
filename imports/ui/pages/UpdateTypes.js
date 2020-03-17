@@ -105,18 +105,23 @@ class UpdateTypes extends PureComponent {
   handleClick = () => {
     const { nombre, id, Value } = this.state;
     let alert;
+    const name = Tipos.find({ _id: id }).fetch()[0].nombre;
+    if (Piezas.find({ tipo: name }).count() > 0 && name !== nombre) {
+      alert = "No se puede actualizar tipos de pieza actualmente en uso";
+    }
     if (validator.isEmpty(id) === true) {
       alert = "La selección del tipo es requerido";
     }
     if (validator.isEmpty(nombre) === true) {
       alert = "El campo nombre es requerido";
     }
-    if (Tipos.find({ nombre }).count() > 0) {
+    if (Tipos.find({ nombre }).count() > 0 && name !== nombre) {
       alert = "El tipo ingresado ya existe";
     }
     if (validator.isEmpty(Value)) {
       alert = "La seleccion de icono es requerido";
     }
+
     if (alert) {
       this.setState({
         open: true,
