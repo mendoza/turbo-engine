@@ -10,6 +10,7 @@ import "../imports/api/collections/Piezas/methods";
 import "../imports/api/collections/Autos/methods";
 import "../imports/api/collections/Tipos/methods";
 import "../imports/api/collections/AutosFiles/publications";
+import "../imports/api/collections/ArchiveFiles/publications";
 import "../imports/api/collections/Encuestas/Encuestas";
 import "../imports/api/collections/Cliente/pubications";
 import "../imports/api/collections/Cliente/methods";

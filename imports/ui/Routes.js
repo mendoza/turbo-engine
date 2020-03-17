@@ -13,7 +13,6 @@ import AutosPage from "./pages/AutosPage";
 import EstadoAutos from "./pages/EstadoAutos";
 import SignUpClient from "./pages/SignUpClient";
 import SignInClient from "./pages/SignInClient";
-import Encuesta from "./pages/Encuesta";
 import EncuestaPage from "./pages/EncuestaPage";
 import Clientes from "./pages/Clientes";
 import Empleados from "./pages/Empleados";
@@ -24,6 +23,7 @@ import Proveedores from "./pages/Proveedores";
 import Historial from "./pages/Historial";
 import Vender from "./pages/Vender";
 import Tickets from "./pages/ListTickets";
+import Archive from "./pages/Archive";
 
 export const Routes = [
   {
@@ -162,6 +162,11 @@ export const Routes = [
     name: "Tickets",
     component: Tickets,
     permission: "superAdmin",
+  },
+  {
+    path: "/archive",
+    name: "historial de datos",
+    component: Archive,
   },
 ];
 
