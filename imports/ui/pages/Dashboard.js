@@ -29,7 +29,6 @@ class Dashboard extends PureComponent {
     super(props);
 
     this.state = {
-      shouldRender: false
     };
   }
 
@@ -52,6 +51,7 @@ class Dashboard extends PureComponent {
     encuestas.map(encuesta => {
       const date = new Date(encuesta.fecha);
       const month = date.getMonth();
+      console.log(date.getMonth());
       if(encuesta.score === 0){
         datos[month].Malo +=1
       } else if(encuesta.score === 1){

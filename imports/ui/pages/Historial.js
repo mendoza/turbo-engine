@@ -37,11 +37,220 @@ class Historial extends Component {
       Comentario: "",
       Monto: "",
       tipoPago: "",
+
+      // Para el cliente
+      showClientDialog: false,
+      Nombre: "",
+      Apellido: "",
+      RTN: "",
+      Telefono: "",
+      Telefono2: "",
+      Company: "",
+      email: "",
+      clientType: "",
+
+      // Para el auto
+      showAutoDialog: false,
+      Marca: "",
+      Modelo: "",
+      Tipo: "",
+      Transmision: "",
+      Color: "",
+      Placa: "",
+      Traccion: "",
+      Year: "",
+      Estado: "",
     };
   }
 
   handleSearchName = event => {
     this.setState({ searchByNames: event.target.value });
+  };
+
+  renderAutoDialog = () => {
+    const {
+      showAutoDialog,
+      Marca,
+      Modelo,
+      Tipo,
+      Transmision,
+      Color,
+      Placa,
+      Traccion,
+      Year,
+      Estado,
+    } = this.state;
+
+    return (
+      <Dialog
+        style={{ overflow: "initial" }}
+        open={showAutoDialog}
+        onClose={() => {
+          this.setState({ showAutoDialog: false });
+        }}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth>
+        <form onSubmit={this.handleCreateClient}>
+          <DialogTitle id="form-dialog-title">
+            Cliente
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <Title>Marca</Title>
+                {Marca}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Modelo</Title>
+                {Modelo}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Tipo</Title>
+                {Tipo}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Transmisión</Title>
+                {Transmision}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Color</Title>
+                {Color}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Placa</Title>
+                {Placa}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Tracción</Title>
+                {Traccion}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Año</Title>
+                {Year}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Estado</Title>
+                {Estado}
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                this.setState({ showAutoDialog: false });
+                this.setState({
+                  showAutoDialog: false,
+                  Marca: "",
+                  Modelo: "",
+                  Tipo: "",
+                  Transmision: "",
+                  Color: "",
+                  Placa: "",
+                  Traccion: "",
+                  Year: "",
+                  Estado: "",
+                });
+              }}
+              color="primary"
+              variant="contained">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    );
+  };
+
+  renderClientDialog = () => {
+    const {
+      showClientDialog,
+      Nombre,
+      Apellido,
+      RTN,
+      Telefono,
+      Telefono2,
+      Company,
+      email,
+      clientType,
+    } = this.state;
+
+    return (
+      <Dialog
+        style={{ overflow: "initial" }}
+        open={showClientDialog}
+        onClose={() => {
+          this.setState({ showClientDialog: false });
+        }}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth>
+        <form onSubmit={this.handleCreateClient}>
+          <DialogTitle id="form-dialog-title">
+            Cliente
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <Title>Nombre</Title>
+                {Nombre}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Apellido</Title>
+                {Apellido}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>RTN</Title>
+                {RTN}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Telefono</Title>
+                {Telefono}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Telefono secundario</Title>
+                {Telefono2}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Title>Correo electrónico</Title>
+                {email}
+              </Grid>
+              {clientType === "Juridico" ? (
+                <Grid item xs={12} md={6}>
+                  <Title>Compañia</Title>
+                  {Company}
+                </Grid>
+              ) : (
+                <div></div>
+              )}
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                this.setState({ showClientDialog: false });
+                this.setState({
+                  showClientDialog: false,
+                  Nombre: "",
+                  Apellido: "",
+                  RTN: "",
+                  Telefono: "",
+                  Telefono2: "",
+                  Company: "",
+                  email: "",
+                  clientType: "",
+                });
+              }}
+              color="primary"
+              variant="contained">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    );
   };
 
   renderHistorialDialog = () => {
@@ -84,6 +293,7 @@ class Historial extends Component {
             </Grid>
             <Grid item xs={12} md={6}>
               <Title>Monto</Title>
+              L. 
               {Monto}
             </Grid>
             <Grid item xs={12} md={6}>
@@ -152,12 +362,45 @@ class Historial extends Component {
               return (
                 <TableRow key={row._id}>
                   <TableCell>
-                    <Link color="#3b7fed" href="/clientes">
+                    <Link 
+                      color="#3b7fed" 
+                      href="#" 
+                      onClick={() => {
+                        this.setState({
+                          showClientDialog: true,
+                          Nombre: cliente.nombre,
+                          Apellido: cliente.apellido,
+                          RTN: cliente.rtn,
+                          Telefono: cliente.telefono,
+                          Telefono2: cliente.telefonoTrabajo,
+                          Company: cliente.compania,
+                          email: cliente.email,
+                          clientType: cliente.clientType,
+                        });
+                      }} 
+                     >
                       {`${cliente.nombre} ${cliente.apellido}`}
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Link color="#3b7fed" href="/seccionAutos">
+                    <Link 
+                      color="#3b7fed" 
+                      href="#" 
+                      onClick={() => {
+                        this.setState({
+                          showAutoDialog: true,
+                          Marca: auto.marca,
+                          Modelo: auto.modelo,
+                          Tipo:auto.tipo,
+                          Transmision:auto.transmision,
+                          Color:auto.color,
+                          Placa:auto.placa,
+                          Traccion:auto.traccion,
+                          Year:auto.year,
+                          Estado:auto.estado,
+                        });
+                      }} 
+                     >
                       {`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}
                     </Link>
                   </TableCell>
@@ -211,6 +454,8 @@ class Historial extends Component {
           </Grid>
         </Grid>
         {this.renderHistorialDialog()}
+        {this.renderClientDialog()}
+        {this.renderAutoDialog()}
       </DashboardLayout>
     );
   }
@@ -222,5 +467,7 @@ export default withTracker(() => {
   Meteor.subscribe("clientes.all");
   return {
     historial: Historiales.find({}).fetch(),
+    autos: Autos.find({}).fetch(),
+    clientes: Clientes.find({}).fetch(),
   };
 })(Historial);
