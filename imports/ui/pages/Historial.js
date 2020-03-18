@@ -59,7 +59,6 @@ class Historial extends Component {
       Placa: "",
       Traccion: "",
       Year: "",
-      Estado: "",
     };
   }
 
@@ -78,8 +77,37 @@ class Historial extends Component {
       Placa,
       Traccion,
       Year,
-      Estado,
     } = this.state;
+
+    // Tipo
+    let labelTipo = "";
+    if (Tipo===0){
+      labelTipo = "Camioneta"
+    }else if (Tipo===1){
+      labelTipo = "Turismo"
+    }else if (Tipo===2){
+      labelTipo = "Deportivo"
+    }
+
+    // Transmisión
+    let labelTransmision = "";
+    if (Transmision===0){
+      labelTransmision = "Manual"
+    }else if (Transmision===1){
+      labelTransmision = "Automático"
+    }else if (Transmision===2){
+      labelTransmision = "Mixta"
+    }
+
+    // Tracción
+    let labelTraccion = "";
+    if (Traccion===0){
+      labelTraccion = "Trasera"
+    }else if (Traccion===1){
+      labelTraccion = "Delantera"
+    }else if (Traccion===2){
+      labelTraccion = "Doble"
+    }
 
     return (
       <Dialog
@@ -108,11 +136,11 @@ class Historial extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Title>Tipo</Title>
-                {Tipo}
+                {labelTipo}
               </Grid>
               <Grid item xs={12} md={6}>
                 <Title>Transmisión</Title>
-                {Transmision}
+                {labelTransmision}
               </Grid>
               <Grid item xs={12} md={6}>
                 <Title>Color</Title>
@@ -124,15 +152,11 @@ class Historial extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Title>Tracción</Title>
-                {Traccion}
+                {labelTraccion}
               </Grid>
               <Grid item xs={12} md={6}>
                 <Title>Año</Title>
                 {Year}
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Title>Estado</Title>
-                {Estado}
               </Grid>
             </Grid>
           </DialogContent>
@@ -150,7 +174,6 @@ class Historial extends Component {
                   Placa: "",
                   Traccion: "",
                   Year: "",
-                  Estado: "",
                 });
               }}
               color="primary"
@@ -397,7 +420,6 @@ class Historial extends Component {
                           Placa:auto.placa,
                           Traccion:auto.traccion,
                           Year:auto.year,
-                          Estado:auto.estado,
                         });
                       }} 
                      >
