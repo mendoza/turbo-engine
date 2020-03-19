@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Grid, Input, Button, Snackbar, IconButton } from "@material-ui/core";
+import { Grid, Input, Button, Snackbar, IconButton, TextField } from "@material-ui/core";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ArchiveFiles from "../../api/collections/ArchiveFiles/ArchiveFiles";
 
@@ -10,12 +10,13 @@ class Archive extends PureComponent {
       files: [],
       uploaded: false,
       showToast: false,
+      nombre: "",
       message: "",
     };
   }
 
   setFiles = event => {
-    const { files } = event;
+    const { files } = event.target[1];
     let uploaded = 0;
     const fileIds = [];
     Object.keys(files).forEach(key => {
@@ -53,12 +54,22 @@ class Archive extends PureComponent {
             uploaded += 1;
             fileIds.push(fileObj._id);
             if (uploaded === files.length) {
-              this.setState({
-                uploaded: true,
-                showToast: true,
-                message: "Archivo subido exitosamente",
-                files: fileIds,
-              });
+              this.setState(
+                {
+                  uploaded: true,
+                  showToast: true,
+                  message: "Archivo subido exitosamente",
+                  files: fileIds,
+                },
+                () => {
+                  const { nombre, files } = this.state;
+                  const payload = { nombre, files };
+                  console.log(payload);
+                  Meteor.call("addArchive", payload, err => {
+                    console.log(err);
+                  });
+                }
+              );
             }
           }
         });
@@ -68,17 +79,27 @@ class Archive extends PureComponent {
   };
 
   render() {
-    const { showToast, message } = this.state;
+    const { showToast, message, nombre } = this.state;
     return (
       <DashboardLayout>
         <Grid container xs={12}>
           <Grid item xs={12}>
             <form
-              onSubmit={e => {
+              onSubmit={async e => {
                 e.preventDefault();
                 e.persist();
-                this.setFiles(e.target[0]);
+                await this.setFiles(e);
               }}>
+              <TextField
+                required
+                value={nombre}
+                onChange={e => {
+                  this.setState({ [e.target.name]: e.target.value });
+                }}
+                name="nombre"
+                label="Nombre"
+                fullWidth
+              />
               <Input type="file" fullWidth multiple />
               <Button type="submit" fullWidth variant="contained" color="primary">
                 Subir archivos
