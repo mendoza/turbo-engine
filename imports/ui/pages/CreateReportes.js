@@ -32,6 +32,7 @@ class CreateReportes extends PureComponent {
       fecha: new Date().toLocaleDateString(),
       prioridad: Prioridad[prioridad],
       abierto: true,
+      visto: false,
     };
     let alert;
     if (validator.isEmpty(comentario)) {
