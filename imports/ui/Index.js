@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Routes } from "./Routes";
 import Error404 from "./pages/Error404";
+import Encuesta from "./pages/Encuesta";
 import RedirectLogin from "./components/RedirectLogin";
 import RedirectDashboard from "./components/RedirectDashboard";
 import Loading from "./components/Loading";
@@ -58,6 +59,7 @@ class Index extends PureComponent {
             }
             return isLoggedIn(route);
           })}
+          <Route exact path="/encuesta" component={Encuesta} />
           <Route component={Error404} />
         </Switch>
       </BrowserRouter>

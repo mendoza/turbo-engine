@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React, { PureComponent } from "react";
 import {
   Container,
@@ -12,6 +13,10 @@ import {
   DialogContent,
   Divider,
   DialogTitle,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Typography,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
@@ -30,6 +35,8 @@ class UpdateTypes extends PureComponent {
       open: false,
       message: "",
       id: "",
+      selectedValue: "",
+      Value: "",
       shouldRender: false,
       deletePiece: {},
     };
@@ -64,11 +71,12 @@ class UpdateTypes extends PureComponent {
       alert = "No se puede eliminar tipos de pieza actualmente en uso";
     }
     if (alert) {
-      this.setState({ shouldRender:false, open: true, message: alert });
+      this.setState({ shouldRender: false, open: true, message: alert });
     } else {
       Meteor.call("deleteTipo", {
         _id: deletePiece._id,
         nombre: deletePiece.nombre,
+        icono: deletePiece.icono,
       });
       this.setState({ shouldRender: false, open: true, message: "Tipo eliminado exitosamente" });
     }
@@ -77,7 +85,6 @@ class UpdateTypes extends PureComponent {
   handleOpen = () => {
     const { deletePiece } = this.state;
     let alert;
-    console.log(deletePiece);
     if (validator.isEmpty(deletePiece._id) === true) {
       alert = "La selección del tipo es requerido";
     }
@@ -96,17 +103,25 @@ class UpdateTypes extends PureComponent {
   };
 
   handleClick = () => {
-    const { nombre, id } = this.state;
+    const { nombre, id, Value } = this.state;
     let alert;
+    const name = Tipos.find({ _id: id }).fetch()[0].nombre;
+    if (Piezas.find({ tipo: name }).count() > 0 && name !== nombre) {
+      alert = "No se puede actualizar tipos de pieza actualmente en uso";
+    }
     if (validator.isEmpty(id) === true) {
       alert = "La selección del tipo es requerido";
     }
     if (validator.isEmpty(nombre) === true) {
       alert = "El campo nombre es requerido";
     }
-    if (Tipos.find({ nombre }).count() > 0) {
+    if (Tipos.find({ nombre }).count() > 0 && name !== nombre) {
       alert = "El tipo ingresado ya existe";
     }
+    if (validator.isEmpty(Value)) {
+      alert = "La seleccion de icono es requerido";
+    }
+
     if (alert) {
       this.setState({
         open: true,
@@ -116,9 +131,11 @@ class UpdateTypes extends PureComponent {
       Meteor.call("updateTipo", {
         _id: id,
         nombre,
+        icono: Value,
       });
       this.setState({
         nombre: "",
+        Value: "",
         open: true,
         id: "",
         message: "Tipo actualizado exitosamente",
@@ -127,11 +144,15 @@ class UpdateTypes extends PureComponent {
   };
 
   handleAdd = () => {
-    const { name } = this.state;
+    const { name, selectedValue } = this.state;
     let alert;
+    console.log(selectedValue);
 
     if (validator.isEmpty(name)) {
       alert = "El campo nombre es requerido";
+    }
+    if (validator.isEmpty(selectedValue)) {
+      alert = "La seleccion de icono es requerido";
     }
     if (Tipos.find({ nombre: name }).count() > 0) {
       alert = "El tipo ingresado ya existe";
@@ -144,19 +165,38 @@ class UpdateTypes extends PureComponent {
     } else {
       Meteor.call("addTipo", {
         nombre: name,
+        icono: selectedValue,
       });
       this.setState({
         open: true,
         message: "Tipo agregado exitosamente",
         name: "",
+        selectedValue: "",
         shouldRender: false,
       });
     }
   };
 
+  handleChange = event => {
+    this.setState({
+      selectedValue: event.target.value,
+    });
+  };
+
   render() {
-    const { nombre, open, message, id, shouldRender, name, deletePiece } = this.state;
+    const {
+      nombre,
+      open,
+      message,
+      id,
+      shouldRender,
+      name,
+      deletePiece,
+      selectedValue,
+      Value,
+    } = this.state;
     const { tipos } = this.props;
+
     return (
       <DashboardLayout>
         <Container>
@@ -178,6 +218,72 @@ class UpdateTypes extends PureComponent {
                   value={name}
                   onInput={event => this.handleTextChange(event, "name")}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography>Seleccione un icono* </Typography>
+                <RadioGroup
+                  aria-label="position"
+                  name="selectedValue"
+                  value={selectedValue}
+                  onChange={event => this.handleTextChange(event, "selectedValue")}
+                  row>
+                  <FormControlLabel
+                    value="fas fa-car"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-car" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-compact-disc"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-compact-disc" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-lightbulb"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-lightbulb" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-gas-pump"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-gas-pump" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-toolbox"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-toolbox" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-tachometer-alt"
+                    control={<Radio color="primary" />}
+                    label={<i className="fas fa-tachometer-alt" />}
+                    labelPlacement="end"
+                  />
+                </RadioGroup>
               </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={this.handleAdd}>
                 Crear
@@ -219,6 +325,72 @@ class UpdateTypes extends PureComponent {
                   onInput={event => this.handleTextChange(event, "nombre")}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Typography>Seleccione un icono* </Typography>
+                <RadioGroup
+                  aria-label="position"
+                  name="Value"
+                  value={Value}
+                  onChange={event => this.handleTextChange(event, "Value")}
+                  row>
+                  <FormControlLabel
+                    value="fas fa-car"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-car" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-compact-disc"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-compact-disc" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-lightbulb"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-lightbulb" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-gas-pump"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-gas-pump" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-toolbox"
+                    control={<Radio color="primary" />}
+                    label={
+                      <span style={{ fontSize: 20 }}>
+                        <i className="fas fa-toolbox" />
+                      </span>
+                    }
+                    labelPlacement="end"
+                  />
+                  <FormControlLabel
+                    value="fas fa-tachometer-alt"
+                    control={<Radio color="primary" />}
+                    label={<i className="fas fa-tachometer-alt" />}
+                    labelPlacement="end"
+                  />
+                </RadioGroup>
+              </Grid>
               <Button fullWidth variant="contained" color="primary" onClick={this.handleClick}>
                 Actualizar
               </Button>
@@ -247,12 +419,8 @@ class UpdateTypes extends PureComponent {
                 </Select>
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleOpen}>
-                    Eliminar Tipo
+                <Button fullWidth variant="contained" color="primary" onClick={this.handleOpen}>
+                  Eliminar Tipo
                 </Button>
               </Grid>
             </Grid>

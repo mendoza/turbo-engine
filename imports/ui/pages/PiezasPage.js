@@ -108,7 +108,7 @@ class PiezasPage extends PureComponent {
   handleTextChange = event => {
     console.log({
       [event.target.name]: event.target.value,
-    })
+    });
     this.setState({
       [event.target.name]: event.target.value,
     });
@@ -126,7 +126,6 @@ class PiezasPage extends PureComponent {
       dialogPiece,
     } = this.state;
     let alert;
-
     if (validator.isEmpty(marca)) {
       alert = "El campo marca es requerido";
     }
@@ -202,19 +201,20 @@ class PiezasPage extends PureComponent {
     return (
       <Dialog
         open={showPiezasDialog}
-        onClose={() => { this.setState({ showPiezasDialog: false }) }}
+        onClose={() => {
+          this.setState({ showPiezasDialog: false });
+        }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-      >
+        fullWidth>
         <form>
           <Grid>
             <TextField
               label="Marca"
               onInput={event => {
-                this.handleTextInput(event, 'marca', text => {
-                  return validatorjs.isAlpha(text, 'es-ES')
-                })
+                this.handleTextInput(event, "marca", text => {
+                  return validatorjs.isAlpha(text, "es-ES");
+                });
               }}
               value={marca}
               required
@@ -224,7 +224,7 @@ class PiezasPage extends PureComponent {
         </form>
       </Dialog>
     );
-  }
+  };
 
   render() {
     const { classes, piezas, tipos } = this.props;
@@ -326,6 +326,8 @@ class PiezasPage extends PureComponent {
                     showX={showX}
                     title={`Tipo: ${pieza.tipo}`}
                     body={`Vendedor: ${pieza.vendedor}`}
+                    hidden
+                    icon={Tipos.find({ nombre: pieza.tipo }).fetch()[0].icono}
                     labelButton="Modificar"
                     action1={() => {}}
                     action2={() => {
@@ -481,7 +483,9 @@ class PiezasPage extends PureComponent {
                 </Grid>
                 <Grid item sm={6}>
                   <Title>Precio: </Title>
-                  <Typography>{`${dialogPiece.precio}`} {`${dialogPiece.moneda}`}</Typography>
+                  <Typography>
+                    {`${dialogPiece.precio}`} {`${dialogPiece.moneda}`}
+                  </Typography>
                 </Grid>
                 <Grid item sm={6}>
                   <Title>Numero de Serie: </Title>

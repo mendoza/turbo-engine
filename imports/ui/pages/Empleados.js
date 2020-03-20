@@ -15,12 +15,16 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  InputLabel,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Empleados from "../../api/collections/Empleados/Empleados";
+import MaskedTextField from "../components/MaskedTextField";
 
 class Empleado extends Component {
   constructor(props) {
@@ -29,6 +33,7 @@ class Empleado extends Component {
       showEmpleadoDialog: false,
       showSnackbar: false,
       showDeleteDialog: false,
+      searchByNames: '',
       editId: undefined,
       snackbarText: "",
       Nombre: "",
@@ -37,6 +42,9 @@ class Empleado extends Component {
       Telefono: "",
       email: "",
     };
+  }
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
   }
 
   handleTextInput = (event, stateName, validator) => {
@@ -182,14 +190,31 @@ class Empleado extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  label="RTN"
-                  onInput={event => {
+              <MaskedTextField
+                  mask={[
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                  ]}
+                  value={RTN}
+                  name="RTN"
+                  onChange={event => {
                     this.handleTextInput(event, "RTN", text => {
                       return validatorjs.isNumeric(text, { no_symbols: true });
                     });
                   }}
-                  value={RTN}
+                  label="RTN"
                   fullWidth
                 />
               </Grid>
@@ -279,6 +304,7 @@ class Empleado extends Component {
 
   renderEmpleadoTable = () => {
     const { empleados } = this.props;
+    const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -293,6 +319,15 @@ class Empleado extends Component {
         </TableHead>
         <TableBody>
           {empleados.map(empleado => {
+             const searchRegex = new RegExp(
+              searchByNames.split(/ /).filter(l => l !== '').join('|'),
+              'i'
+            );
+            const r1 = empleado && empleado.nombre.search(searchRegex);
+            const r2 = empleado && empleado.apellido.search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+              return <TableRow />;
+            }
             if (empleado) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -391,6 +426,13 @@ class Empleado extends Component {
     return (
       <DashboardLayout style={{ height: "100vh" }}>
         <Grid container spacing={2}>
+        <Grid item xs={12}>
+            <TextField
+              style={{ width: '50%' }}
+              label="Filtro por Nombre y Apellido"
+              onInput={this.handleSearchName}
+            />
+          </Grid>
           <Grid item xs={12}>
             <Button
               variant="contained"

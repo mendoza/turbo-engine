@@ -4,7 +4,8 @@ import SimpleSchema from "simpl-schema";
 const Tipos = new Mongo.Collection("Tipos");
 
 Tipos.schema = new SimpleSchema({
-    nombre: {type: String},
+  nombre: { type: String },
+  icono: { type: String },
 });
 
 export default Tipos;

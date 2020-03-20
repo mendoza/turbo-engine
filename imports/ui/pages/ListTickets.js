@@ -3,6 +3,7 @@ import {
   Grid,
   Snackbar,
   IconButton,
+  TextField,
   Table,
   TableRow,
   TableHead,
@@ -10,6 +11,9 @@ import {
   TableBody,
   Button,
   Checkbox,
+  InputLabel,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
@@ -24,6 +28,7 @@ class ListTickets extends Component {
     super(props);
     this.state = {
       shouldRedirect: false,
+      searchByNames: '',
       pathname: "",
       selected: [],
       enabler: false,
@@ -37,6 +42,10 @@ class ListTickets extends Component {
       open: false,
     });
   };
+
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
+  }
 
   handleClick = (event, id) => {
     const { selected } = this.state;
@@ -83,22 +92,29 @@ class ListTickets extends Component {
   handleButtonReporteExcel = () => {
     const { reportes } = this.props;
     const realdata = reportes.map(reporte => {
-      const { _id, comentario, tipo, empleado, fecha, prioridad, abierto } = reporte;
+      const { comentario, tipo, empleado, fecha, prioridad, abierto } = reporte;
+      var estado;
+      if(abierto == true){
+        estado = "Abierto"
+      }else{
+        estado = "Cerrado"
+      }
       return {
-        _id,
         comentario,
         tipo,
-        empleado: Empleados.findOne({ _id: empleado }),
+        empleado: Meteor.users.findOne({ _id: reporte.empleado }).profile.firstName,
         fecha,
         prioridad,
-        abierto,
+        estado,
       };
     });
+    var fechaHoy = "reporte_al_" + new Date().toLocaleDateString()+ ".csv";
+    console.log(fechaHoy);
     var csv = Papa.unparse(realdata);
     var blob = new Blob([csv]);
     var a = window.document.createElement("a");
     a.href = window.URL.createObjectURL(blob, { type: "text/plain" });
-    a.download = "reportes.csv";
+    a.download = fechaHoy.toString();
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -107,6 +123,7 @@ class ListTickets extends Component {
   renderTicketsTable = () => {
     const { reportes } = this.props;
     const { selected } = this.state;
+    const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -122,6 +139,17 @@ class ListTickets extends Component {
         </TableHead>
         <TableBody>
           {reportes.map(row => {
+            const searchRegex = new RegExp(
+              searchByNames.split(/ /).filter(l => l !== '').join('|'),
+              'i'
+            );
+            const r1 = row && row.tipo.search(searchRegex);
+            const r2 = row && row.prioridad.search(searchRegex);
+            const r3 = row && row.fecha.toString().search(searchRegex);
+            const r4 = row && row.comentario.search(searchRegex);
+            if (r1 === -1 && r2 === -1 && r3===-1 &&r4===-1 && searchByNames.length > 0) {
+              return <TableRow />;
+            }
             if (row.abierto) {
               const date = new Date(row.fecha);
               return (
@@ -137,7 +165,7 @@ class ListTickets extends Component {
                   <TableCell align="left">{`${date.toLocaleDateString()}`}</TableCell>
                   <TableCell align="left">{`${
                     Meteor.users.findOne({ _id: row.empleado }).profile.firstName
-                  }`}</TableCell>
+                    }`}</TableCell>
                   <TableCell align="left">{row.tipo}</TableCell>
                   <TableCell align="left">{row.comentario}</TableCell>
                   <TableCell align="left">
@@ -193,6 +221,13 @@ class ListTickets extends Component {
       <DashboardLayout style={{ height: "100vh" }}>
         <Title>Listado de Tickets</Title>
         <Grid container spacing={2} justify="left">
+          <Grid item xs={12}>
+            <TextField
+              style={{ width: '50%' }}
+              label="Filtro por Tipo, Prioridad, Fecha y Comentario"
+              onInput={this.handleSearchName}
+            />
+          </Grid>
           <Grid item>
             <Button
               variant="contained"
