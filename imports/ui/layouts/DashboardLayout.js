@@ -225,7 +225,9 @@ class DashboardLayout extends PureComponent {
     const RedirectTo = where => {
       this.setState({ shouldRedirect: true, pathName: where });
     };
-    const handleTicket = payload => {};
+    const handleTicket = payload => {
+
+    };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -277,7 +279,9 @@ class DashboardLayout extends PureComponent {
               {reportes.map(ticket => {
                 if (ticket.abierto) {
                   return (
-                    <MenuItem onClick={handleTicket()}>
+                    <MenuItem onClick={() => {
+                      RedirectTo("tickets");
+                    }}>
                       <ListItemIcon>
                         <i className="fas fa-portrait" />
                       </ListItemIcon>
@@ -361,7 +365,7 @@ class DashboardLayout extends PureComponent {
           <Copyright />
         </main>
         {shouldRedirect ? <Redirect to={pathName} /> : null}
-      </div>
+      </div >
     );
   }
 }
