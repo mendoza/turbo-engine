@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { PureComponent } from "react";
 import clsx from "clsx";
 import { Redirect } from "react-router-dom";
@@ -23,6 +24,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { dashboardRoutes } from "../Routes";
+import Reportes from "../../api/collections/Reportes/Reportes";
+import Title from "../components/Title";
+import Empleados from "../../api/collections/Empleados/Empleados";
 
 function Copyright() {
   return (
@@ -129,6 +133,7 @@ class DashboardLayout extends PureComponent {
       empresa: {},
       shouldRedirect: false,
       pathName: "",
+      anchorElement: null,
     };
 
     Meteor.call("getEmpresa", (error, result) => {
@@ -139,8 +144,8 @@ class DashboardLayout extends PureComponent {
   }
 
   render() {
-    const { classes, children, currentUser } = this.props;
-    const { open, anchorEl, empresa, shouldRedirect, pathName } = this.state;
+    const { classes, children, currentUser, reportes, empleados } = this.props;
+    const { open, anchorEl, anchorElement, empresa, shouldRedirect, pathName } = this.state;
 
     // Functions
     const isSuperAdminLayout = () => {
@@ -149,8 +154,7 @@ class DashboardLayout extends PureComponent {
           <MenuItem
             onClick={() => {
               RedirectTo("empresa");
-            }}
-            >
+            }}>
             <ListItemIcon>
               <i style={{ fontSize: "24px" }} className="fas fa-cog" />
             </ListItemIcon>
@@ -169,8 +173,7 @@ class DashboardLayout extends PureComponent {
             onClick={() => {
               RedirectTo(route.pathName);
             }}
-            key={route.name}
-            >
+            key={route.name}>
             <ListItemIcon>
               <i style={{ fontSize: "24px" }} className={route.icon} />
             </ListItemIcon>
@@ -188,8 +191,7 @@ class DashboardLayout extends PureComponent {
           onClick={() => {
             RedirectTo(route.pathName);
           }}
-          key={route.name}
-          >
+          key={route.name}>
           <ListItemIcon>
             <i style={{ fontSize: "24px" }} className={route.icon} />
           </ListItemIcon>
@@ -205,6 +207,14 @@ class DashboardLayout extends PureComponent {
       this.setState({ open: false });
     };
 
+    const handleClick = event => {
+      this.setState({ anchorElement: event.currentTarget });
+    };
+
+    const handleClose = () => {
+      this.setState({ anchorElement: null });
+    };
+
     const handleMoreClick = event => {
       this.setState({ anchorEl: event.currentTarget });
     };
@@ -215,6 +225,7 @@ class DashboardLayout extends PureComponent {
     const RedirectTo = where => {
       this.setState({ shouldRedirect: true, pathName: where });
     };
+    const handleTicket = payload => {};
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -228,8 +239,7 @@ class DashboardLayout extends PureComponent {
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-              >
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
               <i className="fas fa-bars" />
             </IconButton>
             <Typography
@@ -237,21 +247,52 @@ class DashboardLayout extends PureComponent {
               variant="h6"
               color="inherit"
               noWrap
-              className={classes.title}
-              >
+              className={classes.title}>
               {`${empresa.name}`}
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              <Badge
+                badgeContent={Reportes.find({ abierto: true }).count()}
+                color="secondary"
+                onClick={handleClick}>
                 <i className="fas fa-bell" />
               </Badge>
             </IconButton>
+            <Menu
+              id="long-menu"
+              anchorEl={anchorElement}
+              keepMounted
+              open={Boolean(anchorElement)}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              elevation={0}
+              getContentAnchorEl={null}>
+              {reportes.map(ticket => {
+                if (ticket.abierto) {
+                  return (
+                    <MenuItem onClick={handleTicket()}>
+                      <ListItemIcon>
+                        <i className="fas fa-portrait" />
+                      </ListItemIcon>
+                      {Meteor.users.findOne({ _id: ticket.empleado }).profile.firstName} envió un
+                      ticket
+                    </MenuItem>
+                  );
+                }
+              })}
+            </Menu>
             <IconButton
               aria-controls="simple-menu"
               aria-haspopup="true"
               color="inherit"
-              onClick={handleMoreClick}
-              >
+              onClick={handleMoreClick}>
               <i className="fas fa-ellipsis-v" />
             </IconButton>
             <Menu
@@ -269,8 +310,7 @@ class DashboardLayout extends PureComponent {
                 horizontal: "center",
               }}
               elevation={0}
-              getContentAnchorEl={null}
-              >
+              getContentAnchorEl={null}>
               {currentUser && currentUser.profile.role === "superAdmin"
                 ? isSuperAdminLayout()
                 : null}
@@ -288,8 +328,7 @@ class DashboardLayout extends PureComponent {
           classes={{
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
-          open={open}
-          >
+          open={open}>
           <div className={classes.toolbarIcon}>
             <center>
               <img src="/imagenes/Favicon.png" width="65" height="35" />
@@ -329,8 +368,12 @@ class DashboardLayout extends PureComponent {
 
 export default withStyles(useStyles)(
   withTracker(() => {
+    Meteor.subscribe("Reportes.all");
+    Meteor.subscribe("Empleados.all");
     return {
       currentUser: Meteor.user(),
+      reportes: Reportes.find().fetch(),
+      empleados: Empleados.find().fetch(),
     };
   })(DashboardLayout)
 );
