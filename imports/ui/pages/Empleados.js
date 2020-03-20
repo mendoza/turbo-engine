@@ -21,6 +21,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Empleados from "../../api/collections/Empleados/Empleados";
+import MaskedTextField from "../components/MaskedTextField";
 
 class Empleado extends Component {
   constructor(props) {
@@ -182,14 +183,31 @@ class Empleado extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  label="RTN"
-                  onInput={event => {
+              <MaskedTextField
+                  mask={[
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                  ]}
+                  value={RTN}
+                  name="RTN"
+                  onChange={event => {
                     this.handleTextInput(event, "RTN", text => {
                       return validatorjs.isNumeric(text, { no_symbols: true });
                     });
                   }}
-                  value={RTN}
+                  label="RTN"
                   fullWidth
                 />
               </Grid>
