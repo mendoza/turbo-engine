@@ -41,6 +41,7 @@ class EncuestaPage extends Component {
       Fecha: "",
       Score: "",
       Comentario: "",
+      textScore: "",
     };
   }
 
@@ -48,8 +49,8 @@ class EncuestaPage extends Component {
     this.setState({ searchByDate: event.target.value });
   };
 
-  calcularDatosBarra = () => {
-    const { encuestas } = this.props;
+  calcularDatosBarra = () =>{
+    const {encuestas} = this.props;
     const datos = [
       { name: "Enero", Malo: 0, Bueno: 0, Excelente: 0 },
       { name: "Febrero", Malo: 0, Bueno: 0, Excelente: 0 },
@@ -67,66 +68,38 @@ class EncuestaPage extends Component {
     encuestas.map(encuesta => {
       const date = new Date(encuesta.fecha);
       const month = date.getMonth();
-      if (encuesta.score === 0) {
-        datos[month].Malo += 1
-      } else if (encuesta.score === 1) {
-        datos[month].Bueno += 1
+      if(encuesta.score === 0){
+        datos[month].Malo +=1
+      } else if(encuesta.score === 1){
+        datos[month].Bueno +=1
       } else {
-        datos[month].Excelente += 1
+        datos[month].Excelente +=1
       }
-    });
+    }); 
     return datos;
   }
 
-  calcularDatosCircular = () => {
-    const { encuestas } = this.props;
+  calcularDatosCircular = () =>{
+    const {encuestas} = this.props;
     const datos = [
-      { name: "Malo", value: 0, fill: "#ec7063" },
-      { name: "Bueno", value: 0, fill: "#5499c7" },
-      { name: "Excelente", value: 0, fill: "#52be80" },
+      { name: "Malo", value: 0, fill: "#ec7063"  },
+      { name: "Bueno", value: 0 , fill: "#5499c7"},
+      { name: "Excelente", value: 0 , fill: "#52be80"},
     ];
     encuestas.map(encuesta => {
-      if (encuesta.score === 0) {
+      if(encuesta.score === 0){
         datos[0].value += 1;
-      } else if (encuesta.score === 1) {
+      } else if(encuesta.score === 1){
         datos[1].value += 1;
       } else {
         datos[2].value += 1;
       }
-    });
+    }); 
     return datos;
   }
 
-  imprimirPuntuacion = (encuesta) => {
-    let texto;
-    if (encuesta.score === 0) {
-      texto = "Malo"
-    } else if (encuesta.score === 1) {
-      texto = "Bueno"
-    } else if (encuesta.score === 2) {
-      texto = "Excelente"
-    } else {
-      texto = "N/A"
-    }
-    return texto;
-  }
-
-  imprimirScore = (Score) => {
-    let texto;
-    if (Score === 0) {
-      texto = "Malo"
-    } else if (Score === 1) {
-      texto = "Bueno"
-    } else if (Score === 2) {
-      texto = "Excelente"
-    } else {
-      texto = "N/A"
-    }
-    return texto;
-  }
-
   renderEncuestaDialog = () => {
-    const { shouldRender, Fecha, Score, Comentario } = this.state;
+    const { shouldRender, Fecha, Comentario, textScore, Score } = this.state;
     return (
       <Dialog
         open={shouldRender}
@@ -135,8 +108,7 @@ class EncuestaPage extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
+        fullWidth>
         <DialogTitle id="form-dialog-title">Encuesta</DialogTitle>
         <Divider />
         <DialogContent>
@@ -146,8 +118,8 @@ class EncuestaPage extends Component {
               {Fecha}
             </Grid>
             <Grid item xs={12} md={6}>
-              <Title>Puntuación</Title>
-              {this.imprimirScore(Score)}
+              <Title>Score</Title>
+              {textScore}
             </Grid>
             <Grid item xs={12} md={6}>
               <Title>Comentario</Title>
@@ -162,8 +134,7 @@ class EncuestaPage extends Component {
               this.setState({ shouldRender: false });
             }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cerrar
           </Button>
         </DialogActions>
@@ -194,6 +165,14 @@ class EncuestaPage extends Component {
             if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
               return <TableRow />;
             }
+            let labelScore = "";
+            if(encuesta.score === 0){
+              labelScore = "Mal servicio";
+            }else if(encuesta.score === 1) {
+              labelScore= "Buen servicio";
+            }else{ 
+              labelScore= "Excelente servicio";
+            }
             if (encuesta) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -202,7 +181,7 @@ class EncuestaPage extends Component {
                     {encuesta.fecha}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {this.imprimirPuntuacion(encuesta)}
+                    {labelScore}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
@@ -215,6 +194,7 @@ class EncuestaPage extends Component {
                               Fecha: encuesta.fecha,
                               Score: encuesta.score,
                               Comentario: encuesta.comment,
+                              textScore: labelScore
                             });
                           }}
                           aria-label="left aligned">
@@ -233,14 +213,14 @@ class EncuestaPage extends Component {
     );
   };
 
-  renderGraficoBarra = () => {
-    return (
-      <BarChart
-        margin={{ top: 20, right: 20, bottom: 20, left: 20, }}
-        width={1000}
-        height={300}
+  renderGraficoBarra = () =>{
+    return(
+      <BarChart 
+        margin={{top: 20, right: 20, bottom: 20, left: 20,}}
+        width={1000} 
+        height={300} 
         data={this.calcularDatosBarra()}
-      >
+        >
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
@@ -251,18 +231,18 @@ class EncuestaPage extends Component {
     );
   }
 
-  renderGraficoCircular = () => {
+  renderGraficoCircular = () =>{
     return (
       <PieChart width={730} height={250}>
-        <Pie
-          data={this.calcularDatosCircular()}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          outerRadius={50}
-          label
-        />
+        <Pie 
+          data={ this.calcularDatosCircular()} 
+          dataKey="value" 
+          nameKey="name" 
+          cx="50%" 
+          cy="50%" 
+          outerRadius={50} 
+          label 
+          />
         <Legend />
       </PieChart>
     );
