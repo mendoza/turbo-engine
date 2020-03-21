@@ -37,7 +37,8 @@ class RestorePass extends PureComponent {
     });
   };
 
-  handleClick = () => {
+  handleClick = e => {
+    e.preventDefault();
     const { correo, password } = this.state;
     let { users } = this.props;
     let alert;
@@ -49,8 +50,9 @@ class RestorePass extends PureComponent {
       alert = "El campo contraseña es requerido";
     }
     if (password.length < 8) {
-      alert = "El campo contraseña debe tener al menos 8 caracteres"
+      alert = "El campo contraseña debe tener al menos 8 caracteres";
     }
+    console.log("wenas");
 
     if (alert) {
       this.setState({
@@ -78,7 +80,7 @@ class RestorePass extends PureComponent {
       <DashboardLayout>
         <Container>
           <Typography>Reestablecer Contraseña</Typography>
-          <form>
+          <form onSubmit={this.handleClick}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -106,7 +108,7 @@ class RestorePass extends PureComponent {
                 onInput={event => this.handleTextChange(event, "password")}
               />
             </Grid>
-            <Button type="submit" color="primary" variant="contained" onClick={this.handleClick}>
+            <Button type="submit" color="primary" variant="contained">
               Reestablecer
             </Button>
           </form>
