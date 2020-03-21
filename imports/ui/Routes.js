@@ -242,7 +242,7 @@ export const dashboardRoutes = [
   {
     pathName: "/crearreportes",
     name: "Crear reporte",
-    icon: "fas fa-chart-bar",
+    icon: "fas fa-question",
     permission: "none",
   },
 ];
