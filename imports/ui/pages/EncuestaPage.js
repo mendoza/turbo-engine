@@ -108,7 +108,8 @@ class EncuestaPage extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">Encuesta</DialogTitle>
         <Divider />
         <DialogContent>
@@ -118,7 +119,7 @@ class EncuestaPage extends Component {
               {Fecha}
             </Grid>
             <Grid item xs={12} md={6}>
-              <Title>Score</Title>
+              <Title>Puntuación</Title>
               {textScore}
             </Grid>
             <Grid item xs={12} md={6}>
@@ -134,7 +135,8 @@ class EncuestaPage extends Component {
               this.setState({ shouldRender: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cerrar
           </Button>
         </DialogActions>
@@ -197,7 +199,8 @@ class EncuestaPage extends Component {
                               textScore: labelScore
                             });
                           }}
-                          aria-label="left aligned">
+                          aria-label="left aligned"
+                          >
                           <i className="fas fa-info" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -235,7 +238,7 @@ class EncuestaPage extends Component {
     return (
       <PieChart width={730} height={250}>
         <Pie 
-          data={ this.calcularDatosCircular()} 
+          data={this.calcularDatosCircular()} 
           dataKey="value" 
           nameKey="name" 
           cx="50%" 
@@ -257,7 +260,7 @@ class EncuestaPage extends Component {
               style={{ width: "50%" }}
               label="Filtro por puntaje y fecha"
               onInput={this.handleSearchDate}
-            />
+              />
           </Grid>
           <Grid item xs={12}>
             {this.renderEncuestasTable()}
