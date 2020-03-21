@@ -179,7 +179,7 @@ export const dashboardRoutes = [
   },
   {
     pathName: "/seccionAutos",
-    name: "Vehiculos",
+    name: "Autos",
     icon: "fas fa-car",
   },
   {
