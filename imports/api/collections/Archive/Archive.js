@@ -5,6 +5,7 @@ const Archive = new Mongo.Collection("Archive");
 
 Archive.schema = new SimpleSchema({
   nombre: { type: String },
+  comentario: {type: String},
   pictures: { type: Array },
   "pictures.$": { type: String },
 });

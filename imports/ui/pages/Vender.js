@@ -247,7 +247,7 @@ class Vender extends PureComponent {
                     autoFocus
                     value={montoTotal}
                     onInput={event => this.handleTextChange(event, "montoTotal")}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <InputLabel htmlFor="comment">Comentario</InputLabel>
