@@ -9,11 +9,15 @@ Meteor.methods({
     return Reportes.find().fetch();
   },
   updateReporte(payload) {
-    payload.datos.map(dar=>
-      Reportes.update({_id: dar},{$set:{abierto:false}}));
+    payload.datos.map(dar => Reportes.update({ _id: dar }, { $set: { abierto: false } }));
   },
   deleteReporte(payload) {
     const selector = { _id: payload._id };
     return Reportes.remove(selector) > 0;
+  },
+  viewReporte(payload) {
+    const selector = { _id: payload._id };
+    const modifier = payload;
+    return Reportes.update(selector, modifier) > 0;
   },
 });

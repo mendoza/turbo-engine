@@ -28,12 +28,14 @@ class ListTickets extends Component {
     super(props);
     this.state = {
       shouldRedirect: false,
-      searchByNames: '',
+      searchByNames: "",
       pathname: "",
       selected: [],
       enabler: false,
       open: "",
       message: "",
+      cambiar: true,
+      ver: "Ver tickets cerrados",
     };
   }
 
@@ -44,8 +46,8 @@ class ListTickets extends Component {
   };
 
   handleSearchName = event => {
-    this.setState({ searchByNames: event.target.value })
-  }
+    this.setState({ searchByNames: event.target.value });
+  };
 
   handleClick = (event, id) => {
     const { selected } = this.state;
@@ -94,10 +96,10 @@ class ListTickets extends Component {
     const realdata = reportes.map(reporte => {
       const { comentario, tipo, empleado, fecha, prioridad, abierto } = reporte;
       var estado;
-      if(abierto == true){
-        estado = "Abierto"
-      }else{
-        estado = "Cerrado"
+      if (abierto == true) {
+        estado = "Abierto";
+      } else {
+        estado = "Cerrado";
       }
       return {
         comentario,
@@ -108,7 +110,7 @@ class ListTickets extends Component {
         estado,
       };
     });
-    var fechaHoy = "reporte_al_" + new Date().toLocaleDateString()+ ".csv";
+    var fechaHoy = "reporte_al_" + new Date().toLocaleDateString() + ".csv";
     console.log(fechaHoy);
     var csv = Papa.unparse(realdata);
     var blob = new Blob([csv]);
@@ -120,10 +122,25 @@ class ListTickets extends Component {
     document.body.removeChild(a);
   };
 
+  handleVer = () => {
+    const { cambiar } = this.state;
+    if (cambiar) {
+      this.setState({
+        cambiar: false,
+        ver: "Ver tickets abiertos",
+      });
+    } else {
+      this.setState({
+        cambiar: true,
+        ver: "Ver tickets cerrados",
+      });
+    }
+  };
+
   renderTicketsTable = () => {
     const { reportes } = this.props;
     const { selected } = this.state;
-    const { searchByNames } = this.state;
+    const { searchByNames, cambiar } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -140,17 +157,20 @@ class ListTickets extends Component {
         <TableBody>
           {reportes.map(row => {
             const searchRegex = new RegExp(
-              searchByNames.split(/ /).filter(l => l !== '').join('|'),
-              'i'
+              searchByNames
+                .split(/ /)
+                .filter(l => l !== "")
+                .join("|"),
+              "i"
             );
             const r1 = row && row.tipo.search(searchRegex);
             const r2 = row && row.prioridad.search(searchRegex);
             const r3 = row && row.fecha.toString().search(searchRegex);
             const r4 = row && row.comentario.search(searchRegex);
-            if (r1 === -1 && r2 === -1 && r3===-1 &&r4===-1 && searchByNames.length > 0) {
+            if (r1 === -1 && r2 === -1 && r3 === -1 && r4 === -1 && searchByNames.length > 0) {
               return <TableRow />;
             }
-            if (row.abierto) {
+            if (row.abierto === cambiar) {
               const date = new Date(row.fecha);
               return (
                 <TableRow key={row.name}>
@@ -165,7 +185,7 @@ class ListTickets extends Component {
                   <TableCell align="left">{`${date.toLocaleDateString()}`}</TableCell>
                   <TableCell align="left">{`${
                     Meteor.users.findOne({ _id: row.empleado }).profile.firstName
-                    }`}</TableCell>
+                  }`}</TableCell>
                   <TableCell align="left">{row.tipo}</TableCell>
                   <TableCell align="left">{row.comentario}</TableCell>
                   <TableCell align="left">
@@ -216,14 +236,14 @@ class ListTickets extends Component {
   };
 
   render() {
-    const { shouldRedirect, pathname, open, message } = this.state;
+    const { shouldRedirect, pathname, open, message, ver } = this.state;
     return (
       <DashboardLayout style={{ height: "100vh" }}>
         <Title>Listado de Tickets</Title>
         <Grid container spacing={2} justify="left">
           <Grid item xs={12}>
             <TextField
-              style={{ width: '50%' }}
+              style={{ width: "50%" }}
               label="Filtro por Tipo, Prioridad, Fecha y Comentario"
               onInput={this.handleSearchName}
             />
@@ -256,6 +276,16 @@ class ListTickets extends Component {
                 this.handleButtonReporteExcel();
               }}>
               Exportar a Excel
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.handleVer();
+              }}>
+              {ver}
             </Button>
           </Grid>
         </Grid>
