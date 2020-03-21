@@ -165,6 +165,21 @@ class DashboardLayout extends PureComponent {
       return false;
     };
 
+    const isSuperAdminButton = () => {
+      if (currentUser && currentUser.profile.role === "superAdmin") {
+        return (
+          <IconButton color="inherit" onClick={handleClick}>
+            <Badge
+              badgeContent={Reportes.find({ abierto: true, visto: false }).count()}
+              color="secondary">
+              <i className="fas fa-bell" />
+            </Badge>
+          </IconButton>
+        );
+      }
+      return false;
+    };
+
     const isSuperAdmin = route => {
       if (currentUser && currentUser.profile.role === "superAdmin") {
         return (
@@ -225,7 +240,6 @@ class DashboardLayout extends PureComponent {
     const RedirectTo = where => {
       this.setState({ shouldRedirect: true, pathName: where });
     };
-    const handleTicket = payload => {};
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -250,13 +264,7 @@ class DashboardLayout extends PureComponent {
               className={classes.title}>
               {`${empresa.name}`}
             </Typography>
-            <IconButton color="inherit" onClick={handleClick}>
-              <Badge
-                badgeContent={Reportes.find({ abierto: true, visto: false }).count()}
-                color="secondary">
-                <i className="fas fa-bell" />
-              </Badge>
-            </IconButton>
+            {currentUser && currentUser.profile.role === "superAdmin" ? isSuperAdminButton() : null}
             <Menu
               id="long-menu"
               anchorEl={anchorElement}
@@ -275,34 +283,36 @@ class DashboardLayout extends PureComponent {
               getContentAnchorEl={null}>
               {reportes.map(ticket => {
                 let badge = "";
-                if (ticket.abierto) {
-                  if (ticket.visto) {
-                    badge = "fas fa-id-badge";
-                  } else {
-                    badge = "fas fa-bell";
+                if (currentUser && currentUser.profile.role === "superAdmin") {
+                  if (ticket.abierto) {
+                    if (ticket.visto) {
+                      badge = "fas fa-id-badge";
+                    } else {
+                      badge = "fas fa-bell";
+                    }
+                    return (
+                      <MenuItem
+                        onClick={() => {
+                          RedirectTo("tickets");
+                          Meteor.call("viewReporte", {
+                            _id: ticket._id,
+                            prioridad: ticket.prioridad,
+                            fecha: ticket.fecha,
+                            empleado: ticket.empleado,
+                            tipo: ticket.tipo,
+                            comentario: ticket.comentario,
+                            abierto: ticket.abierto,
+                            visto: true,
+                          });
+                        }}>
+                        <ListItemIcon>
+                          <i className={badge} />
+                        </ListItemIcon>
+                        {Meteor.users.findOne({ _id: ticket.empleado }).profile.firstName} envió un
+                        ticket
+                      </MenuItem>
+                    );
                   }
-                  return (
-                    <MenuItem
-                      onClick={() => {
-                        RedirectTo("tickets");
-                        Meteor.call("viewReporte", {
-                          _id: ticket._id,
-                          prioridad: ticket.prioridad,
-                          fecha: ticket.fecha,
-                          empleado: ticket.empleado,
-                          tipo: ticket.tipo,
-                          comentario: ticket.comentario,
-                          abierto: ticket.abierto,
-                          visto: true,
-                        });
-                      }}>
-                      <ListItemIcon>
-                        <i className={badge} />
-                      </ListItemIcon>
-                      {Meteor.users.findOne({ _id: ticket.empleado }).profile.firstName} envió un
-                      ticket
-                    </MenuItem>
-                  );
                 }
               })}
             </Menu>
