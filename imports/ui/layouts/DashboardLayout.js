@@ -165,21 +165,6 @@ class DashboardLayout extends PureComponent {
       return false;
     };
 
-    const isSuperAdminButton = () => {
-      if (currentUser && currentUser.profile.role === "superAdmin") {
-        return (
-          <IconButton color="inherit" onClick={handleClick}>
-            <Badge
-              badgeContent={Reportes.find({ abierto: true, visto: false }).count()}
-              color="secondary">
-              <i className="fas fa-bell" />
-            </Badge>
-          </IconButton>
-        );
-      }
-      return false;
-    };
-
     const isSuperAdmin = route => {
       if (currentUser && currentUser.profile.role === "superAdmin") {
         return (
@@ -242,6 +227,21 @@ class DashboardLayout extends PureComponent {
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    const isSuperAdminButton = () => {
+      if (currentUser && currentUser.profile.role === "superAdmin") {
+        return (
+          <IconButton color="inherit" onClick={handleClick}>
+            <Badge
+              badgeContent={Reportes.find({ abierto: true, visto: false }).count()}
+              color="secondary">
+              <i className="fas fa-bell" />
+            </Badge>
+          </IconButton>
+        );
+      }
+      return false;
+    };
 
     return (
       <div className={classes.root}>
