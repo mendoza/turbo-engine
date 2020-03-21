@@ -179,7 +179,7 @@ export const dashboardRoutes = [
   },
   {
     pathName: "/seccionAutos",
-    name: "Vehiculos",
+    name: "Autos",
     icon: "fas fa-car",
   },
   {
@@ -238,5 +238,11 @@ export const dashboardRoutes = [
     name: "Gestionar encuestas",
     icon: "fas fa-chart-bar",
     permission: "superAdmin",
+  },
+  {
+    pathName: "/crearreportes",
+    name: "Crear reporte",
+    icon: "fas fa-question",
+    permission: "none",
   },
 ];

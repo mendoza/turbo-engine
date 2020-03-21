@@ -158,7 +158,7 @@ class Empleado extends Component {
         <form onSubmit={this.handleCreateEmpleado}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
-            empleado
+            Empleado
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>
