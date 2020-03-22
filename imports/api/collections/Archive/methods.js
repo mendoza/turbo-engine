@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import Archive from "./Archive";
+import ArchiveFiles from "../ArchiveFiles/ArchiveFiles"
 
 Meteor.methods({
   addArchive(payload) {
@@ -12,6 +13,9 @@ Meteor.methods({
     const selector = { _id: payload._id };
     const modifier = payload;
     return Archive.update(selector, modifier) > 0;
+  },
+  deleteArchivePicture(payload) {
+    ArchiveFiles.remove({ _id: payload });
   },
   deleteArchive(payload) {
     const selector = { _id: payload._id };

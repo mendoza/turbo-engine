@@ -45,6 +45,7 @@ class Archive extends PureComponent {
       Nombre: "",
       Comentario: "",
       Files: [],
+      Pictures: [],
     };
   }
 
@@ -54,6 +55,7 @@ class Archive extends PureComponent {
       editId,
       Nombre,
       Comentario,
+      Pictures,
       Files,
     } = this.state;
     return(
@@ -107,6 +109,37 @@ class Archive extends PureComponent {
                   <br />
                   <input type="file" onChange={this.setFiles} multiple />
                 </Box>
+                <Divider />
+                <Grid item xs={12}>
+                  Imagenes:
+                </Grid>
+                <Grid container>
+                  {Pictures.map(imageId => {
+                    try {
+                      return (
+                        <Grid key={imageId} item xs={12} md={6}>
+                          <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
+                            <img
+                              src={ArchiveFiles.findOne({ _id: imageId }).link()}
+                              alt="Archivo"
+                              style={{ width: "100%", objectFit: "contain" }}
+                            />
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => {
+                                Meteor.call("deleteArchivePicture", imageId);
+                              }}>
+                              Eliminar
+                            </Button>
+                          </Box>
+                        </Grid>
+                      );
+                    } catch (error) {
+                      return undefined;
+                    }
+                  })}
+                </Grid>
               </Grid>
             </Grid>
           </DialogContent>
@@ -311,6 +344,7 @@ class Archive extends PureComponent {
                               showArchiveDialog: true,
                               Nombre: archivo.nombre,
                               Comentario: archivo.comentario,
+                              Pictures: archivo.pictures
                             });
                           }}
                           aria-label="centered"
