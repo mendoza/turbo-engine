@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
-import { 
-  Grid, 
+import {
+  Grid,
   Box,
-  Button, 
-  Snackbar, 
-  IconButton, 
-  TextField, 
+  Button,
+  Snackbar,
+  IconButton,
+  TextField,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -28,12 +28,12 @@ import { withTracker } from "meteor/react-meteor-data";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 import ArchiveFiles from "../../api/collections/ArchiveFiles/ArchiveFiles";
-import Archivo from "../../api/collections/Archive/Archive"
+import Archivo from "../../api/collections/Archive/Archive";
 
 class Archive extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       uploaded: false,
       showToast: false,
       message: "",
@@ -50,15 +50,8 @@ class Archive extends PureComponent {
   }
 
   renderArchiveDialog = () => {
-    const {
-      showArchiveDialog,
-      editId,
-      Nombre,
-      Comentario,
-      Pictures,
-      Files,
-    } = this.state;
-    return(
+    const { showArchiveDialog, editId, Nombre, Comentario, Pictures, Files } = this.state;
+    return (
       <Dialog
         open={showArchiveDialog}
         onClose={() => {
@@ -66,8 +59,7 @@ class Archive extends PureComponent {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
+        fullWidth>
         <form onSubmit={this.handleCreate}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
@@ -84,10 +76,9 @@ class Archive extends PureComponent {
                   name="nombre"
                   label="Nombre"
                   value={Nombre}
-
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextareaAutosize
@@ -98,16 +89,15 @@ class Archive extends PureComponent {
                   name="comentario"
                   label="Comentario"
                   value={Comentario}
-
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box paddingY="1rem">
                   Imagenes o archivos
                   <br />
-                  <input type="file" onChange={this.setFiles} multiple />
+                  <input type="file" multiple />
                 </Box>
                 <Divider />
                 <Grid item xs={12}>
@@ -146,15 +136,15 @@ class Archive extends PureComponent {
           <DialogActions>
             <Button
               onClick={() => {
-                this.setState({ 
+                this.setState({
                   showArchiveDialog: false,
                   Nombre: "",
                   Comentario: "",
-                  Files: [] });
+                  Files: [],
+                });
               }}
               color="primary"
-              variant="contained"
-              >
+              variant="contained">
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
@@ -164,7 +154,7 @@ class Archive extends PureComponent {
         </form>
       </Dialog>
     );
-  }
+  };
 
   renderDeleteDialog = () => {
     const { showDeleteDialog } = this.state;
@@ -176,8 +166,7 @@ class Archive extends PureComponent {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth
-        >
+        fullWidth>
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este elemento?
         </DialogTitle>
@@ -194,8 +183,7 @@ class Archive extends PureComponent {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDelete}>
@@ -206,73 +194,15 @@ class Archive extends PureComponent {
     );
   };
 
-  handleCreate = () => {
-    const {
-      Nombre,
-      Comentario,
-      Files,
-      editId
-    } = this.state;
-
-    const NewArchive = {
-      _id: editId,
-      nombre: Nombre,
-      comentario: Comentario,
-      pictures: Files,
-    };
-
-    let alert;
-    let methodName;
-
-    if (editId) {
-      methodName = "updateArchive"
-    }else{
-      methodName = "addArchive"
-    }
-
-    if(validator.isEmpty(Nombre)){
-      alert = "Debe de haber por lo menos un nombre"
-    }
-    if(alert){
-      this.setState({
-        showToast: true,
-        message: alert
-      });
-    }else{
-      const temp = Archivo.find({nombre: Nombre});
-      temp.forEach( ()=>{
-        if (methodName === "addArchive"){
-          alert = "Este elemento ya existe, cambiar el nombre a uno distinto";
-        };
-      });
-      if(alert){
-        this.setState({
-          showToast: true,
-          message: alert,
-        });
-        return;
-      }
-      Meteor.call(methodName, NewArchive, err => {
-        if (err) {
-          this.setState({
-            showToast: true,
-            message: "Ha ocurrido un error al crear el nuevo elemento",
-          });
-        }else{
-          this.setState({
-            showArchiveDialog: false,
-            Nombre: "",
-            Comentario: "",
-            Files: [],
-          });
-        }
-      });
-    }
+  handleCreate = async e => {
+    e.preventDefault();
+    e.persist();
+    this.setFiles(e);
   };
 
   handleDelete = () => {
     const { editId } = this.state;
-    Meteor.call("deleteArchive", editId, error => {
+    Meteor.call("deleteArchive", { _id: editId }, error => {
       if (error) {
         this.setState({
           showToast: true,
@@ -301,7 +231,6 @@ class Archive extends PureComponent {
       });
     }
   };
-
 
   renderArchiveTable = () => {
     const { archivos } = this.props;
@@ -344,11 +273,10 @@ class Archive extends PureComponent {
                               showArchiveDialog: true,
                               Nombre: archivo.nombre,
                               Comentario: archivo.comentario,
-                              Pictures: archivo.pictures
+                              Pictures: archivo.pictures,
                             });
                           }}
-                          aria-label="centered"
-                          >
+                          aria-label="centered">
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -359,8 +287,7 @@ class Archive extends PureComponent {
                               editId: archivo._id,
                               showDeleteDialog: true,
                             });
-                          }}
-                          >
+                          }}>
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -400,21 +327,20 @@ class Archive extends PureComponent {
             color="inherit"
             onClick={() => {
               this.setState({ showToast: false });
-            }}
-            >
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
   };
 
-  setFiles = event => {
-    const { Files } = event.target[1];
+  setFiles = async event => {
+    const { files } = event.target[3];
     let uploaded = 0;
     const fileIds = [];
-    Object.keys(Files).forEach(key => {
-      const uploadFile = Files[key];
+    Object.keys(files).forEach(key => {
+      const uploadFile = files[key];
       if (uploadFile) {
         // We upload only one file, in case
         // multiple files were selected
@@ -447,7 +373,7 @@ class Archive extends PureComponent {
           } else {
             uploaded += 1;
             fileIds.push(fileObj._id);
-            if (uploaded === Files.length) {
+            if (uploaded === files.length) {
               this.setState(
                 {
                   uploaded: true,
@@ -455,14 +381,64 @@ class Archive extends PureComponent {
                   message: "Archivo subido exitosamente",
                   Files: fileIds,
                 },
-                /* () => {
-                  const { nombre, files } = this.state;
-                  const payload = { nombre, files };
-                  console.log(payload);
-                  Meteor.call("addArchive", payload, err => {
-                    console.log(err);
-                  });
-                } */
+                () => {
+                  const { Nombre, Comentario, Files, editId } = this.state;
+
+                  const NewArchive = {
+                    _id: editId,
+                    nombre: Nombre,
+                    comentario: Comentario,
+                    pictures: Files,
+                  };
+
+                  let alert;
+                  let methodName;
+
+                  if (editId) {
+                    methodName = "updateArchive";
+                  } else {
+                    methodName = "addArchive";
+                  }
+
+                  if (validator.isEmpty(Nombre)) {
+                    alert = "Debe de haber por lo menos un nombre";
+                  }
+                  if (alert) {
+                    this.setState({
+                      showToast: true,
+                      message: alert,
+                    });
+                  } else {
+                    const temp = Archivo.find({ nombre: Nombre });
+                    temp.forEach(() => {
+                      if (methodName === "addArchive") {
+                        alert = "Este elemento ya existe, cambiar el nombre a uno distinto";
+                      }
+                    });
+                    if (alert) {
+                      this.setState({
+                        showToast: true,
+                        message: alert,
+                      });
+                      return;
+                    }
+                    Meteor.call(methodName, NewArchive, err => {
+                      if (err) {
+                        this.setState({
+                          showToast: true,
+                          message: "Ha ocurrido un error al crear el nuevo elemento",
+                        });
+                      } else {
+                        this.setState({
+                          showArchiveDialog: false,
+                          Nombre: "",
+                          Comentario: "",
+                          Files: [],
+                        });
+                      }
+                    });
+                  }
+                }
               );
             }
           }
@@ -478,10 +454,10 @@ class Archive extends PureComponent {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              style={{ width: '50%' }}
+              style={{ width: "50%" }}
               label="Filtro por nombre"
               // onInput={this.handleSearchName}
-              />
+            />
           </Grid>
           <Grid item xs={12}>
             <Button
@@ -489,8 +465,7 @@ class Archive extends PureComponent {
               color="primary"
               onClick={() => {
                 this.setState({ showArchiveDialog: true, editId: undefined });
-              }}
-              >
+              }}>
               Agregar archivos
             </Button>
           </Grid>
@@ -513,7 +488,6 @@ export default withTracker(() => {
     archivosFiles: ArchiveFiles.find().fetch(),
   };
 })(Archive);
-
 
 /*
         <Grid container xs={12}>
