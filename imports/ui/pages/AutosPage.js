@@ -600,6 +600,7 @@ class AutosPage extends PureComponent {
                 Imagenes del auto
               </Grid>
               <Grid container>
+                {console.log("id de las imagenes:",pictures)}
                 {pictures.map(imageId => {
                   try {
                     return (
@@ -733,6 +734,7 @@ class AutosPage extends PureComponent {
                 <Title>Año: </Title>
                 <Typography>{`${dialogCar.year}`}</Typography>
               </Grid>
+              {console.log(dialogCar.pictures)}
               {dialogCar &&
                 dialogCar.pictures &&
                 dialogCar.pictures.map(imageId => {
@@ -749,6 +751,7 @@ class AutosPage extends PureComponent {
                       </Grid>
                     );
                   } catch (error) {
+                    console.log(error)
                     return undefined;
                   }
                 })}
