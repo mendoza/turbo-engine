@@ -202,7 +202,7 @@ class Proveedores extends Component {
         <form onSubmit={this.handleCreateProvider}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
-            proveedor
+            Proveedor
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>

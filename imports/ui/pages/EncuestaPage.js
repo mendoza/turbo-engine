@@ -41,6 +41,7 @@ class EncuestaPage extends Component {
       Fecha: "",
       Score: "",
       Comentario: "",
+      textScore: "",
     };
   }
 
@@ -49,6 +50,10 @@ class EncuestaPage extends Component {
   };
 
   calcularDatosBarra = () =>{
+    let contador = 0;
+    let contM = 0;
+    let contB = 0;
+    let contE = 0;
     const {encuestas} = this.props;
     const datos = [
       { name: "Enero", Malo: 0, Bueno: 0, Excelente: 0 },
@@ -68,17 +73,27 @@ class EncuestaPage extends Component {
       const date = new Date(encuesta.fecha);
       const month = date.getMonth();
       if(encuesta.score === 0){
-        datos[month].Malo +=1
+        contador += 1;
+        contM += 1;
       } else if(encuesta.score === 1){
-        datos[month].Bueno +=1
+        contador += 1;
+        contB += 1;
       } else {
-        datos[month].Excelente +=1
+        contador += 1;
+        contE += 1;
       }
+      datos[month].Malo = ((contM/contador)*100).toFixed(2);
+      datos[month].Bueno = ((contB/contador)*100).toFixed(2);
+      datos[month].Excelente = ((contE/contador)*100).toFixed(2);
     }); 
     return datos;
   }
 
   calcularDatosCircular = () =>{
+    let contador = 0;
+    let contM = 0;
+    let contB = 0;
+    let contE = 0;
     const {encuestas} = this.props;
     const datos = [
       { name: "Malo", value: 0, fill: "#ec7063"  },
@@ -87,18 +102,24 @@ class EncuestaPage extends Component {
     ];
     encuestas.map(encuesta => {
       if(encuesta.score === 0){
-        datos[0].value += 1;
+        contador += 1;
+        contM += 1;
       } else if(encuesta.score === 1){
-        datos[1].value += 1;
+        contador += 1;
+        contB += 1;
       } else {
-        datos[2].value += 1;
+        contador +=1;
+        contE += 1;
       }
+      datos[0].value = parseFloat(((contM/contador)*100).toFixed(2));
+      datos[1].value = parseFloat(((contB/contador)*100).toFixed(2));
+      datos[2].value = parseFloat(((contE/contador)*100).toFixed(2));
     }); 
     return datos;
   }
 
   renderEncuestaDialog = () => {
-    const { shouldRender, Fecha, Score, Comentario } = this.state;
+    const { shouldRender, Fecha, Comentario, textScore, Score } = this.state;
     return (
       <Dialog
         open={shouldRender}
@@ -107,7 +128,8 @@ class EncuestaPage extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth>
+        fullWidth
+        >
         <DialogTitle id="form-dialog-title">Encuesta</DialogTitle>
         <Divider />
         <DialogContent>
@@ -117,8 +139,8 @@ class EncuestaPage extends Component {
               {Fecha}
             </Grid>
             <Grid item xs={12} md={6}>
-              <Title>Score</Title>
-              {Score}
+              <Title>Puntuación</Title>
+              {textScore}
             </Grid>
             <Grid item xs={12} md={6}>
               <Title>Comentario</Title>
@@ -133,7 +155,8 @@ class EncuestaPage extends Component {
               this.setState({ shouldRender: false });
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+            >
             Cerrar
           </Button>
         </DialogActions>
@@ -164,6 +187,14 @@ class EncuestaPage extends Component {
             if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
               return <TableRow />;
             }
+            let labelScore = "";
+            if(encuesta.score === 0){
+              labelScore = "Mal servicio";
+            }else if(encuesta.score === 1) {
+              labelScore= "Buen servicio";
+            }else{ 
+              labelScore= "Excelente servicio";
+            }
             if (encuesta) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -172,7 +203,7 @@ class EncuestaPage extends Component {
                     {encuesta.fecha}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {encuesta.score}
+                    {labelScore}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <div>
@@ -185,9 +216,11 @@ class EncuestaPage extends Component {
                               Fecha: encuesta.fecha,
                               Score: encuesta.score,
                               Comentario: encuesta.comment,
+                              textScore: labelScore
                             });
                           }}
-                          aria-label="left aligned">
+                          aria-label="left aligned"
+                          >
                           <i className="fas fa-info" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -225,7 +258,7 @@ class EncuestaPage extends Component {
     return (
       <PieChart width={730} height={250}>
         <Pie 
-          data={ this.calcularDatosCircular()} 
+          data={this.calcularDatosCircular()} 
           dataKey="value" 
           nameKey="name" 
           cx="50%" 
@@ -247,7 +280,7 @@ class EncuestaPage extends Component {
               style={{ width: "50%" }}
               label="Filtro por puntaje y fecha"
               onInput={this.handleSearchDate}
-            />
+              />
           </Grid>
           <Grid item xs={12}>
             {this.renderEncuestasTable()}

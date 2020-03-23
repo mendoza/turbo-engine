@@ -184,21 +184,18 @@ export const dashboardRoutes = [
   },
   {
     pathName: "/seccionAutos",
-    name: "Vehiculos",
+    name: "Autos",
     icon: "fas fa-car",
-    permission: "superAdmin",
   },
   {
     pathName: "/seccionPiezas",
     name: "Piezas",
     icon: "fas fa-puzzle-piece",
-    permission: "superAdmin",
   },
   {
     pathName: "/actualizarTipos",
     name: "Tipos",
     icon: "fas fa-wrench",
-    permission: "superAdmin",
   },
   {
     pathName: "/clientes",
@@ -229,13 +226,11 @@ export const dashboardRoutes = [
     pathName: "/maquinaria",
     name: "Maquinaria",
     icon: "fas fa-cogs",
-    permission: "superAdmin",
   },
   {
     pathName: "/vender",
     name: "Vender automovil",
     icon: "fas fa-check-circle",
-    permission: "superAdmin",
   },
   {
     pathName: "/tickets",
@@ -254,5 +249,11 @@ export const dashboardRoutes = [
     name: "Crear archivos",
     icon: "fas fa-file-alt",
     permission: "superAdmin",
+  },
+  {
+    pathName: "/crearreportes",
+    name: "Crear reporte",
+    icon: "fas fa-question",
+    permission: "none",
   },
 ];

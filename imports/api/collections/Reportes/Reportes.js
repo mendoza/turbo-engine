@@ -10,6 +10,7 @@ Reportes.schema = new SimpleSchema({
   tipo: { type: String },
   comentario: { type: String },
   abierto: { type: Boolean, defaultValue: true },
+  visto: { type: Boolean, defaultValue: false },
 });
 
 export default Reportes;

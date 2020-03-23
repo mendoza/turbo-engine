@@ -234,8 +234,8 @@ class Clientes extends Component {
         fullWidth>
         <form onSubmit={this.handleCreateClient}>
           <DialogTitle id="form-dialog-title">
-            {editId ? "Editar " : "Agregar"}
-            cliente
+            {editId ? "Editar " : "Agregar "}
+            Cliente
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>

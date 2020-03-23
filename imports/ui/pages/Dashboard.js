@@ -29,11 +29,14 @@ class Dashboard extends PureComponent {
     super(props);
 
     this.state = {
-      shouldRender: false
     };
   }
 
   calcularDatos = () =>{
+    let contador = 0;
+    let contM = 0;
+    let contB = 0;
+    let contE = 0;
     const {encuestas} = this.props;
     const datos = [
       { name: "Enero", Malo: 0, Bueno: 0, Excelente: 0 },
@@ -52,18 +55,26 @@ class Dashboard extends PureComponent {
     encuestas.map(encuesta => {
       const date = new Date(encuesta.fecha);
       const month = date.getMonth();
+      console.log(date.getMonth());
       if(encuesta.score === 0){
-        datos[month].Malo +=1
+        contador += 1;
+        contM += 1;
       } else if(encuesta.score === 1){
-        datos[month].Bueno +=1
+        contador += 1;
+        contB += 1;
       } else {
-        datos[month].Excelente +=1
+        contador += 1;
+        contE += 1;
       }
+      datos[month].Malo = ((contM/contador)*100).toFixed(2);
+      datos[month].Bueno = ((contB/contador)*100).toFixed(2);
+      datos[month].Excelente = ((contE/contador)*100).toFixed(2);
     }); 
     return datos;
   }
 
   renderGrafico = () =>{
+    
     return(
       <BarChart 
         margin={{top: 20, right: 20, bottom: 20, left: 20,}}
