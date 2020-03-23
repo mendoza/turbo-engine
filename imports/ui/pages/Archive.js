@@ -17,6 +17,9 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  InputLabel,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -39,7 +42,6 @@ class Archive extends PureComponent {
       showToast: false,
       message: "",
       searchByNames: "",
-
       editId: undefined,
       showCreateArchiveDialog: false,
       showArchiveDialog: false,
@@ -50,6 +52,9 @@ class Archive extends PureComponent {
       Files: [],
       Pictures: [],
     };
+  }
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
   }
 
   // ========================================================================
@@ -217,7 +222,7 @@ class Archive extends PureComponent {
                       alt="Archivo"
                       style={{ width: "100%", objectFit: "contain" }}
                     />
-                    <Button variant="contained" color="primary" onClick={() => {}}>
+                    <Button variant="contained" color="primary" onClick={() => { }}>
                       <a
                         style={{ textDecoration: "none", color: "inherit" }}
                         download
@@ -377,11 +382,8 @@ class Archive extends PureComponent {
         <TableBody>
           {archivos.map(archivo => {
             const searchRegex = new RegExp(
-              searchByNames
-                .split(/ /)
-                .filter(l => l !== "")
-                .join("|"),
-              "i"
+              searchByNames.split(/ /).filter(l => l !== '').join('|'),
+              'i'
             );
             const r1 = archivo && archivo.nombre.search(searchRegex);
             if (r1 === -1 && searchByNames.length > 0) {
@@ -519,9 +521,9 @@ class Archive extends PureComponent {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              style={{ width: "50%" }}
-              label="Filtro por nombre"
-              // onInput={this.handleSearchName}
+              style={{ width: '50%' }}
+              label="Filtro por Nombre y Apellido"
+              onInput={this.handleSearchName}
             />
           </Grid>
           <Grid item xs={12}>
@@ -580,6 +582,6 @@ export default withTracker(() => {
                 Subir archivos
               </Button>
             </form>
-          </Grid> 
+          </Grid>
         </Grid>
 */
