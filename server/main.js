@@ -10,6 +10,7 @@ import "../imports/api/collections/Piezas/methods";
 import "../imports/api/collections/Autos/methods";
 import "../imports/api/collections/Tipos/methods";
 import "../imports/api/collections/AutosFiles/publications";
+import "../imports/api/collections/ArchiveFiles/publications";
 import "../imports/api/collections/Encuestas/Encuestas";
 import "../imports/api/collections/Cliente/pubications";
 import "../imports/api/collections/Cliente/methods";
@@ -20,13 +21,13 @@ import "../imports/api/collections/Historial/publications";
 import "../imports/api/collections/Maquinas/methods";
 import "../imports/api/collections/Maquinas/publications";
 import "../imports/api/collections/Proveedor/methods";
-import "../imports/api/collections/Proveedor/publications"
-import "../imports/api/collections/Reportes/publications"
-import "../imports/api/collections/Reportes/methods"
 import "../imports/api/collections/Proveedor/publications";
+import "../imports/api/collections/Reportes/publications";
+import "../imports/api/collections/Reportes/methods";
 import "../imports/api/collections/Encuestas/methods";
 import "../imports/api/collections/Encuestas/publications";
-
+import "../imports/api/collections/Archive/methods";
+import "../imports/api/collections/Archive/publications";
 
 Meteor.startup(() => {
   if (Empresa.find().count() === 0) {
