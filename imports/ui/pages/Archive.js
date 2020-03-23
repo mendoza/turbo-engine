@@ -90,7 +90,6 @@ class Archive extends PureComponent {
                 message: "No se pudo subir el archivo",
               });
             }
-            console.log(error);
           } else {
             uploaded += 1;
             fileIds.push(fileObj._id);
@@ -102,13 +101,9 @@ class Archive extends PureComponent {
                   showCreateArchiveDialog: false,
                   message: "Archivo subido exitosamente",
                   Files: fileIds,
-
-                  Nombre: "",
-                  Comentario: "",
                 },
                 () => {
                   const { Nombre, Comentario, Files, editId } = this.state;
-
                   /* const NewArchive = {
                     _id: editId,
                     nombre: Nombre,
@@ -147,7 +142,6 @@ class Archive extends PureComponent {
                       });
                       return;
                     }
-                    console.log(Files);
                     Meteor.call(
                       methodName,
                       {
@@ -213,10 +207,8 @@ class Archive extends PureComponent {
           </Grid>
         </DialogContent>
         <Grid container>
-          {console.log(Pictures)}
           {Pictures.map(imageId => {
             try {
-              console.log("find", ArchiveFiles.find({ _id: imageId }).fetch());
               return (
                 <Grid key={imageId} item xs={12} md={6}>
                   <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
@@ -227,7 +219,7 @@ class Archive extends PureComponent {
                     />
                     <Button variant="contained" color="primary" onClick={() => {}}>
                       <a
-                        style={{ textDecoration: "none",color:"inherit" }}
+                        style={{ textDecoration: "none", color: "inherit" }}
                         download
                         href={ArchiveFiles.findOne({ _id: imageId }).link()}>
                         Descarga
@@ -237,7 +229,6 @@ class Archive extends PureComponent {
                 </Grid>
               );
             } catch (error) {
-              console.log(error);
               return undefined;
             }
           })}
@@ -559,7 +550,6 @@ class Archive extends PureComponent {
 export default withTracker(() => {
   Meteor.subscribe("Archive.all");
   Meteor.subscribe("ArchiveFiles.all");
-  console.log("de aqui", ArchiveFiles.find().fetch());
   return {
     archivos: Archivo.find({}).fetch(),
     archivosFiles: ArchiveFiles.find().fetch(),
