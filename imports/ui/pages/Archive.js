@@ -38,6 +38,7 @@ class Archive extends PureComponent {
       uploaded: false,
       showToast: false,
       message: "",
+      searchByNames: "",
 
       editId: undefined,
       showCreateArchiveDialog: false,
@@ -98,8 +99,12 @@ class Archive extends PureComponent {
                 {
                   uploaded: true,
                   showToast: true,
+                  showCreateArchiveDialog: false,
                   message: "Archivo subido exitosamente",
                   Files: fileIds,
+                  
+                  Nombre: "",
+                  Comentario: "",
                 },
                 () => {
                   const { Nombre, Comentario, Files, editId } = this.state;
@@ -224,10 +229,10 @@ class Archive extends PureComponent {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        Meteor.call("", imageId);
-                      }}>
-                      Descargar
-                    </Button>
+                        
+                      }}> 
+                      Descargar (no funciona :c)
+                    </Button> 
                   </Box>
                 </Grid>
               );
@@ -302,36 +307,6 @@ class Archive extends PureComponent {
                   <input type="file" multiple />
                 </Box>
                 <Divider />
-                <Grid item xs={12}>
-                  Imagenes:
-                </Grid>
-                <Grid container>
-                  {Pictures.map(imageId => {
-                    try {
-                      return (
-                        <Grid key={imageId} item xs={12} md={6}>
-                          <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
-                            <img
-                              src={ArchiveFiles.findOne({ _id: imageId }).link()}
-                              alt="Archivo"
-                              style={{ width: "100%", objectFit: "contain" }}
-                            />
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => {
-                                Meteor.call("deleteArchivePicture", imageId);
-                              }}>
-                              Eliminar
-                            </Button>
-                          </Box>
-                        </Grid>
-                      );
-                    } catch (error) {
-                      return undefined;
-                    }
-                  })}
-                </Grid>
               </Grid>
             </Grid>
           </DialogContent>
@@ -399,7 +374,7 @@ class Archive extends PureComponent {
 
   renderArchiveTable = () => {
     const { archivos } = this.props;
-    // const { searchByNames } = this.state;
+    const { searchByNames } = this.state;
     return (
       <Table aria-label="users table">
         <TableHead>
@@ -410,16 +385,14 @@ class Archive extends PureComponent {
         </TableHead>
         <TableBody>
           {archivos.map(archivo => {
-            /* const searchRegex = new RegExp(
+            const searchRegex = new RegExp(
               searchByNames.split(/ /).filter(l => l !== '').join('|'),
               'i'
             );
-            const r1 = provider && provider.nombre.search(searchRegex);
-            const r2 = provider && provider.apellido.search(searchRegex);
-
-            if (r1 === -1 && r2 === -1 && searchByNames.length > 0) {
+            const r1 = archivo && archivo.nombre.search(searchRegex);
+            if (r1 === -1 && searchByNames.length > 0) {
               return <TableRow />;
-            } */
+            }
             if (archivo) {
               return (
                 // eslint-disable-next-line no-underscore-dangle
@@ -503,6 +476,10 @@ class Archive extends PureComponent {
   // ========================================================================
   // ========================= Handle =======================================
   // ========================================================================
+
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value });
+  };
 
   handleCreate = async e => {
     e.preventDefault();

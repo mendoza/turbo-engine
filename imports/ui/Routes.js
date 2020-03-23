@@ -249,4 +249,10 @@ export const dashboardRoutes = [
     icon: "fas fa-chart-bar",
     permission: "superAdmin",
   },
+  {
+    pathName: "/archive",
+    name: "Crear archivos",
+    icon: "fas fa-file-alt",
+    permission: "superAdmin",
+  },
 ];
