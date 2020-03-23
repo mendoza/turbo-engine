@@ -102,7 +102,7 @@ class Archive extends PureComponent {
                   showCreateArchiveDialog: false,
                   message: "Archivo subido exitosamente",
                   Files: fileIds,
-                  
+
                   Nombre: "",
                   Comentario: "",
                 },
@@ -225,14 +225,14 @@ class Archive extends PureComponent {
                       alt="Archivo"
                       style={{ width: "100%", objectFit: "contain" }}
                     />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        
-                      }}> 
-                      Descargar (no funciona :c)
-                    </Button> 
+                    <Button variant="contained" color="primary" onClick={() => {}}>
+                      <a
+                        style={{ textDecoration: "none",color:"inherit" }}
+                        download
+                        href={ArchiveFiles.findOne({ _id: imageId }).link()}>
+                        Descarga
+                      </a>
+                    </Button>
                   </Box>
                 </Grid>
               );
@@ -386,8 +386,11 @@ class Archive extends PureComponent {
         <TableBody>
           {archivos.map(archivo => {
             const searchRegex = new RegExp(
-              searchByNames.split(/ /).filter(l => l !== '').join('|'),
-              'i'
+              searchByNames
+                .split(/ /)
+                .filter(l => l !== "")
+                .join("|"),
+              "i"
             );
             const r1 = archivo && archivo.nombre.search(searchRegex);
             if (r1 === -1 && searchByNames.length > 0) {
