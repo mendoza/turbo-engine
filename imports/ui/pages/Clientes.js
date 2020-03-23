@@ -491,7 +491,6 @@ class Clientes extends Component {
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.clientType}</TableCell>
                   <TableCell>{client.autos}</TableCell>
-                  <TableCell />
                   <TableCell>
                     <div>
                       <ToggleButtonGroup aria-label="text alignment">
