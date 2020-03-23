@@ -1,5 +1,3 @@
-import AutosFiles from './AutosFiles';
+import AutosFiles from "./AutosFiles";
 
-Meteor.publish('AutosFiles.all', () => (
-  AutosFiles.find().cursor
-));
+Meteor.publish("AutosFiles.all", () => AutosFiles.find().cursor);

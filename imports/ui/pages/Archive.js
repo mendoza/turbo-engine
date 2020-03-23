@@ -27,7 +27,7 @@ import { withTracker } from "meteor/react-meteor-data";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 
-import Title from "../components/Title"
+import Title from "../components/Title";
 import ArchiveFiles from "../../api/collections/ArchiveFiles/ArchiveFiles";
 import Archivo from "../../api/collections/Archive/Archive";
 
@@ -50,7 +50,6 @@ class Archive extends PureComponent {
       Pictures: [],
     };
   }
-
 
   // ========================================================================
   // ========================= Set files ====================================
@@ -144,26 +143,30 @@ class Archive extends PureComponent {
                       return;
                     }
                     console.log(Files);
-                    Meteor.call(methodName, {
-                      _id: editId,
-                      nombre: Nombre,
-                      comentario: Comentario,
-                      pictures: Files,
-                    }, err => {
-                      if (err) {
-                        this.setState({
-                          showToast: true,
-                          message: "Ha ocurrido un error al crear el nuevo elemento",
-                        });
-                      } else {
-                        this.setState({
-                          showArchiveDialog: false,
-                          Nombre: "",
-                          Comentario: "",
-                          Files: [],
-                        });
+                    Meteor.call(
+                      methodName,
+                      {
+                        _id: editId,
+                        nombre: Nombre,
+                        comentario: Comentario,
+                        pictures: Files,
+                      },
+                      err => {
+                        if (err) {
+                          this.setState({
+                            showToast: true,
+                            message: "Ha ocurrido un error al crear el nuevo elemento",
+                          });
+                        } else {
+                          this.setState({
+                            showArchiveDialog: false,
+                            Nombre: "",
+                            Comentario: "",
+                            Files: [],
+                          });
+                        }
                       }
-                    });
+                    );
                   }
                 }
               );
@@ -177,10 +180,10 @@ class Archive extends PureComponent {
 
   // ========================================================================
   // ========================= Render =======================================
-  // ======================================================================== 
+  // ========================================================================
 
   renderArchiveDialog = () => {
-    const { showArchiveDialog, Nombre, Comentario, Pictures} = this.state;
+    const { showArchiveDialog, Nombre, Comentario, Pictures } = this.state;
     return (
       <Dialog
         open={showArchiveDialog}
@@ -208,6 +211,7 @@ class Archive extends PureComponent {
           {console.log(Pictures)}
           {Pictures.map(imageId => {
             try {
+              console.log("find", ArchiveFiles.find({ _id: imageId }).fetch());
               return (
                 <Grid key={imageId} item xs={12} md={6}>
                   <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
@@ -228,7 +232,7 @@ class Archive extends PureComponent {
                 </Grid>
               );
             } catch (error) {
-              console.log(error)
+              console.log(error);
               return undefined;
             }
           })}
@@ -245,7 +249,7 @@ class Archive extends PureComponent {
         </DialogActions>
       </Dialog>
     );
-  }
+  };
 
   renderCreateArchiveDialog = () => {
     const { showCreateArchiveDialog, editId, Nombre, Comentario, Pictures } = this.state;
@@ -339,7 +343,7 @@ class Archive extends PureComponent {
                   Nombre: "",
                   Comentario: "",
                   Files: [],
-                  Pictures: []
+                  Pictures: [],
                 });
               }}
               color="primary"
@@ -496,10 +500,9 @@ class Archive extends PureComponent {
     );
   };
 
-
-// ========================================================================
-// ========================= Handle =======================================
-// ======================================================================== 
+  // ========================================================================
+  // ========================= Handle =======================================
+  // ========================================================================
 
   handleCreate = async e => {
     e.preventDefault();
@@ -539,7 +542,6 @@ class Archive extends PureComponent {
     }
   };
 
-  
   render() {
     return (
       <DashboardLayout>
@@ -576,6 +578,8 @@ class Archive extends PureComponent {
 
 export default withTracker(() => {
   Meteor.subscribe("Archive.all");
+  Meteor.subscribe("ArchiveFiles.all");
+  console.log("de aqui", ArchiveFiles.find().fetch());
   return {
     archivos: Archivo.find({}).fetch(),
     archivosFiles: ArchiveFiles.find().fetch(),

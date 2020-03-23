@@ -24,7 +24,6 @@ import "../imports/api/collections/Proveedor/methods";
 import "../imports/api/collections/Proveedor/publications";
 import "../imports/api/collections/Reportes/publications";
 import "../imports/api/collections/Reportes/methods";
-import "../imports/api/collections/Proveedor/publications";
 import "../imports/api/collections/Encuestas/methods";
 import "../imports/api/collections/Encuestas/publications";
 import "../imports/api/collections/Archive/methods";
