@@ -225,7 +225,7 @@ class Archive extends PureComponent {
                     <Button variant="contained" color="primary" onClick={() => { }}>
                       <a
                         style={{ textDecoration: "none", color: "inherit" }}
-                        download
+                        download ={Nombre}
                         href={ArchiveFiles.findOne({ _id: imageId }).link()}>
                         Descarga
                       </a>
@@ -321,7 +321,8 @@ class Archive extends PureComponent {
               variant="contained">
               Cancelar
             </Button>
-            <Button color="primary" variant="contained" type="submit">
+            <Button
+             color="primary" variant="contained" type="submit">
               Guardar
             </Button>
           </DialogActions>
