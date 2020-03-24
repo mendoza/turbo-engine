@@ -111,7 +111,7 @@ class ListTickets extends Component {
       };
     });
     var fechaHoy = "reporte_al_" + new Date().toLocaleDateString() + ".csv";
-    console.log(fechaHoy);
+    
     var csv = Papa.unparse(realdata);
     var blob = new Blob([csv]);
     var a = window.document.createElement("a");

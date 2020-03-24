@@ -135,7 +135,7 @@ export default function Encuestilla() {
       if (!err) {
         setEnded(true);
       }else{
-        console.log("Nel, no se guardo");
+        
       }
     })
   }

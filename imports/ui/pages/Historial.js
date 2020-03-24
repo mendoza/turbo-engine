@@ -360,7 +360,7 @@ class Historial extends Component {
         <TableBody>
           {historial.map(row => {
             // eslint-disable-next-line no-console
-            console.log(row);
+            
             const fecha = new Date(row.fecha);
             let cliente;
             const auto = Autos.findOne({ _id: row.producto });

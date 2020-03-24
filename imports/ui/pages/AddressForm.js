@@ -52,7 +52,7 @@ export default function AddressForm() {
               /\d/,
             ]}
             onChange={e => {
-              console.log(e);
+              
             }}
             required
             id="rtn"
@@ -66,7 +66,7 @@ export default function AddressForm() {
           <MaskedTextField
             mask={[/\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
             onChange={e => {
-              console.log(e);
+              
             }}
             id="num"
             name="num"
@@ -125,7 +125,7 @@ export default function AddressForm() {
               /\d/,
             ]}
             onChange={e => {
-              console.log(e);
+              
             }}
             required
             id="id"
@@ -140,7 +140,7 @@ export default function AddressForm() {
           <MaskedTextField
             mask={[/\d/, /\d/, "-", /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/, /\d/]}
             onChange={e => {
-              console.log(e);
+              
             }}
             required
             id="fecha"

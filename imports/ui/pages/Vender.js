@@ -75,9 +75,9 @@ class Vender extends PureComponent {
           tipo: tipoPago
         },
         err => {
-          console.log(err);
+          
           Meteor.call("marcarComprado", selectedCar, error => {
-            console.log(error);
+            
 
             if (cliente !== "0") {  
               Meteor.call(
@@ -162,7 +162,7 @@ class Vender extends PureComponent {
         <Title>Vender</Title>
         <Grid container spacing={2} justify="center">
           {autos.map(auto => {
-            console.log(auto);
+            
             return (
               <Grid item key={auto._id} xs={12} sm={6} md={4}>
                 <ItemCard
@@ -178,7 +178,7 @@ class Vender extends PureComponent {
                     }
                   })()}
                   action1={() => {
-                    console.log("action 1");
+                    
                   }}
                   action2={() => {
                     this.setState(state => ({ dialogOpen: !state.dialogOpen, selectedCar: auto }));

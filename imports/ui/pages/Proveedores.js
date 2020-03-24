@@ -54,7 +54,7 @@ class Proveedores extends Component {
         error = "Correo no válido";
       }
     }
-    console.log(stateName, validator);
+    
     if (validatorjs) {
       if (validatorjs(event.target.value) || event.target.value === "") {
         this.setState({

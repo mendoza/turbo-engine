@@ -134,7 +134,7 @@ class AutosPage extends PureComponent {
                 uploaded: true,
               });
             }
-            console.log(error);
+            
           } else {
             uploaded += 1;
             fileIds.push(fileObj._id);

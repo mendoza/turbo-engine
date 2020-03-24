@@ -79,13 +79,13 @@ class CreateUsers extends React.Component {
         },
         err => {
           if (err) {
-            console.log(err);
+            
             this.setState({
               open: true,
               message: "Hubo un error al crear el usuario",
             });
           } else {
-            console.log(err);
+            
             this.setState({
               open: true,
               message: "Usuario creado exitosamente",

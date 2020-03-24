@@ -52,7 +52,7 @@ class RestorePass extends PureComponent {
     if (password.length < 8) {
       alert = "El campo contraseña debe tener al menos 8 caracteres";
     }
-    console.log("wenas");
+    
 
     if (alert) {
       this.setState({

@@ -478,7 +478,7 @@ class Clientes extends Component {
               return <TableRow />;
             }
             if (client) {
-              console.log(client);
+              
               return (
                 // eslint-disable-next-line no-underscore-dangle
                 <TableRow key={client._id}>
