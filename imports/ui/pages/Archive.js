@@ -21,8 +21,6 @@ import {
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 
-import validator from "validator";
-
 import { withTracker } from "meteor/react-meteor-data";
 
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -60,6 +58,12 @@ class Archive extends PureComponent {
     const { files } = event.target[3];
     let uploaded = 0;
     const fileIds = [];
+    if (files.length <=0 ){
+      this.setState({
+        showToast: true,
+        message: "Ingrese a lo menos un archivo"
+      });
+    }
     Object.keys(files).forEach(key => {
       const uploadFile = files[key];
       if (uploadFile) {
@@ -76,8 +80,6 @@ class Archive extends PureComponent {
         upload.on("start", () => {
           this.setState({
             uploaded: false,
-            showToast: true,
-            message: "El archivo esta siendo subido",
           });
         });
         upload.on("end", (error, fileObj) => {
@@ -90,7 +92,6 @@ class Archive extends PureComponent {
                 message: "No se pudo subir el archivo",
               });
             }
-            console.log(error);
           } else {
             uploaded += 1;
             fileIds.push(fileObj._id);
@@ -98,58 +99,26 @@ class Archive extends PureComponent {
               this.setState(
                 {
                   uploaded: true,
-                  showToast: true,
-                  showCreateArchiveDialog: false,
-                  message: "Archivo subido exitosamente",
                   Files: fileIds,
-
-                  Nombre: "",
-                  Comentario: "",
                 },
                 () => {
                   const { Nombre, Comentario, Files, editId } = this.state;
-
-                  /* const NewArchive = {
-                    _id: editId,
-                    nombre: Nombre,
-                    comentario: Comentario,
-                    pictures: Files,
-                  }; */
-
                   let alert;
-                  let methodName;
-
-                  if (editId) {
-                    methodName = "updateArchive";
-                  } else {
-                    methodName = "addArchive";
-                  }
-
-                  if (validator.isEmpty(Nombre)) {
-                    alert = "Debe de haber por lo menos un nombre";
-                  }
+                  const temp = Archivo.find({ nombre: Nombre });
+                  temp.forEach((element) => {
+                    if (Nombre === element.nombre) {
+                      alert = "Este elemento ya existe, cambiar el nombre a uno distinto";
+                    }
+                  });
                   if (alert) {
                     this.setState({
                       showToast: true,
                       message: alert,
                     });
                   } else {
-                    const temp = Archivo.find({ nombre: Nombre });
-                    temp.forEach(() => {
-                      if (methodName === "addArchive") {
-                        alert = "Este elemento ya existe, cambiar el nombre a uno distinto";
-                      }
-                    });
-                    if (alert) {
-                      this.setState({
-                        showToast: true,
-                        message: alert,
-                      });
-                      return;
-                    }
                     console.log(Files);
                     Meteor.call(
-                      methodName,
+                      "addArchive",
                       {
                         _id: editId,
                         nombre: Nombre,
@@ -164,10 +133,13 @@ class Archive extends PureComponent {
                           });
                         } else {
                           this.setState({
-                            showArchiveDialog: false,
+                            showToast: true,
+                            message: "Elemento creado exitosamente",
+                            showCreateArchiveDialog: false,
                             Nombre: "",
                             Comentario: "",
                             Files: [],
+                            Pictures: [],
                           });
                         }
                       }
@@ -222,7 +194,7 @@ class Archive extends PureComponent {
                   <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
                     <img
                       src={ArchiveFiles.findOne({ _id: imageId }).link()}
-                      alt="Archivo"
+                      alt=" Archivo PDF "
                       style={{ width: "100%", objectFit: "contain" }}
                     />
                     <Button variant="contained" color="primary" onClick={() => {}}>
@@ -508,18 +480,10 @@ class Archive extends PureComponent {
     });
   };
 
-  handleTextInput = (event, stateName, validatorjs) => {
-    if (validatorjs) {
-      if (validatorjs(event.target.value) || event.target.value === "") {
-        this.setState({
-          [stateName]: event.target.value,
-        });
-      }
-    } else {
+  handleTextInput = (event, stateName) => {
       this.setState({
         [stateName]: event.target.value,
       });
-    }
   };
 
   render() {
