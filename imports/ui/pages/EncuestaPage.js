@@ -178,15 +178,6 @@ class EncuestaPage extends Component {
         </TableHead>
         <TableBody>
           {encuestas.map(encuesta => {
-            const searchRegex = new RegExp(
-              searchByDate.split(/ /).filter(l => l !== '').join('|'),
-              'i'
-            );
-            const r1 = encuesta && encuesta.fecha.toString().search(searchRegex);
-            const r2 = encuesta && encuesta.score.toString().search(searchRegex);
-            if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
-              return <TableRow />;
-            }
             let labelScore = "";
             if(encuesta.score === 0){
               labelScore = "Mal servicio";
@@ -194,6 +185,15 @@ class EncuestaPage extends Component {
               labelScore= "Buen servicio";
             }else{ 
               labelScore= "Excelente servicio";
+            }
+            const searchRegex = new RegExp(
+              searchByDate.split(/ /).filter(l => l !== '').join('|'),
+              'i'
+            );
+            const r1 = encuesta && encuesta.fecha.toString().search(searchRegex);
+            const r2 = encuesta && labelScore.toString().search(searchRegex);
+            if (r1 === -1 && r2 === -1 && searchByDate.length > 0) {
+              return <TableRow />;
             }
             if (encuesta) {
               return (
