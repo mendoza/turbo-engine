@@ -196,13 +196,13 @@ class Archive extends PureComponent {
                   <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
                     <img
                       src={ArchiveFiles.findOne({ _id: imageId }).link()}
-                      alt=" Archivo PDF "
+                      alt="Archivo"
                       style={{ width: "100%", objectFit: "contain" }}
                     />
                     <Button variant="contained" color="primary" onClick={() => { }}>
                       <a
                         style={{ textDecoration: "none", color: "inherit" }}
-                        download ={Nombre}
+                        download
                         href={ArchiveFiles.findOne({ _id: imageId }).link()}>
                         Descarga
                       </a>
