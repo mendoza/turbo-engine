@@ -52,8 +52,8 @@ class Archive extends PureComponent {
     };
   }
   handleSearchName = event => {
-    this.setState({ searchByNames: event.target.value })
-  }
+    this.setState({ searchByNames: event.target.value });
+  };
 
   // ========================================================================
   // ========================= Set files ====================================
@@ -63,10 +63,10 @@ class Archive extends PureComponent {
     const { files } = event.target[3];
     let uploaded = 0;
     const fileIds = [];
-    if (files.length <=0 ){
+    if (files.length <= 0) {
       this.setState({
         showToast: true,
-        message: "Ingrese a lo menos un archivo"
+        message: "Ingrese a lo menos un archivo",
       });
     }
     Object.keys(files).forEach(key => {
@@ -110,7 +110,7 @@ class Archive extends PureComponent {
                   const { Nombre, Comentario, Files, editId } = this.state;
                   let alert;
                   const temp = Archivo.find({ nombre: Nombre });
-                  temp.forEach((element) => {
+                  temp.forEach(element => {
                     if (Nombre === element.nombre) {
                       alert = "Este elemento ya existe, cambiar el nombre a uno distinto";
                     }
@@ -190,6 +190,7 @@ class Archive extends PureComponent {
         </DialogContent>
         <Grid container>
           {Pictures.map(imageId => {
+            const file = ArchiveFiles.findOne({ _id: imageId });
             try {
               return (
                 <Grid key={imageId} item xs={12} md={6}>
@@ -199,11 +200,11 @@ class Archive extends PureComponent {
                       alt="Archivo"
                       style={{ width: "100%", objectFit: "contain" }}
                     />
-                    <Button variant="contained" color="primary" onClick={() => { }}>
+                    <Button variant="contained" color="primary" onClick={() => {}}>
                       <a
                         style={{ textDecoration: "none", color: "inherit" }}
-                        download
-                        href={ArchiveFiles.findOne({ _id: imageId }).link()}>
+                        download={file.name}
+                        href={file.link()}>
                         Descarga
                       </a>
                     </Button>
@@ -298,8 +299,7 @@ class Archive extends PureComponent {
               variant="contained">
               Cancelar
             </Button>
-            <Button
-             color="primary" variant="contained" type="submit">
+            <Button color="primary" variant="contained" type="submit">
               Guardar
             </Button>
           </DialogActions>
@@ -360,8 +360,11 @@ class Archive extends PureComponent {
         <TableBody>
           {archivos.map(archivo => {
             const searchRegex = new RegExp(
-              searchByNames.split(/ /).filter(l => l !== '').join('|'),
-              'i'
+              searchByNames
+                .split(/ /)
+                .filter(l => l !== "")
+                .join("|"),
+              "i"
             );
             const r1 = archivo && archivo.nombre.search(searchRegex);
             if (r1 === -1 && searchByNames.length > 0) {
@@ -480,9 +483,9 @@ class Archive extends PureComponent {
   };
 
   handleTextInput = (event, stateName) => {
-      this.setState({
-        [stateName]: event.target.value,
-      });
+    this.setState({
+      [stateName]: event.target.value,
+    });
   };
 
   render() {
@@ -491,7 +494,7 @@ class Archive extends PureComponent {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              style={{ width: '50%' }}
+              style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
             />
