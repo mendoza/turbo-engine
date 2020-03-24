@@ -41,7 +41,7 @@ export default function PaymentForm() {
             ]}
             name="placa"
             onChange={e => {
-              
+              console.log(e);
             }}
             required
             id="cardNumber"
@@ -54,7 +54,7 @@ export default function PaymentForm() {
             mask={[/\d/, /\d/, "/", /\d/, /\d/]}
             name="placa"
             onChange={e => {
-              
+              console.log(e);
             }}
             required
             id="expDate"
@@ -67,7 +67,7 @@ export default function PaymentForm() {
             mask={[/\d/, /\d/, /\d/]}
             name="placa"
             onChange={e => {
-              
+              console.log(e);
             }}
             required
             id="cvv"

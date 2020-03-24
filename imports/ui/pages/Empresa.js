@@ -90,7 +90,7 @@ class Empresa extends PureComponent {
                 this.setState({ open: true, mensaje: alert });
               } else {
                 Meteor.call("updateEmpresa", { name, _id: id, RTN, CAI }, (error, result) => {
-                  
+                  console.log(result);
                   this.setState({
                     empresa: result,
                     id: result._id,

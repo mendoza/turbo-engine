@@ -66,7 +66,7 @@ class CreateAutos extends PureComponent {
     fetch("https://private-anon-03fe86f6b5-carsapi1.apiary-mock.com/cars")
       .then(res => res.json())
       .then(data => {
-        
+        console.log(data);
         this.setState({ autosCompletos: data });
       });
   }
@@ -107,7 +107,7 @@ class CreateAutos extends PureComponent {
                 uploaded: true,
               });
             }
-            
+            console.log(error);
           } else {
             uploaded += 1;
             fileIds.push(fileObj._id);

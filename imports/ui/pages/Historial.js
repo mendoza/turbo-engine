@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import {
   Dialog,
@@ -16,7 +17,7 @@ import {
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
-import Link from '@material-ui/core/Link';
+import Link from "@material-ui/core/Link";
 import { withTracker } from "meteor/react-meteor-data";
 import Title from "../components/Title";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -81,32 +82,32 @@ class Historial extends Component {
 
     // Tipo
     let labelTipo = "";
-    if (Tipo===0){
-      labelTipo = "Camioneta"
-    }else if (Tipo===1){
-      labelTipo = "Turismo"
-    }else if (Tipo===2){
-      labelTipo = "Deportivo"
+    if (Tipo === 0) {
+      labelTipo = "Camioneta";
+    } else if (Tipo === 1) {
+      labelTipo = "Turismo";
+    } else if (Tipo === 2) {
+      labelTipo = "Deportivo";
     }
 
     // Transmisión
     let labelTransmision = "";
-    if (Transmision===0){
-      labelTransmision = "Manual"
-    }else if (Transmision===1){
-      labelTransmision = "Automático"
-    }else if (Transmision===2){
-      labelTransmision = "Mixta"
+    if (Transmision === 0) {
+      labelTransmision = "Manual";
+    } else if (Transmision === 1) {
+      labelTransmision = "Automático";
+    } else if (Transmision === 2) {
+      labelTransmision = "Mixta";
     }
 
     // Tracción
     let labelTraccion = "";
-    if (Traccion===0){
-      labelTraccion = "Trasera"
-    }else if (Traccion===1){
-      labelTraccion = "Delantera"
-    }else if (Traccion===2){
-      labelTraccion = "Doble"
+    if (Traccion === 0) {
+      labelTraccion = "Trasera";
+    } else if (Traccion === 1) {
+      labelTraccion = "Delantera";
+    } else if (Traccion === 2) {
+      labelTraccion = "Doble";
     }
 
     return (
@@ -120,9 +121,7 @@ class Historial extends Component {
         maxWidth="md"
         fullWidth>
         <form onSubmit={this.handleCreateClient}>
-          <DialogTitle id="form-dialog-title">
-            Cliente
-          </DialogTitle>
+          <DialogTitle id="form-dialog-title">Cliente</DialogTitle>
           <Divider />
           <DialogContent>
             <Grid container spacing={2}>
@@ -210,9 +209,7 @@ class Historial extends Component {
         maxWidth="md"
         fullWidth>
         <form onSubmit={this.handleCreateClient}>
-          <DialogTitle id="form-dialog-title">
-            Cliente
-          </DialogTitle>
+          <DialogTitle id="form-dialog-title">Cliente</DialogTitle>
           <Divider />
           <DialogContent>
             <Grid container spacing={2}>
@@ -296,8 +293,7 @@ class Historial extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
+        fullWidth>
         <DialogTitle id="form-dialog-title">Venta</DialogTitle>
         <Divider />
         <DialogContent>
@@ -316,7 +312,7 @@ class Historial extends Component {
             </Grid>
             <Grid item xs={12} md={6}>
               <Title>Monto</Title>
-              L. 
+              L.
               {Monto}
             </Grid>
             <Grid item xs={12} md={6}>
@@ -335,8 +331,7 @@ class Historial extends Component {
               this.setState({ showHistorialDialog: false });
             }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cerrar
           </Button>
         </DialogActions>
@@ -360,7 +355,7 @@ class Historial extends Component {
         <TableBody>
           {historial.map(row => {
             // eslint-disable-next-line no-console
-            
+            console.log(row);
             const fecha = new Date(row.fecha);
             let cliente;
             const auto = Autos.findOne({ _id: row.producto });
@@ -385,9 +380,9 @@ class Historial extends Component {
               return (
                 <TableRow key={row._id}>
                   <TableCell>
-                    <Link 
-                      color="#3b7fed" 
-                      href="#" 
+                    <Link
+                      color="#3b7fed"
+                      href="#"
                       onClick={() => {
                         this.setState({
                           showClientDialog: true,
@@ -400,29 +395,27 @@ class Historial extends Component {
                           email: cliente.email,
                           clientType: cliente.clientType,
                         });
-                      }} 
-                     >
+                      }}>
                       {`${cliente.nombre} ${cliente.apellido}`}
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Link 
-                      color="#3b7fed" 
-                      href="#" 
+                    <Link
+                      color="#3b7fed"
+                      href="#"
                       onClick={() => {
                         this.setState({
                           showAutoDialog: true,
                           Marca: auto.marca,
                           Modelo: auto.modelo,
-                          Tipo:auto.tipo,
-                          Transmision:auto.transmision,
-                          Color:auto.color,
-                          Placa:auto.placa,
-                          Traccion:auto.traccion,
-                          Year:auto.year,
+                          Tipo: auto.tipo,
+                          Transmision: auto.transmision,
+                          Color: auto.color,
+                          Placa: auto.placa,
+                          Traccion: auto.traccion,
+                          Year: auto.year,
                         });
-                      }} 
-                     >
+                      }}>
                       {`${auto.marca} ${auto.modelo} con placa ${auto.placa}`}
                     </Link>
                   </TableCell>
@@ -441,11 +434,10 @@ class Historial extends Component {
                               Fecha: fecha.toLocaleDateString("en-US"),
                               Comentario: row.comentario,
                               Monto: row.monto,
-                              tipoPago: row.tipo
+                              tipoPago: row.tipo,
                             });
                           }}
-                          aria-label="centered"
-                          >
+                          aria-label="centered">
                           <i className="fas fa-info" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -471,7 +463,7 @@ class Historial extends Component {
               style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
-              />
+            />
             {this.renderHistorialTable()}
           </Grid>
         </Grid>

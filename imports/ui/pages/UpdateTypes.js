@@ -146,7 +146,7 @@ class UpdateTypes extends PureComponent {
   handleAdd = () => {
     const { name, selectedValue } = this.state;
     let alert;
-    
+    console.log(selectedValue);
 
     if (validator.isEmpty(name)) {
       alert = "El campo nombre es requerido";

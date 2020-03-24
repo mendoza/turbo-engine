@@ -134,7 +134,7 @@ class AutosPage extends PureComponent {
                 uploaded: true,
               });
             }
-            
+            console.log(error);
           } else {
             uploaded += 1;
             fileIds.push(fileObj._id);
@@ -600,7 +600,7 @@ class AutosPage extends PureComponent {
                 Imagenes del auto
               </Grid>
               <Grid container>
-                {console.log("id de las imagenes:",pictures)}
+                {console.log("id de las imagenes:", pictures)}
                 {pictures.map(imageId => {
                   try {
                     return (
@@ -751,7 +751,7 @@ class AutosPage extends PureComponent {
                       </Grid>
                     );
                   } catch (error) {
-                    console.log(error)
+                    console.log(error);
                     return undefined;
                   }
                 })}

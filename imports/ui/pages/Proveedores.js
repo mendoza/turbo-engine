@@ -33,17 +33,16 @@ class Proveedores extends Component {
       showSnackbar: false,
       showDeleteDialog: false,
       editId: undefined,
-      searchByNames: '',
-      snackbarText: '',
-      Nombre: '',
-      Apellido: '',
-      Direccion: '',
-      Telefono: '',
-      Telefono2: '',
-      Company: '',
-      email: '',
-    }
-
+      searchByNames: "",
+      snackbarText: "",
+      Nombre: "",
+      Apellido: "",
+      Direccion: "",
+      Telefono: "",
+      Telefono2: "",
+      Company: "",
+      email: "",
+    };
   }
 
   handleTextInput = (event, stateName, validatorjs) => {
@@ -54,7 +53,7 @@ class Proveedores extends Component {
         error = "Correo no válido";
       }
     }
-    
+    console.log(stateName, validator);
     if (validatorjs) {
       if (validatorjs(event.target.value) || event.target.value === "") {
         this.setState({
@@ -70,15 +69,13 @@ class Proveedores extends Component {
   };
 
   handleSearchName = event => {
-    this.setState({ searchByNames: event.target.value })
-  }
+    this.setState({ searchByNames: event.target.value });
+  };
 
   handleCreateProvider = event => {
     const { emailError } = this.state;
     event.preventDefault();
-    const {
-      Nombre, Apellido, Direccion, Telefono, Telefono2, Company, email, editId
-    } = this.state;
+    const { Nombre, Apellido, Direccion, Telefono, Telefono2, Company, email, editId } = this.state;
 
     const newProvider = {
       _id: editId,
@@ -121,13 +118,15 @@ class Proveedores extends Component {
       if (validator.isEmpty(Company)) {
         error = "El campo Compañía es requerido";
       }
-      const maq = Proveedor.find({nombre: Nombre});
-      maq.forEach((element)=>{
-        if (element.telefono === Telefono && 
-          element.email === email && 
-          methodName === "handleCreateProvider"){
-          error = "Este elemento ya ha sido agregado con anterioridad"
-        };
+      const maq = Proveedor.find({ nombre: Nombre });
+      maq.forEach(element => {
+        if (
+          element.telefono === Telefono &&
+          element.email === email &&
+          methodName === "handleCreateProvider"
+        ) {
+          error = "Este elemento ya ha sido agregado con anterioridad";
+        }
       });
       if (error) {
         this.setState({
@@ -197,8 +196,7 @@ class Proveedores extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="md"
-        fullWidth
-        >
+        fullWidth>
         <form onSubmit={this.handleCreateProvider}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
@@ -218,7 +216,7 @@ class Proveedores extends Component {
                   required
                   autoFocus
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -231,7 +229,7 @@ class Proveedores extends Component {
                   value={Apellido}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -242,7 +240,7 @@ class Proveedores extends Component {
                   value={Direccion}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -255,7 +253,7 @@ class Proveedores extends Component {
                   value={Telefono}
                   fullWidth
                   required
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -268,7 +266,7 @@ class Proveedores extends Component {
                   value={Telefono2}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -281,7 +279,7 @@ class Proveedores extends Component {
                   helperText={emailError || ""}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 {}
@@ -293,7 +291,7 @@ class Proveedores extends Component {
                   value={Company}
                   required
                   fullWidth
-                  />
+                />
               </Grid>
             </Grid>
           </DialogContent>
@@ -303,8 +301,7 @@ class Proveedores extends Component {
                 this.setState({ showProviderDialog: false });
               }}
               color="primary"
-              variant="contained"
-              >
+              variant="contained">
               Cancelar
             </Button>
             <Button color="primary" variant="contained" type="submit">
@@ -326,8 +323,7 @@ class Proveedores extends Component {
         }}
         aria-labelledby="form-dialog-title"
         maxWidth="sm"
-        fullWidth
-        >
+        fullWidth>
         <DialogTitle id="form-dialog-title">
           ¿Está seguro que desea eliminar este proveedor?
         </DialogTitle>
@@ -344,8 +340,7 @@ class Proveedores extends Component {
               this.setState({ showDeleteDialog: false });
             }}
             color="primary"
-            variant="contained"
-            >
+            variant="contained">
             Cancelar
           </Button>
           <Button color="primary" variant="contained" onClick={this.handleDeleteProvider}>
@@ -355,7 +350,6 @@ class Proveedores extends Component {
       </Dialog>
     );
   };
-
 
   renderProviderTable = () => {
     const { providers } = this.props;
@@ -377,8 +371,11 @@ class Proveedores extends Component {
         <TableBody>
           {providers.map(provider => {
             const searchRegex = new RegExp(
-              searchByNames.split(/ /).filter(l => l !== '').join('|'),
-              'i'
+              searchByNames
+                .split(/ /)
+                .filter(l => l !== "")
+                .join("|"),
+              "i"
             );
             const r1 = provider && provider.nombre.search(searchRegex);
             const r2 = provider && provider.apellido.search(searchRegex);
@@ -428,8 +425,7 @@ class Proveedores extends Component {
                               email: provider.email,
                             });
                           }}
-                          aria-label="centered"
-                          >
+                          aria-label="centered">
                           <i className="fas fa-pen" />
                         </ToggleButton>
                         <ToggleButton
@@ -440,8 +436,7 @@ class Proveedores extends Component {
                               editId: provider._id,
                               showDeleteDialog: true,
                             });
-                          }}
-                          >
+                          }}>
                           <i className="fas fa-trash" />
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -481,12 +476,11 @@ class Proveedores extends Component {
             color="inherit"
             onClick={() => {
               this.setState({ showSnackbar: false });
-            }}
-            >
+            }}>
             <i className="fas fa-times" />
           </IconButton>,
         ]}
-        />
+      />
     );
   };
 
@@ -496,10 +490,10 @@ class Proveedores extends Component {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              style={{ width: '50%' }}
+              style={{ width: "50%" }}
               label="Filtro por Nombre y Apellido"
               onInput={this.handleSearchName}
-              />
+            />
           </Grid>
           <Grid item xs={12}>
             <Button
@@ -507,8 +501,7 @@ class Proveedores extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showProviderDialog: true, editId: undefined });
-              }}
-              >
+              }}>
               Agregar Proveedores
             </Button>
           </Grid>
