@@ -4,9 +4,9 @@ import { Accounts } from "meteor/accounts-base";
 
 Meteor.methods({
   createUsuario(payload) {
-    const alreadyExists = Meteor.users.findOne({ 'emails.0.address': payload.email });
+    const alreadyExists = Meteor.users.findOne({ 'email': payload.email });
     if (alreadyExists) {
-      return new Meteor.Error('El usuario ya existe');
+      return new Meteor.Error('Correo elecrónico existente, ingrese uno distinto');
     }
     return Accounts.createUser(payload);
   },
