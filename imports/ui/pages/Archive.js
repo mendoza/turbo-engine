@@ -243,7 +243,7 @@ class Archive extends PureComponent {
         <form onSubmit={this.handleCreate}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
-            Imagen
+            Archivo
           </DialogTitle>
           <Divider />
           <DialogContent>
