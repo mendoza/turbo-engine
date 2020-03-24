@@ -138,7 +138,10 @@ class PiezasPage extends PureComponent {
     if (validator.isEmpty(numeroDeSerie)) {
       alert = "El numero de serie es requerido";
     }
-    if (Piezas.find({ numeroDeSerie }).count() > 1) {
+    if (
+      Piezas.find({ numeroDeSerie }).count() >= 1 &&
+      dialogPiece.numeroDeSerie !== numeroDeSerie
+    ) {
       alert = "El numero de serie debe ser unico para esta pieza";
     }
     if (validator.isEmpty(vendedor)) {
