@@ -266,7 +266,7 @@ class Archive extends PureComponent {
         <form onSubmit={this.handleCreate}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
-            Archivo
+            Imagen
           </DialogTitle>
           <Divider />
           <DialogContent>
@@ -534,7 +534,7 @@ class Archive extends PureComponent {
               onClick={() => {
                 this.setState({ showCreateArchiveDialog: true, editId: undefined });
               }}>
-              Agregar archivos
+              Agregar Imagenes
             </Button>
           </Grid>
           <Grid item xs={12}>
