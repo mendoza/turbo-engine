@@ -1,9 +1,13 @@
+import validator from "validator";
 import Empleados from "./Empleados";
 
 Meteor.methods({
   handleCreateEmpleado(payload) {
     const rtnRepeated = Empleados.findOne({ rtn: payload.rtn });
     if (rtnRepeated) {
+      return false;
+    }
+    if (validator.isEmpty( payload.rtn) === true) {
       return false;
     }
     Empleados.insert(payload);

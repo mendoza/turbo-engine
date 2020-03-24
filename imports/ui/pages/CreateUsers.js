@@ -12,6 +12,7 @@ import {
   Snackbar,
   IconButton,
 } from "@material-ui/core";
+import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import validator from "validator";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -59,7 +60,6 @@ class CreateUsers extends React.Component {
     if (password.length < 8) {
       alert = "El campo contraseña debe tener al menos 8 caracteres"
     }
-
     if (alert) {
       this.setState({
         open: true,
@@ -195,4 +195,10 @@ class CreateUsers extends React.Component {
   }
 }
 
-export default CreateUsers;
+
+export default withTracker(() => {
+  Meteor.subscribe("users.all");
+  return {
+    users: Meteor.users.find().fetch(),
+  };
+})(CreateUsers);
