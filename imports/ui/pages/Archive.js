@@ -503,7 +503,7 @@ class Archive extends PureComponent {
               onClick={() => {
                 this.setState({ showCreateArchiveDialog: true, editId: undefined });
               }}>
-              Agregar Imagenes
+              Agregar Archivos
             </Button>
           </Grid>
           <Grid item xs={12}>
