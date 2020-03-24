@@ -17,7 +17,7 @@ const Images = new FilesCollection({
   allowClientCode: false,
   debug: false,
   onBeforeUpload(file) {
-    if (/png|jpg|jpeg/i.test(file.extension)) return true;
+    if (/pdf|png|jpg|jpeg/i.test(file.extension)) return true;
     return 'No es un formato válido';
   },
   onAfterUpload(image) {
