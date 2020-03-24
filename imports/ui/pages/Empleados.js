@@ -15,9 +15,7 @@ import {
   TableHead,
   TableCell,
   TableBody,
-  InputLabel,
-  MenuItem,
-  Input,
+
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -110,7 +108,7 @@ class Empleado extends Component {
           } else {
             this.setState({
               showSnackbar: true,
-              snackbarText: 'El RTN ya existe'
+              snackbarText: 'Verifique el campo RTN'
             });
           }
       });
