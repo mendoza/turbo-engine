@@ -121,19 +121,6 @@ class Archive extends PureComponent {
                       message: alert,
                     });
                   } else {
-                    const temp = Archivo.find({ nombre: Nombre });
-                    temp.forEach(() => {
-                      if (methodName === "addArchive") {
-                        alert = "Este elemento ya existe, cambiar el nombre a uno distinto";
-                      }
-                    });
-                    if (alert) {
-                      this.setState({
-                        showToast: true,
-                        message: alert,
-                      });
-                      return;
-                    }
                     Meteor.call(
                       "addArchive",
                       {
