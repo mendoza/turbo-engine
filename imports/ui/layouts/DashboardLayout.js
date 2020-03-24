@@ -398,6 +398,12 @@ export default withStyles(useStyles)(
   withTracker(() => {
     Meteor.subscribe("Reportes.all");
     Meteor.subscribe("Empleados.all");
+    Meteor.subscribe("users.all");
+    console.log({
+      currentUser: Meteor.user(),
+      reportes: Reportes.find().fetch(),
+      empleados: Empleados.find().fetch(),
+    });
     return {
       currentUser: Meteor.user(),
       reportes: Reportes.find().fetch(),

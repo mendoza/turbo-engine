@@ -17,6 +17,9 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  InputLabel,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -37,7 +40,6 @@ class Archive extends PureComponent {
       showToast: false,
       message: "",
       searchByNames: "",
-
       editId: undefined,
       showCreateArchiveDialog: false,
       showArchiveDialog: false,
@@ -48,6 +50,9 @@ class Archive extends PureComponent {
       Files: [],
       Pictures: [],
     };
+  }
+  handleSearchName = event => {
+    this.setState({ searchByNames: event.target.value })
   }
 
   // ========================================================================
@@ -116,7 +121,19 @@ class Archive extends PureComponent {
                       message: alert,
                     });
                   } else {
-                    console.log(Files);
+                    const temp = Archivo.find({ nombre: Nombre });
+                    temp.forEach(() => {
+                      if (methodName === "addArchive") {
+                        alert = "Este elemento ya existe, cambiar el nombre a uno distinto";
+                      }
+                    });
+                    if (alert) {
+                      this.setState({
+                        showToast: true,
+                        message: alert,
+                      });
+                      return;
+                    }
                     Meteor.call(
                       "addArchive",
                       {
@@ -185,10 +202,8 @@ class Archive extends PureComponent {
           </Grid>
         </DialogContent>
         <Grid container>
-          {console.log(Pictures)}
           {Pictures.map(imageId => {
             try {
-              console.log("find", ArchiveFiles.find({ _id: imageId }).fetch());
               return (
                 <Grid key={imageId} item xs={12} md={6}>
                   <Box padding="1rem" width="100%" style={{ textAlign: "right" }}>
@@ -197,10 +212,10 @@ class Archive extends PureComponent {
                       alt=" Archivo PDF "
                       style={{ width: "100%", objectFit: "contain" }}
                     />
-                    <Button variant="contained" color="primary" onClick={() => {}}>
+                    <Button variant="contained" color="primary" onClick={() => { }}>
                       <a
-                        style={{ textDecoration: "none",color:"inherit" }}
-                        download
+                        style={{ textDecoration: "none", color: "inherit" }}
+                        download ={Nombre}
                         href={ArchiveFiles.findOne({ _id: imageId }).link()}>
                         Descarga
                       </a>
@@ -209,7 +224,6 @@ class Archive extends PureComponent {
                 </Grid>
               );
             } catch (error) {
-              console.log(error);
               return undefined;
             }
           })}
@@ -242,7 +256,7 @@ class Archive extends PureComponent {
         <form onSubmit={this.handleCreate}>
           <DialogTitle id="form-dialog-title">
             {editId ? "Editar " : "Agregar "}
-            Archivo
+            Imagen
           </DialogTitle>
           <Divider />
           <DialogContent>
@@ -297,7 +311,8 @@ class Archive extends PureComponent {
               variant="contained">
               Cancelar
             </Button>
-            <Button color="primary" variant="contained" type="submit">
+            <Button
+             color="primary" variant="contained" type="submit">
               Guardar
             </Button>
           </DialogActions>
@@ -358,11 +373,8 @@ class Archive extends PureComponent {
         <TableBody>
           {archivos.map(archivo => {
             const searchRegex = new RegExp(
-              searchByNames
-                .split(/ /)
-                .filter(l => l !== "")
-                .join("|"),
-              "i"
+              searchByNames.split(/ /).filter(l => l !== '').join('|'),
+              'i'
             );
             const r1 = archivo && archivo.nombre.search(searchRegex);
             if (r1 === -1 && searchByNames.length > 0) {
@@ -492,9 +504,9 @@ class Archive extends PureComponent {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              style={{ width: "50%" }}
-              label="Filtro por nombre"
-              // onInput={this.handleSearchName}
+              style={{ width: '50%' }}
+              label="Filtro por Nombre y Apellido"
+              onInput={this.handleSearchName}
             />
           </Grid>
           <Grid item xs={12}>
@@ -504,7 +516,7 @@ class Archive extends PureComponent {
               onClick={() => {
                 this.setState({ showCreateArchiveDialog: true, editId: undefined });
               }}>
-              Agregar archivos
+              Agregar Imagenes
             </Button>
           </Grid>
           <Grid item xs={12}>
@@ -523,7 +535,6 @@ class Archive extends PureComponent {
 export default withTracker(() => {
   Meteor.subscribe("Archive.all");
   Meteor.subscribe("ArchiveFiles.all");
-  console.log("de aqui", ArchiveFiles.find().fetch());
   return {
     archivos: Archivo.find({}).fetch(),
     archivosFiles: ArchiveFiles.find().fetch(),
@@ -554,6 +565,6 @@ export default withTracker(() => {
                 Subir archivos
               </Button>
             </form>
-          </Grid> 
+          </Grid>
         </Grid>
 */
