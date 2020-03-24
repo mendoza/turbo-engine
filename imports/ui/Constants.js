@@ -1,6 +1,6 @@
 export default {};
 
-export const Estados = ["Reparando", "En reparacion", "En Venta", "Vendido"];
+export const Estados = ["Reparado", "En Reparación", "En Venta", "Vendido"];
 
 export const Traccion = ["Trasera", "Delantera", "Doble"];
 

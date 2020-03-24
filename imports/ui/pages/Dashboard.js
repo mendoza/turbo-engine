@@ -35,22 +35,22 @@ class Dashboard extends PureComponent {
   calcularDatos = () =>{
     let contador = 0;
     let contM = 0;
-    let contB = 0;
+    let contR = 0;
     let contE = 0;
     const {encuestas} = this.props;
     const datos = [
-      { name: "Enero", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Febrero", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Marzo", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Abril", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Mayo", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Junio", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Julio", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Agosto", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Septiembre", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Octubre", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Noviembre", Malo: 0, Bueno: 0, Excelente: 0 },
-      { name: "Diciembre", Malo: 0, Bueno: 0, Excelente: 0 },
+      { name: "Enero", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Febrero", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Marzo", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Abril", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Mayo", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Junio", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Julio", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Agosto", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Septiembre", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Octubre", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Noviembre", Malo: 0, Regular: 0, Excelente: 0 },
+      { name: "Diciembre", Malo: 0, Regular: 0, Excelente: 0 },
     ];
     encuestas.map(encuesta => {
       const date = new Date(encuesta.fecha);
@@ -61,13 +61,13 @@ class Dashboard extends PureComponent {
         contM += 1;
       } else if(encuesta.score === 1){
         contador += 1;
-        contB += 1;
+        contR += 1;
       } else {
         contador += 1;
         contE += 1;
       }
       datos[month].Malo = ((contM/contador)*100).toFixed(2);
-      datos[month].Bueno = ((contB/contador)*100).toFixed(2);
+      datos[month].Regular = ((contR/contador)*100).toFixed(2);
       datos[month].Excelente = ((contE/contador)*100).toFixed(2);
     }); 
     return datos;
@@ -86,7 +86,7 @@ class Dashboard extends PureComponent {
         <YAxis />
         <Tooltip />
         <Bar dataKey="Malo" fill="#ec7063 " />
-        <Bar dataKey="Bueno" fill="#5499c7" />
+        <Bar dataKey="Regular" fill="#5499c7" />
         <Bar dataKey="Excelente" fill="#52be80" />
       </BarChart>
     );
