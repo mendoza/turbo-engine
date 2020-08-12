@@ -30,7 +30,7 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.4",
     "redux-form": "^8.2.6",
-    "serialize-javascript": "^2.1.2",
+    "serialize-javascript": "^3.1.0",
     "simpl-schema": "^1.5.7",
     "validator": "^12.1.0"
   },
