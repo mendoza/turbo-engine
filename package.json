@@ -32,7 +32,7 @@
     "redux-form": "^8.2.6",
     "serialize-javascript": "^2.1.2",
     "simpl-schema": "^1.5.7",
-    "validator": "^12.1.0"
+    "validator": "^13.7.0"
   },
   "meteor": {
     "mainModule": {
